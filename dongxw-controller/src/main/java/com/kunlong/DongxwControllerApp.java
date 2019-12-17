@@ -12,7 +12,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 //
 //@EnableAutoConfiguration
 //@Configuration
-@SpringBootApplication(scanBasePackages = {"com.kunlong"})
+@SpringBootApplication(scanBasePackages = {"com.kunlong.dongxw"})
 //@EnableDubbo
 //@EnableDubboConfig
 //@ImportResource({"classpath:appcontext.xml"})
