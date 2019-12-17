@@ -8,8 +8,16 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
+    <groupId>dongxw</groupId>
 
     <artifactId>dongxw-controller</artifactId>
-
-
+    <packaging>jar</packaging>
+    <version>1.0-SNAPSHOT</version>
+    <dependencies>
+        <!--<dependency>-->
+            <!--<groupId>kunlong</groupId>-->
+            <!--<artifactId>PlatformBase</artifactId>-->
+            <!--<version>1.0-SNAPSHOT</version>-->
+        <!--</dependency>-->
+    </dependencies>
 </project>
