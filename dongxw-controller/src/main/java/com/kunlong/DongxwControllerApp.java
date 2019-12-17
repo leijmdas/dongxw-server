@@ -16,14 +16,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 //@EnableDubbo
 //@EnableDubboConfig
 //@ImportResource({"classpath:appcontext.xml"})
-public class KunlongControllerApp {
-    private static final Logger logger = LoggerFactory.getLogger(KunlongControllerApp.class);
+public class DongxwControllerApp {
+    private static final Logger logger = LoggerFactory.getLogger(DongxwControllerApp.class);
 
 
     public static void main(String[] args) {
 
          Class[] classes = new Class[]{
-                KunlongControllerApp.class
+                DongxwControllerApp.class
         };
         SpringApplication.run(classes, args);
         new DemoLoggerA().t();
