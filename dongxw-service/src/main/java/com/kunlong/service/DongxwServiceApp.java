@@ -1,6 +1,5 @@
-package com.kunlong;
+package com.kunlong.service;
 
-import com.kunlong.service.dongxw.DemoLoggerA;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -16,16 +15,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 //@EnableDubbo
 //@EnableDubboConfig
 //@ImportResource({"classpath:appcontext.xml"})
-public class DongxwControllerApp {
-    private static final Logger logger = LoggerFactory.getLogger(DongxwControllerApp.class);
+public class DongxwServiceApp {
+    private static final Logger logger = LoggerFactory.getLogger(DongxwServiceApp.class);
 
 
     public static void main(String[] args) {
 
          Class[] classes = new Class[]{
-                DongxwControllerApp.class
+                 DongxwServiceApp.class
         };
         SpringApplication.run(classes, args);
-        new DemoLoggerA().t();
     }
 }

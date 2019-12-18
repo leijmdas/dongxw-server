@@ -1,0 +1,10 @@
+#公共默认配置
+
+spring:
+  application:
+    name:dongxw-controller
+  profiles:
+    active: dev
+server:
+  port: 10081
+  contextPath: /
