@@ -7,6 +7,7 @@ import com.jtest.NodesFactroy.Node.HttpClientNode;
 import com.jtest.annotation.JTest;
 import com.jtest.annotation.JTestClass;
 import com.jtest.testframe.ITestImpl;
+import com.kunlong.dongxw.manager.domain.DictDatatype;
 import com.kunlong.platform.utils.JsonResult;
 import com.kunlong.dongxw.dongxw.domain.Customer;
 import org.slf4j.Logger;
@@ -17,62 +18,80 @@ import java.io.IOException;
 
 @JTestClass.author("leijm")
 public class TestCustomer extends ITestImpl {
-	private static final Logger logger = LoggerFactory.getLogger(TestCustomer.class);
+    private static final Logger logger = LoggerFactory.getLogger(TestCustomer.class);
 
-	String url_sysuser = "http://127.0.0.1:10080/rest/sysuser";
-	String url_cust = "http://127.0.0.1:10081/dongxw/customer";
+    String url_sysuser = "http://127.0.0.1:10080/rest/sysuser";
+    String url_cust = "http://127.0.0.1:10081/dongxw/customer";
+    String url_manager = "http://127.0.0.1:10081/dongxw/manager";
 
-	@Inject(filename = "node.xml", value = "httpclient")
-	HttpClientNode httpclient;
+    @Inject(filename = "node.xml", value = "httpclient")
+    HttpClientNode httpclient;
 
 
-	//MsgRequest req = new MsgRequest();
-	public void suiteSetUp() {
-	
-	}
-	
-	public void suiteTearDown() throws IOException {
-	}
+    //MsgRequest req = new MsgRequest();
+    public void suiteSetUp() {
 
-	@Override
-	public void setUp() {
+    }
+
+    public void suiteTearDown() throws IOException {
+    }
+
+    @Override
+    public void setUp() {
 //		req = login.defaultReq();
 //		token = login.login(req);
 //		logger.info("aaa--req:{} ******",req.toJSONStringPretty());
 //		logger.info("bbb req:{} ******",req.toJSONStringPretty());
-	}
-	
-	@Override
-	public void tearDown() {
+    }
 
-	}
-	
-	@JTest
-	@JTestClass.title("获取列表")
-	@JTestClass.pre("")
-	@JTestClass.step("test_0001_custFindById")
-	@JTestClass.exp("ok")
-	public void test_0001_custFindById() {
+    @Override
+    public void tearDown() {
 
+    }
 
-
-		String ret = httpclient.post(url_cust+"/findById/1", "{}", "application/json");
-		httpclient.checkStatusCode(200);
-
-		JsonResult<Customer> result = JSON.parseObject(ret,JsonResult.class);
-		System.out.println(ret);
-		//System.out.println(result.getData());
-		System.out.println(result );
+    @JTest
+    @JTestClass.title("获取列表")
+    @JTestClass.pre("")
+    @JTestClass.step("test_0001_custFindById")
+    @JTestClass.exp("ok")
+    public void test_0001_custFindById() {
 
 
-	}
-	
+        String ret = httpclient.post(url_cust + "/findById/1", "{}", "application/json");
+        httpclient.checkStatusCode(200);
 
-	public static void main(String[] args) {
+        JsonResult<Customer> result = JSON.parseObject(ret, JsonResult.class);
+        System.out.println(ret);
+        //System.out.println(result.getData());
+        System.out.println(result);
 
-		 run(TestCustomer.class,1);
 
-	}
+    }
+
+    //url_manager
+    @JTest
+    @JTestClass.title("获取列表")
+    @JTestClass.pre("")
+    @JTestClass.step("test_0002_managerFindDictDatatypeById")
+    @JTestClass.exp("ok")
+    public void test_0002_managerFindDictDatatypeById() {
+
+
+        String ret = httpclient.post(url_manager + "/findById/3", "{}", "application/json");
+        httpclient.checkStatusCode(200);
+
+        JsonResult<DictDatatype> result = JSON.parseObject(ret, JsonResult.class);
+        System.out.println(ret);
+        //System.out.println(result.getData());
+        System.out.println(result);
+
+    }
+
+    public static void main(String[] args) {
+
+        run(TestCustomer.class, 2);
+
+    }
 
 
 }

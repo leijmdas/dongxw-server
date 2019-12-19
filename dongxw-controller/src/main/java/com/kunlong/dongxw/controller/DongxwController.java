@@ -18,14 +18,14 @@ import java.io.IOException;
  * Date: Created in 2018/8/23 16:50
  */
 @RestController
-@RequestMapping("/dongxw")
+@RequestMapping("/dongxw/customer")
 public final class DongxwController     {
     @Autowired
     CustomerService customerService;
 
 
 
-    @RequestMapping("/customer/findById/{id}")
+    @RequestMapping("/findById/{id}")
     public JsonResult<Customer> findById(@PathVariable("id") Integer id, HttpServletRequest request, HttpServletResponse response) throws IOException {
         return   JsonResult.success(customerService.findById(id))    ;
     }
