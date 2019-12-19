@@ -1,9 +1,9 @@
-package com.kunlong.service.dongxw.controller;
+package com.kunlong.dongxw.controller;
 
 
 import com.kunlong.platform.utils.JsonResult;
-import com.kunlong.service.dongxw.domain.Customer;
-import com.kunlong.service.dongxw.service.CustomerService;
+import com.kunlong.dongxw.dongxw.domain.Customer;
+import com.kunlong.dongxw.dongxw.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,4 +1,4 @@
-package com.kunlong.service;
+package com.kunlong.dongxw;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 //
 //@EnableAutoConfiguration
 //@Configuration
-@SpringBootApplication(scanBasePackages = {"com.kunlong.service.dongxw"})
+@SpringBootApplication(scanBasePackages = {"com.kunlong.dongxw"})
 //@EnableDubbo
 //@EnableDubboConfig
 //@ImportResource({"classpath:appcontext.xml"})

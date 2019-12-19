@@ -1,9 +1,9 @@
-package com.kunlong.service.dongxw.dao;
+package com.kunlong.dongxw.dongxw.dao;
 
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.mybatis.hbatis.orm.mapper.HbatisMapper;
-import com.kunlong.service.dongxw.domain.Customer;
+import com.kunlong.dongxw.dongxw.domain.Customer;
 /**
  * CustomerMapper
  * @author generator

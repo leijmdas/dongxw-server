@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.kunlong.service.dongxw.dao.CustomerMapper" >
-	<resultMap id="BaseResultMap" type="com.kunlong.service.dongxw.domain.Customer" >
+<mapper namespace="com.kunlong.dongxw.dongxw.dao.CustomerMapper" >
+	<resultMap id="BaseResultMap" type="com.kunlong.dongxw.dongxw.domain.Customer" >
 	    <id column="id" property="id" jdbcType="INTEGER" />	
 	  	<result column="cust_no" property="custNo" jdbcType="VARCHAR" />
 	  	<result column="cust_name" property="custName" jdbcType="VARCHAR" />
@@ -15,7 +15,7 @@
 	  	<result column="create_date" property="createDate" jdbcType="DATE" />
 	  	<result column="create_by" property="createBy" jdbcType="INTEGER" />
     </resultMap>
-    <resultMap id="BaseResultMap_Customer" type="com.kunlong.service.dongxw.domain.Customer" >
+    <resultMap id="BaseResultMap_Customer" type="com.kunlong.dongxw.dongxw.domain.Customer" >
 	    <id column="c_id" property="id" jdbcType="INTEGER" />	
 	  	<result column="c_cust_no" property="custNo" jdbcType="VARCHAR" />
 	  	<result column="c_cust_name" property="custName" jdbcType="VARCHAR" />
@@ -38,7 +38,7 @@
 	
 	<!-- 系统自定义 -->
 	<!-- 实体参数查询结果[START] -->
-	<resultMap id="ResultMap_FindByQueryParam" type="com.kunlong.service.dongxw.domain.Customer" extends="BaseResultMap_Customer">
+	<resultMap id="ResultMap_FindByQueryParam" type="com.kunlong.dongxw.dongxw.domain.Customer" extends="BaseResultMap_Customer">
 		
 	</resultMap>
 

@@ -1,6 +1,6 @@
-package com.kunlong.service.dongxw.service;
+package com.kunlong.dongxw.dongxw.service;
 
-import com.kunlong.service.dongxw.domain.Customer;
+import com.kunlong.dongxw.dongxw.domain.Customer;
 import java.util.List;
 /**
  * CustomerService

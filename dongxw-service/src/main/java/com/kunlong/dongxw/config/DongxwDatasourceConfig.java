@@ -1,8 +1,7 @@
-package com.kunlong.service.dongxw.config;
+package com.kunlong.dongxw.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
-import com.kunlong.service.dongxw.consts.DongxwConsts;
-import com.kunlong.service.dongxw.consts.ManagerConsts;
+import com.kunlong.dongxw.consts.DongxwConsts;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.hbatis.spring.HbatisSqlSessionDaoSupport;
 import org.mybatis.spring.SqlSessionFactoryBean;
@@ -24,23 +23,23 @@ import java.util.List;
 //import org.mybatis.hbatis.spring.HbatisSqlSessionDaoSupport;
 // location =“classpath：/ properties / $ {spring.profiles .active：test} /some.properties“/>
 
-@Configuration( "managerDatasourceConfig" )
+@Configuration( "dongxwDatasourceConfig" )
 //@PropertySource({"classpath:/datasource/datasource-${spring.profiles.active}.properties"})
 //@PropertySource({"classpath:/datasource/datasource-dev.properties"})
-public class ManagerDatasourceConfig extends ManagerConsts {
+public class DongxwDatasourceConfig extends DongxwConsts {
 
-	@Qualifier("managerDataSource")
-	@Bean(name = "managerDataSource")
+	@Qualifier("dongxwDataSource")
+	@Bean(name = "dongxwDataSource")
 	//@Bean(name = "primaryDataSource", destroyMethod = "close", initMethod = "init")
-	@ConfigurationProperties(prefix = "spring.datasource.manager")
+	@ConfigurationProperties(prefix = "spring.datasource.dongxw")
 	public DataSource primaryDataSource() {
 		DruidDataSource druidDataSource = new DruidDataSource();
 		return druidDataSource;
 	}
 
-	@Bean(name = "managerSqlSessionFactory")
+	@Bean(name = "dongxwSqlSessionFactory")
 	@Primary
-	public SqlSessionFactory primarySqlSessionFactory(@Qualifier("managerDataSource") DataSource dataSource)
+	public SqlSessionFactory primarySqlSessionFactory(@Qualifier("dongxwDataSource") DataSource dataSource)
 			throws Exception {
 		SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
 		bean.setDataSource(dataSource);
@@ -60,19 +59,19 @@ public class ManagerDatasourceConfig extends ManagerConsts {
 	}
 
 
-	@Bean(name = "managerMapperScannerConfigurer")
+	@Bean(name = "dongxwMapperScannerConfigurer")
 	public MapperScannerConfigurer mapperScannerConfigurer() {
 		MapperScannerConfigurer mapperScannerConfigurer = new MapperScannerConfigurer();
-		mapperScannerConfigurer.setSqlSessionFactoryBeanName("managerSqlSessionFactory");
+		mapperScannerConfigurer.setSqlSessionFactoryBeanName("dongxwSqlSessionFactory");
 		mapperScannerConfigurer.setBasePackage(MYBATIS_BASE_PACKAGE);
 
 		return mapperScannerConfigurer;
 	}
 
-	@Bean(name = "managerTransactionManager")
+	@Bean(name = "dongxwTransactionManager")
 	@Primary
 	public DataSourceTransactionManager primaryTransactionManager(
-			@Qualifier("managerDataSource") DataSource dataSource) {
+			@Qualifier("dongxwDataSource") DataSource dataSource) {
 		return new DataSourceTransactionManager(dataSource);
 	}
 }

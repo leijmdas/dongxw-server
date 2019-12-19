@@ -1,4 +1,4 @@
-package com.kunlong.service.dongxw.domain;
+package com.kunlong.dongxw.dongxw.domain;
 
 import java.io.Serializable;
 import javax.validation.constraints.*;

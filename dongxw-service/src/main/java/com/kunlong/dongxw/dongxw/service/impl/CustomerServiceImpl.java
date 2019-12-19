@@ -1,11 +1,11 @@
-package com.kunlong.service.dongxw.service.impl;
+package com.kunlong.dongxw.dongxw.service.impl;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.kunlong.service.dongxw.domain.Customer;
-import com.kunlong.service.dongxw.dao.CustomerMapper;
-import com.kunlong.service.dongxw.service.CustomerService;
+import com.kunlong.dongxw.dongxw.domain.Customer;
+import com.kunlong.dongxw.dongxw.dao.CustomerMapper;
+import com.kunlong.dongxw.dongxw.service.CustomerService;
 import org.mybatis.hbatis.orm.criteria.statement.SelectStatement;
 import org.mybatis.hbatis.orm.criteria.statement.UpdateStatement;
 import org.mybatis.hbatis.orm.criteria.support.StatementBuilder;

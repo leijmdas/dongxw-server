@@ -1,4 +1,4 @@
-package com.kunlong.service.dongxw.config;
+package com.kunlong.dongxw.config;
 
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.hbatis.spring.HbatisSqlSessionDaoSupport;

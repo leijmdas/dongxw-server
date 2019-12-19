@@ -8,13 +8,9 @@ import com.jtest.annotation.JTest;
 import com.jtest.annotation.JTestClass;
 import com.jtest.testframe.ITestImpl;
 import com.kunlong.platform.utils.JsonResult;
-import com.kunlong.service.dongxw.domain.Customer;
-import com.kunlong.service.dongxw.service.CustomerService;
-import org.json.JSONObject;
+import com.kunlong.dongxw.dongxw.domain.Customer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
 //import testcase.pub.ManagerLogin;
 
 import java.io.IOException;
