@@ -1,6 +1,8 @@
 package com.kunlong.dongxw.testcase;
 
 import com.jtest.utility.testlog.TestLog;
+import com.kunlong.dongxw.manager.domain.DictDatatype;
+import com.kunlong.dongxw.manager.service.DictDatatypeService;
 import com.kunlong.dongxw.pub.TestBaseApp;
 import com.kunlong.dongxw.dongxw.domain.Customer;
 import com.kunlong.dongxw.dongxw.service.CustomerService;
@@ -11,6 +13,8 @@ public class TestDongxw extends TestBaseApp {
 
     @Autowired
     CustomerService customerService;
+    @Autowired
+	DictDatatypeService dictDatatypeService;
 	/**
 	 * 按时长计费
 	 */
@@ -18,7 +22,9 @@ public class TestDongxw extends TestBaseApp {
 	public void test001() {
         Customer c=customerService.findById(1);
 	 	TestLog.logJtest("Customer",c);
-		
+		DictDatatype dictDatatype=dictDatatypeService.findById(3);
+		TestLog.logJtest("dictDatatype",dictDatatype);
+
 	}
 
 

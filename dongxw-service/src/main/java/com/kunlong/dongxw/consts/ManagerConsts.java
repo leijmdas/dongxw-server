@@ -10,9 +10,9 @@ package com.kunlong.dongxw.consts;
 public class ManagerConsts {
 
 	
-	protected static String[] MYBATIS_MAPPER_LOCATIONS = new String[] {"classpath*:/dbconfig/dongxw/*.xml"};
+	protected static String[] MYBATIS_MAPPER_LOCATIONS = new String[] {"classpath*:/dbconfig/manager/*.xml"};
 	
-	protected static String MYBATIS_BASE_PACKAGE = "com.kunlong.dongxw.dongxw.dao";
+	protected static String MYBATIS_BASE_PACKAGE = "com.kunlong.dongxw.manager.dao";
 	
 	
 	
