@@ -2,6 +2,8 @@ package com.kunlong.service.dongxw.domain;
 
 import java.io.Serializable;
 import javax.validation.constraints.*;
+
+import com.kunlong.platform.model.KunlongModel;
 import org.mybatis.hbatis.core.type.JdbcType;
 import org.mybatis.hbatis.core.annotation.*;
 import org.mybatis.hbatis.core.*;
@@ -16,7 +18,7 @@ import org.mybatis.hbatis.orm.criteria.support.query.SortOrders;
  * @date 2019年12月19日
  */
 @Table(Customer.EntityNode.class)
-public class Customer implements Serializable {
+public class Customer extends KunlongModel implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	/**

@@ -1,5 +1,6 @@
 package com.kunlong.dongxw.testcase;
 
+import com.jtest.utility.testlog.TestLog;
 import com.kunlong.dongxw.pub.TestBaseApp;
 import com.kunlong.service.dongxw.domain.Customer;
 import com.kunlong.service.dongxw.service.CustomerService;
@@ -15,9 +16,8 @@ public class TestDongxw extends TestBaseApp {
 	 */
 	@Test
 	public void test001() {
-	 	System.out.print(1);
         Customer c=customerService.findById(1);
-	 	System.out.print(c);
+	 	TestLog.logJtest("Customer",c);
 		
 	}
 
