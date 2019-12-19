@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kunlong.service.dongxw.dao.CustomerMapper" >
+	<resultMap id="BaseResultMap" type="com.kunlong.service.dongxw.domain.Customer" >
+	    <id column="id" property="id" jdbcType="INTEGER" />	
+	  	<result column="cust_no" property="custNo" jdbcType="VARCHAR" />
+	  	<result column="cust_name" property="custName" jdbcType="VARCHAR" />
+	  	<result column="cust_sname" property="custSname" jdbcType="VARCHAR" />
+	  	<result column="country" property="country" jdbcType="VARCHAR" />
+	  	<result column="addr" property="addr" jdbcType="VARCHAR" />
+	  	<result column="money_type" property="moneyType" jdbcType="VARCHAR" />
+	  	<result column="contact" property="contact" jdbcType="VARCHAR" />
+	  	<result column="tel" property="tel" jdbcType="VARCHAR" />
+	  	<result column="email" property="email" jdbcType="VARCHAR" />
+	  	<result column="create_date" property="createDate" jdbcType="DATE" />
+	  	<result column="create_by" property="createBy" jdbcType="INTEGER" />
+    </resultMap>
+    <resultMap id="BaseResultMap_Customer" type="com.kunlong.service.dongxw.domain.Customer" >
+	    <id column="c_id" property="id" jdbcType="INTEGER" />	
+	  	<result column="c_cust_no" property="custNo" jdbcType="VARCHAR" />
+	  	<result column="c_cust_name" property="custName" jdbcType="VARCHAR" />
+	  	<result column="c_cust_sname" property="custSname" jdbcType="VARCHAR" />
+	  	<result column="c_country" property="country" jdbcType="VARCHAR" />
+	  	<result column="c_addr" property="addr" jdbcType="VARCHAR" />
+	  	<result column="c_money_type" property="moneyType" jdbcType="VARCHAR" />
+	  	<result column="c_contact" property="contact" jdbcType="VARCHAR" />
+	  	<result column="c_tel" property="tel" jdbcType="VARCHAR" />
+	  	<result column="c_email" property="email" jdbcType="VARCHAR" />
+	  	<result column="c_create_date" property="createDate" jdbcType="DATE" />
+	  	<result column="c_create_by" property="createBy" jdbcType="INTEGER" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+  		id,cust_no,cust_name,cust_sname,country,addr,money_type,contact,tel,email,create_date,create_by
+	</sql>
+  	<sql id="Base_Column_List_Customer" >
+  		c.id c_id,c.cust_no c_cust_no,c.cust_name c_cust_name,c.cust_sname c_cust_sname,c.country c_country,c.addr c_addr,c.money_type c_money_type,c.contact c_contact,c.tel c_tel,c.email c_email,c.create_date c_create_date,c.create_by c_create_by
+	</sql>
+	
+	<!-- 系统自定义 -->
+	<!-- 实体参数查询结果[START] -->
+	<resultMap id="ResultMap_FindByQueryParam" type="com.kunlong.service.dongxw.domain.Customer" extends="BaseResultMap_Customer">
+		
+	</resultMap>
+
+	<sql id="Condition_FindByQueryParam">
+		<if test="queryParam.param!=null">
+			<bind name="p" value="queryParam.param"/>
+			<if test="p.id!=null ">
+		    	and c.id=#{p.id}
+		    </if>
+			<if test="p.custNo!=null and p.custNo!=''">
+		    	and c.cust_no like #{p.custNo}
+		    </if>
+			<if test="p.custName!=null and p.custName!=''">
+		    	and c.cust_name like #{p.custName}
+		    </if>
+			<if test="p.custSname!=null and p.custSname!=''">
+		    	and c.cust_sname like #{p.custSname}
+		    </if>
+			<if test="p.country!=null and p.country!=''">
+		    	and c.country like #{p.country}
+		    </if>
+			<if test="p.addr!=null and p.addr!=''">
+		    	and c.addr like #{p.addr}
+		    </if>
+			<if test="p.moneyType!=null and p.moneyType!=''">
+		    	and c.money_type like #{p.moneyType}
+		    </if>
+			<if test="p.contact!=null and p.contact!=''">
+		    	and c.contact like #{p.contact}
+		    </if>
+			<if test="p.tel!=null and p.tel!=''">
+		    	and c.tel like #{p.tel}
+		    </if>
+			<if test="p.email!=null and p.email!=''">
+		    	and c.email like #{p.email}
+		    </if>
+			<if test="p.createDate!=null ">
+		    	and c.create_date=#{p.createDate}
+		    </if>
+			<if test="p.createBy!=null ">
+		    	and c.create_by=#{p.createBy}
+		    </if>
+		</if>
+		<!--
+		<bind name="rp" value="queryParam.ruleParam" />
+		<include refid="org.mybatis.hbatis.orm.mapper.HbatisMapper.RuleParam"/>
+		-->
+	</sql>
+	<select id="findByQueryParam" resultMap="ResultMap_FindByQueryParam">
+		select
+		<include refid="Base_Column_List_Customer"></include>
+		from customer c where 1=1
+		<include refid="Condition_FindByQueryParam"></include>
+		<if test="queryParam.sortOrders!=null and queryParam.sortOrders.size() gt 0">
+			order by 
+			<foreach collection="queryParam.sortOrders" item="item" separator=",">
+				${item.sortField.sqlColumn} ${item.sortType}
+			</foreach>
+		</if>
+		<if test="queryParam.limit gt 0">
+	  		limit ${queryParam.start},${queryParam.limit}
+	  	</if>
+	</select>
+	<select id="countByQueryParam" resultType="long">
+		select count(1) from customer c where 1=1
+		<include refid="Condition_FindByQueryParam"></include>
+	</select>
+	
+	<!-- 实体参数查询结果[END] -->
+	<!-- 用户自定义 -->
+	
+</mapper>

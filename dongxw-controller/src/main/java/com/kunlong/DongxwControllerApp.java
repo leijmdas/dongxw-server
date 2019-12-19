@@ -1,6 +1,5 @@
 package com.kunlong;
 
-import com.kunlong.service.dongxw.DemoLoggerA;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -26,6 +25,6 @@ public class DongxwControllerApp {
                 DongxwControllerApp.class
         };
         SpringApplication.run(classes, args);
-        new DemoLoggerA().t();
+
     }
 }

@@ -12,7 +12,7 @@ public class DongxwConsts {
 	
 	protected static String[] MYBATIS_MAPPER_LOCATIONS = new String[] {"classpath*:/dbconfig/dongxw/*.xml"};
 	
-	protected static String MYBATIS_BASE_PACKAGE = "com.kunlong.platform.dao";
+	protected static String MYBATIS_BASE_PACKAGE = "com.kunlong.service.dongxw.dao";
 	
 	
 	
