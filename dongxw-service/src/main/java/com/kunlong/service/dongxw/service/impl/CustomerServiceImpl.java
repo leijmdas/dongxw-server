@@ -1,4 +1,4 @@
-package com.kunlong.service.dongxw.model.impl;
+package com.kunlong.service.dongxw.service.impl;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
