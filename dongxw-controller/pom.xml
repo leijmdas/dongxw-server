@@ -29,7 +29,7 @@
 
 
     <build>
-        <finalName>donxw</finalName>
+        <finalName>dongxw</finalName>
         <plugins>
 
             <plugin>
