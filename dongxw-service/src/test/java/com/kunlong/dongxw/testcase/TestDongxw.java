@@ -14,22 +14,30 @@ public class TestDongxw extends TestBaseApp {
     @Autowired
     CustomerService customerService;
     @Autowired
-	DictDatatypeService dictDatatypeService;
-	/**
-	 * 按时长计费
-	 */
-	@Test
-	public void test001() {
-        Customer c=customerService.findById(1);
-	 	TestLog.logJtest("Customer",c);
-		DictDatatype dictDatatype=dictDatatypeService.findById(3);
-		TestLog.logJtest("dictDatatype",dictDatatype);
+    DictDatatypeService dictDatatypeService;
 
-	}
+    @Test
+    public void test001_findById() {
+        Customer c = customerService.findById(1);
+        TestLog.logJtest("Customer", c);
+        DictDatatype dictDatatype = dictDatatypeService.findById(3);
+        TestLog.logJtest("dictDatatype", dictDatatype);
 
+    }
 
-	@Test public void test002(){
-	    customerService.countByQueryParam(new Customer.QueryParam());
+    @Test
+    public void test002_count() {
+        long c = customerService.countByQueryParam(new Customer.QueryParam());
+
+        TestLog.logJtest("long", c);
+        long dictDatatype = dictDatatypeService.countByQueryParam(new DictDatatype.QueryParam());
+        TestLog.logJtest("dictDatatype", dictDatatype);
+
+    }
+
+    @Test
+    public void test002() {
+        customerService.countByQueryParam(new Customer.QueryParam());
     }
 }
 
