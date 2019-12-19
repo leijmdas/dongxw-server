@@ -65,7 +65,8 @@ public class TestCustomer extends ITestImpl {
 
 		JsonResult<Customer> result = JSON.parseObject(ret,JsonResult.class);
 		System.out.println(ret);
-		System.out.println(result.getData());
+		//System.out.println(result.getData());
+		System.out.println(result );
 
 
 	}
