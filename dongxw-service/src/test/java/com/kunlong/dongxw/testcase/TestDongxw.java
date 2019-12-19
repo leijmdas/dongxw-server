@@ -9,6 +9,8 @@ import com.kunlong.dongxw.dongxw.service.CustomerService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
 public class TestDongxw extends TestBaseApp {
 
     @Autowired
@@ -36,8 +38,14 @@ public class TestDongxw extends TestBaseApp {
     }
 
     @Test
-    public void test002() {
-        customerService.countByQueryParam(new Customer.QueryParam());
+    public void test003_findByQueryParam() {
+
+        List<Customer> customers = customerService.findByQueryParam(new Customer.QueryParam());
+        TestLog.logJtest("customers", customers);
+
+        List<DictDatatype> dictDatatypes = dictDatatypeService.findByQueryParam(new DictDatatype.QueryParam());
+        TestLog.logJtest("dictDatatypes", dictDatatypes);
+
     }
 }
 
