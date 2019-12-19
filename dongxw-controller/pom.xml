@@ -5,24 +5,24 @@
     <parent>
         <artifactId>dongxw</artifactId>
         <groupId>kunlong</groupId>
-        <version>1.0-SNAPSHOT</version>
+        <version>2.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>dongxw</groupId>
 
     <artifactId>dongxw-controller</artifactId>
     <packaging>jar</packaging>
-    <version>1.0-SNAPSHOT</version>
+    <version>2.0</version>
     <dependencies>
         <dependency>
             <groupId>kunlong</groupId>
             <artifactId>dongxw-service</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>2.0</version>
         </dependency>
         <!--<dependency>-->
         <!--<groupId>kunlong</groupId>-->
         <!--<artifactId>PlatformBase</artifactId>-->
-        <!--<version>1.0-SNAPSHOT</version>-->
+        <!--<version>2.0</version>-->
         <!--</dependency>-->
 
     </dependencies>
@@ -56,7 +56,7 @@
                         <id>default</id>
                         <phase>verify</phase>
                         <goals>
-                            <goal>build</goal>
+                            <!--<goal>build</goal>-->
                             <!-- <goal>push</goal> -->
                         </goals>
                     </execution>
