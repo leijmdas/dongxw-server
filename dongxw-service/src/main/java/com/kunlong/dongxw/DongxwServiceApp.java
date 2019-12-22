@@ -22,7 +22,7 @@ public class DongxwServiceApp {
     public static void main(String[] args) {
 
          Class[] classes = new Class[]{
-                 DongxwServiceApp.class
+                  DongxwServiceApp.class
         };
         SpringApplication.run(classes, args);
     }

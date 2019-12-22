@@ -23,6 +23,8 @@ public class TestCustomer extends ITestImpl {
     String url_sysuser = "http://127.0.0.1:10080/rest/sysuser";
     String url_cust = "http://127.0.0.1:10081/dongxw/customer";
     String url_manager = "http://127.0.0.1:10081/dongxw/manager";
+    String url_dongxw  = "http://127.0.0.1:8098/api/dongxw/customer";
+    //http://localhost:8098/api/dongxw/customer/findById/1
 
     @Inject(filename = "node.xml", value = "httpclient")
     HttpClientNode httpclient;
@@ -86,10 +88,29 @@ public class TestCustomer extends ITestImpl {
         System.out.println(result);
 
     }
+    //url_manager
+    @JTest
+    @JTestClass.title("获取列表")
+    @JTestClass.pre("")
+    @JTestClass.step("test_0003_findCustDongxw")
+    @JTestClass.exp("ok")
+    public void test_0003_findCustDongxw() {
+
+
+        String ret = httpclient.post(url_dongxw + "/findById/1", "{}", "application/json");
+        httpclient.checkStatusCode(200);
+        httpclient.addHeader("Access-Token","4aee85e19a2e467380dee5afa8136f24");
+
+        JsonResult<DictDatatype> result = JSON.parseObject(ret, JsonResult.class);
+        System.out.println(ret);
+        //System.out.println(result.getData());
+        System.out.println(result);
+
+    }
 
     public static void main(String[] args) {
 
-        run(TestCustomer.class, 2);
+        run(TestCustomer.class, 3);
 
     }
 
