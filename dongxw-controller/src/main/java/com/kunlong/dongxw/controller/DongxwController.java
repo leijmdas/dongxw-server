@@ -2,6 +2,7 @@ package com.kunlong.dongxw.controller;
 
 
 import app.support.query.PageResult;
+import com.kunlong.dongxw.support.BeanMapper;
 import com.kunlong.platform.utils.JsonResult;
 import com.kunlong.dongxw.dongxw.domain.Customer;
 import com.kunlong.dongxw.dongxw.service.CustomerService;
@@ -33,13 +34,13 @@ public final class DongxwController     {
     }
 
     @RequestMapping("/query")
-    public PageResult<Customer> query(@RequestBody PageResult<Customer> pageResult) throws IOException {
-        //PageResult<Customer> pageResult = new PageResult<Customer>();
-//        Customer.QueryParam qp = BeanMapper.getInstance().map(pageResult, Customer.QueryParam.class);
-//
-//
-//        pageResult.setTotal(customerService.countByQueryParam(qp));
-//        pageResult.setData(customerService.findByQueryParam(qp));
+    public PageResult<Customer> query(@RequestBody Customer.QueryParam queryParam) throws IOException {
+         PageResult<Customer> pageResult = new PageResult<Customer>();
+        // Customer.QueryParam qp = BeanMapper.getInstance().map(pageResult, Customer.QueryParam.class);
+
+
+        pageResult.setTotal(customerService.countByQueryParam(queryParam));
+        pageResult.setData(customerService.findByQueryParam(queryParam));
         return pageResult;
     }
 
