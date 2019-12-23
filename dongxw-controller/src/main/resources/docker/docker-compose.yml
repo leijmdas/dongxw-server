@@ -1,0 +1,83 @@
+version: '3.2'
+services:
+    kl-pf-ctrl:
+        build:
+            context: .
+            dockerfile: DockerfilePfCtrl
+
+        image: kl-pf-ctl
+        container_name: kl-pf-ctl
+
+        hostname: kl-pf-ctl
+        user: root
+        restart: always
+        ports:
+            - '10080:10080' 
+        #command:
+        environment:
+            APP_OPTS: --spring.profiles.active=dev
+            #DUBBO_IP_TO_REGISTRY: 120.77.172.83
+        volumes:
+            - /etc/localtime:/etc/localtime:ro
+            #- /etc/hosts:/etc/hosts:ro
+            #- /opt/logs/:/opt/logs/
+            #- /opt/shareISSUE.pfx:/opt/shareISSUE.pfx:ro
+        extra_hosts:
+            - "mysql.kunlong.com:172.17.0.1"
+            - "redis.kunlong.com:172.17.0.1"
+            - "zookeeper.kunlong.com:172.17.0.1"
+
+    kl-center-service:
+        build:
+            context: .
+            dockerfile: DockerfileCenterService
+
+        image: kl-center-srv
+        container_name: kl-center-srv
+
+        hostname: kl-center-srv
+        user: root
+        restart: always
+        ports:
+            - '12340:12340' 
+        #command:
+        environment:
+            APP_OPTS: --spring.profiles.active=dev
+            #DUBBO_IP_TO_REGISTRY: 120.77.172.83
+        volumes:
+            - /etc/localtime:/etc/localtime:ro
+            #- /etc/hosts:/etc/hosts:ro
+            #- /opt/logs/:/opt/logs/
+            #- /opt/shareISSUE.pfx:/opt/shareISSUE.pfx:ro
+        extra_hosts:
+            - "mysql.kunlong.com:172.17.0.1"
+            - "redis.kunlong.com:172.17.0.1"
+            - "zookeeper.kunlong.com:172.17.0.1"            
+
+    kl-dongxw-ctrl:
+        build:
+            context: .
+            dockerfile: DockerfileDongxwCtrl
+
+        image: kl-dongxw-ctl
+        container_name: kl-dongxw-ctl
+
+        hostname: kl-dongxw-ctl
+        user: root
+        restart: always
+        ports:
+            - '10081:10081' 
+        #command:
+        environment:
+            APP_OPTS: --spring.profiles.active=dev
+            #DUBBO_IP_TO_REGISTRY: 120.77.172.83
+        volumes:
+            - /etc/localtime:/etc/localtime:ro
+            #- /etc/hosts:/etc/hosts:ro
+            #- /opt/logs/:/opt/logs/
+            #- /opt/shareISSUE.pfx:/opt/shareISSUE.pfx:ro
+        extra_hosts:
+            - "mysql.kunlong.com:172.17.0.1"
+            - "redis.kunlong.com:172.17.0.1"
+            - "zookeeper.kunlong.com:172.17.0.1"
+                        
