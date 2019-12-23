@@ -2,7 +2,6 @@ package com.kunlong.dongxw.controller;
 
 
 import app.support.query.PageResult;
-import com.kunlong.dongxw.support.BeanMapper;
 import com.kunlong.platform.utils.JsonResult;
 import com.kunlong.dongxw.dongxw.domain.Customer;
 import com.kunlong.dongxw.dongxw.service.CustomerService;
