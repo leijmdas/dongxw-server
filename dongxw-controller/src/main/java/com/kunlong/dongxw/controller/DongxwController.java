@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 
 /**
  * cust类
@@ -23,8 +25,6 @@ public final class DongxwController     {
     @Autowired
     CustomerService customerService;
 
-
-
     @RequestMapping("/findById/{id}")
     public JsonResult<Customer> findById(@PathVariable("id") Integer id,HttpServletResponse response) throws IOException {
 //        response.addHeader("Access-Control-Allow-Origin", "*");
@@ -34,15 +34,24 @@ public final class DongxwController     {
 
     @RequestMapping("/query")
     public PageResult<Customer> query(@RequestBody Customer.QueryParam queryParam) throws IOException {
-         PageResult<Customer> pageResult = new PageResult<Customer>();
+        PageResult<Customer> pageResult = new PageResult<Customer>();
         // Customer.QueryParam qp = BeanMapper.getInstance().map(pageResult, Customer.QueryParam.class);
-
 
         pageResult.setTotal(customerService.countByQueryParam(queryParam));
         pageResult.setData(customerService.findByQueryParam(queryParam));
         return pageResult;
     }
 
+    @RequestMapping("/save")
+    public JsonResult<Integer> save(@RequestBody Customer customer) {
 
+        if (customer.getId() == null) {
+            customerService.save(customer);
+        } else {
+            customerService.update(customer);
+        }
+
+        return JsonResult.success(customer.getId());
+    }
 }
 

@@ -6,6 +6,7 @@ import com.kunlong.dongxw.manager.service.DictDatatypeService;
 import com.kunlong.dongxw.pub.TestBaseApp;
 import com.kunlong.dongxw.dongxw.domain.Customer;
 import com.kunlong.dongxw.dongxw.service.CustomerService;
+import com.kunlong.platform.utils.JsonResult;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -45,6 +46,15 @@ public class TestDongxw extends TestBaseApp {
 
         List<DictDatatype> dictDatatypes = dictDatatypeService.findByQueryParam(new DictDatatype.QueryParam());
         TestLog.logJtest("dictDatatypes", dictDatatypes);
+
+    }
+
+    @Test
+    public void test004_save() {
+
+        customerService.save(new Customer());
+
+
 
     }
 }
