@@ -30,9 +30,8 @@ public final class ManagerController {
 
     @RequestMapping("/findById/{id}")
     public JsonResult<DictDatatype> findById(@PathVariable("id") Integer id, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        return   JsonResult.success(dictDatatypeService.findById(id))    ;
+        return JsonResult.success(dictDatatypeService.findById(id));
     }
-
 
 
 }
