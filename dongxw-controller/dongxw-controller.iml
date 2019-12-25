@@ -36,6 +36,7 @@
     <orderEntry type="library" name="Maven: org.codehaus.janino:commons-compiler:3.0.15" level="project" />
     <orderEntry type="module" module-name="dongxw-service" />
     <orderEntry type="library" name="Maven: kunlong:plat:2.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:3.8.1" level="project" />
     <orderEntry type="library" name="Maven: com.alibaba:easyexcel:1.1.2-beat1" level="project" />
     <orderEntry type="library" name="Maven: cglib:cglib:3.1" level="project" />
     <orderEntry type="library" name="Maven: org.ow2.asm:asm:4.2" level="project" />

@@ -175,7 +175,7 @@ public class TestCustomer extends ITestImpl {
         Customer customer = result.getData();//JSONObject.parseObject(result.getData().toString(), Customer.class);
         System.out.println(customer);
         customer.setId(null);
-        customer.setCustNo("1xx");
+        customer.setCustNo(null);
 
         ret = httpclient.post(url_cust + "/save", customer.toString(), "application/json");
         httpclient.checkStatusCode(200);
@@ -207,7 +207,7 @@ public class TestCustomer extends ITestImpl {
 
     public static void main(String[] args) {
 
-        run(TestCustomer.class, 6);
+        run(TestCustomer.class, 5);
 
     }
 

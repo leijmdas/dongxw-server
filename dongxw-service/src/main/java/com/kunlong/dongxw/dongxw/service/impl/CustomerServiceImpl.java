@@ -1,6 +1,8 @@
 package com.kunlong.dongxw.dongxw.service.impl;
 
 import java.util.List;
+
+import com.kunlong.dongxw.util.SimpleSequenceGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.kunlong.dongxw.dongxw.domain.Customer;
@@ -24,6 +26,10 @@ public class CustomerServiceImpl implements CustomerService {
 	 * @param entity
 	 */
 	public void save(Customer entity){
+		if(entity.getCustNo()==null){
+			entity.setCustNo(SimpleSequenceGenerator.generateCode("C",5));
+		}
+
 		this.checkEntity(entity);
 		repo.insert(entity);
 	}

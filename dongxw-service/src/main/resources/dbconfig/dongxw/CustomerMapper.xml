@@ -8,7 +8,7 @@
 	  	<result column="cust_sname" property="custSname" jdbcType="VARCHAR" />
 	  	<result column="country" property="country" jdbcType="VARCHAR" />
 	  	<result column="addr" property="addr" jdbcType="VARCHAR" />
-	  	<result column="money_type" property="moneyType" jdbcType="VARCHAR" />
+	  	<result column="money_type" property="moneyType" jdbcType="INTEGER" />
 	  	<result column="contact" property="contact" jdbcType="VARCHAR" />
 	  	<result column="tel" property="tel" jdbcType="VARCHAR" />
 	  	<result column="email" property="email" jdbcType="VARCHAR" />
@@ -22,7 +22,7 @@
 	  	<result column="c_cust_sname" property="custSname" jdbcType="VARCHAR" />
 	  	<result column="c_country" property="country" jdbcType="VARCHAR" />
 	  	<result column="c_addr" property="addr" jdbcType="VARCHAR" />
-	  	<result column="c_money_type" property="moneyType" jdbcType="VARCHAR" />
+	  	<result column="c_money_type" property="moneyType" jdbcType="INTEGER" />
 	  	<result column="c_contact" property="contact" jdbcType="VARCHAR" />
 	  	<result column="c_tel" property="tel" jdbcType="VARCHAR" />
 	  	<result column="c_email" property="email" jdbcType="VARCHAR" />

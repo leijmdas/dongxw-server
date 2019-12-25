@@ -188,7 +188,7 @@ public class Customer extends KunlongModel implements Serializable {
     	/** 客户地址 */
         public FieldNode<Customer, String> addr =  createFieldNode("addr","addr",String.class,JdbcType.VARCHAR);
     	/** 结算币种 */
-        public FieldNode<Customer, String> moneyType =  createFieldNode("moneyType","money_type",String.class,JdbcType.VARCHAR);
+        public FieldNode<Customer, Integer> moneyType =  createFieldNode("moneyType","money_type",Integer.class,JdbcType.INTEGER);
     	/** 联系人 */
         public FieldNode<Customer, String> contact =  createFieldNode("contact","contact",String.class,JdbcType.VARCHAR);
     	/** 联系人电话 */
