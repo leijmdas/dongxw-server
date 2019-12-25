@@ -49,10 +49,10 @@
 		    	and c.id=#{p.id}
 		    </if>
 			<if test="p.custNo!=null and p.custNo!=''">
-		    	and c.cust_no like #{p.custNo}
+		    	and c.cust_no like "%"#{p.custNo}"%"
 		    </if>
 			<if test="p.custName!=null and p.custName!=''">
-		    	and c.cust_name like #{p.custName}
+		    	and c.cust_name like "%"#{p.custName}"%"
 		    </if>
 			<if test="p.custSname!=null and p.custSname!=''">
 		    	and c.cust_sname like #{p.custSname}
