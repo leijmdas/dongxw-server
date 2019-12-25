@@ -67,7 +67,7 @@ public class Customer extends KunlongModel implements Serializable {
 	  */
 	@Column(comment = "结算币种")	
 	@NotNull
-	private String moneyType;
+	private Integer moneyType;
 	/**
 	  * 联系人
 	  * nullable:true,length:32
@@ -136,10 +136,10 @@ public class Customer extends KunlongModel implements Serializable {
     public void setAddr(String addr){
     	this.addr = addr;
     }
-    public String getMoneyType(){
+    public Integer getMoneyType(){
     	return this.moneyType;
     }
-    public void setMoneyType(String moneyType){
+    public void setMoneyType(Integer moneyType){
     	this.moneyType = moneyType;
     }
     public String getContact(){
