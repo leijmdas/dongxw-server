@@ -86,7 +86,7 @@ public final class DongxwController     {
 
     List<String> buildTitles(){
         List<String> strings=new ArrayList<>();
-        strings.add("客户主键");
+        //strings.add("客户主键");
         strings.add("客户编号");
         strings.add("客户名称");
         strings.add("客户详细名称");
@@ -99,22 +99,24 @@ public final class DongxwController     {
 
         return strings;
     }
+
     //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     //r.add(sdf.format(payOrder.getPayTime()));
     String transDatetime(Date d) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        return  sdf.format(d );
-    }
-    String transDate(Date d) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        return  sdf.format(d  );
+        return sdf.format(d);
     }
 
-    List<List<Object>> buildRecords(List<Customer> customers ) {
+    String transDate(Date d) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        return sdf.format(d);
+    }
+
+    List<List<Object>> buildRecords(List<Customer> customers) {
         List<List<Object>> records = new ArrayList<>();
         for (Customer customer : customers) {
             List<Object> r = new ArrayList<>();
-            r.add(customer.getId());
+            //r.add(customer.getId());
             r.add(customer.getCustNo());
             r.add(customer.getCustName());
             r.add(customer.getCustSname());
