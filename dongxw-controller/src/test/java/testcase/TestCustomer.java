@@ -29,6 +29,7 @@ public class TestCustomer extends ITestImpl {
 
     String url_sysuser = "http://127.0.0.1:10080/rest/sysuser";
     String url_cust = "http://127.0.0.1:10081/dongxw/customer";
+    String url_export = "http://127.0.0.1:10081/dongxw/export";
     String url_manager = "http://127.0.0.1:10081/dongxw/manager";
     String url_dongxw  = "http://127.0.0.1:8098/api/dongxw/customer";
     //http://localhost:8098/api/dongxw/customer/findById/1
@@ -145,6 +146,7 @@ public class TestCustomer extends ITestImpl {
 
         System.out.println(result.getData());
     }
+
     public <T> JsonResult<T> parseJsonResult(String text, Class<T> clazz) {
         JsonResult<T> result = JSON.parseObject(text, new
 
@@ -188,9 +190,24 @@ public class TestCustomer extends ITestImpl {
 
     }
 
+    @JTest
+    @JTestClass.title("获取列表")
+    @JTestClass.pre("")
+    @JTestClass.step("test_0006_custExport")
+    @JTestClass.exp("ok")
+    public void test_0006_custExport() {
+
+
+        String ret = httpclient.post(url_cust + "/export", "{}", "application/json");
+        httpclient.checkStatusCode(200);
+        System.out.println(ret);
+
+
+    }
+
     public static void main(String[] args) {
 
-        run(TestCustomer.class, 5);
+        run(TestCustomer.class, 6);
 
     }
 
