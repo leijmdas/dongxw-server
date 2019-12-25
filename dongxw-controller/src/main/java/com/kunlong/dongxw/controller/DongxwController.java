@@ -4,6 +4,7 @@ package com.kunlong.dongxw.controller;
 import app.support.query.PageResult;
 import com.kunlong.dongxw.annotation.DateRewritable;
 import com.kunlong.dongxw.consts.ApiConstants;
+import com.kunlong.dongxw.consts.MoneyTypeConsts;
 import com.kunlong.dongxw.util.WebFileUtil;
 import com.kunlong.platform.utils.JsonResult;
 import com.kunlong.dongxw.dongxw.domain.Customer;
@@ -19,6 +20,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -77,7 +79,7 @@ public final class DongxwController     {
         WebFileUtil web = new WebFileUtil(req,rsp);
         List<Customer> customers = this.customerService.findByQueryParam(queryParam);;
         //web.export2EasyExcel2File("客户名单.xlsx", buildTitles(),buildRecords(customers));
-        web.export2EasyExcel("客户名单.xlsx", buildTitles(),buildRecords(customers));
+        web.export2EasyExcelObject("客户名单.xlsx", buildTitles(),buildRecords(customers));
         //rsp.getOutputStream().write("123".getBytes());
         //rsp.getOutputStream().flush();
     }
@@ -93,26 +95,36 @@ public final class DongxwController     {
         strings.add("结算币种");
         strings.add("联系人");
         strings.add("联系人电话");
+        strings.add("建档日期");
 
         return strings;
     }
+    //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    //r.add(sdf.format(payOrder.getPayTime()));
+    String transDatetime(Date d) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return  sdf.format(d );
+    }
+    String transDate(Date d) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        return  sdf.format(d  );
+    }
 
-    List<List<String>> buildRecords(List<Customer> customers ) {
-        List<List<String>> records = new ArrayList<>();
+    List<List<Object>> buildRecords(List<Customer> customers ) {
+        List<List<Object>> records = new ArrayList<>();
         for (Customer customer : customers) {
-            List<String> r = new ArrayList<>();
-            r.add(customer.getId()+"");
+            List<Object> r = new ArrayList<>();
+            r.add(customer.getId());
             r.add(customer.getCustNo());
             r.add(customer.getCustName());
             r.add(customer.getCustSname());
             r.add(customer.getCountry());
             r.add(customer.getAddr());
-            r.add(customer.getMoneyType()+"");
+            r.add(MoneyTypeConsts.getMoneyTyoe(customer.getMoneyType()));
             r.add(customer.getContact());
 
             r.add(customer.getTel());
-            //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            //r.add(sdf.format(payOrder.getPayTime()));
+            r.add(transDate(customer.getCreateDate()));
 
             records.add(r);
         }

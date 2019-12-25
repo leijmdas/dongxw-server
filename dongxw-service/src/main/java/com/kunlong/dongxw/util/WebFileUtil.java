@@ -98,7 +98,29 @@ public class WebFileUtil {
 
   }
 
+	public void export2EasyExcelObject(String fileName, List<String> titleNames, List<List<Object>> records) throws IOException {
+		setExcelHeader(fileName);
+		OutputStream out = response.getOutputStream();
 
+		ExcelWriter writer = new ExcelWriter(out, ExcelTypeEnum.XLSX);
+
+		// 设置SHEET
+		Sheet sheet = new Sheet(1, 0);
+		sheet.setSheetName("明细单");
+
+		// 设置标题
+		Table table = new Table(1);
+		List<List<String>> titles = new ArrayList<List<String>>();
+		for(String name:titleNames){
+			titles.add(Arrays.asList(name));
+
+		}
+		table.setHead(titles);
+
+		writer.write1(records, sheet, table);
+		writer.finish();
+
+	}
   //easyExcel
   public void export2EasyExcel(String fileName, List<String> titleNames, List<List<String>> records) throws IOException {
     setExcelHeader(fileName);
