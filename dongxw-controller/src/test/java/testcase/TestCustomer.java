@@ -163,7 +163,7 @@ public class TestCustomer extends ITestImpl {
     @JTestClass.exp("ok")
     public void test_0005_custSave() {
 
-        String ret = httpclient.post(url_cust + "/findById/1", "{}", "application/json");
+        String ret = httpclient.post(url_cust + "/findById/12", "{}", "application/json");
         httpclient.checkStatusCode(200);
 
         JsonResult<Customer> result  = JSON.parseObject(ret, new
