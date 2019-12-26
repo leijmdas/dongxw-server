@@ -13,4 +13,4 @@ FROM anapsix/alpine-java
 
  
 
- ENTRYPOINT ["java", "-Duser.timezone=GMT+08","-jar", "/root/kl-pf-ctrl.jar"]
+ ENTRYPOINT ["java", "-server", "-Duser.timezone=GMT+08","-jar", "/root/kl-pf-ctrl.jar"]

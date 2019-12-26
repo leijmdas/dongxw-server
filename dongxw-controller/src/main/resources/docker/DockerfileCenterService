@@ -5,7 +5,7 @@ FROM anapsix/alpine-java
 
  ADD ./kl-center-service.jar /root/kl-center-service.jar
 
- EXPOSE 10081
+ EXPOSE 12340
 
  ENV JAVA_OPTS "-server -Xms64M -Xmx512M -Xss1M -XX:MinHeapFreeRatio=30 -XX:MaxHeapFreeRatio=50 -XX:MaxMetaspaceSize=64M -XX:MinMetaspaceFreeRatio=20 -XX:MaxMetaspaceFreeRatio=30 -Duser.timezone=GMT+08"
 
@@ -13,4 +13,4 @@ FROM anapsix/alpine-java
 
  
 
- ENTRYPOINT ["java", "-Duser.timezone=GMT+08","-jar", "/root/kl-center-service.jar"]
+ ENTRYPOINT ["java", "-server", "-Duser.timezone=GMT+08","-jar", "/root/kl-center-service.jar"]

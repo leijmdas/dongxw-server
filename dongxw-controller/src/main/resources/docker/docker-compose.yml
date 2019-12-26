@@ -20,7 +20,7 @@ services:
         volumes:
             - /etc/localtime:/etc/localtime:ro
             #- /etc/hosts:/etc/hosts:ro
-            #- /opt/logs/:/opt/logs/
+            - /platform/logs/pf:/platform/logs/pf
             #- /opt/shareISSUE.pfx:/opt/shareISSUE.pfx:ro
         extra_hosts:
             - "mysql.kunlong.com:172.17.0.1"
@@ -47,7 +47,7 @@ services:
         volumes:
             - /etc/localtime:/etc/localtime:ro
             #- /etc/hosts:/etc/hosts:ro
-            #- /opt/logs/:/opt/logs/
+            - /opt/logs/center:/opt/logs/center
             #- /opt/shareISSUE.pfx:/opt/shareISSUE.pfx:ro
         extra_hosts:
             - "mysql.kunlong.com:172.17.0.1"
@@ -74,7 +74,7 @@ services:
         volumes:
             - /etc/localtime:/etc/localtime:ro
             #- /etc/hosts:/etc/hosts:ro
-            #- /opt/logs/:/opt/logs/
+            - /dongxw-server/logs:/dongxw-server/logs
             #- /opt/shareISSUE.pfx:/opt/shareISSUE.pfx:ro
         extra_hosts:
             - "mysql.kunlong.com:172.17.0.1"
