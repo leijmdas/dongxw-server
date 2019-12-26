@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kunlong.dongxw.dongxw.dao.ProductTypeMapper" >
+	<resultMap id="BaseResultMap" type="com.kunlong.dongxw.dongxw.domain.ProductType" >
+	    <id column="id" property="id" jdbcType="INTEGER" />	
+	  	<result column="active" property="active" jdbcType="TINYINT" />
+	  	<result column="code" property="code" jdbcType="VARCHAR" />
+	  	<result column="name" property="name" jdbcType="VARCHAR" />
+    </resultMap>
+    <resultMap id="BaseResultMap_ProductType" type="com.kunlong.dongxw.dongxw.domain.ProductType" >
+	    <id column="pt_id" property="id" jdbcType="INTEGER" />	
+	  	<result column="pt_active" property="active" jdbcType="TINYINT" />
+	  	<result column="pt_code" property="code" jdbcType="VARCHAR" />
+	  	<result column="pt_name" property="name" jdbcType="VARCHAR" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+  		id,active,code,name
+	</sql>
+  	<sql id="Base_Column_List_ProductType" >
+  		pt.id pt_id,pt.active pt_active,pt.code pt_code,pt.name pt_name
+	</sql>
+	
+	<!-- 系统自定义 -->
+	<!-- 实体参数查询结果[START] -->
+	<resultMap id="ResultMap_FindByQueryParam" type="com.kunlong.dongxw.dongxw.domain.ProductType" extends="BaseResultMap_ProductType">
+		
+	</resultMap>
+
+	<sql id="Condition_FindByQueryParam">
+		<if test="queryParam.param!=null">
+			<bind name="p" value="queryParam.param"/>
+			<if test="p.id!=null ">
+		    	and pt.id=#{p.id}
+		    </if>
+			<if test="p.active!=null ">
+		    	and pt.active=#{p.active}
+		    </if>
+			<if test="p.code!=null and p.code!=''">
+		    	and pt.code like "%"#{p.code}"%"
+		    </if>
+			<if test="p.name!=null and p.name!=''">
+		    	and pt.name like "%"#{p.name}"%"
+		    </if>
+		</if>
+		<!--
+		<bind name="rp" value="queryParam.ruleParam" />
+		<include refid="org.mybatis.hbatis.orm.mapper.HbatisMapper.RuleParam"/>
+		-->
+	</sql>
+	<select id="findByQueryParam" resultMap="ResultMap_FindByQueryParam">
+		select
+		<include refid="Base_Column_List_ProductType"></include>
+		from product_type pt where 1=1
+		<include refid="Condition_FindByQueryParam"></include>
+		<if test="queryParam.sortOrders!=null and queryParam.sortOrders.size() gt 0">
+			order by 
+			<foreach collection="queryParam.sortOrders" item="item" separator=",">
+				${item.sortField.sqlColumn} ${item.sortType}
+			</foreach>
+		</if>
+		<if test="queryParam.limit gt 0">
+	  		limit ${queryParam.start},${queryParam.limit}
+	  	</if>
+	</select>
+	<select id="countByQueryParam" resultType="long">
+		select count(1) from product_type pt where 1=1
+		<include refid="Condition_FindByQueryParam"></include>
+	</select>
+	
+	<!-- 实体参数查询结果[END] -->
+	<!-- 用户自定义 -->
+	
+</mapper>
