@@ -3,42 +3,59 @@ package testcase;
 
 import app.support.query.PageResult;
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
-import com.alibaba.fastjson.parser.Feature;
-import com.alibaba.fastjson.parser.deserializer.ParseProcess;
 import com.jtest.NodesFactroy.Inject.Inject;
 import com.jtest.NodesFactroy.Node.HttpClientNode;
 import com.jtest.annotation.JTest;
 import com.jtest.annotation.JTestClass;
 import com.jtest.testframe.ITestImpl;
+import com.kunlong.dongxw.consts.ApiConstants;
 import com.kunlong.dongxw.manager.domain.DictDatatype;
-import com.kunlong.platform.model.KunlongModel;
+import com.kunlong.platform.support.service.AuthService;
 import com.kunlong.platform.utils.JsonResult;
 import com.kunlong.dongxw.dongxw.domain.Customer;
 import com.kunlong.platform.utils.KunlongUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-//import testcase.pub.ManagerLogin;
-
 import java.io.IOException;
 
-@JTestClass.author("leijm")
+@JTestClass.author("leijmdas")
 public class TestCustomer extends ITestImpl {
+
     private static final Logger logger = LoggerFactory.getLogger(TestCustomer.class);
 
-    String url_sysuser = "http://127.0.0.1:10080/rest/sysuser";
-    String url_cust = "http://127.0.0.1:10081/dongxw/customer";
-    String url_export = "http://127.0.0.1:10081/dongxw/export";
-    String url_manager = "http://127.0.0.1:10081/dongxw/manager";
+    String url_login ="http://127.0.0.1:10080/auth/login?username=admin&password=111111";
+    String url_auth = "http://127.0.0.1:10080/sys/user/authorization";
+
     String url_dongxw  = "http://127.0.0.1:8098/api/dongxw/customer";
-    //http://localhost:8098/api/dongxw/customer/findById/1
+    String url_cust = "http://127.0.0.1:10081/dongxw/customer";
+    String url_manager = "http://127.0.0.1:10081/dongxw/manager";
 
     @Inject(filename = "node.xml", value = "httpclient")
     HttpClientNode httpclient;
 
+    AuthService.AuthToken authToken;
 
-    //MsgRequest req = new MsgRequest();
+    public AuthService.AuthToken loginsys() {
+
+
+        String ret = httpclient.post(url_login, "{}", "application/json");
+
+        authToken = KunlongUtils.parseObject(ret, AuthService.AuthToken .class);
+        System.out.println(KunlongUtils.toJSONStringPretty(authToken));
+        httpclient.checkStatusCode(200);
+        httpclient.addHeader(ApiConstants.AUTH_TOKEN_KEY_WEB, authToken.getToken());
+        return authToken;
+
+    }
+
+    void auth() {
+
+        httpclient.addHeader(ApiConstants.AUTH_TOKEN_KEY_WEB, authToken.getToken());
+        String ret = httpclient.post(url_auth, "{}", "application/json");
+
+    }
+
     public void suiteSetUp() {
 
     }
@@ -48,10 +65,10 @@ public class TestCustomer extends ITestImpl {
 
     @Override
     public void setUp() {
-//		req = login.defaultReq();
-//		token = login.login(req);
-//		logger.info("aaa--req:{} ******",req.toJSONStringPretty());
-//		logger.info("bbb req:{} ******",req.toJSONStringPretty());
+        loginsys();
+        auth();
+
+
     }
 
     @Override
@@ -132,16 +149,13 @@ public class TestCustomer extends ITestImpl {
     @JTestClass.exp("ok")
     public void test_0004_custQry() {
 
-
+        //httpclient.addHeader(ApiConstants.AUTH_TOKEN_KEY_WEB, authToken.getToken());
         String ret = httpclient.post(url_cust + "/query", "{}", "application/json");
         httpclient.checkStatusCode(200);
         System.out.println(ret);
 
         PageResult<Customer> result  = JSON.parseObject(ret, new
-
-                TypeReference<PageResult<Customer>>() {
-
-                });
+                TypeReference<PageResult<Customer>>() {   });
         result = parsePageResult(ret,Customer.class);
 
         System.out.println(result.getData());
@@ -207,7 +221,7 @@ public class TestCustomer extends ITestImpl {
 
     public static void main(String[] args) {
 
-        run(TestCustomer.class, 5);
+        run(TestCustomer.class, 4);
 
     }
 

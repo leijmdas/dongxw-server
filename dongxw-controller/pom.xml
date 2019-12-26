@@ -15,20 +15,42 @@
     <version>2.0</version>
     <dependencies>
         <dependency>
-            <groupId>ma.glasnost.orika</groupId>
-            <artifactId>orika-core</artifactId>
-            <version>1.5.1</version><!-- or latest version -->
-
+            <groupId>app</groupId>
+            <artifactId>app-support</artifactId>
+            <version>1.1</version>
         </dependency>
+
+
         <dependency>
             <groupId>kunlong</groupId>
             <artifactId>dongxw-service</artifactId>
             <version>2.0</version>
         </dependency>
+
         <dependency>
-            <groupId>app</groupId>
-            <artifactId>app-support</artifactId>
-            <version>1.1</version>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-redis</artifactId>
+            <version>2.1.8.RELEASE</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>io.lettuce</groupId>
+                    <artifactId>lettuce-core</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>2.9.0</version>
+            <!--<version>3.1.0</version>-->
+        </dependency>
+
+        <dependency>
+            <groupId>ma.glasnost.orika</groupId>
+            <artifactId>orika-core</artifactId>
+            <version>1.5.1</version><!-- or latest version -->
+
         </dependency>
 
     </dependencies>
