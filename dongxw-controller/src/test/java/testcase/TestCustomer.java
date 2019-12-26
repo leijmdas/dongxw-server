@@ -66,8 +66,7 @@ public class TestCustomer extends ITestImpl {
     @Override
     public void setUp() {
         loginsys();
-        auth();
-
+        //auth();
 
     }
 

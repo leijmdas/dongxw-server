@@ -5,7 +5,6 @@ import app.support.context.DefaultRequestContextFactory;
 import app.support.context.RequestContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kunlong.dongxw.consts.ApiConstants;
-import com.kunlong.dongxw.util.SessionHolder;
 import com.kunlong.platform.consts.RequestContextConst;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,13 +47,13 @@ public class WapRequestHandler implements HandlerInterceptor {
 			writeError(401,"authorization_none","无认证标识",rsp);
 			return false;
 		}
-		SessionHolder session = SessionHolder.getInstance(token);
-		if(!session.exists() ) {
-			writeError(401,"authorization_fail","TOKEN不存在或已失效",rsp);
-			return false;
-		} else {
-			session.flush();
-		}
+//		SessionHolder session = SessionHolder.getInstance(token);
+//		if(!session.exists() ) {
+//			writeError(401,"authorization_fail","TOKEN不存在或已失效",rsp);
+//			return false;
+//		} else {
+//			session.flush();
+//		}
 		RequestContext ctx = DefaultRequestContextFactory.getInstance().getRequestContext();
 		if (ctx == null) {
 			ctx = DefaultRequestContextFactory.getInstance().create();

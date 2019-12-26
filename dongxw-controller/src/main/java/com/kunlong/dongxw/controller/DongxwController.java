@@ -2,6 +2,8 @@ package com.kunlong.dongxw.controller;
 
 
 import app.support.query.PageResult;
+import com.kunlong.api.service.AuthApiService;
+import com.kunlong.api.service.DictDataTypeApiService;
 import com.kunlong.dongxw.annotation.DateRewritable;
 import com.kunlong.dongxw.consts.ApiConstants;
 import com.kunlong.dongxw.consts.MoneyTypeConsts;
@@ -11,6 +13,7 @@ import com.kunlong.dongxw.dongxw.domain.Customer;
 import com.kunlong.dongxw.dongxw.service.CustomerService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
+import org.apache.dubbo.config.annotation.Reference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,6 +37,9 @@ import java.util.List;
 public final class DongxwController     {
     @Autowired
     CustomerService customerService;
+
+     @Reference(lazy = true, version = "${dubbo.service.version}")
+     AuthApiService authApiService;
 
     @RequestMapping("/findById/{id}")
     public JsonResult<Customer> findById(@PathVariable("id") Integer id,HttpServletResponse response) throws IOException {
@@ -62,6 +68,7 @@ public final class DongxwController     {
 
         pageResult.setTotal(customerService.countByQueryParam(queryParam));
         pageResult.setData(customerService.findByQueryParam(queryParam));
+        //System.err.println(authApiService.checkExists("1111"));
         return pageResult;
     }
 

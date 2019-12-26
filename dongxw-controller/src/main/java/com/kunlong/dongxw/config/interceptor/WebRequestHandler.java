@@ -5,7 +5,7 @@ import app.support.context.DefaultRequestContextFactory;
 import app.support.context.RequestContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kunlong.dongxw.consts.ApiConstants;
-import com.kunlong.dongxw.util.SessionHolder;
+import com.kunlong.dongxw.context.DongxwContext;
 import com.kunlong.platform.consts.RequestContextConst;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,12 +49,11 @@ public class WebRequestHandler implements HandlerInterceptor {
 			writeError(401,"authorization_none","无认证标识",rsp);
 			return false;
 		}
-		SessionHolder session = SessionHolder.getInstance(token);
-		if(!session.exists() ) {
+		//SessionHolder session = SessionHolder.getInstance(token);
+		Boolean exists=DongxwContext.getAppCtxt().getBean(DongxwContext.class).authApiService.checkExists(token);
+		if(! exists  ) {
 			writeError(401,"authorization_fail","TOKEN不存在或已失效",rsp);
 			return false;
-		} else {
-			session.flush();
 		}
 		RequestContext ctx = DefaultRequestContextFactory.getInstance().getRequestContext();
 		
