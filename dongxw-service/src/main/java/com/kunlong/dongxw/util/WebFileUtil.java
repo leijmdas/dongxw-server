@@ -106,7 +106,7 @@ public class WebFileUtil {
 
 		// 设置SHEET
 		Sheet sheet = new Sheet(1, 0);
-		sheet.setSheetName("明细单");
+		sheet.setSheetName(fileName);
 
 		// 设置标题
 		Table table = new Table(1);
