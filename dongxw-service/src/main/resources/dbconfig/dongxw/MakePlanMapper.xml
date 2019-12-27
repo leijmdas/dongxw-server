@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kunlong.dongxw.dongxw.dao.MakePlanMapper" >
+	<resultMap id="BaseResultMap" type="com.kunlong.dongxw.dongxw.domain.MakePlan" >
+	    <id column="id" property="id" jdbcType="INTEGER" />	
+	  	<result column="cust_id" property="custId" jdbcType="INTEGER" />
+	  	<result column="order_id" property="orderId" jdbcType="INTEGER" />
+	  	<result column="product_id" property="productId" jdbcType="INTEGER" />
+	  	<result column="qty" property="qty" jdbcType="INTEGER" />
+	  	<result column="color" property="color" jdbcType="VARCHAR" />
+	  	<result column="order_date" property="orderDate" jdbcType="DATE" />
+	  	<result column="issue_date" property="issueDate" jdbcType="DATE" />
+	  	<result column="pre_item_date" property="preItemDate" jdbcType="DATE" />
+	  	<result column="pre_package_date" property="prePackageDate" jdbcType="DATE" />
+	  	<result column="plan_online_date" property="planOnlineDate" jdbcType="DATE" />
+	  	<result column="plan_finish_date" property="planFinishDate" jdbcType="DATE" />
+	  	<result column="remark" property="remark" jdbcType="VARCHAR" />
+	  	<result column="status" property="status" jdbcType="INTEGER" />
+	  	<result column="create_by" property="createBy" jdbcType="INTEGER" />
+    </resultMap>
+    <resultMap id="BaseResultMap_MakePlan" type="com.kunlong.dongxw.dongxw.domain.MakePlan" >
+	    <id column="mp_id" property="id" jdbcType="INTEGER" />	
+	  	<result column="mp_cust_id" property="custId" jdbcType="INTEGER" />
+	  	<result column="mp_order_id" property="orderId" jdbcType="INTEGER" />
+	  	<result column="mp_product_id" property="productId" jdbcType="INTEGER" />
+	  	<result column="mp_qty" property="qty" jdbcType="INTEGER" />
+	  	<result column="mp_color" property="color" jdbcType="VARCHAR" />
+	  	<result column="mp_order_date" property="orderDate" jdbcType="DATE" />
+	  	<result column="mp_issue_date" property="issueDate" jdbcType="DATE" />
+	  	<result column="mp_pre_item_date" property="preItemDate" jdbcType="DATE" />
+	  	<result column="mp_pre_package_date" property="prePackageDate" jdbcType="DATE" />
+	  	<result column="mp_plan_online_date" property="planOnlineDate" jdbcType="DATE" />
+	  	<result column="mp_plan_finish_date" property="planFinishDate" jdbcType="DATE" />
+	  	<result column="mp_remark" property="remark" jdbcType="VARCHAR" />
+	  	<result column="mp_status" property="status" jdbcType="INTEGER" />
+	  	<result column="mp_create_by" property="createBy" jdbcType="INTEGER" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+  		id,cust_id,order_id,product_id,qty,color,order_date,issue_date,pre_item_date,pre_package_date,plan_online_date,plan_finish_date,remark,status,create_by
+	</sql>
+  	<sql id="Base_Column_List_MakePlan" >
+  		mp.id mp_id,mp.cust_id mp_cust_id,mp.order_id mp_order_id,mp.product_id mp_product_id,mp.qty mp_qty,mp.color mp_color,mp.order_date mp_order_date,mp.issue_date mp_issue_date,mp.pre_item_date mp_pre_item_date,mp.pre_package_date mp_pre_package_date,mp.plan_online_date mp_plan_online_date,mp.plan_finish_date mp_plan_finish_date,mp.remark mp_remark,mp.status mp_status,mp.create_by mp_create_by
+	</sql>
+	
+	<!-- 系统自定义 -->
+	<!-- 实体参数查询结果[START] -->
+	<resultMap id="ResultMap_FindByQueryParam" type="com.kunlong.dongxw.dongxw.domain.MakePlan" extends="BaseResultMap_MakePlan">
+		
+	</resultMap>
+
+	<sql id="Condition_FindByQueryParam">
+		<if test="queryParam.param!=null">
+			<bind name="p" value="queryParam.param"/>
+			<if test="p.id!=null ">
+		    	and mp.id=#{p.id}
+		    </if>
+			<if test="p.custId!=null ">
+		    	and mp.cust_id=#{p.custId}
+		    </if>
+			<if test="p.orderId!=null ">
+		    	and mp.order_id=#{p.orderId}
+		    </if>
+			<if test="p.productId!=null ">
+		    	and mp.product_id=#{p.productId}
+		    </if>
+			<if test="p.qty!=null ">
+		    	and mp.qty=#{p.qty}
+		    </if>
+			<if test="p.color!=null and p.color!=''">
+		    	and mp.color like #{p.color}
+		    </if>
+			<if test="p.orderDate!=null ">
+		    	and mp.order_date=#{p.orderDate}
+		    </if>
+			<if test="p.issueDate!=null ">
+		    	and mp.issue_date=#{p.issueDate}
+		    </if>
+			<if test="p.preItemDate!=null ">
+		    	and mp.pre_item_date=#{p.preItemDate}
+		    </if>
+			<if test="p.prePackageDate!=null ">
+		    	and mp.pre_package_date=#{p.prePackageDate}
+		    </if>
+			<if test="p.planOnlineDate!=null ">
+		    	and mp.plan_online_date=#{p.planOnlineDate}
+		    </if>
+			<if test="p.planFinishDate!=null ">
+		    	and mp.plan_finish_date=#{p.planFinishDate}
+		    </if>
+			<if test="p.remark!=null and p.remark!=''">
+		    	and mp.remark like #{p.remark}
+		    </if>
+			<if test="p.status!=null ">
+		    	and mp.status=#{p.status}
+		    </if>
+			<if test="p.createBy!=null ">
+		    	and mp.create_by=#{p.createBy}
+		    </if>
+		</if>
+		<!--
+		<bind name="rp" value="queryParam.ruleParam" />
+		<include refid="org.mybatis.hbatis.orm.mapper.HbatisMapper.RuleParam"/>
+		-->
+	</sql>
+	<select id="findByQueryParam" resultMap="ResultMap_FindByQueryParam">
+		select
+		<include refid="Base_Column_List_MakePlan"></include>
+		from make_plan mp where 1=1
+		<include refid="Condition_FindByQueryParam"></include>
+		<if test="queryParam.sortOrders!=null and queryParam.sortOrders.size() gt 0">
+			order by 
+			<foreach collection="queryParam.sortOrders" item="item" separator=",">
+				${item.sortField.sqlColumn} ${item.sortType}
+			</foreach>
+		</if>
+		<if test="queryParam.limit gt 0">
+	  		limit ${queryParam.start},${queryParam.limit}
+	  	</if>
+	</select>
+	<select id="countByQueryParam" resultType="long">
+		select count(1) from make_plan mp where 1=1
+		<include refid="Condition_FindByQueryParam"></include>
+	</select>
+	
+	<!-- 实体参数查询结果[END] -->
+	<!-- 用户自定义 -->
+	
+</mapper>

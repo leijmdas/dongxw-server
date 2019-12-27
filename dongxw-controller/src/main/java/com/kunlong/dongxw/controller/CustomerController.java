@@ -3,7 +3,6 @@ package com.kunlong.dongxw.controller;
 
 import app.support.query.PageResult;
 import com.kunlong.api.service.AuthApiService;
-import com.kunlong.api.service.DictDataTypeApiService;
 import com.kunlong.dongxw.annotation.DateRewritable;
 import com.kunlong.dongxw.consts.ApiConstants;
 import com.kunlong.dongxw.consts.MoneyTypeConsts;
@@ -34,7 +33,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/dongxw/customer")
-public final class DongxwController     {
+public final class CustomerController {
     @Autowired
     CustomerService customerService;
 

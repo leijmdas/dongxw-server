@@ -50,9 +50,9 @@ public class WebRequestHandler implements HandlerInterceptor {
 			return false;
 		}
 		//SessionHolder session = SessionHolder.getInstance(token);
-		Boolean exists=DongxwContext.getAppCtxt().getBean(DongxwContext.class).authApiService.checkExists(token);
-		if(! exists  ) {
-			writeError(401,"authorization_fail","TOKEN不存在或已失效",rsp);
+		Boolean exists = DongxwContext.getAppCtxt().getBean(DongxwContext.class).authApiService.checkExists(token);
+		if (!exists) {
+			writeError(401, "authorization_fail", "TOKEN不存在或已失效", rsp);
 			return false;
 		}
 		RequestContext ctx = DefaultRequestContextFactory.getInstance().getRequestContext();

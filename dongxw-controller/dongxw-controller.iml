@@ -26,6 +26,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Maven: kunlong:DubboApi:2.0" level="project" />
     <orderEntry type="library" name="Maven: app:app-support:1.1" level="project" />
     <orderEntry type="library" name="Maven: kunlong:DubboApi:2.0" level="project" />
     <orderEntry type="module" module-name="dongxw-service" />
