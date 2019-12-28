@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kunlong.dongxw.dongxw.dao.OrderMasterMapper" >
+	<resultMap id="BaseResultMap" type="com.kunlong.dongxw.dongxw.domain.OrderMaster" >
+	    <id column="id" property="id" jdbcType="INTEGER" />	
+	  	<result column="customer_id" property="customerId" jdbcType="INTEGER" />
+	  	<result column="business_by" property="businessBy" jdbcType="VARCHAR" />
+	  	<result column="status" property="status" jdbcType="INTEGER" />
+	  	<result column="customer_order_code" property="customerOrderCode" jdbcType="VARCHAR" />
+	  	<result column="ep_order_code" property="epOrderCode" jdbcType="VARCHAR" />
+	  	<result column="order_date" property="orderDate" jdbcType="DATE" />
+	  	<result column="customer_issue_date" property="customerIssueDate" jdbcType="DATE" />
+	  	<result column="check_date" property="checkDate" jdbcType="DATE" />
+	  	<result column="factroy_issuse_date" property="factroyIssuseDate" jdbcType="DATE" />
+	  	<result column="material_remark" property="materialRemark" jdbcType="VARCHAR" />
+	  	<result column="supply_id" property="supplyId" jdbcType="INTEGER" />
+	  	<result column="remark" property="remark" jdbcType="VARCHAR" />
+	  	<result column="customer_order_img" property="customerOrderImg" jdbcType="VARCHAR" />
+	  	<result column="invoice_no" property="invoiceNo" jdbcType="VARCHAR" />
+    </resultMap>
+    <resultMap id="BaseResultMap_OrderMaster" type="com.kunlong.dongxw.dongxw.domain.OrderMaster" >
+	    <id column="om_id" property="id" jdbcType="INTEGER" />	
+	  	<result column="om_customer_id" property="customerId" jdbcType="INTEGER" />
+	  	<result column="om_business_by" property="businessBy" jdbcType="VARCHAR" />
+	  	<result column="om_status" property="status" jdbcType="INTEGER" />
+	  	<result column="om_customer_order_code" property="customerOrderCode" jdbcType="VARCHAR" />
+	  	<result column="om_ep_order_code" property="epOrderCode" jdbcType="VARCHAR" />
+	  	<result column="om_order_date" property="orderDate" jdbcType="DATE" />
+	  	<result column="om_customer_issue_date" property="customerIssueDate" jdbcType="DATE" />
+	  	<result column="om_check_date" property="checkDate" jdbcType="DATE" />
+	  	<result column="om_factroy_issuse_date" property="factroyIssuseDate" jdbcType="DATE" />
+	  	<result column="om_material_remark" property="materialRemark" jdbcType="VARCHAR" />
+	  	<result column="om_supply_id" property="supplyId" jdbcType="INTEGER" />
+	  	<result column="om_remark" property="remark" jdbcType="VARCHAR" />
+	  	<result column="om_customer_order_img" property="customerOrderImg" jdbcType="VARCHAR" />
+	  	<result column="om_invoice_no" property="invoiceNo" jdbcType="VARCHAR" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+  		id,customer_id,business_by,status,customer_order_code,ep_order_code,order_date,customer_issue_date,check_date,factroy_issuse_date,material_remark,supply_id,remark,customer_order_img,invoice_no
+	</sql>
+  	<sql id="Base_Column_List_OrderMaster" >
+  		om.id om_id,om.customer_id om_customer_id,om.business_by om_business_by,om.status om_status,om.customer_order_code om_customer_order_code,om.ep_order_code om_ep_order_code,om.order_date om_order_date,om.customer_issue_date om_customer_issue_date,om.check_date om_check_date,om.factroy_issuse_date om_factroy_issuse_date,om.material_remark om_material_remark,om.supply_id om_supply_id,om.remark om_remark,om.customer_order_img om_customer_order_img,om.invoice_no om_invoice_no
+	</sql>
+	
+	<!-- 系统自定义 -->
+	<!-- 实体参数查询结果[START] -->
+	<resultMap id="ResultMap_FindByQueryParam" type="com.kunlong.dongxw.dongxw.domain.OrderMaster" extends="BaseResultMap_OrderMaster">
+		
+	</resultMap>
+
+	<sql id="Condition_FindByQueryParam">
+		<if test="queryParam.param!=null">
+			<bind name="p" value="queryParam.param"/>
+			<if test="p.id!=null ">
+		    	and om.id=#{p.id}
+		    </if>
+			<if test="p.customerId!=null ">
+		    	and om.customer_id=#{p.customerId}
+		    </if>
+			<if test="p.businessBy!=null and p.businessBy!=''">
+		    	and om.business_by like "%"#{p.businessBy}"%"
+		    </if>
+			<if test="p.status!=null ">
+		    	and om.status=#{p.status}
+		    </if>
+			<if test="p.customerOrderCode!=null and p.customerOrderCode!=''">
+		    	and om.customer_order_code like "%"#{p.customerOrderCode}"%"
+		    </if>
+			<if test="p.epOrderCode!=null and p.epOrderCode!=''">
+		    	and om.ep_order_code like "%"#{p.epOrderCode}"%"
+		    </if>
+			<if test="p.orderDate!=null ">
+		    	and om.order_date=#{p.orderDate}
+		    </if>
+			<if test="p.customerIssueDate!=null ">
+		    	and om.customer_issue_date=#{p.customerIssueDate}
+		    </if>
+			<if test="p.checkDate!=null ">
+		    	and om.check_date=#{p.checkDate}
+		    </if>
+			<if test="p.factroyIssuseDate!=null ">
+		    	and om.factroy_issuse_date=#{p.factroyIssuseDate}
+		    </if>
+			<if test="p.materialRemark!=null and p.materialRemark!=''">
+		    	and om.material_remark like #{p.materialRemark}
+		    </if>
+			<if test="p.supplyId!=null ">
+		    	and om.supply_id=#{p.supplyId}
+		    </if>
+			<if test="p.remark!=null and p.remark!=''">
+		    	and om.remark like #{p.remark}
+		    </if>
+			<if test="p.customerOrderImg!=null and p.customerOrderImg!=''">
+		    	and om.customer_order_img like #{p.customerOrderImg}
+		    </if>
+			<if test="p.invoiceNo!=null and p.invoiceNo!=''">
+		    	and om.invoice_no like #{p.invoiceNo}
+		    </if>
+		</if>
+		<!--
+		<bind name="rp" value="queryParam.ruleParam" />
+		<include refid="org.mybatis.hbatis.orm.mapper.HbatisMapper.RuleParam"/>
+		-->
+	</sql>
+	<select id="findByQueryParam" resultMap="ResultMap_FindByQueryParam">
+		select
+		<include refid="Base_Column_List_OrderMaster"></include>
+		from order_master om where 1=1
+		<include refid="Condition_FindByQueryParam"></include>
+		<if test="queryParam.sortOrders!=null and queryParam.sortOrders.size() gt 0">
+			order by 
+			<foreach collection="queryParam.sortOrders" item="item" separator=",">
+				${item.sortField.sqlColumn} ${item.sortType}
+			</foreach>
+		</if>
+		<if test="queryParam.limit gt 0">
+	  		limit ${queryParam.start},${queryParam.limit}
+	  	</if>
+	</select>
+	<select id="countByQueryParam" resultType="long">
+		select count(1) from order_master om where 1=1
+		<include refid="Condition_FindByQueryParam"></include>
+	</select>
+	
+	<!-- 实体参数查询结果[END] -->
+	<!-- 用户自定义 -->
+	
+</mapper>
