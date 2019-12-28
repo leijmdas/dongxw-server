@@ -31,8 +31,8 @@ import java.util.List;
  * Date: Created in 2018/8/23 16:50
  */
 @RestController
-@RequestMapping("/dongxw/ordermaster")
-public final class OrderMasterController {
+@RequestMapping("/dongxw/product")
+public final class ProductController {
     @Autowired
     OrderMasterService orderMasterService;
 

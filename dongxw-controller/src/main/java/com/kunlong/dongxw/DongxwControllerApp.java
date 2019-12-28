@@ -26,7 +26,7 @@ public class DongxwControllerApp {
     public static void main(String[] args) {
 
         Class[] classes = new Class[]{
-                CorsConfig.class, DongxwControllerApp.class
+                DongxwControllerApp.class
         };
         SpringApplication.run(classes, args);
 

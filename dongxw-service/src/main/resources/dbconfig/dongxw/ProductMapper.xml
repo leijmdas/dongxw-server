@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kunlong.dongxw.dongxw.dao.ProductMapper" >
+	<resultMap id="BaseResultMap" type="com.kunlong.dongxw.dongxw.domain.Product" >
+	    <id column="id" property="id" jdbcType="INTEGER" />	
+	  	<result column="EP_CODE" property="ep_code" jdbcType="VARCHAR" />
+	  	<result column="code" property="code" jdbcType="VARCHAR" />
+	  	<result column="remark" property="remark" jdbcType="VARCHAR" />
+	  	<result column="product_type_id" property="productTypeId" jdbcType="INTEGER" />
+	  	<result column="color" property="color" jdbcType="VARCHAR" />
+	  	<result column="size" property="size" jdbcType="VARCHAR" />
+	  	<result column="status" property="status" jdbcType="INTEGER" />
+	  	<result column="memo" property="memo" jdbcType="VARCHAR" />
+    </resultMap>
+    <resultMap id="BaseResultMap_Product" type="com.kunlong.dongxw.dongxw.domain.Product" >
+	    <id column="p_id" property="id" jdbcType="INTEGER" />	
+	  	<result column="p_EP_CODE" property="ep_code" jdbcType="VARCHAR" />
+	  	<result column="p_code" property="code" jdbcType="VARCHAR" />
+	  	<result column="p_remark" property="remark" jdbcType="VARCHAR" />
+	  	<result column="p_product_type_id" property="productTypeId" jdbcType="INTEGER" />
+	  	<result column="p_color" property="color" jdbcType="VARCHAR" />
+	  	<result column="p_size" property="size" jdbcType="VARCHAR" />
+	  	<result column="p_status" property="status" jdbcType="INTEGER" />
+	  	<result column="p_memo" property="memo" jdbcType="VARCHAR" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+  		id,EP_CODE,code,remark,product_type_id,color,size,status,memo
+	</sql>
+  	<sql id="Base_Column_List_Product" >
+  		p.id p_id,p.EP_CODE p_EP_CODE,p.code p_code,p.remark p_remark,p.product_type_id p_product_type_id,p.color p_color,p.size p_size,p.status p_status,p.memo p_memo
+	</sql>
+	
+	<!-- 系统自定义 -->
+	<!-- 实体参数查询结果[START] -->
+	<resultMap id="ResultMap_FindByQueryParam" type="com.kunlong.dongxw.dongxw.domain.Product" extends="BaseResultMap_Product">
+		
+	</resultMap>
+
+	<sql id="Condition_FindByQueryParam">
+		<if test="queryParam.param!=null">
+			<bind name="p" value="queryParam.param"/>
+			<if test="p.id!=null ">
+		    	and p.id=#{p.id}
+		    </if>
+			<if test="p.ep_code!=null and p.ep_code!=''">
+		    	and p.EP_CODE like #{p.ep_code}
+		    </if>
+			<if test="p.code!=null and p.code!=''">
+		    	and p.code like #{p.code}
+		    </if>
+			<if test="p.remark!=null and p.remark!=''">
+		    	and p.remark like #{p.remark}
+		    </if>
+			<if test="p.productTypeId!=null ">
+		    	and p.product_type_id=#{p.productTypeId}
+		    </if>
+			<if test="p.color!=null and p.color!=''">
+		    	and p.color like #{p.color}
+		    </if>
+			<if test="p.size!=null and p.size!=''">
+		    	and p.size like #{p.size}
+		    </if>
+			<if test="p.status!=null ">
+		    	and p.status=#{p.status}
+		    </if>
+			<if test="p.memo!=null and p.memo!=''">
+		    	and p.memo like #{p.memo}
+		    </if>
+		</if>
+		<!--
+		<bind name="rp" value="queryParam.ruleParam" />
+		<include refid="org.mybatis.hbatis.orm.mapper.HbatisMapper.RuleParam"/>
+		-->
+	</sql>
+	<select id="findByQueryParam" resultMap="ResultMap_FindByQueryParam">
+		select
+		<include refid="Base_Column_List_Product"></include>
+		from product p where 1=1
+		<include refid="Condition_FindByQueryParam"></include>
+		<if test="queryParam.sortOrders!=null and queryParam.sortOrders.size() gt 0">
+			order by 
+			<foreach collection="queryParam.sortOrders" item="item" separator=",">
+				${item.sortField.sqlColumn} ${item.sortType}
+			</foreach>
+		</if>
+		<if test="queryParam.limit gt 0">
+	  		limit ${queryParam.start},${queryParam.limit}
+	  	</if>
+	</select>
+	<select id="countByQueryParam" resultType="long">
+		select count(1) from product p where 1=1
+		<include refid="Condition_FindByQueryParam"></include>
+	</select>
+	
+	<!-- 实体参数查询结果[END] -->
+	<!-- 用户自定义 -->
+	
+</mapper>
