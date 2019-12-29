@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kunlong.dongxw.dongxw.dao.OrderLineMapper" >
+	<resultMap id="BaseResultMap" type="com.kunlong.dongxw.dongxw.domain.OrderLine" >
+	    <id column="id" property="id" jdbcType="INTEGER" />	
+	  	<result column="A" property="a" jdbcType="VARCHAR" />
+    </resultMap>
+    <resultMap id="BaseResultMap_OrderLine" type="com.kunlong.dongxw.dongxw.domain.OrderLine" >
+	    <id column="ol_id" property="id" jdbcType="INTEGER" />	
+	  	<result column="ol_A" property="a" jdbcType="VARCHAR" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+  		id,A
+	</sql>
+  	<sql id="Base_Column_List_OrderLine" >
+  		ol.id ol_id,ol.A ol_A
+	</sql>
+	
+	<!-- 系统自定义 -->
+	<!-- 实体参数查询结果[START] -->
+	<resultMap id="ResultMap_FindByQueryParam" type="com.kunlong.dongxw.dongxw.domain.OrderLine" extends="BaseResultMap_OrderLine">
+		
+	</resultMap>
+
+	<sql id="Condition_FindByQueryParam">
+		<if test="queryParam.param!=null">
+			<bind name="p" value="queryParam.param"/>
+			<if test="p.id!=null ">
+		    	and ol.id=#{p.id}
+		    </if>
+			<if test="p.a!=null and p.a!=''">
+		    	and ol.A like #{p.a}
+		    </if>
+		</if>
+		<!--
+		<bind name="rp" value="queryParam.ruleParam" />
+		<include refid="org.mybatis.hbatis.orm.mapper.HbatisMapper.RuleParam"/>
+		-->
+	</sql>
+	<select id="findByQueryParam" resultMap="ResultMap_FindByQueryParam">
+		select
+		<include refid="Base_Column_List_OrderLine"></include>
+		from order_line ol where 1=1
+		<include refid="Condition_FindByQueryParam"></include>
+		<if test="queryParam.sortOrders!=null and queryParam.sortOrders.size() gt 0">
+			order by 
+			<foreach collection="queryParam.sortOrders" item="item" separator=",">
+				${item.sortField.sqlColumn} ${item.sortType}
+			</foreach>
+		</if>
+		<if test="queryParam.limit gt 0">
+	  		limit ${queryParam.start},${queryParam.limit}
+	  	</if>
+	</select>
+	<select id="countByQueryParam" resultType="long">
+		select count(1) from order_line ol where 1=1
+		<include refid="Condition_FindByQueryParam"></include>
+	</select>
+	
+	<!-- 实体参数查询结果[END] -->
+	<!-- 用户自定义 -->
+	
+</mapper>
