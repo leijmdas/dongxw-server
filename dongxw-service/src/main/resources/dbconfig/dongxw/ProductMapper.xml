@@ -3,10 +3,13 @@
 <mapper namespace="com.kunlong.dongxw.dongxw.dao.ProductMapper" >
 	<resultMap id="BaseResultMap" type="com.kunlong.dongxw.dongxw.domain.Product" >
 	    <id column="id" property="id" jdbcType="INTEGER" />	
-	  	<result column="EP_CODE" property="ep_code" jdbcType="VARCHAR" />
+	  	<result column="ep_code" property="epCode" jdbcType="VARCHAR" />
 	  	<result column="code" property="code" jdbcType="VARCHAR" />
 	  	<result column="remark" property="remark" jdbcType="VARCHAR" />
 	  	<result column="product_type_id" property="productTypeId" jdbcType="INTEGER" />
+	  	<result column="pic_url" property="picUrl" jdbcType="VARCHAR" />
+	  	<result column="bar_code" property="barCode" jdbcType="VARCHAR" />
+	  	<result column="upc_a" property="upcA" jdbcType="VARCHAR" />
 	  	<result column="color" property="color" jdbcType="VARCHAR" />
 	  	<result column="size" property="size" jdbcType="VARCHAR" />
 	  	<result column="status" property="status" jdbcType="INTEGER" />
@@ -14,20 +17,23 @@
     </resultMap>
     <resultMap id="BaseResultMap_Product" type="com.kunlong.dongxw.dongxw.domain.Product" >
 	    <id column="p_id" property="id" jdbcType="INTEGER" />	
-	  	<result column="p_EP_CODE" property="ep_code" jdbcType="VARCHAR" />
+	  	<result column="p_ep_code" property="epCode" jdbcType="VARCHAR" />
 	  	<result column="p_code" property="code" jdbcType="VARCHAR" />
 	  	<result column="p_remark" property="remark" jdbcType="VARCHAR" />
 	  	<result column="p_product_type_id" property="productTypeId" jdbcType="INTEGER" />
+	  	<result column="p_pic_url" property="picUrl" jdbcType="VARCHAR" />
+	  	<result column="p_bar_code" property="barCode" jdbcType="VARCHAR" />
+	  	<result column="p_upc_a" property="upcA" jdbcType="VARCHAR" />
 	  	<result column="p_color" property="color" jdbcType="VARCHAR" />
 	  	<result column="p_size" property="size" jdbcType="VARCHAR" />
 	  	<result column="p_status" property="status" jdbcType="INTEGER" />
 	  	<result column="p_memo" property="memo" jdbcType="VARCHAR" />
     </resultMap>
     <sql id="Base_Column_List" >
-  		id,EP_CODE,code,remark,product_type_id,color,size,status,memo
+  		id,ep_code,code,remark,product_type_id,pic_url,bar_code,upc_a,color,size,status,memo
 	</sql>
   	<sql id="Base_Column_List_Product" >
-  		p.id p_id,p.EP_CODE p_EP_CODE,p.code p_code,p.remark p_remark,p.product_type_id p_product_type_id,p.color p_color,p.size p_size,p.status p_status,p.memo p_memo
+  		p.id p_id,p.ep_code p_ep_code,p.code p_code,p.remark p_remark,p.product_type_id p_product_type_id,p.pic_url p_pic_url,p.bar_code p_bar_code,p.upc_a p_upc_a,p.color p_color,p.size p_size,p.status p_status,p.memo p_memo
 	</sql>
 	
 	<!-- 系统自定义 -->
@@ -42,17 +48,26 @@
 			<if test="p.id!=null ">
 		    	and p.id=#{p.id}
 		    </if>
-			<if test="p.ep_code!=null and p.ep_code!=''">
-		    	and p.EP_CODE like #{p.ep_code}
+			<if test="p.epCode!=null and p.epCode!=''">
+		    	and p.ep_code like "%"#{p.epCode}"%"
 		    </if>
 			<if test="p.code!=null and p.code!=''">
-		    	and p.code like #{p.code}
+		    	and p.code like "%"#{p.code}"%"
 		    </if>
 			<if test="p.remark!=null and p.remark!=''">
-		    	and p.remark like #{p.remark}
+		    	and p.remark like "%"#{p.remark}"%"
 		    </if>
 			<if test="p.productTypeId!=null ">
 		    	and p.product_type_id=#{p.productTypeId}
+		    </if>
+			<if test="p.picUrl!=null and p.picUrl!=''">
+		    	and p.pic_url like #{p.picUrl}
+		    </if>
+			<if test="p.barCode!=null and p.barCode!=''">
+		    	and p.bar_code like "%"#{p.barCode}"%"
+		    </if>
+			<if test="p.upcA!=null and p.upcA!=''">
+		    	and p.upc_a like #{p.upcA}
 		    </if>
 			<if test="p.color!=null and p.color!=''">
 		    	and p.color like #{p.color}

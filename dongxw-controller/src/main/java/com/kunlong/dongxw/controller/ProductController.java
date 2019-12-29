@@ -4,10 +4,10 @@ package com.kunlong.dongxw.controller;
 import app.support.query.PageResult;
 import com.kunlong.dongxw.annotation.DateRewritable;
 import com.kunlong.dongxw.consts.ApiConstants;
-import com.kunlong.dongxw.consts.OrderConsts;
-import com.kunlong.dongxw.dongxw.domain.OrderMaster;
-import com.kunlong.dongxw.dongxw.service.CustomerService;
-import com.kunlong.dongxw.dongxw.service.OrderMasterService;
+import com.kunlong.dongxw.dongxw.domain.Product;
+import com.kunlong.dongxw.dongxw.domain.ProductType;
+import com.kunlong.dongxw.dongxw.service.ProductService;
+import com.kunlong.dongxw.dongxw.service.ProductTypeService;
 import com.kunlong.dongxw.util.WebFileUtil;
 import com.kunlong.platform.utils.JsonResult;
 import io.swagger.annotations.ApiOperation;
@@ -34,54 +34,54 @@ import java.util.List;
 @RequestMapping("/dongxw/product")
 public final class ProductController {
     @Autowired
-    OrderMasterService orderMasterService;
+    ProductService productService;
 
     @Autowired
-    CustomerService customerService;
+    ProductTypeService productTypeService;
 
     @RequestMapping("/findById/{id}")
-    public JsonResult<OrderMaster> findById(@PathVariable("id") Integer id, HttpServletResponse response) throws IOException {
-         return   JsonResult.success(orderMasterService.findById(id))    ;
+    public JsonResult<Product> findById(@PathVariable("id") Integer id, HttpServletResponse response) throws IOException {
+         return   JsonResult.success(productService.findById(id))    ;
     }
 
     @RequestMapping("/save")
-    public JsonResult<Integer> save(@RequestBody OrderMaster orderMaster) {
+    public JsonResult<Integer> save(@RequestBody Product product) {
 
-        if (orderMaster.getId() == null) {
-            orderMasterService.save(orderMaster);
+        if (product.getId() == null) {
+            productService.save(product);
         } else {
-            orderMasterService.update(orderMaster);
+            productService.update(product);
         }
 
-        return JsonResult.success(orderMaster.getId());
+        return JsonResult.success(product.getId());
     }
 
     @PostMapping("/deleteById/{id}")
     public JsonResult<Integer> deleteById(@PathVariable("id") Integer id) throws IOException {
+        productService.deleteById(id) ;
 
-        OrderMaster orderMaster=orderMasterService.findById(id);
-        if(orderMaster!=null){
-            if(orderMaster.getStatus().compareTo(OrderConsts.ORDER_STATUS_DRAFT)>0){
-                throw new RuntimeException("非草稿不能删除！");
-            }else{
-                orderMasterService.deleteById(id) ;
-            }
-
-        }
+//        Product product=productService.findById(id);
+//        if(product!=null){
+//            if(product.getStatus().compareTo(OrderConsts.ORDER_STATUS_DRAFT)>0){
+//                throw new RuntimeException("非草稿不能删除！");
+//            }else{
+//                productService.deleteById(id) ;
+//            }
+//
+//        }
 
         return JsonResult.success();
     }
 
     @PostMapping("/query")
-    public PageResult<OrderMaster> query(@RequestBody OrderMaster.QueryParam queryParam) throws IOException {
-        PageResult<OrderMaster> pageResult = new PageResult<>();
-        // Customer.QueryParam qp = BeanMapper.getInstance().map(pageResult, Customer.QueryParam.class);
+    public PageResult<Product> query(@RequestBody Product.QueryParam queryParam) throws IOException {
+        PageResult<Product> pageResult = new PageResult<>();
 
-        pageResult.setTotal(orderMasterService.countByQueryParam(queryParam));
-        pageResult.setData(orderMasterService.findByQueryParam(queryParam));
+        pageResult.setTotal(productService.countByQueryParam(queryParam));
+        pageResult.setData(productService.findByQueryParam(queryParam));
 
-        for(OrderMaster orderMaster : pageResult.getData()){
-            orderMaster.setCustomer(customerService.findById(orderMaster.getCustomerId()));
+        for(Product product : pageResult.getData()){
+            product.setProductType(productTypeService.findById(product.getProductTypeId()));
         }
         return pageResult;
     }
@@ -89,28 +89,20 @@ public final class ProductController {
 
     @RequestMapping(value="export",method = RequestMethod.POST)
     @ApiOperation(value = "export", notes = "export", authorizations = {@Authorization(value = ApiConstants.AUTH_API_WEB)})
-    public void export(@RequestBody @DateRewritable OrderMaster.QueryParam queryParam, HttpServletRequest req, HttpServletResponse rsp) throws FileNotFoundException, IOException {
+    public void export(@RequestBody @DateRewritable Product.QueryParam queryParam, HttpServletRequest req, HttpServletResponse rsp) throws FileNotFoundException, IOException {
 
         if(queryParam.getParam() == null) {
-            queryParam.setParam(new OrderMaster());
+            queryParam.setParam(new Product());
         }
         queryParam.setLimit(-1);
         queryParam.setStart(0);
 
         WebFileUtil web = new WebFileUtil(req,rsp);
-        List<OrderMaster> orderMasters = orderMasterService.findByQueryParam(queryParam);;
-        web.export2EasyExcelObject("客户订单.xlsx", buildTitles(),buildRecords(orderMasters));
+        List<Product> products = productService.findByQueryParam(queryParam);;
+        web.export2EasyExcelObject("产品列表.xlsx", buildTitles(),buildRecords(products));
 
     }
 
-    List<String> buildTitles() {
-        List<String> strings = new ArrayList<>();
-
-        strings.add("日期");
-        strings.add("业务员");
-
-        return strings;
-    }
 
     //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     //r.add(sdf.format(payOrder.getPayTime()));
@@ -124,17 +116,27 @@ public final class ProductController {
         return sdf.format(d);
     }
 
-    List<List<Object>> buildRecords(List<OrderMaster> orderMasters) {
-        List<List<Object>> records = new ArrayList<>();
-        for (OrderMaster orderMaster : orderMasters) {
-            List<Object> r = new ArrayList<>();
-            if(orderMaster.getCheckDate()!=null) {
-                r.add(transDate(orderMaster.getCheckDate()));
-            }else{
-                r.add("");
-            }
-            r.add(orderMaster.getBusinessBy());
+    List<String> buildTitles() {
+        List<String> strings = new ArrayList<>();
 
+        strings.add("产品类型");
+        strings.add("EP款号");
+        strings.add("客款码");
+        strings.add("产品描述");
+
+        return strings;
+    }
+
+    List<List<Object>> buildRecords(List<Product> orderMasters) {
+        List<List<Object>> records = new ArrayList<>();
+        for (Product product : orderMasters) {
+            List<Object> r = new ArrayList<>();
+
+            ProductType productType=productTypeService.findById(product.getProductTypeId());
+            r.add(productType==null?"-":productType.getCode());
+            r.add(product.getEpCode());
+            r.add(product.getCode());
+            r.add(product.getRemark());
 
             records.add(r);
         }

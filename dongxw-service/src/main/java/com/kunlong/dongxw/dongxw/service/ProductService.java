@@ -13,7 +13,7 @@ public interface ProductService {
 	 * 保存
 	 * @param entity
 	 */
-	public void save(Product entity);
+	public int save(Product entity);
 
 	/**
 	 * 修改

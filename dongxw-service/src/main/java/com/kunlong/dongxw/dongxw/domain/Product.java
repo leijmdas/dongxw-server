@@ -25,12 +25,12 @@ public class Product implements Serializable {
 	@Column(primaryKey = true,autoIncrement = true,comment = "主键")	
 	private Integer id;
 	/**
-	  * EP-CODE 
+	  * EP款号 
 	  * nullable:false,length:32
 	  */
-	@Column(comment = "EP-CODE ")	
+	@Column(comment = "EP款号 ")	
 	@NotNull
-	private String ep_code;
+	private String epCode;
 	/**
 	  * 编码
 	  * nullable:false,length:32
@@ -53,6 +53,27 @@ public class Product implements Serializable {
 	@NotNull
 	private Integer productTypeId;
 	/**
+	  * 图片 
+	  * nullable:false,length:128
+	  */
+	@Column(comment = "图片 ")	
+	@NotNull
+	private String picUrl;
+	/**
+	  * 条码 
+	  * nullable:false,length:4
+	  */
+	@Column(comment = "条码 ")	
+	@NotNull
+	private String barCode;
+	/**
+	  * UPC-A 
+	  * nullable:false,length:32
+	  */
+	@Column(comment = "UPC-A ")	
+	@NotNull
+	private String upcA;
+	/**
 	  * 颜色 
 	  * nullable:false,length:16
 	  */
@@ -67,10 +88,10 @@ public class Product implements Serializable {
 	@NotNull
 	private String size;
 	/**
-	  * 状态 1-使用2-停用
+	  * 状态 1-使用 0-停用
 	  * nullable:false,length:11
 	  */
-	@Column(comment = "状态 1-使用2-停用")	
+	@Column(comment = "状态 1-使用 0-停用")	
 	@NotNull
 	private Integer status;
 	/**
@@ -87,10 +108,10 @@ public class Product implements Serializable {
     	this.id = id;
     }
     public String getEpCode(){
-    	return this.ep_code;
+    	return this.epCode;
     }
-    public void setEpCode(String ep_code){
-    	this.ep_code = ep_code;
+    public void setEpCode(String epCode){
+    	this.epCode = epCode;
     }
     public String getCode(){
     	return this.code;
@@ -109,6 +130,24 @@ public class Product implements Serializable {
     }
     public void setProductTypeId(Integer productTypeId){
     	this.productTypeId = productTypeId;
+    }
+    public String getPicUrl(){
+    	return this.picUrl;
+    }
+    public void setPicUrl(String picUrl){
+    	this.picUrl = picUrl;
+    }
+    public String getBarCode(){
+    	return this.barCode;
+    }
+    public void setBarCode(String barCode){
+    	this.barCode = barCode;
+    }
+    public String getUpcA(){
+    	return this.upcA;
+    }
+    public void setUpcA(String upcA){
+    	this.upcA = upcA;
     }
     public String getColor(){
     	return this.color;
@@ -139,19 +178,25 @@ public class Product implements Serializable {
         public static final EntityNode INSTANCE = new EntityNode("p");;
     	/** 主键 */
         public FieldNode<Product, Integer> id =  createFieldNode("id","id",Integer.class,JdbcType.INTEGER);
-    	/** EP-CODE  */
-        public FieldNode<Product, String> ep_code =  createFieldNode("ep_code","EP_CODE",String.class,JdbcType.VARCHAR);
+    	/** EP款号  */
+        public FieldNode<Product, String> epCode =  createFieldNode("epCode","ep_code",String.class,JdbcType.VARCHAR);
     	/** 编码 */
         public FieldNode<Product, String> code =  createFieldNode("code","code",String.class,JdbcType.VARCHAR);
     	/** 描述  */
         public FieldNode<Product, String> remark =  createFieldNode("remark","remark",String.class,JdbcType.VARCHAR);
     	/** 产品类型  */
         public FieldNode<Product, Integer> productTypeId =  createFieldNode("productTypeId","product_type_id",Integer.class,JdbcType.INTEGER);
+    	/** 图片  */
+        public FieldNode<Product, String> picUrl =  createFieldNode("picUrl","pic_url",String.class,JdbcType.VARCHAR);
+    	/** 条码  */
+        public FieldNode<Product, String> barCode =  createFieldNode("barCode","bar_code",String.class,JdbcType.VARCHAR);
+    	/** UPC-A  */
+        public FieldNode<Product, String> upcA =  createFieldNode("upcA","upc_a",String.class,JdbcType.VARCHAR);
     	/** 颜色  */
         public FieldNode<Product, String> color =  createFieldNode("color","color",String.class,JdbcType.VARCHAR);
     	/** 尺寸  */
         public FieldNode<Product, String> size =  createFieldNode("size","size",String.class,JdbcType.VARCHAR);
-    	/** 状态 1-使用2-停用 */
+    	/** 状态 1-使用 0-停用 */
         public FieldNode<Product, Integer> status =  createFieldNode("status","status",Integer.class,JdbcType.INTEGER);
     	/** 备注  */
         public FieldNode<Product, String> memo =  createFieldNode("memo","memo",String.class,JdbcType.VARCHAR);
@@ -173,5 +218,14 @@ public class Product implements Serializable {
 	
 	public static enum ValueField {
 	}
-    // ==== 自定义属性 ====
+    // ==== 自定义属性 ==== 
+	ProductType  productType ;
+	public ProductType getProductType () {
+		return productType;
+	}
+
+	public void setProductType (ProductType productType) {
+		this.productType = productType;
+	}
+
 }
