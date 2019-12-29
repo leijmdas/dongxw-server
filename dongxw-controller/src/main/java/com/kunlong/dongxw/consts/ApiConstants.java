@@ -8,6 +8,10 @@ package com.kunlong.dongxw.consts;
 public class ApiConstants {
 
 	private ApiConstants(){}
+	/**
+	 * 用在API注解上 APP
+	 */
+	public static final String AUTH_API_WEB_DONGXW = "dongxw";
 
 	/**
 	 * 用在API注解上 APP

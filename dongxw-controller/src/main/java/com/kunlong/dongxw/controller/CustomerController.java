@@ -32,7 +32,7 @@ import java.util.List;
  * Date: Created in 2018/8/23 16:50
  */
 @RestController
-@RequestMapping("/dongxw/customer")
+@RequestMapping(ApiConstants.AUTH_API_WEB_DONGXW+"/customer")
 public final class CustomerController {
     @Autowired
     CustomerService customerService;
