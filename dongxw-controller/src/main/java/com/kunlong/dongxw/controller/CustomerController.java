@@ -93,7 +93,7 @@ public final class CustomerController {
     List<String> buildTitles(){
         List<String> strings=new ArrayList<>();
         //strings.add("客户主键");
-        strings.add("客户编号");
+        strings.add("客户编码");
         strings.add("客户名称");
         strings.add("客户详细名称");
         strings.add("客户国家");
