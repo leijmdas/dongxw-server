@@ -17,9 +17,9 @@ public class SupplierDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 	/**
 	  * 供应商主键 
-	  * nullable:false,length:11
+	  * nullable:true,length:11
 	  */
-	@ApiModelProperty(value = "供应商主键 ",required = true,notes = "供应商主键  ")
+	@ApiModelProperty(value = "供应商主键 ",required = false,notes = "供应商主键  [自增]")
 	private Integer id;
 	/**
 	  * 供应商编号 
@@ -34,10 +34,10 @@ public class SupplierDTO implements Serializable {
 	@ApiModelProperty(value = "供应商名称 ",required = true,notes = "供应商名称  ")
 	private String name;
 	/**
-	  * 客户详细名称 
+	  * 供应商详细名称 
 	  * nullable:false,length:64
 	  */
-	@ApiModelProperty(value = "客户详细名称 ",required = true,notes = "客户详细名称  ")
+	@ApiModelProperty(value = "供应商详细名称 ",required = true,notes = "供应商详细名称  ")
 	private String sname;
 	/**
 	  * 供应商国家 

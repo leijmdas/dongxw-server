@@ -21,10 +21,9 @@ public class Supplier implements Serializable {
 	private static final long serialVersionUID = 1L;
 	/**
 	  * 供应商主键 
-	  * nullable:false,length:11
+	  * nullable:true,length:11
 	  */
-	@Column(comment = "供应商主键 ")	
-	@NotNull
+	@Column(primaryKey = true,autoIncrement = true,comment = "供应商主键 ")	
 	private Integer id;
 	/**
 	  * 供应商编号 
@@ -41,10 +40,10 @@ public class Supplier implements Serializable {
 	@NotNull
 	private String name;
 	/**
-	  * 客户详细名称 
+	  * 供应商详细名称 
 	  * nullable:false,length:64
 	  */
-	@Column(comment = "客户详细名称 ")	
+	@Column(comment = "供应商详细名称 ")	
 	@NotNull
 	private String sname;
 	/**
@@ -193,7 +192,7 @@ public class Supplier implements Serializable {
         public FieldNode<Supplier, String> code =  createFieldNode("code","code",String.class,JdbcType.VARCHAR);
     	/** 供应商名称  */
         public FieldNode<Supplier, String> name =  createFieldNode("name","name",String.class,JdbcType.VARCHAR);
-    	/** 客户详细名称  */
+    	/** 供应商详细名称  */
         public FieldNode<Supplier, String> sname =  createFieldNode("sname","sname",String.class,JdbcType.VARCHAR);
     	/** 供应商国家  */
         public FieldNode<Supplier, String> country =  createFieldNode("country","country",String.class,JdbcType.VARCHAR);
