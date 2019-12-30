@@ -6,8 +6,8 @@ import com.kunlong.api.service.AuthApiService;
 import com.kunlong.dongxw.annotation.DateRewritable;
 import com.kunlong.dongxw.consts.ApiConstants;
 import com.kunlong.dongxw.consts.MoneyTypeConsts;
-import com.kunlong.dongxw.dongxw.domain.Customer;
-import com.kunlong.dongxw.dongxw.service.CustomerService;
+import com.kunlong.dongxw.dongxw.domain.Supplier;
+import com.kunlong.dongxw.dongxw.service.SupplierService;
 import com.kunlong.dongxw.util.WebFileUtil;
 import com.kunlong.platform.utils.JsonResult;
 import io.swagger.annotations.ApiOperation;
@@ -26,45 +26,45 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * cust类
+ * supplier
  * Package:
  * Author: cch/leijiming
- * Date: Created in 2018/8/23 16:50
+ * Date: Created in 2019/8/23 16:50
  */
 @RestController
 @RequestMapping(ApiConstants.AUTH_API_WEB_DONGXW+"/supplier")
 public final class SupplierController {
     @Autowired
-    CustomerService customerService;
+    SupplierService supplierService;
 
      @Reference(lazy = true, version = "${dubbo.service.version}")
      AuthApiService authApiService;
 
     @RequestMapping("/findById/{id}")
-    public JsonResult<Customer> findById(@PathVariable("id") Integer id,HttpServletResponse response) throws IOException {
-     return   JsonResult.success(customerService.findById(id))    ;
+    public JsonResult<Supplier> findById(@PathVariable("id") Integer id, HttpServletResponse response) throws IOException {
+     return   JsonResult.success(supplierService.findById(id))    ;
     }
 
     @RequestMapping("/save")
-    public JsonResult<Integer> save(@RequestBody Customer customer) {
+    public JsonResult<Integer> save(@RequestBody Supplier supplier) {
 
-        if (customer.getId() == null) {
-            customerService.save(customer);
+        if (supplier.getId() == null) {
+            supplierService.save(supplier);
         } else {
-            customerService.update(customer);
+            supplierService.update(supplier);
         }
 
-        return JsonResult.success(customer.getId());
+        return JsonResult.success(supplier.getId());
     }
 
 
     @RequestMapping("/query")
-    public PageResult<Customer> query(@RequestBody Customer.QueryParam queryParam) throws IOException {
-        PageResult<Customer> pageResult = new PageResult<Customer>();
+    public PageResult<Supplier> query(@RequestBody Supplier.QueryParam queryParam) throws IOException {
+        PageResult<Supplier> pageResult = new PageResult<Supplier>();
         // Customer.QueryParam qp = BeanMapper.getInstance().map(pageResult, Customer.QueryParam.class);
 
-        pageResult.setTotal(customerService.countByQueryParam(queryParam));
-        pageResult.setData(customerService.findByQueryParam(queryParam));
+        pageResult.setTotal(supplierService.countByQueryParam(queryParam));
+        pageResult.setData(supplierService.findByQueryParam(queryParam));
         //System.err.println(authApiService.checkExists("1111"));
         return pageResult;
     }
@@ -72,30 +72,28 @@ public final class SupplierController {
 
     @RequestMapping(value="export",method = RequestMethod.POST)
     @ApiOperation(value = "export", notes = "export", authorizations = {@Authorization(value = ApiConstants.AUTH_API_WEB)})
-    public void exportCustomer(@RequestBody @DateRewritable Customer.QueryParam queryParam, HttpServletRequest req, HttpServletResponse rsp) throws FileNotFoundException, IOException {
+    public void export(@RequestBody @DateRewritable Supplier.QueryParam queryParam, HttpServletRequest req, HttpServletResponse rsp) throws FileNotFoundException, IOException {
 
         if(queryParam.getParam() == null) {
-            queryParam.setParam(new Customer());
+            queryParam.setParam(new Supplier());
         }
         queryParam.setLimit(-1);
         queryParam.setStart(0);
 
         WebFileUtil web = new WebFileUtil(req,rsp);
-        List<Customer> customers = this.customerService.findByQueryParam(queryParam);;
+        List<Supplier> suppliers = this.supplierService.findByQueryParam(queryParam);;
         //web.export2EasyExcel2File("客户名单.xlsx", buildTitles(),buildRecords(customers));
-        web.export2EasyExcelObject("客户名单.xlsx", buildTitles(),buildRecords(customers));
-        //rsp.getOutputStream().write("123".getBytes());
-        //rsp.getOutputStream().flush();
+        web.export2EasyExcelObject("供应商名单.xlsx", buildTitles(),buildRecords(suppliers));
+
     }
 
     List<String> buildTitles(){
         List<String> strings=new ArrayList<>();
-        //strings.add("客户主键");
-        strings.add("客户编号");
-        strings.add("客户名称");
-        strings.add("客户详细名称");
-        strings.add("客户国家");
-        strings.add("客户地址");
+        strings.add("编号");
+        strings.add("名称");
+        strings.add("详细名称");
+        strings.add("国家");
+        strings.add("地址");
         strings.add("结算币种");
         strings.add("联系人");
         strings.add("联系人电话");
@@ -104,8 +102,6 @@ public final class SupplierController {
         return strings;
     }
 
-    //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    //r.add(sdf.format(payOrder.getPayTime()));
     String transDatetime(Date d) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return sdf.format(d);
@@ -116,21 +112,21 @@ public final class SupplierController {
         return sdf.format(d);
     }
 
-    List<List<Object>> buildRecords(List<Customer> customers) {
+    List<List<Object>> buildRecords(List<Supplier> suppliers) {
         List<List<Object>> records = new ArrayList<>();
-        for (Customer customer : customers) {
+        for (Supplier supplier : suppliers) {
             List<Object> r = new ArrayList<>();
             //r.add(customer.getId());
-            r.add(customer.getCustNo());
-            r.add(customer.getCustName());
-            r.add(customer.getCustSname());
-            r.add(customer.getCountry());
-            r.add(customer.getAddr());
-            r.add(MoneyTypeConsts.getMoneyTyoe(customer.getMoneyType()));
-            r.add(customer.getContact());
+            r.add(supplier.getCode());
+            r.add(supplier.getName());
+            r.add(supplier.getSname());
+            r.add(supplier.getCountry());
+            r.add(supplier.getAddr());
+            r.add(MoneyTypeConsts.getMoneyType(Integer.valueOf(supplier.getMoneyType())));
+            r.add(supplier.getContact());
 
-            r.add(customer.getTel());
-            r.add(transDate(customer.getCreateDate()));
+            r.add(supplier.getTel());
+            r.add(transDate(supplier.getCreateDate()));
 
             records.add(r);
         }

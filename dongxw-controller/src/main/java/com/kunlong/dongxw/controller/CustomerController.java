@@ -128,7 +128,7 @@ public final class CustomerController {
             r.add(customer.getCustSname());
             r.add(customer.getCountry());
             r.add(customer.getAddr());
-            r.add(MoneyTypeConsts.getMoneyTyoe(customer.getMoneyType()));
+            r.add(MoneyTypeConsts.getMoneyType(customer.getMoneyType()));
             r.add(customer.getContact());
 
             r.add(customer.getTel());

@@ -80,7 +80,6 @@ public final class ProductTypeController {
 
     List<String> buildTitles(){
         List<String> strings=new ArrayList<>();
-        //strings.add("客户主键");
         strings.add("客户编号");
         strings.add("客户名称");
         strings.add("客户详细名称");
@@ -110,13 +109,13 @@ public final class ProductTypeController {
         List<List<Object>> records = new ArrayList<>();
         for (Customer customer : customers) {
             List<Object> r = new ArrayList<>();
-            //r.add(customer.getId());
+
             r.add(customer.getCustNo());
             r.add(customer.getCustName());
             r.add(customer.getCustSname());
             r.add(customer.getCountry());
             r.add(customer.getAddr());
-            r.add(MoneyTypeConsts.getMoneyTyoe(customer.getMoneyType()));
+            r.add(MoneyTypeConsts.getMoneyType(customer.getMoneyType()));
             r.add(customer.getContact());
 
             r.add(customer.getTel());
