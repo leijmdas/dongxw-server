@@ -8,7 +8,11 @@ import org.mybatis.hbatis.core.*;
 import java.lang.Integer;
 import java.lang.String;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.mybatis.hbatis.orm.criteria.support.query.AbstractQueryParam;
+import org.mybatis.hbatis.orm.criteria.support.query.DateRange;
 import org.mybatis.hbatis.orm.criteria.support.query.SortOrders;
 /**
  * OrderMaster 客户订单
@@ -84,7 +88,7 @@ public class OrderMaster implements Serializable {
 	  * nullable:true,length:10
 	  */
 	@Column(comment = "工厂交货日期 ")	
-	private Date factroyIssuseDate;
+	private Date factroyIssueDate;
 	/**
 	  * 主料描述 
 	  * nullable:false,length:512
@@ -174,11 +178,11 @@ public class OrderMaster implements Serializable {
     public void setCheckDate(Date checkDate){
     	this.checkDate = checkDate;
     }
-    public Date getFactroyIssuseDate(){
-    	return this.factroyIssuseDate;
+    public Date getfactroyIssueDate(){
+    	return this.factroyIssueDate;
     }
-    public void setFactroyIssuseDate(Date factroyIssuseDate){
-    	this.factroyIssuseDate = factroyIssuseDate;
+    public void setfactroyIssueDate(Date factroyIssueDate){
+    	this.factroyIssueDate = factroyIssueDate;
     }
     public String getMaterialRemark(){
     	return this.materialRemark;
@@ -233,7 +237,7 @@ public class OrderMaster implements Serializable {
     	/** 验货日期  */
         public FieldNode<OrderMaster, Date> checkDate =  createFieldNode("checkDate","check_date",Date.class,JdbcType.DATE);
     	/** 工厂交货日期  */
-        public FieldNode<OrderMaster, Date> factroyIssuseDate =  createFieldNode("factroyIssuseDate","factroy_issuse_date",Date.class,JdbcType.DATE);
+        public FieldNode<OrderMaster, Date> factroyIssueDate =  createFieldNode("factroyIssueDate","factroy_issue_date",Date.class,JdbcType.DATE);
     	/** 主料描述  */
         public FieldNode<OrderMaster, String> materialRemark =  createFieldNode("materialRemark","material_remark",String.class,JdbcType.VARCHAR);
     	/** 供应商  */
@@ -257,6 +261,18 @@ public class OrderMaster implements Serializable {
 	public static class QueryParam extends AbstractQueryParam<OrderMaster> {
 		public QueryParam() {
 			this.setSortOrders(new SortOrders<OrderMaster>(EntityNode.INSTANCE));
+		}
+
+
+
+		private Map<String, DateRange> dateRanges = new HashMap<String, DateRange>();
+
+		public Map<String, DateRange> getDateRanges() {
+			return dateRanges;
+		}
+
+		public void setDateRanges(Map<String, DateRange> dateRanges) {
+			this.dateRanges = dateRanges;
 		}
 	}
 	

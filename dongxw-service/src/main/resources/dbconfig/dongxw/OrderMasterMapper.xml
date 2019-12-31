@@ -11,7 +11,7 @@
 	  	<result column="order_date" property="orderDate" jdbcType="DATE" />
 	  	<result column="customer_issue_date" property="customerIssueDate" jdbcType="DATE" />
 	  	<result column="check_date" property="checkDate" jdbcType="DATE" />
-	  	<result column="factroy_issuse_date" property="factroyIssuseDate" jdbcType="DATE" />
+	  	<result column="factroy_issue_date" property="factroyIssueDate" jdbcType="DATE" />
 	  	<result column="material_remark" property="materialRemark" jdbcType="VARCHAR" />
 	  	<result column="supply_id" property="supplyId" jdbcType="INTEGER" />
 	  	<result column="remark" property="remark" jdbcType="VARCHAR" />
@@ -28,7 +28,7 @@
 	  	<result column="om_order_date" property="orderDate" jdbcType="DATE" />
 	  	<result column="om_customer_issue_date" property="customerIssueDate" jdbcType="DATE" />
 	  	<result column="om_check_date" property="checkDate" jdbcType="DATE" />
-	  	<result column="om_factroy_issuse_date" property="factroyIssuseDate" jdbcType="DATE" />
+	  	<result column="om_factroy_issue_date" property="factroyIssueDate" jdbcType="DATE" />
 	  	<result column="om_material_remark" property="materialRemark" jdbcType="VARCHAR" />
 	  	<result column="om_supply_id" property="supplyId" jdbcType="INTEGER" />
 	  	<result column="om_remark" property="remark" jdbcType="VARCHAR" />
@@ -36,10 +36,10 @@
 	  	<result column="om_invoice_no" property="invoiceNo" jdbcType="VARCHAR" />
     </resultMap>
     <sql id="Base_Column_List" >
-  		id,customer_id,business_by,status,customer_order_code,ep_order_code,order_date,customer_issue_date,check_date,factroy_issuse_date,material_remark,supply_id,remark,customer_order_img,invoice_no
+  		id,customer_id,business_by,status,customer_order_code,ep_order_code,order_date,customer_issue_date,check_date,factroy_issue_date,material_remark,supply_id,remark,customer_order_img,invoice_no
 	</sql>
   	<sql id="Base_Column_List_OrderMaster" >
-  		om.id om_id,om.customer_id om_customer_id,om.business_by om_business_by,om.status om_status,om.customer_order_code om_customer_order_code,om.ep_order_code om_ep_order_code,om.order_date om_order_date,om.customer_issue_date om_customer_issue_date,om.check_date om_check_date,om.factroy_issuse_date om_factroy_issuse_date,om.material_remark om_material_remark,om.supply_id om_supply_id,om.remark om_remark,om.customer_order_img om_customer_order_img,om.invoice_no om_invoice_no
+  		om.id om_id,om.customer_id om_customer_id,om.business_by om_business_by,om.status om_status,om.customer_order_code om_customer_order_code,om.ep_order_code om_ep_order_code,om.order_date om_order_date,om.customer_issue_date om_customer_issue_date,om.check_date om_check_date,om.factroy_issue_date om_factroy_issue_date,om.material_remark om_material_remark,om.supply_id om_supply_id,om.remark om_remark,om.customer_order_img om_customer_order_img,om.invoice_no om_invoice_no
 	</sql>
 	
 	<!-- 系统自定义 -->
@@ -78,8 +78,8 @@
 			<if test="p.checkDate!=null ">
 		    	and om.check_date=#{p.checkDate}
 		    </if>
-			<if test="p.factroyIssuseDate!=null ">
-		    	and om.factroy_issuse_date=#{p.factroyIssuseDate}
+			<if test="p.factroyIssueDate!=null ">
+		    	and om.factroy_issue_date=#{p.factroyIssueDate}
 		    </if>
 			<if test="p.materialRemark!=null and p.materialRemark!=''">
 		    	and om.material_remark like #{p.materialRemark}
@@ -96,6 +96,38 @@
 			<if test="p.invoiceNo!=null and p.invoiceNo!=''">
 		    	and om.invoice_no like #{p.invoiceNo}
 		    </if>
+		</if>
+
+		<if test="queryParam.dateRanges!=null">
+			<bind name="orderDate" value="queryParam.dateRanges['orderDate']"/>
+			<bind name="customerIssueDate" value="queryParam.dateRanges['customerIssueDate']"/>
+			<bind name="checkDate" value="queryParam.dateRanges['checkDate']"/>
+			<bind name="factroyIssueDate" value="queryParam.dateRanges['factroyIssueDate']"/>
+
+			<if test="orderDate!=null"> <!-- 下单日期 -->
+				and om.order_date <![CDATA[>=]]> #{orderDate.startDate}
+				<if test="orderDate.endDate!=null">
+					and om.order_date <![CDATA[<=]]> #{orderDate.endDate}
+				</if>
+			</if>
+			<if test="customerIssueDate!=null"> <!-- 客户交货日期 -->
+				and om.customer_issue_date <![CDATA[>=]]> #{customerIssueDate.startDate}
+				<if test="customerIssueDate.endDate!=null">
+					and om.customer_issue_date <![CDATA[<=]]> #{customerIssueDate.endDate}
+				</if>
+			</if>
+			<if test="checkDate!=null"> <!-- 验货日期 -->
+				and om.check_date <![CDATA[>=]]> #{checkDate.startDate}
+				<if test="checkDate.endDate!=null">
+					and om.check_date <![CDATA[<=]]> #{checkDate.endDate}
+				</if>
+			</if>
+			<if test="factroyIssueDate!=null"> <!-- 工厂交货日期 -->
+				and om.factroy_issue_date <![CDATA[>=]]> #{factroyIssueDate.startDate}
+				<if test="factroyIssueDate.endDate!=null">
+					and om.factroy_issue_date <![CDATA[<=]]> #{factroyIssueDate.endDate}
+				</if>
+			</if>
 		</if>
 		<!--
 		<bind name="rp" value="queryParam.ruleParam" />
