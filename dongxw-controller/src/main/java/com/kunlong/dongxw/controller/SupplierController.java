@@ -69,7 +69,22 @@ public final class SupplierController {
         return pageResult;
     }
 
+    @PostMapping("/deleteById/{id}")
+    public JsonResult<Integer> deleteById(@PathVariable("id") Integer id) throws IOException {
+        supplierService.deleteById(id) ;
 
+//        Product product=productService.findById(id);
+//        if(product!=null){
+//            if(product.getStatus().compareTo(OrderConsts.ORDER_STATUS_DRAFT)>0){
+//                throw new RuntimeException("非草稿不能删除！");
+//            }else{
+//                productService.deleteById(id) ;
+//            }
+//
+//        }
+
+        return JsonResult.success();
+    }
     @RequestMapping(value="export",method = RequestMethod.POST)
     @ApiOperation(value = "export", notes = "export", authorizations = {@Authorization(value = ApiConstants.AUTH_API_WEB)})
     public void export(@RequestBody @DateRewritable Supplier.QueryParam queryParam, HttpServletRequest req, HttpServletResponse rsp) throws FileNotFoundException, IOException {
