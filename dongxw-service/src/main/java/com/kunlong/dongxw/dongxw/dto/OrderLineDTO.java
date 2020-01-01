@@ -3,40 +3,257 @@ package com.kunlong.dongxw.dongxw.dto;
 import java.io.Serializable;
 import java.lang.Integer;
 import java.lang.String;
+import java.math.BigDecimal;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 /**
  * OrderLine
  * @author generator
- * @date 2019年12月29日
+ * @date 2020年01月01日
  */
-@ApiModel(value="OrderLineDTO",description="")
+@ApiModel(value="OrderLineDTO",description="订单产品表")
 public class OrderLineDTO implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	/**
-	  * id 
+	  * 订单产品标识 
 	  * nullable:true,length:11
 	  */
-	@ApiModelProperty(value = "id ",required = false,notes = "id  [自增]")
+	@ApiModelProperty(value = "订单产品标识 ",required = false,notes = "订单产品标识  [自增]")
 	private Integer id;
 	/**
-	  * A 
-	  * nullable:false,length:4
+	  * 产品标识 
+	  * nullable:false,length:11
 	  */
-	@ApiModelProperty(value = "A ",required = true,notes = "A  ")
-	private String a;
+	@ApiModelProperty(value = "产品标识 ",required = true,notes = "产品标识  ")
+	private Integer productId;
+	/**
+	  * 客款号 
+	  * nullable:false,length:64
+	  */
+	@ApiModelProperty(value = "客款号 ",required = true,notes = "客款号  ")
+	private String customerCode;
+	/**
+	  * 图片 
+	  * nullable:false,length:128
+	  */
+	@ApiModelProperty(value = "图片 ",required = true,notes = "图片  ")
+	private String picUrl;
+	/**
+	  * 尺寸 
+	  * nullable:false,length:64
+	  */
+	@ApiModelProperty(value = "尺寸 ",required = true,notes = "尺寸  ")
+	private String size;
+	/**
+	  * 配色 
+	  * nullable:false,length:16
+	  */
+	@ApiModelProperty(value = "配色 ",required = true,notes = "配色  ")
+	private String color;
+	/**
+	  * 数量 
+	  * nullable:false,length:11
+	  */
+	@ApiModelProperty(value = "数量 ",required = true,notes = "数量  ")
+	private Integer qty;
+	/**
+	  * 单价 
+	  * nullable:false,length:10
+	  */
+	@ApiModelProperty(value = "单价 ",required = true,notes = "单价  ")
+	private BigDecimal price;
+	/**
+	  * 货币 
+	  * nullable:false,length:16
+	  */
+	@ApiModelProperty(value = "货币 ",required = true,notes = "货币  ")
+	private String currency;
+	/**
+	  * 金额 
+	  * nullable:false,length:12
+	  */
+	@ApiModelProperty(value = "金额 ",required = true,notes = "金额  ")
+	private BigDecimal money;
+	/**
+	  * 供应商 
+	  * nullable:false,length:11
+	  */
+	@ApiModelProperty(value = "供应商 ",required = true,notes = "供应商  ")
+	private Integer supplierId;
+	/**
+	  * 主料 
+	  * nullable:false,length:256
+	  */
+	@ApiModelProperty(value = "主料 ",required = true,notes = "主料  ")
+	private String material;
+	/**
+	  * 内盒数量 
+	  * nullable:false,length:32
+	  */
+	@ApiModelProperty(value = "内盒数量 ",required = true,notes = "内盒数量  ")
+	private String ibQty;
+	/**
+	  * 毛重 
+	  * nullable:false,length:10
+	  */
+	@ApiModelProperty(value = "毛重 ",required = true,notes = "毛重  ")
+	private BigDecimal ibGw;
+	/**
+	  * 净重 
+	  * nullable:false,length:10
+	  */
+	@ApiModelProperty(value = "净重 ",required = true,notes = "净重  ")
+	private BigDecimal ibNw;
+	/**
+	  * 内盒尺寸 
+	  * nullable:false,length:32
+	  */
+	@ApiModelProperty(value = "内盒尺寸 ",required = true,notes = "内盒尺寸  ")
+	private String ibSize;
+	/**
+	  * 外箱数量 
+	  * nullable:false,length:32
+	  */
+	@ApiModelProperty(value = "外箱数量 ",required = true,notes = "外箱数量  ")
+	private String obQty;
+	/**
+	  * 毛重 
+	  * nullable:false,length:10
+	  */
+	@ApiModelProperty(value = "毛重 ",required = true,notes = "毛重  ")
+	private BigDecimal obGw;
+	/**
+	  * 净重 
+	  * nullable:false,length:10
+	  */
+	@ApiModelProperty(value = "净重 ",required = true,notes = "净重  ")
+	private BigDecimal obNw;
+	/**
+	  * 外箱尺寸 
+	  * nullable:false,length:32
+	  */
+	@ApiModelProperty(value = "外箱尺寸 ",required = true,notes = "外箱尺寸  ")
+	private String obSize;
     public Integer getId(){
     	return this.id;
     }
     public void setId(Integer id){
     	this.id = id;
     }
-    public String getA(){
-    	return this.a;
+    public Integer getProductId(){
+    	return this.productId;
     }
-    public void setA(String a){
-    	this.a = a;
+    public void setProductId(Integer productId){
+    	this.productId = productId;
+    }
+    public String getCustomerCode(){
+    	return this.customerCode;
+    }
+    public void setCustomerCode(String customerCode){
+    	this.customerCode = customerCode;
+    }
+    public String getPicUrl(){
+    	return this.picUrl;
+    }
+    public void setPicUrl(String picUrl){
+    	this.picUrl = picUrl;
+    }
+    public String getSize(){
+    	return this.size;
+    }
+    public void setSize(String size){
+    	this.size = size;
+    }
+    public String getColor(){
+    	return this.color;
+    }
+    public void setColor(String color){
+    	this.color = color;
+    }
+    public Integer getQty(){
+    	return this.qty;
+    }
+    public void setQty(Integer qty){
+    	this.qty = qty;
+    }
+    public BigDecimal getPrice(){
+    	return this.price;
+    }
+    public void setPrice(BigDecimal price){
+    	this.price = price;
+    }
+    public String getCurrency(){
+    	return this.currency;
+    }
+    public void setCurrency(String currency){
+    	this.currency = currency;
+    }
+    public BigDecimal getMoney(){
+    	return this.money;
+    }
+    public void setMoney(BigDecimal money){
+    	this.money = money;
+    }
+    public Integer getSupplierId(){
+    	return this.supplierId;
+    }
+    public void setSupplierId(Integer supplierId){
+    	this.supplierId = supplierId;
+    }
+    public String getMaterial(){
+    	return this.material;
+    }
+    public void setMaterial(String material){
+    	this.material = material;
+    }
+    public String getIbQty(){
+    	return this.ibQty;
+    }
+    public void setIbQty(String ibQty){
+    	this.ibQty = ibQty;
+    }
+    public BigDecimal getIbGw(){
+    	return this.ibGw;
+    }
+    public void setIbGw(BigDecimal ibGw){
+    	this.ibGw = ibGw;
+    }
+    public BigDecimal getIbNw(){
+    	return this.ibNw;
+    }
+    public void setIbNw(BigDecimal ibNw){
+    	this.ibNw = ibNw;
+    }
+    public String getIbSize(){
+    	return this.ibSize;
+    }
+    public void setIbSize(String ibSize){
+    	this.ibSize = ibSize;
+    }
+    public String getObQty(){
+    	return this.obQty;
+    }
+    public void setObQty(String obQty){
+    	this.obQty = obQty;
+    }
+    public BigDecimal getObGw(){
+    	return this.obGw;
+    }
+    public void setObGw(BigDecimal obGw){
+    	this.obGw = obGw;
+    }
+    public BigDecimal getObNw(){
+    	return this.obNw;
+    }
+    public void setObNw(BigDecimal obNw){
+    	this.obNw = obNw;
+    }
+    public String getObSize(){
+    	return this.obSize;
+    }
+    public void setObSize(String obSize){
+    	this.obSize = obSize;
     }
     // ==== 自定义属性 ====
 }
