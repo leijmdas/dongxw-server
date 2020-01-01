@@ -22,6 +22,12 @@ public class OrderLineDTO implements Serializable {
 	@ApiModelProperty(value = "订单产品标识 ",required = false,notes = "订单产品标识  [自增]")
 	private Integer id;
 	/**
+	  * 订单标识 
+	  * nullable:false,length:11
+	  */
+	@ApiModelProperty(value = "订单标识 ",required = true,notes = "订单标识  ")
+	private Integer orderId;
+	/**
 	  * 产品标识 
 	  * nullable:false,length:11
 	  */
@@ -57,6 +63,12 @@ public class OrderLineDTO implements Serializable {
 	  */
 	@ApiModelProperty(value = "数量 ",required = true,notes = "数量  ")
 	private Integer qty;
+	/**
+	  * 单位 
+	  * nullable:false,length:16
+	  */
+	@ApiModelProperty(value = "单位 ",required = true,notes = "单位  ")
+	private String unit;
 	/**
 	  * 单价 
 	  * nullable:false,length:10
@@ -141,6 +153,12 @@ public class OrderLineDTO implements Serializable {
     public void setId(Integer id){
     	this.id = id;
     }
+    public Integer getOrderId(){
+    	return this.orderId;
+    }
+    public void setOrderId(Integer orderId){
+    	this.orderId = orderId;
+    }
     public Integer getProductId(){
     	return this.productId;
     }
@@ -176,6 +194,12 @@ public class OrderLineDTO implements Serializable {
     }
     public void setQty(Integer qty){
     	this.qty = qty;
+    }
+    public String getUnit(){
+    	return this.unit;
+    }
+    public void setUnit(String unit){
+    	this.unit = unit;
     }
     public BigDecimal getPrice(){
     	return this.price;

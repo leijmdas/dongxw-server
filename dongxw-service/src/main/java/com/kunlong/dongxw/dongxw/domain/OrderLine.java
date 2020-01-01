@@ -26,6 +26,13 @@ public class OrderLine implements Serializable {
 	@Column(primaryKey = true,autoIncrement = true,comment = "订单产品标识 ")	
 	private Integer id;
 	/**
+	  * 订单标识 
+	  * nullable:false,length:11
+	  */
+	@Column(comment = "订单标识 ")	
+	@NotNull
+	private Integer orderId;
+	/**
 	  * 产品标识 
 	  * nullable:false,length:11
 	  */
@@ -67,6 +74,13 @@ public class OrderLine implements Serializable {
 	@Column(comment = "数量 ")	
 	@NotNull
 	private Integer qty;
+	/**
+	  * 单位 
+	  * nullable:false,length:16
+	  */
+	@Column(comment = "单位 ")	
+	@NotNull
+	private String unit;
 	/**
 	  * 单价 
 	  * nullable:false,length:10
@@ -164,6 +178,12 @@ public class OrderLine implements Serializable {
     public void setId(Integer id){
     	this.id = id;
     }
+    public Integer getOrderId(){
+    	return this.orderId;
+    }
+    public void setOrderId(Integer orderId){
+    	this.orderId = orderId;
+    }
     public Integer getProductId(){
     	return this.productId;
     }
@@ -199,6 +219,12 @@ public class OrderLine implements Serializable {
     }
     public void setQty(Integer qty){
     	this.qty = qty;
+    }
+    public String getUnit(){
+    	return this.unit;
+    }
+    public void setUnit(String unit){
+    	this.unit = unit;
     }
     public BigDecimal getPrice(){
     	return this.price;
@@ -283,6 +309,8 @@ public class OrderLine implements Serializable {
         public static final EntityNode INSTANCE = new EntityNode("ol");;
     	/** 订单产品标识  */
         public FieldNode<OrderLine, Integer> id =  createFieldNode("id","id",Integer.class,JdbcType.INTEGER);
+    	/** 订单标识  */
+        public FieldNode<OrderLine, Integer> orderId =  createFieldNode("orderId","order_id",Integer.class,JdbcType.INTEGER);
     	/** 产品标识  */
         public FieldNode<OrderLine, Integer> productId =  createFieldNode("productId","product_id",Integer.class,JdbcType.INTEGER);
     	/** 客款号  */
@@ -295,6 +323,8 @@ public class OrderLine implements Serializable {
         public FieldNode<OrderLine, String> color =  createFieldNode("color","color",String.class,JdbcType.VARCHAR);
     	/** 数量  */
         public FieldNode<OrderLine, Integer> qty =  createFieldNode("qty","qty",Integer.class,JdbcType.INTEGER);
+    	/** 单位  */
+        public FieldNode<OrderLine, String> unit =  createFieldNode("unit","unit",String.class,JdbcType.VARCHAR);
     	/** 单价  */
         public FieldNode<OrderLine, BigDecimal> price =  createFieldNode("price","price",BigDecimal.class,JdbcType.DECIMAL);
     	/** 货币  */
