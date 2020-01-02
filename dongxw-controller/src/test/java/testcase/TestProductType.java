@@ -14,6 +14,7 @@ import com.kunlong.dongxw.manager.domain.DictDatatype;
 import com.kunlong.platform.utils.JsonResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pub.Login;
 
 import java.io.IOException;
 
@@ -32,7 +33,7 @@ public class TestProductType extends ITestImpl {
 
     @Inject(filename = "node.xml", value = "httpclient")
     HttpClientNode httpclient;
-
+    Login login = new Login();
 
     //MsgRequest req = new MsgRequest();
     public void suiteSetUp() {
@@ -44,6 +45,8 @@ public class TestProductType extends ITestImpl {
 
     @Override
     public void setUp() {
+        login.loginsys(httpclient);
+        //auth();
 //		req = login.defaultReq();
 //		token = login.login(req);
 //		logger.info("aaa--req:{} ******",req.toJSONStringPretty());
@@ -141,6 +144,7 @@ public class TestProductType extends ITestImpl {
         result = parsePageResult(ret,Customer.class);
 
         System.out.println(result.getData());
+        System.out.println(result.getData().size());
     }
 
     public <T> JsonResult<T> parseJsonResult(String text, Class<T> clazz) {
