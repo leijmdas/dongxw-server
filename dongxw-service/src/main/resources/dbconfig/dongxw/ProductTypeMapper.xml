@@ -6,18 +6,20 @@
 	  	<result column="active" property="active" jdbcType="TINYINT" />
 	  	<result column="code" property="code" jdbcType="VARCHAR" />
 	  	<result column="name" property="name" jdbcType="VARCHAR" />
+	  	<result column="parent_id" property="parentId" jdbcType="INTEGER" />
     </resultMap>
     <resultMap id="BaseResultMap_ProductType" type="com.kunlong.dongxw.dongxw.domain.ProductType" >
 	    <id column="pt_id" property="id" jdbcType="INTEGER" />	
 	  	<result column="pt_active" property="active" jdbcType="TINYINT" />
 	  	<result column="pt_code" property="code" jdbcType="VARCHAR" />
 	  	<result column="pt_name" property="name" jdbcType="VARCHAR" />
+	  	<result column="pt_parent_id" property="parentId" jdbcType="INTEGER" />
     </resultMap>
     <sql id="Base_Column_List" >
-  		id,active,code,name
+  		id,active,code,name,parent_id
 	</sql>
   	<sql id="Base_Column_List_ProductType" >
-  		pt.id pt_id,pt.active pt_active,pt.code pt_code,pt.name pt_name
+  		pt.id pt_id,pt.active pt_active,pt.code pt_code,pt.name pt_name,pt.parent_id pt_parent_id
 	</sql>
 	
 	<!-- 系统自定义 -->
@@ -36,10 +38,13 @@
 		    	and pt.active=#{p.active}
 		    </if>
 			<if test="p.code!=null and p.code!=''">
-		    	and pt.code like "%"#{p.code}"%"
+		    	and pt.code like #{p.code}
 		    </if>
 			<if test="p.name!=null and p.name!=''">
-		    	and pt.name like "%"#{p.name}"%"
+		    	and pt.name like #{p.name}
+		    </if>
+			<if test="p.parentId!=null ">
+		    	and pt.parent_id=#{p.parentId}
 		    </if>
 		</if>
 		<!--

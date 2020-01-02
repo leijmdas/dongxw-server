@@ -1,19 +1,18 @@
 package com.kunlong.dongxw.dongxw.service.impl;
 
 import java.util.List;
-
-import com.kunlong.dongxw.dongxw.dao.ProductTypeMapper;
-import com.kunlong.dongxw.dongxw.domain.ProductType;
-import com.kunlong.dongxw.dongxw.service.ProductTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.kunlong.dongxw.dongxw.domain.ProductType;
+import com.kunlong.dongxw.dongxw.dao.ProductTypeMapper;
+import com.kunlong.dongxw.dongxw.service.ProductTypeService;
 import org.mybatis.hbatis.orm.criteria.statement.SelectStatement;
 import org.mybatis.hbatis.orm.criteria.statement.UpdateStatement;
 import org.mybatis.hbatis.orm.criteria.support.StatementBuilder;
 /**
  * ProductTypeServiceImpl
  * @author generator
- * @date 2019年12月26日
+ * @date 2020年01月02日
  */
 @Service
 public class ProductTypeServiceImpl implements ProductTypeService {

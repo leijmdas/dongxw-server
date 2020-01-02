@@ -13,7 +13,7 @@ import org.mybatis.hbatis.orm.criteria.support.query.SortOrders;
 /**
  * ProductType 
  * @author generator
- * @date 2019年12月26日
+ * @date 2020年01月02日
  */
 @Table(ProductType.EntityNode.class)
 public class ProductType implements Serializable {
@@ -27,9 +27,10 @@ public class ProductType implements Serializable {
 	private Integer id;
 	/**
 	  * 有效标识
-	  * nullable:true,length:4
+	  * nullable:false,length:4
 	  */
 	@Column(comment = "有效标识")	
+	@NotNull
 	private Byte active;
 	/**
 	  * 编码
@@ -43,6 +44,13 @@ public class ProductType implements Serializable {
 	  */
 	@Column(comment = "产品类型名称")	
 	private String name;
+	/**
+	  * 父类
+	  * nullable:false,length:4
+	  */
+	@Column(comment = "父类")	
+	@NotNull
+	private Integer parentId;
     public Integer getId(){
     	return this.id;
     }
@@ -67,6 +75,12 @@ public class ProductType implements Serializable {
     public void setName(String name){
     	this.name = name;
     }
+    public Integer getParentId(){
+    	return this.parentId;
+    }
+    public void setParentId(Integer parentId){
+    	this.parentId = parentId;
+    }
 
     public static class EntityNode extends AbstractEntityNode<ProductType> {
         public static final EntityNode INSTANCE = new EntityNode("pt");;
@@ -78,6 +92,8 @@ public class ProductType implements Serializable {
         public FieldNode<ProductType, String> code =  createFieldNode("code","code",String.class,JdbcType.VARCHAR);
     	/** 产品类型名称 */
         public FieldNode<ProductType, String> name =  createFieldNode("name","name",String.class,JdbcType.VARCHAR);
+    	/** 父类 */
+        public FieldNode<ProductType, Integer> parentId =  createFieldNode("parentId","parent_id",Integer.class,JdbcType.INTEGER);
 	
         /**
          * @param alias 别名

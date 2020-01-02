@@ -29,11 +29,28 @@ import java.util.List;
 public final class ProductTypeController {
     @Autowired
     ProductTypeService productTypeService;
-
     @RequestMapping("/findById/{id}")
-    public JsonResult<ProductType> findById(@PathVariable("id") Integer id,HttpServletResponse response) throws IOException {
+    public JsonResult<ProductType> findById(@PathVariable("id") Integer id, HttpServletResponse response) throws IOException {
 
-       return   JsonResult.success(productTypeService.findById(id))    ;
+        return JsonResult.success(productTypeService.findById(id));
+    }
+
+    void checkSubType(int parentId) throws IOException {
+        ProductType.QueryParam queryParam = new ProductType.QueryParam();
+        queryParam.setParam(new ProductType());
+        queryParam.getParam().setParentId(parentId);
+        long num = productTypeService.countByQueryParam(queryParam);
+        if (num > 0) {
+            throw new RuntimeException("大类有小类不能删除!");
+        }
+
+    }
+
+    @RequestMapping("/deleteById/{id}")
+    public JsonResult<Integer> deleteById(@PathVariable("id") Integer id, HttpServletResponse response) throws IOException {
+        checkSubType(id);
+        productTypeService.deleteById(id);
+        return JsonResult.success();
     }
 
     @RequestMapping("/save")
@@ -47,6 +64,7 @@ public final class ProductTypeController {
 
         return JsonResult.success(productType.getId());
     }
+
 
 
     @RequestMapping("/query")

@@ -1,12 +1,11 @@
 package com.kunlong.dongxw.dongxw.service;
 
 import com.kunlong.dongxw.dongxw.domain.ProductType;
-
 import java.util.List;
 /**
  * ProductTypeService
  * @author generator
- * @date 2019年12月26日
+ * @date 2020年01月02日
  */
 public interface ProductTypeService {
 	
@@ -71,5 +70,5 @@ public interface ProductTypeService {
 	 * @param items
 	 * @param field
 	 */
-	public void fillValues(List<ProductType> items, ProductType.ValueField... field);
+	public void fillValues(List<ProductType> items,ProductType.ValueField ...field);
 }
