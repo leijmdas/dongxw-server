@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kunlong.dongxw.dongxw.dao.DocumentMapper" >
+	<resultMap id="BaseResultMap" type="com.kunlong.dongxw.dongxw.domain.Document" >
+	    <id column="id" property="id" jdbcType="BIGINT" />	
+	  	<result column="name" property="name" jdbcType="VARCHAR" />
+	  	<result column="type" property="type" jdbcType="SMALLINT" />
+	  	<result column="save_mode" property="saveMode" jdbcType="TINYINT" />
+	  	<result column="pic_type" property="picType" jdbcType="VARCHAR" />
+	  	<result column="url" property="url" jdbcType="VARCHAR" />
+	  	<result column="qrcode" property="qrcode" jdbcType="VARCHAR" />
+	  	<result column="size" property="size" jdbcType="INTEGER" />
+	  	<result column="document" property="document" jdbcType="LONGVARBINARY" />
+	  	<result column="save_time" property="saveTime" jdbcType="TIMESTAMP" />
+	  	<result column="compress_flag" property="compressFlag" jdbcType="TINYINT" />
+    </resultMap>
+    <resultMap id="BaseResultMap_Document" type="com.kunlong.dongxw.dongxw.domain.Document" >
+	    <id column="dd_id" property="id" jdbcType="BIGINT" />	
+	  	<result column="dd_name" property="name" jdbcType="VARCHAR" />
+	  	<result column="dd_type" property="type" jdbcType="SMALLINT" />
+	  	<result column="dd_save_mode" property="saveMode" jdbcType="TINYINT" />
+	  	<result column="dd_pic_type" property="picType" jdbcType="VARCHAR" />
+	  	<result column="dd_url" property="url" jdbcType="VARCHAR" />
+	  	<result column="dd_qrcode" property="qrcode" jdbcType="VARCHAR" />
+	  	<result column="dd_size" property="size" jdbcType="INTEGER" />
+	  	<result column="dd_document" property="document" jdbcType="LONGVARBINARY" />
+	  	<result column="dd_save_time" property="saveTime" jdbcType="TIMESTAMP" />
+	  	<result column="dd_compress_flag" property="compressFlag" jdbcType="TINYINT" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+  		id,name,type,save_mode,pic_type,url,qrcode,size,document,save_time,compress_flag
+	</sql>
+  	<sql id="Base_Column_List_Document" >
+  		dd.id dd_id,dd.name dd_name,dd.type dd_type,dd.save_mode dd_save_mode,dd.pic_type dd_pic_type,dd.url dd_url,dd.qrcode dd_qrcode,dd.size dd_size,dd.document dd_document,dd.save_time dd_save_time,dd.compress_flag dd_compress_flag
+	</sql>
+	
+	<!-- 系统自定义 -->
+	<!-- 实体参数查询结果[START] -->
+	<resultMap id="ResultMap_FindByQueryParam" type="com.kunlong.dongxw.dongxw.domain.Document" extends="BaseResultMap_Document">
+		
+	</resultMap>
+
+	<sql id="Condition_FindByQueryParam">
+		<if test="queryParam.param!=null">
+			<bind name="p" value="queryParam.param"/>
+			<if test="p.id!=null ">
+		    	and dd.id=#{p.id}
+		    </if>
+			<if test="p.name!=null and p.name!=''">
+		    	and dd.name like #{p.name}
+		    </if>
+			<if test="p.type!=null ">
+		    	and dd.type=#{p.type}
+		    </if>
+			<if test="p.saveMode!=null ">
+		    	and dd.save_mode=#{p.saveMode}
+		    </if>
+			<if test="p.picType!=null and p.picType!=''">
+		    	and dd.pic_type like #{p.picType}
+		    </if>
+			<if test="p.url!=null and p.url!=''">
+		    	and dd.url like #{p.url}
+		    </if>
+			<if test="p.qrcode!=null and p.qrcode!=''">
+		    	and dd.qrcode like #{p.qrcode}
+		    </if>
+			<if test="p.size!=null ">
+		    	and dd.size=#{p.size}
+		    </if>
+			<if test="p.document!=null ">
+		    	and dd.document=#{p.document}
+		    </if>
+			<if test="p.saveTime!=null ">
+		    	and dd.save_time=#{p.saveTime}
+		    </if>
+			<if test="p.compressFlag!=null ">
+		    	and dd.compress_flag=#{p.compressFlag}
+		    </if>
+		</if>
+		<!--
+		<bind name="rp" value="queryParam.ruleParam" />
+		<include refid="org.mybatis.hbatis.orm.mapper.HbatisMapper.RuleParam"/>
+		-->
+	</sql>
+	<select id="findByQueryParam" resultMap="ResultMap_FindByQueryParam">
+		select
+		<include refid="Base_Column_List_Document"></include>
+		from dxw_document dd where 1=1
+		<include refid="Condition_FindByQueryParam"></include>
+		<if test="queryParam.sortOrders!=null and queryParam.sortOrders.size() gt 0">
+			order by 
+			<foreach collection="queryParam.sortOrders" item="item" separator=",">
+				${item.sortField.sqlColumn} ${item.sortType}
+			</foreach>
+		</if>
+		<if test="queryParam.limit gt 0">
+	  		limit ${queryParam.start},${queryParam.limit}
+	  	</if>
+	</select>
+	<select id="countByQueryParam" resultType="long">
+		select count(1) from dxw_document dd where 1=1
+		<include refid="Condition_FindByQueryParam"></include>
+	</select>
+	
+	<!-- 实体参数查询结果[END] -->
+	<!-- 用户自定义 -->
+	
+</mapper>

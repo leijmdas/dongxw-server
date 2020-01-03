@@ -90,8 +90,8 @@ public class TestQRcode extends ITestImpl {
     @JTestClass.exp("ok")
     public void test_0002_genQR() throws Exception {
 
-        byte[] b=genQR("http://120.78.136.63/#/index",null);
-        try(FileOutputStream fo=new FileOutputStream(new File("/url.png"))) {
+        byte[] b=genQR("http://120.78.136.63:8888/group1/M00/00/00/rBIvIF4O0CCAHhqQAAAKStJzL20007.png",null);
+        try(FileOutputStream fo=new FileOutputStream(new File("/orderUrl.png"))) {
             fo.write(b);
         }
 
