@@ -12,7 +12,7 @@ import org.mybatis.hbatis.orm.criteria.support.query.SortOrders;
 /**
  * Product 产品
  * @author generator
- * @date 2019年12月29日
+ * @date 2020年01月03日
  */
 @Table(Product.EntityNode.class)
 public class Product implements Serializable {
@@ -46,18 +46,24 @@ public class Product implements Serializable {
 	@NotNull
 	private String remark;
 	/**
-	  * 产品类型 
+	  * 父类
 	  * nullable:false,length:11
 	  */
-	@Column(comment = "产品类型 ")	
+	@Column(comment = "父类")	
+	@NotNull
+	private Integer parentId;
+	/**
+	  * 产品小类 
+	  * nullable:false,length:11
+	  */
+	@Column(comment = "产品小类 ")	
 	@NotNull
 	private Integer productTypeId;
 	/**
 	  * 图片 
-	  * nullable:false,length:128
+	  * nullable:true,length:128
 	  */
 	@Column(comment = "图片 ")	
-	@NotNull
 	private String picUrl;
 	/**
 	  * 条码 
@@ -67,19 +73,19 @@ public class Product implements Serializable {
 	@NotNull
 	private String barCode;
 	/**
-	  * UPC-A 
-	  * nullable:false,length:32
-	  */
-	@Column(comment = "UPC-A ")	
-	@NotNull
-	private String upcA;
-	/**
-	  * 颜色 
+	  * 配色 
 	  * nullable:false,length:16
 	  */
-	@Column(comment = "颜色 ")	
+	@Column(comment = "配色 ")	
 	@NotNull
 	private String color;
+	/**
+	  * 单位 
+	  * nullable:false,length:16
+	  */
+	@Column(comment = "单位 ")	
+	@NotNull
+	private String unit;
 	/**
 	  * 尺寸 
 	  * nullable:false,length:24
@@ -87,6 +93,13 @@ public class Product implements Serializable {
 	@Column(comment = "尺寸 ")	
 	@NotNull
 	private String size;
+	/**
+	  * UPC-A 
+	  * nullable:false,length:32
+	  */
+	@Column(comment = "UPC-A ")	
+	@NotNull
+	private String upcA;
 	/**
 	  * 状态 1-使用 0-停用
 	  * nullable:false,length:11
@@ -125,6 +138,12 @@ public class Product implements Serializable {
     public void setRemark(String remark){
     	this.remark = remark;
     }
+    public Integer getParentId(){
+    	return this.parentId;
+    }
+    public void setParentId(Integer parentId){
+    	this.parentId = parentId;
+    }
     public Integer getProductTypeId(){
     	return this.productTypeId;
     }
@@ -143,23 +162,29 @@ public class Product implements Serializable {
     public void setBarCode(String barCode){
     	this.barCode = barCode;
     }
-    public String getUpcA(){
-    	return this.upcA;
-    }
-    public void setUpcA(String upcA){
-    	this.upcA = upcA;
-    }
     public String getColor(){
     	return this.color;
     }
     public void setColor(String color){
     	this.color = color;
     }
+    public String getUnit(){
+    	return this.unit;
+    }
+    public void setUnit(String unit){
+    	this.unit = unit;
+    }
     public String getSize(){
     	return this.size;
     }
     public void setSize(String size){
     	this.size = size;
+    }
+    public String getUpcA(){
+    	return this.upcA;
+    }
+    public void setUpcA(String upcA){
+    	this.upcA = upcA;
     }
     public Integer getStatus(){
     	return this.status;
@@ -184,18 +209,22 @@ public class Product implements Serializable {
         public FieldNode<Product, String> code =  createFieldNode("code","code",String.class,JdbcType.VARCHAR);
     	/** 描述  */
         public FieldNode<Product, String> remark =  createFieldNode("remark","remark",String.class,JdbcType.VARCHAR);
-    	/** 产品类型  */
+    	/** 父类 */
+        public FieldNode<Product, Integer> parentId =  createFieldNode("parentId","parent_id",Integer.class,JdbcType.INTEGER);
+    	/** 产品小类  */
         public FieldNode<Product, Integer> productTypeId =  createFieldNode("productTypeId","product_type_id",Integer.class,JdbcType.INTEGER);
     	/** 图片  */
         public FieldNode<Product, String> picUrl =  createFieldNode("picUrl","pic_url",String.class,JdbcType.VARCHAR);
     	/** 条码  */
         public FieldNode<Product, String> barCode =  createFieldNode("barCode","bar_code",String.class,JdbcType.VARCHAR);
-    	/** UPC-A  */
-        public FieldNode<Product, String> upcA =  createFieldNode("upcA","upc_a",String.class,JdbcType.VARCHAR);
-    	/** 颜色  */
+    	/** 配色  */
         public FieldNode<Product, String> color =  createFieldNode("color","color",String.class,JdbcType.VARCHAR);
+    	/** 单位  */
+        public FieldNode<Product, String> unit =  createFieldNode("unit","unit",String.class,JdbcType.VARCHAR);
     	/** 尺寸  */
         public FieldNode<Product, String> size =  createFieldNode("size","size",String.class,JdbcType.VARCHAR);
+    	/** UPC-A  */
+        public FieldNode<Product, String> upcA =  createFieldNode("upcA","upc_a",String.class,JdbcType.VARCHAR);
     	/** 状态 1-使用 0-停用 */
         public FieldNode<Product, Integer> status =  createFieldNode("status","status",Integer.class,JdbcType.INTEGER);
     	/** 备注  */
@@ -218,14 +247,25 @@ public class Product implements Serializable {
 	
 	public static enum ValueField {
 	}
-    // ==== 自定义属性 ==== 
-	ProductType  productType ;
-	public ProductType getProductType () {
+    // ==== 自定义属性 ====
+
+
+	public ProductType getProductType() {
 		return productType;
 	}
 
-	public void setProductType (ProductType productType) {
+	public void setProductType(ProductType productType) {
 		this.productType = productType;
 	}
 
+	public ProductType getProductSubType() {
+		return productSubType;
+	}
+
+	public void setProductSubType(ProductType productSubType) {
+		this.productSubType = productSubType;
+	}
+
+	ProductType productType;
+    ProductType productSubType;
 }

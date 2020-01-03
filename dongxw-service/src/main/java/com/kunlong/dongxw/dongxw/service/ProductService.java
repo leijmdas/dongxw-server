@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * ProductService
  * @author generator
- * @date 2019年12月29日
+ * @date 2020年01月03日
  */
 public interface ProductService {
 	
@@ -13,7 +13,7 @@ public interface ProductService {
 	 * 保存
 	 * @param entity
 	 */
-	public int save(Product entity);
+	public void save(Product entity);
 
 	/**
 	 * 修改
@@ -70,5 +70,5 @@ public interface ProductService {
 	 * @param items
 	 * @param field
 	 */
-	public void fillValues(List<Product> items, Product.ValueField... field);
+	public void fillValues(List<Product> items,Product.ValueField ...field);
 }

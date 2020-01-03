@@ -7,15 +7,15 @@ import com.kunlong.dongxw.dongxw.domain.Product;
 /**
  * ProductMapper
  * @author generator
- * @date 2019年12月29日
+ * @date 2020年01月03日
  */
 public interface ProductMapper extends HbatisMapper<Product, Integer> {
 	
 	
 	//-- 按实体参数查询[START] 
-	List<Product> findByQueryParam(@Param("queryParam") Product.QueryParam queryParam);
+	List<Product> findByQueryParam(@Param("queryParam")Product.QueryParam queryParam);
 	
-	long countByQueryParam(@Param("queryParam") Product.QueryParam queryParam);
+	long countByQueryParam(@Param("queryParam")Product.QueryParam queryParam);
 	//-- 按实体参数查询[END] 
 	
 	//-- 自定义业务方法，请写在下方 -->

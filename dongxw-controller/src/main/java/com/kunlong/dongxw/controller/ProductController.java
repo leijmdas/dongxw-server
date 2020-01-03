@@ -81,7 +81,8 @@ public final class ProductController {
         pageResult.setData(productService.findByQueryParam(queryParam));
 
         for(Product product : pageResult.getData()){
-            product.setProductType(productTypeService.findById(product.getProductTypeId()));
+            product.setProductSubType(productTypeService.findById(product.getProductTypeId()));
+            product.setProductType(productTypeService.findById(product.getParentId()));
         }
         return pageResult;
     }
