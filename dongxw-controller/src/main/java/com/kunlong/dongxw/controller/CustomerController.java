@@ -12,6 +12,7 @@ import com.kunlong.dongxw.dongxw.domain.Customer;
 import com.kunlong.dongxw.dongxw.service.CustomerService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
+import io.swagger.models.auth.In;
 import org.apache.dubbo.config.annotation.Reference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +34,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(ApiConstants.AUTH_API_WEB_DONGXW+"/customer")
-public final class CustomerController {
+public final class CustomerController extends BaseController{
     @Autowired
     CustomerService customerService;
 
@@ -42,15 +43,20 @@ public final class CustomerController {
 
     @RequestMapping("/findById/{id}")
     public JsonResult<Customer> findById(@PathVariable("id") Integer id,HttpServletResponse response) throws IOException {
-//        response.addHeader("Access-Control-Allow-Origin", "*");
-//        response.addHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-        return   JsonResult.success(customerService.findById(id))    ;
+       return   JsonResult.success(customerService.findById(id))    ;
+    }
+    @RequestMapping("/deleteById/{id}")
+    public JsonResult<Integer> deleteById(@PathVariable("id") Integer id, HttpServletResponse response) throws IOException {
+        customerService.deleteById(id);
+        return   JsonResult.success()    ;
     }
 
     @RequestMapping("/save")
     public JsonResult<Integer> save(@RequestBody Customer customer) {
 
         if (customer.getId() == null) {
+            customer.setCreateBy(getCurrentUserId());
+            customer.setCreateDate(new Date());
             customerService.save(customer);
         } else {
             customerService.update(customer);
