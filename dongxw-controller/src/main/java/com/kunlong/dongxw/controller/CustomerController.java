@@ -104,10 +104,11 @@ public final class CustomerController extends BaseController{
         strings.add("客户详细名称");
         strings.add("客户国家");
         strings.add("客户地址");
-        strings.add("结算币种");
         strings.add("联系人");
         strings.add("联系人电话");
+        strings.add("传真");
         strings.add("建档日期");
+        strings.add("结算币种");
 
         return strings;
     }
@@ -134,11 +135,12 @@ public final class CustomerController extends BaseController{
             r.add(customer.getCustSname());
             r.add(customer.getCountry());
             r.add(customer.getAddr());
-            r.add(MoneyTypeConsts.getMoneyType(customer.getMoneyType()));
             r.add(customer.getContact());
 
             r.add(customer.getTel());
+            r.add(customer.getFax());
             r.add(transDate(customer.getCreateDate()));
+            r.add(MoneyTypeConsts.getMoneyType(customer.getMoneyType()));
 
             records.add(r);
         }
