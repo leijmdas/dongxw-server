@@ -4,12 +4,14 @@ import java.io.Serializable;
 import java.lang.Integer;
 import java.lang.String;
 import java.math.BigDecimal;
+import java.util.Date;
+import java.lang.Byte;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 /**
  * OrderLine
  * @author generator
- * @date 2020年01月01日
+ * @date 2020年01月04日
  */
 @ApiModel(value="OrderLineDTO",description="订单产品表")
 public class OrderLineDTO implements Serializable {
@@ -27,6 +29,18 @@ public class OrderLineDTO implements Serializable {
 	  */
 	@ApiModelProperty(value = "订单标识 ",required = true,notes = "订单标识  ")
 	private Integer orderId;
+	/**
+	  * 产品大类 
+	  * nullable:false,length:11
+	  */
+	@ApiModelProperty(value = "产品大类 ",required = true,notes = "产品大类  ")
+	private Integer parentId;
+	/**
+	  * 产品小类 
+	  * nullable:false,length:11
+	  */
+	@ApiModelProperty(value = "产品小类 ",required = true,notes = "产品小类  ")
+	private Integer productTypeId;
 	/**
 	  * 产品标识 
 	  * nullable:false,length:11
@@ -95,16 +109,16 @@ public class OrderLineDTO implements Serializable {
 	private Integer supplierId;
 	/**
 	  * 主料 
-	  * nullable:false,length:256
+	  * nullable:false,length:512
 	  */
 	@ApiModelProperty(value = "主料 ",required = true,notes = "主料  ")
 	private String material;
 	/**
 	  * 内盒数量 
-	  * nullable:false,length:32
+	  * nullable:false,length:11
 	  */
 	@ApiModelProperty(value = "内盒数量 ",required = true,notes = "内盒数量  ")
-	private String ibQty;
+	private Integer ibQty;
 	/**
 	  * 毛重 
 	  * nullable:false,length:10
@@ -125,10 +139,10 @@ public class OrderLineDTO implements Serializable {
 	private String ibSize;
 	/**
 	  * 外箱数量 
-	  * nullable:false,length:32
+	  * nullable:false,length:11
 	  */
 	@ApiModelProperty(value = "外箱数量 ",required = true,notes = "外箱数量  ")
-	private String obQty;
+	private Integer obQty;
 	/**
 	  * 毛重 
 	  * nullable:false,length:10
@@ -147,6 +161,30 @@ public class OrderLineDTO implements Serializable {
 	  */
 	@ApiModelProperty(value = "外箱尺寸 ",required = true,notes = "外箱尺寸  ")
 	private String obSize;
+	/**
+	  * 建档时间 
+	  * nullable:true,length:19
+	  */
+	@ApiModelProperty(value = "建档时间 ",required = false,notes = "建档时间  ")
+	private Date createDate;
+	/**
+	  * 建档人 
+	  * nullable:false,length:11
+	  */
+	@ApiModelProperty(value = "建档人 ",required = true,notes = "建档人  ")
+	private Integer createBy;
+	/**
+	  * 备注 
+	  * nullable:true,length:256
+	  */
+	@ApiModelProperty(value = "备注 ",required = false,notes = "备注  ")
+	private String remark;
+	/**
+	  * 状态 
+	  * nullable:false,length:4
+	  */
+	@ApiModelProperty(value = "状态 ",required = true,notes = "状态  ")
+	private Byte status;
     public Integer getId(){
     	return this.id;
     }
@@ -158,6 +196,18 @@ public class OrderLineDTO implements Serializable {
     }
     public void setOrderId(Integer orderId){
     	this.orderId = orderId;
+    }
+    public Integer getParentId(){
+    	return this.parentId;
+    }
+    public void setParentId(Integer parentId){
+    	this.parentId = parentId;
+    }
+    public Integer getProductTypeId(){
+    	return this.productTypeId;
+    }
+    public void setProductTypeId(Integer productTypeId){
+    	this.productTypeId = productTypeId;
     }
     public Integer getProductId(){
     	return this.productId;
@@ -231,10 +281,10 @@ public class OrderLineDTO implements Serializable {
     public void setMaterial(String material){
     	this.material = material;
     }
-    public String getIbQty(){
+    public Integer getIbQty(){
     	return this.ibQty;
     }
-    public void setIbQty(String ibQty){
+    public void setIbQty(Integer ibQty){
     	this.ibQty = ibQty;
     }
     public BigDecimal getIbGw(){
@@ -255,10 +305,10 @@ public class OrderLineDTO implements Serializable {
     public void setIbSize(String ibSize){
     	this.ibSize = ibSize;
     }
-    public String getObQty(){
+    public Integer getObQty(){
     	return this.obQty;
     }
-    public void setObQty(String obQty){
+    public void setObQty(Integer obQty){
     	this.obQty = obQty;
     }
     public BigDecimal getObGw(){
@@ -278,6 +328,30 @@ public class OrderLineDTO implements Serializable {
     }
     public void setObSize(String obSize){
     	this.obSize = obSize;
+    }
+    public Date getCreateDate(){
+    	return this.createDate;
+    }
+    public void setCreateDate(Date createDate){
+    	this.createDate = createDate;
+    }
+    public Integer getCreateBy(){
+    	return this.createBy;
+    }
+    public void setCreateBy(Integer createBy){
+    	this.createBy = createBy;
+    }
+    public String getRemark(){
+    	return this.remark;
+    }
+    public void setRemark(String remark){
+    	this.remark = remark;
+    }
+    public Byte getStatus(){
+    	return this.status;
+    }
+    public void setStatus(Byte status){
+    	this.status = status;
     }
     // ==== 自定义属性 ====
 }

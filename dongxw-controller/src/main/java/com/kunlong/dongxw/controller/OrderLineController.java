@@ -5,8 +5,7 @@ import app.support.query.PageResult;
 import com.kunlong.dongxw.annotation.DateRewritable;
 import com.kunlong.dongxw.consts.ApiConstants;
 import com.kunlong.dongxw.dongxw.domain.OrderLine;
-import com.kunlong.dongxw.dongxw.service.CustomerService;
-import com.kunlong.dongxw.dongxw.service.OrderLineService;
+import com.kunlong.dongxw.dongxw.service.*;
 import com.kunlong.dongxw.util.WebFileUtil;
 import com.kunlong.platform.utils.JsonResult;
 import io.swagger.annotations.ApiOperation;
@@ -18,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -31,12 +31,16 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/dongxw/orderline")
-public final class OrderLineController {
+public final class OrderLineController extends BaseController {
     @Autowired
     OrderLineService orderLineService;
 
     @Autowired
-    CustomerService customerService;
+    SupplierService supplierService;
+    @Autowired
+    ProductTypeService productTypeService;
+    @Autowired
+    ProductService productService;
 
     @RequestMapping("/findById/{id}")
     public JsonResult<OrderLine> findById(@PathVariable("id") Integer id, HttpServletResponse response) throws IOException {
@@ -46,7 +50,11 @@ public final class OrderLineController {
     @RequestMapping("/save")
     public JsonResult<Integer> save(@RequestBody OrderLine orderLine) {
 
+        orderLine.setMoney(orderLine.getPrice().multiply(new BigDecimal(orderLine.getQty())));
+
         if (orderLine.getId() == null) {
+            orderLine.setCreateBy(getCurrentUserId());
+            orderLine.setCreateDate(new Date());
             orderLineService.save(orderLine);
         } else {
             orderLineService.update(orderLine);
@@ -76,7 +84,10 @@ public final class OrderLineController {
         pageResult.setData(orderLineService.findByQueryParam(queryParam));
 
         for(OrderLine orderLine : pageResult.getData()){
-            //orderLine.setCustomer(customerService.findById(orderLine.getCustomerId()));
+            orderLine.setSupplier (supplierService.findById(orderLine.getSupplierId()));
+            orderLine.setParentProductType (productTypeService.findById(orderLine.getParentId()));
+            orderLine.setProductType (productTypeService.findById(orderLine.getProductTypeId()));
+            orderLine.setProduct(productService.findById(orderLine.getProductId()));
         }
         return pageResult;
     }
@@ -93,19 +104,12 @@ public final class OrderLineController {
         queryParam.setStart(0);
 
         WebFileUtil web = new WebFileUtil(req,rsp);
-        List<OrderLine> orderLines = orderLineService.findByQueryParam(queryParam);;
-        web.export2EasyExcelObject("订单产品表.xlsx", buildTitles(),buildRecords(orderLines));
+        PageResult<OrderLine> pageResult = query(queryParam);;
+        web.export2EasyExcelObject("订单产品表.xlsx", buildTitles(),buildRecords(pageResult.getData()));
 
     }
 
-    List<String> buildTitles() {
-        List<String> strings = new ArrayList<>();
 
-        strings.add("主料");
-        strings.add("数量");
-
-        return strings;
-    }
 
     String transDatetime(Date d) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -116,17 +120,32 @@ public final class OrderLineController {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         return sdf.format(d);
     }
+    List<String> buildTitles() {
+        List<String> strings = new ArrayList<>();
 
+        //strings.add("主料");
+
+        strings.add("产品");
+        strings.add("数量");
+        strings.add("单价");
+        strings.add("金额");
+
+        return strings;
+    }
     List<List<Object>> buildRecords(List<OrderLine> orderMasters) {
         List<List<Object>> records = new ArrayList<>();
         for (OrderLine orderLine : orderMasters) {
             List<Object> r = new ArrayList<>();
-            if(orderLine.getMaterial()!=null) {
-                r.add(orderLine.getMaterial());
-            }else{
-                r.add("");
-            }
+//            if(orderLine.getMaterial()!=null) {
+//                r.add(orderLine.getMaterial());
+//            }else{
+//                r.add("");
+//            }
+
+            r.add(orderLine.getProduct().getCode());
             r.add(orderLine.getQty());
+            r.add(orderLine.getPrice());
+            r.add(orderLine.getMoney());
 
 
             records.add(r);

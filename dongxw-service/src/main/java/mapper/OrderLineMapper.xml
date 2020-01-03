@@ -4,6 +4,8 @@
 	<resultMap id="BaseResultMap" type="com.kunlong.dongxw.dongxw.domain.OrderLine" >
 	    <id column="id" property="id" jdbcType="INTEGER" />	
 	  	<result column="order_id" property="orderId" jdbcType="INTEGER" />
+	  	<result column="parent_id" property="parentId" jdbcType="INTEGER" />
+	  	<result column="product_type_id" property="productTypeId" jdbcType="INTEGER" />
 	  	<result column="product_id" property="productId" jdbcType="INTEGER" />
 	  	<result column="customer_code" property="customerCode" jdbcType="VARCHAR" />
 	  	<result column="pic_url" property="picUrl" jdbcType="VARCHAR" />
@@ -16,18 +18,24 @@
 	  	<result column="money" property="money" jdbcType="DECIMAL" />
 	  	<result column="supplier_id" property="supplierId" jdbcType="INTEGER" />
 	  	<result column="material" property="material" jdbcType="VARCHAR" />
-	  	<result column="ib_qty" property="ibQty" jdbcType="VARCHAR" />
+	  	<result column="ib_qty" property="ibQty" jdbcType="INTEGER" />
 	  	<result column="ib_gw" property="ibGw" jdbcType="DECIMAL" />
 	  	<result column="ib_nw" property="ibNw" jdbcType="DECIMAL" />
 	  	<result column="ib_size" property="ibSize" jdbcType="VARCHAR" />
-	  	<result column="ob_qty" property="obQty" jdbcType="VARCHAR" />
+	  	<result column="ob_qty" property="obQty" jdbcType="INTEGER" />
 	  	<result column="ob_gw" property="obGw" jdbcType="DECIMAL" />
 	  	<result column="ob_nw" property="obNw" jdbcType="DECIMAL" />
 	  	<result column="ob_size" property="obSize" jdbcType="VARCHAR" />
+	  	<result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+	  	<result column="create_by" property="createBy" jdbcType="INTEGER" />
+	  	<result column="remark" property="remark" jdbcType="VARCHAR" />
+	  	<result column="status" property="status" jdbcType="TINYINT" />
     </resultMap>
     <resultMap id="BaseResultMap_OrderLine" type="com.kunlong.dongxw.dongxw.domain.OrderLine" >
 	    <id column="ol_id" property="id" jdbcType="INTEGER" />	
 	  	<result column="ol_order_id" property="orderId" jdbcType="INTEGER" />
+	  	<result column="ol_parent_id" property="parentId" jdbcType="INTEGER" />
+	  	<result column="ol_product_type_id" property="productTypeId" jdbcType="INTEGER" />
 	  	<result column="ol_product_id" property="productId" jdbcType="INTEGER" />
 	  	<result column="ol_customer_code" property="customerCode" jdbcType="VARCHAR" />
 	  	<result column="ol_pic_url" property="picUrl" jdbcType="VARCHAR" />
@@ -40,20 +48,24 @@
 	  	<result column="ol_money" property="money" jdbcType="DECIMAL" />
 	  	<result column="ol_supplier_id" property="supplierId" jdbcType="INTEGER" />
 	  	<result column="ol_material" property="material" jdbcType="VARCHAR" />
-	  	<result column="ol_ib_qty" property="ibQty" jdbcType="VARCHAR" />
+	  	<result column="ol_ib_qty" property="ibQty" jdbcType="INTEGER" />
 	  	<result column="ol_ib_gw" property="ibGw" jdbcType="DECIMAL" />
 	  	<result column="ol_ib_nw" property="ibNw" jdbcType="DECIMAL" />
 	  	<result column="ol_ib_size" property="ibSize" jdbcType="VARCHAR" />
-	  	<result column="ol_ob_qty" property="obQty" jdbcType="VARCHAR" />
+	  	<result column="ol_ob_qty" property="obQty" jdbcType="INTEGER" />
 	  	<result column="ol_ob_gw" property="obGw" jdbcType="DECIMAL" />
 	  	<result column="ol_ob_nw" property="obNw" jdbcType="DECIMAL" />
 	  	<result column="ol_ob_size" property="obSize" jdbcType="VARCHAR" />
+	  	<result column="ol_create_date" property="createDate" jdbcType="TIMESTAMP" />
+	  	<result column="ol_create_by" property="createBy" jdbcType="INTEGER" />
+	  	<result column="ol_remark" property="remark" jdbcType="VARCHAR" />
+	  	<result column="ol_status" property="status" jdbcType="TINYINT" />
     </resultMap>
     <sql id="Base_Column_List" >
-  		id,order_id,product_id,customer_code,pic_url,size,color,qty,unit,price,currency,money,supplier_id,material,ib_qty,ib_gw,ib_nw,ib_size,ob_qty,ob_gw,ob_nw,ob_size
+  		id,order_id,parent_id,product_type_id,product_id,customer_code,pic_url,size,color,qty,unit,price,currency,money,supplier_id,material,ib_qty,ib_gw,ib_nw,ib_size,ob_qty,ob_gw,ob_nw,ob_size,create_date,create_by,remark,status
 	</sql>
   	<sql id="Base_Column_List_OrderLine" >
-  		ol.id ol_id,ol.order_id ol_order_id,ol.product_id ol_product_id,ol.customer_code ol_customer_code,ol.pic_url ol_pic_url,ol.size ol_size,ol.color ol_color,ol.qty ol_qty,ol.unit ol_unit,ol.price ol_price,ol.currency ol_currency,ol.money ol_money,ol.supplier_id ol_supplier_id,ol.material ol_material,ol.ib_qty ol_ib_qty,ol.ib_gw ol_ib_gw,ol.ib_nw ol_ib_nw,ol.ib_size ol_ib_size,ol.ob_qty ol_ob_qty,ol.ob_gw ol_ob_gw,ol.ob_nw ol_ob_nw,ol.ob_size ol_ob_size
+  		ol.id ol_id,ol.order_id ol_order_id,ol.parent_id ol_parent_id,ol.product_type_id ol_product_type_id,ol.product_id ol_product_id,ol.customer_code ol_customer_code,ol.pic_url ol_pic_url,ol.size ol_size,ol.color ol_color,ol.qty ol_qty,ol.unit ol_unit,ol.price ol_price,ol.currency ol_currency,ol.money ol_money,ol.supplier_id ol_supplier_id,ol.material ol_material,ol.ib_qty ol_ib_qty,ol.ib_gw ol_ib_gw,ol.ib_nw ol_ib_nw,ol.ib_size ol_ib_size,ol.ob_qty ol_ob_qty,ol.ob_gw ol_ob_gw,ol.ob_nw ol_ob_nw,ol.ob_size ol_ob_size,ol.create_date ol_create_date,ol.create_by ol_create_by,ol.remark ol_remark,ol.status ol_status
 	</sql>
 	
 	<!-- 系统自定义 -->
@@ -70,6 +82,12 @@
 		    </if>
 			<if test="p.orderId!=null ">
 		    	and ol.order_id=#{p.orderId}
+		    </if>
+			<if test="p.parentId!=null ">
+		    	and ol.parent_id=#{p.parentId}
+		    </if>
+			<if test="p.productTypeId!=null ">
+		    	and ol.product_type_id=#{p.productTypeId}
 		    </if>
 			<if test="p.productId!=null ">
 		    	and ol.product_id=#{p.productId}
@@ -107,8 +125,8 @@
 			<if test="p.material!=null and p.material!=''">
 		    	and ol.material like #{p.material}
 		    </if>
-			<if test="p.ibQty!=null and p.ibQty!=''">
-		    	and ol.ib_qty like #{p.ibQty}
+			<if test="p.ibQty!=null ">
+		    	and ol.ib_qty=#{p.ibQty}
 		    </if>
 			<if test="p.ibGw!=null ">
 		    	and ol.ib_gw=#{p.ibGw}
@@ -119,8 +137,8 @@
 			<if test="p.ibSize!=null and p.ibSize!=''">
 		    	and ol.ib_size like #{p.ibSize}
 		    </if>
-			<if test="p.obQty!=null and p.obQty!=''">
-		    	and ol.ob_qty like #{p.obQty}
+			<if test="p.obQty!=null ">
+		    	and ol.ob_qty=#{p.obQty}
 		    </if>
 			<if test="p.obGw!=null ">
 		    	and ol.ob_gw=#{p.obGw}
@@ -130,6 +148,18 @@
 		    </if>
 			<if test="p.obSize!=null and p.obSize!=''">
 		    	and ol.ob_size like #{p.obSize}
+		    </if>
+			<if test="p.createDate!=null ">
+		    	and ol.create_date=#{p.createDate}
+		    </if>
+			<if test="p.createBy!=null ">
+		    	and ol.create_by=#{p.createBy}
+		    </if>
+			<if test="p.remark!=null and p.remark!=''">
+		    	and ol.remark like #{p.remark}
+		    </if>
+			<if test="p.status!=null ">
+		    	and ol.status=#{p.status}
 		    </if>
 		</if>
 		<!--
