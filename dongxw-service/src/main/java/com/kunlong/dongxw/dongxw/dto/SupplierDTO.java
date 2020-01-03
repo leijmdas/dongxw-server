@@ -9,7 +9,7 @@ import io.swagger.annotations.ApiModelProperty;
 /**
  * Supplier
  * @author generator
- * @date 2019年12月30日
+ * @date 2020年01月03日
  */
 @ApiModel(value="SupplierDTO",description="供应商")
 public class SupplierDTO implements Serializable {
@@ -35,7 +35,7 @@ public class SupplierDTO implements Serializable {
 	private String name;
 	/**
 	  * 供应商详细名称 
-	  * nullable:false,length:64
+	  * nullable:false,length:128
 	  */
 	@ApiModelProperty(value = "供应商详细名称 ",required = true,notes = "供应商详细名称  ")
 	private String sname;
@@ -53,10 +53,10 @@ public class SupplierDTO implements Serializable {
 	private String addr;
 	/**
 	  * 结算币种 
-	  * nullable:false,length:16
+	  * nullable:false,length:11
 	  */
 	@ApiModelProperty(value = "结算币种 ",required = true,notes = "结算币种  ")
-	private String moneyType;
+	private Integer moneyType;
 	/**
 	  * 联系人 
 	  * nullable:true,length:32
@@ -65,7 +65,7 @@ public class SupplierDTO implements Serializable {
 	private String contact;
 	/**
 	  * 联系人电话 
-	  * nullable:true,length:4
+	  * nullable:true,length:24
 	  */
 	@ApiModelProperty(value = "联系人电话 ",required = false,notes = "联系人电话  ")
 	private String tel;
@@ -93,6 +93,36 @@ public class SupplierDTO implements Serializable {
 	  */
 	@ApiModelProperty(value = "建档人 ",required = true,notes = "建档人  ")
 	private Integer createBy;
+	/**
+	  * 备注 
+	  * nullable:false,length:256
+	  */
+	@ApiModelProperty(value = "备注 ",required = true,notes = "备注  ")
+	private String remark;
+	/**
+	  * 营业执照 
+	  * nullable:true,length:256
+	  */
+	@ApiModelProperty(value = "营业执照 ",required = false,notes = "营业执照  ")
+	private String businessLicense;
+	/**
+	  * 环境 
+	  * nullable:true,length:256
+	  */
+	@ApiModelProperty(value = "环境 ",required = false,notes = "环境  ")
+	private String env;
+	/**
+	  * 资质 
+	  * nullable:true,length:4
+	  */
+	@ApiModelProperty(value = "资质 ",required = false,notes = "资质  ")
+	private String intelligence;
+	/**
+	  * 
+	  * nullable:true,length:32
+	  */
+	@ApiModelProperty(value = "",required = false,notes = " ")
+	private String fax;
     public Integer getId(){
     	return this.id;
     }
@@ -129,10 +159,10 @@ public class SupplierDTO implements Serializable {
     public void setAddr(String addr){
     	this.addr = addr;
     }
-    public String getMoneyType(){
+    public Integer getMoneyType(){
     	return this.moneyType;
     }
-    public void setMoneyType(String moneyType){
+    public void setMoneyType(Integer moneyType){
     	this.moneyType = moneyType;
     }
     public String getContact(){
@@ -170,6 +200,36 @@ public class SupplierDTO implements Serializable {
     }
     public void setCreateBy(Integer createBy){
     	this.createBy = createBy;
+    }
+    public String getRemark(){
+    	return this.remark;
+    }
+    public void setRemark(String remark){
+    	this.remark = remark;
+    }
+    public String getBusinessLicense(){
+    	return this.businessLicense;
+    }
+    public void setBusinessLicense(String businessLicense){
+    	this.businessLicense = businessLicense;
+    }
+    public String getEnv(){
+    	return this.env;
+    }
+    public void setEnv(String env){
+    	this.env = env;
+    }
+    public String getIntelligence(){
+    	return this.intelligence;
+    }
+    public void setIntelligence(String intelligence){
+    	this.intelligence = intelligence;
+    }
+    public String getFax(){
+    	return this.fax;
+    }
+    public void setFax(String fax){
+    	this.fax = fax;
     }
     // ==== 自定义属性 ====
 }

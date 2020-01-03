@@ -7,6 +7,7 @@ import org.mybatis.hbatis.core.annotation.*;
 import org.mybatis.hbatis.core.*;
 import java.lang.Integer;
 import java.lang.String;
+import java.util.Date;
 import org.mybatis.hbatis.orm.criteria.support.query.AbstractQueryParam;
 import org.mybatis.hbatis.orm.criteria.support.query.SortOrders;
 /**
@@ -114,6 +115,19 @@ public class Product implements Serializable {
 	@Column(comment = "备注 ")	
 	@NotNull
 	private String memo;
+	/**
+	  * 建档时间 
+	  * nullable:true,length:19
+	  */
+	@Column(comment = "建档时间 ")	
+	private Date createDate;
+	/**
+	  * 建档人 
+	  * nullable:false,length:11
+	  */
+	@Column(comment = "建档人 ")	
+	@NotNull
+	private Integer createBy;
     public Integer getId(){
     	return this.id;
     }
@@ -198,6 +212,18 @@ public class Product implements Serializable {
     public void setMemo(String memo){
     	this.memo = memo;
     }
+    public Date getCreateDate(){
+    	return this.createDate;
+    }
+    public void setCreateDate(Date createDate){
+    	this.createDate = createDate;
+    }
+    public Integer getCreateBy(){
+    	return this.createBy;
+    }
+    public void setCreateBy(Integer createBy){
+    	this.createBy = createBy;
+    }
 
     public static class EntityNode extends AbstractEntityNode<Product> {
         public static final EntityNode INSTANCE = new EntityNode("p");;
@@ -229,6 +255,10 @@ public class Product implements Serializable {
         public FieldNode<Product, Integer> status =  createFieldNode("status","status",Integer.class,JdbcType.INTEGER);
     	/** 备注  */
         public FieldNode<Product, String> memo =  createFieldNode("memo","memo",String.class,JdbcType.VARCHAR);
+    	/** 建档时间  */
+        public FieldNode<Product, Date> createDate =  createFieldNode("createDate","create_date",Date.class,JdbcType.TIMESTAMP);
+    	/** 建档人  */
+        public FieldNode<Product, Integer> createBy =  createFieldNode("createBy","create_by",Integer.class,JdbcType.INTEGER);
 	
         /**
          * @param alias 别名
@@ -247,8 +277,6 @@ public class Product implements Serializable {
 	
 	public static enum ValueField {
 	}
-    // ==== 自定义属性 ====
-
 
 	public ProductType getProductType() {
 		return productType;
@@ -266,6 +294,9 @@ public class Product implements Serializable {
 		this.productSubType = productSubType;
 	}
 
+	// ==== 自定义属性 ====
 	ProductType productType;
-    ProductType productSubType;
+	ProductType productSubType;
+
+
 }

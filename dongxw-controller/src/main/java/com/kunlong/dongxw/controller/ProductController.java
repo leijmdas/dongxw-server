@@ -32,7 +32,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/dongxw/product")
-public final class ProductController {
+public final class ProductController extends BaseController{
     @Autowired
     ProductService productService;
 
@@ -48,6 +48,9 @@ public final class ProductController {
     public JsonResult<Integer> save(@RequestBody Product product) {
 
         if (product.getId() == null) {
+            product.setCreateBy(getCurrentUserId());
+            product.setCreateDate(new Date());
+
             productService.save(product);
         } else {
             productService.update(product);

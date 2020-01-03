@@ -13,7 +13,7 @@ import org.mybatis.hbatis.orm.criteria.support.query.SortOrders;
 /**
  * Supplier 供应商
  * @author generator
- * @date 2019年12月30日
+ * @date 2020年01月03日
  */
 @Table(Supplier.EntityNode.class)
 public class Supplier implements Serializable {
@@ -41,7 +41,7 @@ public class Supplier implements Serializable {
 	private String name;
 	/**
 	  * 供应商详细名称 
-	  * nullable:false,length:64
+	  * nullable:false,length:128
 	  */
 	@Column(comment = "供应商详细名称 ")	
 	@NotNull
@@ -61,11 +61,11 @@ public class Supplier implements Serializable {
 	private String addr;
 	/**
 	  * 结算币种 
-	  * nullable:false,length:16
+	  * nullable:false,length:11
 	  */
 	@Column(comment = "结算币种 ")	
 	@NotNull
-	private String moneyType;
+	private Integer moneyType;
 	/**
 	  * 联系人 
 	  * nullable:true,length:32
@@ -74,7 +74,7 @@ public class Supplier implements Serializable {
 	private String contact;
 	/**
 	  * 联系人电话 
-	  * nullable:true,length:4
+	  * nullable:true,length:24
 	  */
 	@Column(comment = "联系人电话 ")	
 	private String tel;
@@ -105,6 +105,37 @@ public class Supplier implements Serializable {
 	@Column(comment = "建档人 ")	
 	@NotNull
 	private Integer createBy;
+	/**
+	  * 备注 
+	  * nullable:false,length:256
+	  */
+	@Column(comment = "备注 ")	
+	@NotNull
+	private String remark;
+	/**
+	  * 营业执照 
+	  * nullable:true,length:256
+	  */
+	@Column(comment = "营业执照 ")	
+	private String businessLicense;
+	/**
+	  * 环境 
+	  * nullable:true,length:256
+	  */
+	@Column(comment = "环境 ")	
+	private String env;
+	/**
+	  * 资质 
+	  * nullable:true,length:4
+	  */
+	@Column(comment = "资质 ")	
+	private String intelligence;
+	/**
+	  * 
+	  * nullable:true,length:32
+	  */
+	@Column(comment = "")	
+	private String fax;
     public Integer getId(){
     	return this.id;
     }
@@ -141,10 +172,10 @@ public class Supplier implements Serializable {
     public void setAddr(String addr){
     	this.addr = addr;
     }
-    public String getMoneyType(){
+    public Integer getMoneyType(){
     	return this.moneyType;
     }
-    public void setMoneyType(String moneyType){
+    public void setMoneyType(Integer moneyType){
     	this.moneyType = moneyType;
     }
     public String getContact(){
@@ -183,6 +214,36 @@ public class Supplier implements Serializable {
     public void setCreateBy(Integer createBy){
     	this.createBy = createBy;
     }
+    public String getRemark(){
+    	return this.remark;
+    }
+    public void setRemark(String remark){
+    	this.remark = remark;
+    }
+    public String getBusinessLicense(){
+    	return this.businessLicense;
+    }
+    public void setBusinessLicense(String businessLicense){
+    	this.businessLicense = businessLicense;
+    }
+    public String getEnv(){
+    	return this.env;
+    }
+    public void setEnv(String env){
+    	this.env = env;
+    }
+    public String getIntelligence(){
+    	return this.intelligence;
+    }
+    public void setIntelligence(String intelligence){
+    	this.intelligence = intelligence;
+    }
+    public String getFax(){
+    	return this.fax;
+    }
+    public void setFax(String fax){
+    	this.fax = fax;
+    }
 
     public static class EntityNode extends AbstractEntityNode<Supplier> {
         public static final EntityNode INSTANCE = new EntityNode("s");;
@@ -199,7 +260,7 @@ public class Supplier implements Serializable {
     	/** 供应商地址  */
         public FieldNode<Supplier, String> addr =  createFieldNode("addr","addr",String.class,JdbcType.VARCHAR);
     	/** 结算币种  */
-        public FieldNode<Supplier, String> moneyType =  createFieldNode("moneyType","money_type",String.class,JdbcType.VARCHAR);
+        public FieldNode<Supplier, Integer> moneyType =  createFieldNode("moneyType","money_type",Integer.class,JdbcType.INTEGER);
     	/** 联系人  */
         public FieldNode<Supplier, String> contact =  createFieldNode("contact","contact",String.class,JdbcType.VARCHAR);
     	/** 联系人电话  */
@@ -212,6 +273,16 @@ public class Supplier implements Serializable {
         public FieldNode<Supplier, Date> createDate =  createFieldNode("createDate","create_date",Date.class,JdbcType.DATE);
     	/** 建档人  */
         public FieldNode<Supplier, Integer> createBy =  createFieldNode("createBy","create_by",Integer.class,JdbcType.INTEGER);
+    	/** 备注  */
+        public FieldNode<Supplier, String> remark =  createFieldNode("remark","remark",String.class,JdbcType.VARCHAR);
+    	/** 营业执照  */
+        public FieldNode<Supplier, String> businessLicense =  createFieldNode("businessLicense","business_license",String.class,JdbcType.VARCHAR);
+    	/** 环境  */
+        public FieldNode<Supplier, String> env =  createFieldNode("env","env",String.class,JdbcType.VARCHAR);
+    	/** 资质  */
+        public FieldNode<Supplier, String> intelligence =  createFieldNode("intelligence","intelligence",String.class,JdbcType.VARCHAR);
+    	/**  */
+        public FieldNode<Supplier, String> fax =  createFieldNode("fax","fax",String.class,JdbcType.VARCHAR);
 	
         /**
          * @param alias 别名

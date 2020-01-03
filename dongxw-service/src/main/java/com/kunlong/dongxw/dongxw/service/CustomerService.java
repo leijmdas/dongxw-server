@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * CustomerService
  * @author generator
- * @date 2019年12月19日
+ * @date 2020年01月03日
  */
 public interface CustomerService {
 	
@@ -70,5 +70,5 @@ public interface CustomerService {
 	 * @param items
 	 * @param field
 	 */
-	public void fillValues(List<Customer> items, Customer.ValueField... field);
+	public void fillValues(List<Customer> items,Customer.ValueField ...field);
 }

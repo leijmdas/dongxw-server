@@ -2,40 +2,50 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.kunlong.dongxw.dongxw.dao.SupplierMapper" >
 	<resultMap id="BaseResultMap" type="com.kunlong.dongxw.dongxw.domain.Supplier" >
-	  	<result column="id" property="id" jdbcType="INTEGER" />
+	    <id column="id" property="id" jdbcType="INTEGER" />	
 	  	<result column="code" property="code" jdbcType="VARCHAR" />
 	  	<result column="name" property="name" jdbcType="VARCHAR" />
 	  	<result column="sname" property="sname" jdbcType="VARCHAR" />
 	  	<result column="country" property="country" jdbcType="VARCHAR" />
 	  	<result column="addr" property="addr" jdbcType="VARCHAR" />
-	  	<result column="money_type" property="moneyType" jdbcType="VARCHAR" />
+	  	<result column="money_type" property="moneyType" jdbcType="INTEGER" />
 	  	<result column="contact" property="contact" jdbcType="VARCHAR" />
 	  	<result column="tel" property="tel" jdbcType="VARCHAR" />
 	  	<result column="email" property="email" jdbcType="VARCHAR" />
 	  	<result column="status" property="status" jdbcType="INTEGER" />
 	  	<result column="create_date" property="createDate" jdbcType="DATE" />
 	  	<result column="create_by" property="createBy" jdbcType="INTEGER" />
+	  	<result column="remark" property="remark" jdbcType="VARCHAR" />
+	  	<result column="business_license" property="businessLicense" jdbcType="VARCHAR" />
+	  	<result column="env" property="env" jdbcType="VARCHAR" />
+	  	<result column="intelligence" property="intelligence" jdbcType="VARCHAR" />
+	  	<result column="fax" property="fax" jdbcType="VARCHAR" />
     </resultMap>
     <resultMap id="BaseResultMap_Supplier" type="com.kunlong.dongxw.dongxw.domain.Supplier" >
-	  	<result column="s_id" property="id" jdbcType="INTEGER" />
+	    <id column="s_id" property="id" jdbcType="INTEGER" />	
 	  	<result column="s_code" property="code" jdbcType="VARCHAR" />
 	  	<result column="s_name" property="name" jdbcType="VARCHAR" />
 	  	<result column="s_sname" property="sname" jdbcType="VARCHAR" />
 	  	<result column="s_country" property="country" jdbcType="VARCHAR" />
 	  	<result column="s_addr" property="addr" jdbcType="VARCHAR" />
-	  	<result column="s_money_type" property="moneyType" jdbcType="VARCHAR" />
+	  	<result column="s_money_type" property="moneyType" jdbcType="INTEGER" />
 	  	<result column="s_contact" property="contact" jdbcType="VARCHAR" />
 	  	<result column="s_tel" property="tel" jdbcType="VARCHAR" />
 	  	<result column="s_email" property="email" jdbcType="VARCHAR" />
 	  	<result column="s_status" property="status" jdbcType="INTEGER" />
 	  	<result column="s_create_date" property="createDate" jdbcType="DATE" />
 	  	<result column="s_create_by" property="createBy" jdbcType="INTEGER" />
+	  	<result column="s_remark" property="remark" jdbcType="VARCHAR" />
+	  	<result column="s_business_license" property="businessLicense" jdbcType="VARCHAR" />
+	  	<result column="s_env" property="env" jdbcType="VARCHAR" />
+	  	<result column="s_intelligence" property="intelligence" jdbcType="VARCHAR" />
+	  	<result column="s_fax" property="fax" jdbcType="VARCHAR" />
     </resultMap>
     <sql id="Base_Column_List" >
-  		id,code,name,sname,country,addr,money_type,contact,tel,email,status,create_date,create_by
+  		id,code,name,sname,country,addr,money_type,contact,tel,email,status,create_date,create_by,remark,business_license,env,intelligence,fax
 	</sql>
   	<sql id="Base_Column_List_Supplier" >
-  		s.id s_id,s.code s_code,s.name s_name,s.sname s_sname,s.country s_country,s.addr s_addr,s.money_type s_money_type,s.contact s_contact,s.tel s_tel,s.email s_email,s.status s_status,s.create_date s_create_date,s.create_by s_create_by
+  		s.id s_id,s.code s_code,s.name s_name,s.sname s_sname,s.country s_country,s.addr s_addr,s.money_type s_money_type,s.contact s_contact,s.tel s_tel,s.email s_email,s.status s_status,s.create_date s_create_date,s.create_by s_create_by,s.remark s_remark,s.business_license s_business_license,s.env s_env,s.intelligence s_intelligence,s.fax s_fax
 	</sql>
 	
 	<!-- 系统自定义 -->
@@ -65,8 +75,8 @@
 			<if test="p.addr!=null and p.addr!=''">
 		    	and s.addr like #{p.addr}
 		    </if>
-			<if test="p.moneyType!=null and p.moneyType!=''">
-		    	and s.money_type like #{p.moneyType}
+			<if test="p.moneyType!=null ">
+		    	and s.money_type=#{p.moneyType}
 		    </if>
 			<if test="p.contact!=null and p.contact!=''">
 		    	and s.contact like #{p.contact}
@@ -85,6 +95,21 @@
 		    </if>
 			<if test="p.createBy!=null ">
 		    	and s.create_by=#{p.createBy}
+		    </if>
+			<if test="p.remark!=null and p.remark!=''">
+		    	and s.remark like #{p.remark}
+		    </if>
+			<if test="p.businessLicense!=null and p.businessLicense!=''">
+		    	and s.business_license like #{p.businessLicense}
+		    </if>
+			<if test="p.env!=null and p.env!=''">
+		    	and s.env like #{p.env}
+		    </if>
+			<if test="p.intelligence!=null and p.intelligence!=''">
+		    	and s.intelligence like #{p.intelligence}
+		    </if>
+			<if test="p.fax!=null and p.fax!=''">
+		    	and s.fax like #{p.fax}
 		    </if>
 		</if>
 		<!--

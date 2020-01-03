@@ -32,7 +32,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/dongxw/ordermaster")
-public final class OrderMasterController {
+public final class OrderMasterController extends BaseController {
     @Autowired
     OrderMasterService orderMasterService;
 
@@ -48,6 +48,9 @@ public final class OrderMasterController {
     public JsonResult<Integer> save(@RequestBody OrderMaster orderMaster) {
 
         if (orderMaster.getId() == null) {
+            orderMaster.setCreateBy(getCurrentUserId());
+            orderMaster.setCreateDate(new Date());
+
             orderMasterService.save(orderMaster);
         } else {
             orderMasterService.update(orderMaster);

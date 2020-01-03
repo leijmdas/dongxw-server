@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * OrderMasterService
  * @author generator
- * @date 2019年12月28日
+ * @date 2020年01月03日
  */
 public interface OrderMasterService {
 	
@@ -70,5 +70,5 @@ public interface OrderMasterService {
 	 * @param items
 	 * @param field
 	 */
-	public void fillValues(List<OrderMaster> items, OrderMaster.ValueField... field);
+	public void fillValues(List<OrderMaster> items,OrderMaster.ValueField ...field);
 }

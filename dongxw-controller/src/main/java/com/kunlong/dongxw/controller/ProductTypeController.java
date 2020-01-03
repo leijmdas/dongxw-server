@@ -71,7 +71,9 @@ public final class ProductTypeController {
     public PageResult<ProductType> query(@RequestBody ProductType.QueryParam queryParam) throws IOException {
         PageResult<ProductType> pageResult = new PageResult<ProductType>();
         // Customer.QueryParam qp = BeanMapper.getInstance().map(pageResult, Customer.QueryParam.class);
-
+        if (queryParam.getSortOrders() == null) {
+            queryParam.setSortBys("id|desc");
+        }
         pageResult.setTotal(productTypeService.countByQueryParam(queryParam));
         pageResult.setData(productTypeService.findByQueryParam(queryParam));
         return pageResult;

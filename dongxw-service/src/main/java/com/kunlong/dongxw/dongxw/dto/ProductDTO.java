@@ -3,6 +3,7 @@ package com.kunlong.dongxw.dongxw.dto;
 import java.io.Serializable;
 import java.lang.Integer;
 import java.lang.String;
+import java.util.Date;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 /**
@@ -98,6 +99,18 @@ public class ProductDTO implements Serializable {
 	  */
 	@ApiModelProperty(value = "备注 ",required = true,notes = "备注  ")
 	private String memo;
+	/**
+	  * 建档时间 
+	  * nullable:true,length:19
+	  */
+	@ApiModelProperty(value = "建档时间 ",required = false,notes = "建档时间  ")
+	private Date createDate;
+	/**
+	  * 建档人 
+	  * nullable:false,length:11
+	  */
+	@ApiModelProperty(value = "建档人 ",required = true,notes = "建档人  ")
+	private Integer createBy;
     public Integer getId(){
     	return this.id;
     }
@@ -181,6 +194,18 @@ public class ProductDTO implements Serializable {
     }
     public void setMemo(String memo){
     	this.memo = memo;
+    }
+    public Date getCreateDate(){
+    	return this.createDate;
+    }
+    public void setCreateDate(Date createDate){
+    	this.createDate = createDate;
+    }
+    public Integer getCreateBy(){
+    	return this.createBy;
+    }
+    public void setCreateBy(Integer createBy){
+    	this.createBy = createBy;
     }
     // ==== 自定义属性 ====
 }

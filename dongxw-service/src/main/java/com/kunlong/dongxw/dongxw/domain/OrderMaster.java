@@ -8,16 +8,12 @@ import org.mybatis.hbatis.core.*;
 import java.lang.Integer;
 import java.lang.String;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.mybatis.hbatis.orm.criteria.support.query.AbstractQueryParam;
-import org.mybatis.hbatis.orm.criteria.support.query.DateRange;
 import org.mybatis.hbatis.orm.criteria.support.query.SortOrders;
 /**
  * OrderMaster 客户订单
  * @author generator
- * @date 2019年12月28日
+ * @date 2020年01月03日
  */
 @Table(OrderMaster.EntityNode.class)
 public class OrderMaster implements Serializable {
@@ -44,11 +40,10 @@ public class OrderMaster implements Serializable {
 	@NotNull
 	private String businessBy;
 	/**
-	  * 状态 
-		0-草稿1-下单2-在生产-3-生产完成4--发货完成5-收款完成
+	  * 状态 0-草稿1-下单2-在生产-3-生产完成4--发货完成5-收款完成
 	  * nullable:false,length:11
 	  */
-	@Column(comment = "状态 0-草稿1-下单2-在生产-3-生产完成4--发货完成5-收款完成")
+	@Column(comment = "状态 0-草稿1-下单2-在生产-3-生产完成4--发货完成5-收款完成")	
 	@NotNull
 	private Integer status;
 	/**
@@ -112,10 +107,9 @@ public class OrderMaster implements Serializable {
 	private String remark;
 	/**
 	  * 订单图片存档 
-	  * nullable:false,length:256
+	  * nullable:true,length:256
 	  */
 	@Column(comment = "订单图片存档 ")	
-	@NotNull
 	private String customerOrderImg;
 	/**
 	  * 发票编号 
@@ -124,6 +118,19 @@ public class OrderMaster implements Serializable {
 	@Column(comment = "发票编号 ")	
 	@NotNull
 	private String invoiceNo;
+	/**
+	  * 建档人 
+	  * nullable:false,length:11
+	  */
+	@Column(comment = "建档人 ")	
+	@NotNull
+	private Integer createBy;
+	/**
+	  * 建档时间 
+	  * nullable:true,length:19
+	  */
+	@Column(comment = "建档时间 ")	
+	private Date createDate;
     public Integer getId(){
     	return this.id;
     }
@@ -178,10 +185,10 @@ public class OrderMaster implements Serializable {
     public void setCheckDate(Date checkDate){
     	this.checkDate = checkDate;
     }
-    public Date getfactroyIssueDate(){
+    public Date getFactroyIssueDate(){
     	return this.factroyIssueDate;
     }
-    public void setfactroyIssueDate(Date factroyIssueDate){
+    public void setFactroyIssueDate(Date factroyIssueDate){
     	this.factroyIssueDate = factroyIssueDate;
     }
     public String getMaterialRemark(){
@@ -214,6 +221,18 @@ public class OrderMaster implements Serializable {
     public void setInvoiceNo(String invoiceNo){
     	this.invoiceNo = invoiceNo;
     }
+    public Integer getCreateBy(){
+    	return this.createBy;
+    }
+    public void setCreateBy(Integer createBy){
+    	this.createBy = createBy;
+    }
+    public Date getCreateDate(){
+    	return this.createDate;
+    }
+    public void setCreateDate(Date createDate){
+    	this.createDate = createDate;
+    }
 
     public static class EntityNode extends AbstractEntityNode<OrderMaster> {
         public static final EntityNode INSTANCE = new EntityNode("om");;
@@ -223,8 +242,7 @@ public class OrderMaster implements Serializable {
         public FieldNode<OrderMaster, Integer> customerId =  createFieldNode("customerId","customer_id",Integer.class,JdbcType.INTEGER);
     	/** 业务员  */
         public FieldNode<OrderMaster, String> businessBy =  createFieldNode("businessBy","business_by",String.class,JdbcType.VARCHAR);
-    	/** 状态 
-0-草稿1-下单2-在生产-3-生产完成4--发货完成5-收款完成 */
+    	/** 状态 0-草稿1-下单2-在生产-3-生产完成4--发货完成5-收款完成 */
         public FieldNode<OrderMaster, Integer> status =  createFieldNode("status","status",Integer.class,JdbcType.INTEGER);
     	/** 客户订单号  */
         public FieldNode<OrderMaster, String> customerOrderCode =  createFieldNode("customerOrderCode","customer_order_code",String.class,JdbcType.VARCHAR);
@@ -248,6 +266,10 @@ public class OrderMaster implements Serializable {
         public FieldNode<OrderMaster, String> customerOrderImg =  createFieldNode("customerOrderImg","customer_order_img",String.class,JdbcType.VARCHAR);
     	/** 发票编号  */
         public FieldNode<OrderMaster, String> invoiceNo =  createFieldNode("invoiceNo","invoice_no",String.class,JdbcType.VARCHAR);
+    	/** 建档人  */
+        public FieldNode<OrderMaster, Integer> createBy =  createFieldNode("createBy","create_by",Integer.class,JdbcType.INTEGER);
+    	/** 建档时间  */
+        public FieldNode<OrderMaster, Date> createDate =  createFieldNode("createDate","create_date",Date.class,JdbcType.TIMESTAMP);
 	
         /**
          * @param alias 别名
@@ -262,25 +284,11 @@ public class OrderMaster implements Serializable {
 		public QueryParam() {
 			this.setSortOrders(new SortOrders<OrderMaster>(EntityNode.INSTANCE));
 		}
-
-
-
-		private Map<String, DateRange> dateRanges = new HashMap<String, DateRange>();
-
-		public Map<String, DateRange> getDateRanges() {
-			return dateRanges;
-		}
-
-		public void setDateRanges(Map<String, DateRange> dateRanges) {
-			this.dateRanges = dateRanges;
-		}
 	}
 	
 	public static enum ValueField {
 	}
-    // ==== 自定义属性 ====
 
-	Customer customer;
 	public Customer getCustomer() {
 		return customer;
 	}
@@ -288,5 +296,8 @@ public class OrderMaster implements Serializable {
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
 	}
+
+	// ==== 自定义属性 ====
+	Customer customer;
 
 }

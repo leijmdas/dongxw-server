@@ -1,8 +1,6 @@
 package com.kunlong.dongxw.dongxw.service.impl;
 
 import java.util.List;
-
-import com.kunlong.dongxw.util.SimpleSequenceGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.kunlong.dongxw.dongxw.domain.Customer;
@@ -14,7 +12,7 @@ import org.mybatis.hbatis.orm.criteria.support.StatementBuilder;
 /**
  * CustomerServiceImpl
  * @author generator
- * @date 2019年12月19日
+ * @date 2020年01月03日
  */
 @Service
 public class CustomerServiceImpl implements CustomerService {
@@ -26,10 +24,6 @@ public class CustomerServiceImpl implements CustomerService {
 	 * @param entity
 	 */
 	public void save(Customer entity){
-		if(entity.getCustNo()==null){
-			entity.setCustNo(SimpleSequenceGenerator.generateCode("C",5));
-		}
-
 		this.checkEntity(entity);
 		repo.insert(entity);
 	}

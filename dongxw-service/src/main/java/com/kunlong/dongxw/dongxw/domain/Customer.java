@@ -2,8 +2,6 @@ package com.kunlong.dongxw.dongxw.domain;
 
 import java.io.Serializable;
 import javax.validation.constraints.*;
-
-import com.kunlong.platform.model.KunlongModel;
 import org.mybatis.hbatis.core.type.JdbcType;
 import org.mybatis.hbatis.core.annotation.*;
 import org.mybatis.hbatis.core.*;
@@ -15,10 +13,10 @@ import org.mybatis.hbatis.orm.criteria.support.query.SortOrders;
 /**
  * Customer 
  * @author generator
- * @date 2019年12月19日
+ * @date 2020年01月03日
  */
 @Table(Customer.EntityNode.class)
-public class Customer extends KunlongModel implements Serializable {
+public class Customer implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	/**
@@ -63,7 +61,7 @@ public class Customer extends KunlongModel implements Serializable {
 	private String addr;
 	/**
 	  * 结算币种
-	  * nullable:false,length:16
+	  * nullable:false,length:4
 	  */
 	@Column(comment = "结算币种")	
 	@NotNull
@@ -76,7 +74,7 @@ public class Customer extends KunlongModel implements Serializable {
 	private String contact;
 	/**
 	  * 联系人电话
-	  * nullable:true,length:4
+	  * nullable:true,length:24
 	  */
 	@Column(comment = "联系人电话")	
 	private String tel;
@@ -100,6 +98,24 @@ public class Customer extends KunlongModel implements Serializable {
 	@Column(comment = "建档人")	
 	@NotNull
 	private Integer createBy;
+	/**
+	  * 
+	  * nullable:true,length:4
+	  */
+	@Column(comment = "")	
+	private Integer status;
+	/**
+	  * 
+	  * nullable:true,length:255
+	  */
+	@Column(comment = "")	
+	private String remark;
+	/**
+	  * 
+	  * nullable:true,length:32
+	  */
+	@Column(comment = "")	
+	private String fax;
     public Integer getId(){
     	return this.id;
     }
@@ -172,6 +188,24 @@ public class Customer extends KunlongModel implements Serializable {
     public void setCreateBy(Integer createBy){
     	this.createBy = createBy;
     }
+    public Integer getStatus(){
+    	return this.status;
+    }
+    public void setStatus(Integer status){
+    	this.status = status;
+    }
+    public String getRemark(){
+    	return this.remark;
+    }
+    public void setRemark(String remark){
+    	this.remark = remark;
+    }
+    public String getFax(){
+    	return this.fax;
+    }
+    public void setFax(String fax){
+    	this.fax = fax;
+    }
 
     public static class EntityNode extends AbstractEntityNode<Customer> {
         public static final EntityNode INSTANCE = new EntityNode("c");;
@@ -199,6 +233,12 @@ public class Customer extends KunlongModel implements Serializable {
         public FieldNode<Customer, Date> createDate =  createFieldNode("createDate","create_date",Date.class,JdbcType.DATE);
     	/** 建档人 */
         public FieldNode<Customer, Integer> createBy =  createFieldNode("createBy","create_by",Integer.class,JdbcType.INTEGER);
+    	/**  */
+        public FieldNode<Customer, Integer> status =  createFieldNode("status","status",Integer.class,JdbcType.INTEGER);
+    	/**  */
+        public FieldNode<Customer, String> remark =  createFieldNode("remark","remark",String.class,JdbcType.VARCHAR);
+    	/**  */
+        public FieldNode<Customer, String> fax =  createFieldNode("fax","fax",String.class,JdbcType.VARCHAR);
 	
         /**
          * @param alias 别名
