@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-public class TestDongxw extends TestBaseApp {
+public class TestDongxwService extends TestBaseApp {
 
     @Autowired
     CustomerService customerService;
@@ -46,7 +46,18 @@ public class TestDongxw extends TestBaseApp {
 
         List<DictDatatype> dictDatatypes = dictDatatypeService.findByQueryParam(new DictDatatype.QueryParam());
         TestLog.logJtest("dictDatatypes", dictDatatypes);
-
+        //Document document = new Document();
+        ////Step 2—Get a PdfWriter instance.
+        //PdfWriter.getInstance(document, new FileOutputStream(FILE_DIR + "createSamplePDF.pdf"));
+        ////Step 3—Open the Document.
+        //document.open();
+        ////Step 4—Add content.
+        //document.add(new Paragraph("Hello World"));
+        ////Step 5—Close the Document.
+        //document.close();
+        //————————————————
+        //版权声明：本文为CSDN博主「辰辰呐」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+        //原文链接：https://blog.csdn.net/qq_37581708/article/details/79709612
     }
 
     @Test
