@@ -4,12 +4,13 @@ import java.io.Serializable;
 import java.lang.Integer;
 import java.lang.String;
 import java.util.Date;
+import java.lang.Long;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 /**
  * OrderMaster
  * @author generator
- * @date 2020年01月03日
+ * @date 2020年01月04日
  */
 @ApiModel(value="OrderMasterDTO",description="客户订单")
 public class OrderMasterDTO implements Serializable {
@@ -34,10 +35,10 @@ public class OrderMasterDTO implements Serializable {
 	@ApiModelProperty(value = "业务员 ",required = true,notes = "业务员  ")
 	private String businessBy;
 	/**
-	  * 状态 0-草稿1-下单2-在生产-3-生产完成4--发货完成5-收款完成
+	  * 状态 0-草稿10-下单20-在生产-30-生产完成40--发货完成50-收款完成100-取消
 	  * nullable:false,length:11
 	  */
-	@ApiModelProperty(value = "状态 0-草稿1-下单2-在生产-3-生产完成4--发货完成5-收款完成",required = true,notes = "状态 0-草稿1-下单2-在生产-3-生产完成4--发货完成5-收款完成 ")
+	@ApiModelProperty(value = "状态 0-草稿10-下单20-在生产-30-生产完成40--发货完成50-收款完成100-取消",required = true,notes = "状态 0-草稿10-下单20-在生产-30-生产完成40--发货完成50-收款完成100-取消 ")
 	private Integer status;
 	/**
 	  * 客户订单号 
@@ -51,6 +52,24 @@ public class OrderMasterDTO implements Serializable {
 	  */
 	@ApiModelProperty(value = "EP订单号 ",required = true,notes = "EP订单号  ")
 	private String epOrderCode;
+	/**
+	  * 结算币种 
+	  * nullable:false,length:11
+	  */
+	@ApiModelProperty(value = "结算币种 ",required = true,notes = "结算币种  ")
+	private Integer moneyType;
+	/**
+	  * 初始发票编号 初始预付款
+	  * nullable:false,length:128
+	  */
+	@ApiModelProperty(value = "初始发票编号 初始预付款",required = true,notes = "初始发票编号 初始预付款 ")
+	private String invoiceNoIni;
+	/**
+	  * 正式发票编号 
+	  * nullable:false,length:128
+	  */
+	@ApiModelProperty(value = "正式发票编号 ",required = true,notes = "正式发票编号  ")
+	private String invoiceNo;
 	/**
 	  * 下单日期 
 	  * nullable:true,length:10
@@ -76,35 +95,11 @@ public class OrderMasterDTO implements Serializable {
 	@ApiModelProperty(value = "工厂交货日期 ",required = false,notes = "工厂交货日期  ")
 	private Date factroyIssueDate;
 	/**
-	  * 主料描述 
-	  * nullable:false,length:512
-	  */
-	@ApiModelProperty(value = "主料描述 ",required = true,notes = "主料描述  ")
-	private String materialRemark;
-	/**
-	  * 供应商 
-	  * nullable:false,length:11
-	  */
-	@ApiModelProperty(value = "供应商 ",required = true,notes = "供应商  ")
-	private Integer supplyId;
-	/**
-	  * 备注 
-	  * nullable:false,length:512
-	  */
-	@ApiModelProperty(value = "备注 ",required = true,notes = "备注  ")
-	private String remark;
-	/**
-	  * 订单图片存档 
+	  * 订单原件 
 	  * nullable:true,length:256
 	  */
-	@ApiModelProperty(value = "订单图片存档 ",required = false,notes = "订单图片存档  ")
+	@ApiModelProperty(value = "订单原件 ",required = false,notes = "订单原件  ")
 	private String customerOrderImg;
-	/**
-	  * 发票编号 
-	  * nullable:false,length:128
-	  */
-	@ApiModelProperty(value = "发票编号 ",required = true,notes = "发票编号  ")
-	private String invoiceNo;
 	/**
 	  * 建档人 
 	  * nullable:false,length:11
@@ -117,6 +112,24 @@ public class OrderMasterDTO implements Serializable {
 	  */
 	@ApiModelProperty(value = "建档时间 ",required = false,notes = "建档时间  ")
 	private Date createDate;
+	/**
+	  * 备注 
+	  * nullable:false,length:512
+	  */
+	@ApiModelProperty(value = "备注 ",required = true,notes = "备注  ")
+	private String remark;
+	/**
+	  * 初始发票图片 
+	  * nullable:false,length:20
+	  */
+	@ApiModelProperty(value = "初始发票图片 ",required = true,notes = "初始发票图片  ")
+	private Long invoiceIdIni;
+	/**
+	  * 正式发票图片 
+	  * nullable:false,length:20
+	  */
+	@ApiModelProperty(value = "正式发票图片 ",required = true,notes = "正式发票图片  ")
+	private Long invoiceId;
     public Integer getId(){
     	return this.id;
     }
@@ -153,6 +166,24 @@ public class OrderMasterDTO implements Serializable {
     public void setEpOrderCode(String epOrderCode){
     	this.epOrderCode = epOrderCode;
     }
+    public Integer getMoneyType(){
+    	return this.moneyType;
+    }
+    public void setMoneyType(Integer moneyType){
+    	this.moneyType = moneyType;
+    }
+    public String getInvoiceNoIni(){
+    	return this.invoiceNoIni;
+    }
+    public void setInvoiceNoIni(String invoiceNoIni){
+    	this.invoiceNoIni = invoiceNoIni;
+    }
+    public String getInvoiceNo(){
+    	return this.invoiceNo;
+    }
+    public void setInvoiceNo(String invoiceNo){
+    	this.invoiceNo = invoiceNo;
+    }
     public Date getOrderDate(){
     	return this.orderDate;
     }
@@ -177,35 +208,11 @@ public class OrderMasterDTO implements Serializable {
     public void setFactroyIssueDate(Date factroyIssueDate){
     	this.factroyIssueDate = factroyIssueDate;
     }
-    public String getMaterialRemark(){
-    	return this.materialRemark;
-    }
-    public void setMaterialRemark(String materialRemark){
-    	this.materialRemark = materialRemark;
-    }
-    public Integer getSupplyId(){
-    	return this.supplyId;
-    }
-    public void setSupplyId(Integer supplyId){
-    	this.supplyId = supplyId;
-    }
-    public String getRemark(){
-    	return this.remark;
-    }
-    public void setRemark(String remark){
-    	this.remark = remark;
-    }
     public String getCustomerOrderImg(){
     	return this.customerOrderImg;
     }
     public void setCustomerOrderImg(String customerOrderImg){
     	this.customerOrderImg = customerOrderImg;
-    }
-    public String getInvoiceNo(){
-    	return this.invoiceNo;
-    }
-    public void setInvoiceNo(String invoiceNo){
-    	this.invoiceNo = invoiceNo;
     }
     public Integer getCreateBy(){
     	return this.createBy;
@@ -218,6 +225,24 @@ public class OrderMasterDTO implements Serializable {
     }
     public void setCreateDate(Date createDate){
     	this.createDate = createDate;
+    }
+    public String getRemark(){
+    	return this.remark;
+    }
+    public void setRemark(String remark){
+    	this.remark = remark;
+    }
+    public Long getInvoiceIdIni(){
+    	return this.invoiceIdIni;
+    }
+    public void setInvoiceIdIni(Long invoiceIdIni){
+    	this.invoiceIdIni = invoiceIdIni;
+    }
+    public Long getInvoiceId(){
+    	return this.invoiceId;
+    }
+    public void setInvoiceId(Long invoiceId){
+    	this.invoiceId = invoiceId;
     }
     // ==== 自定义属性 ====
 }

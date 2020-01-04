@@ -8,17 +8,19 @@
 	  	<result column="status" property="status" jdbcType="INTEGER" />
 	  	<result column="customer_order_code" property="customerOrderCode" jdbcType="VARCHAR" />
 	  	<result column="ep_order_code" property="epOrderCode" jdbcType="VARCHAR" />
+	  	<result column="money_type" property="moneyType" jdbcType="INTEGER" />
+	  	<result column="invoice_no_ini" property="invoiceNoIni" jdbcType="VARCHAR" />
+	  	<result column="invoice_no" property="invoiceNo" jdbcType="VARCHAR" />
 	  	<result column="order_date" property="orderDate" jdbcType="DATE" />
 	  	<result column="customer_issue_date" property="customerIssueDate" jdbcType="DATE" />
 	  	<result column="check_date" property="checkDate" jdbcType="DATE" />
 	  	<result column="factroy_issue_date" property="factroyIssueDate" jdbcType="DATE" />
-	  	<result column="material_remark" property="materialRemark" jdbcType="VARCHAR" />
-	  	<result column="supply_id" property="supplyId" jdbcType="INTEGER" />
-	  	<result column="remark" property="remark" jdbcType="VARCHAR" />
 	  	<result column="customer_order_img" property="customerOrderImg" jdbcType="VARCHAR" />
-	  	<result column="invoice_no" property="invoiceNo" jdbcType="VARCHAR" />
 	  	<result column="create_by" property="createBy" jdbcType="INTEGER" />
 	  	<result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+	  	<result column="remark" property="remark" jdbcType="VARCHAR" />
+	  	<result column="invoice_id_ini" property="invoiceIdIni" jdbcType="BIGINT" />
+	  	<result column="invoice_id" property="invoiceId" jdbcType="BIGINT" />
     </resultMap>
     <resultMap id="BaseResultMap_OrderMaster" type="com.kunlong.dongxw.dongxw.domain.OrderMaster" >
 	    <id column="om_id" property="id" jdbcType="INTEGER" />	
@@ -27,23 +29,25 @@
 	  	<result column="om_status" property="status" jdbcType="INTEGER" />
 	  	<result column="om_customer_order_code" property="customerOrderCode" jdbcType="VARCHAR" />
 	  	<result column="om_ep_order_code" property="epOrderCode" jdbcType="VARCHAR" />
+	  	<result column="om_money_type" property="moneyType" jdbcType="INTEGER" />
+	  	<result column="om_invoice_no_ini" property="invoiceNoIni" jdbcType="VARCHAR" />
+	  	<result column="om_invoice_no" property="invoiceNo" jdbcType="VARCHAR" />
 	  	<result column="om_order_date" property="orderDate" jdbcType="DATE" />
 	  	<result column="om_customer_issue_date" property="customerIssueDate" jdbcType="DATE" />
 	  	<result column="om_check_date" property="checkDate" jdbcType="DATE" />
 	  	<result column="om_factroy_issue_date" property="factroyIssueDate" jdbcType="DATE" />
-	  	<result column="om_material_remark" property="materialRemark" jdbcType="VARCHAR" />
-	  	<result column="om_supply_id" property="supplyId" jdbcType="INTEGER" />
-	  	<result column="om_remark" property="remark" jdbcType="VARCHAR" />
 	  	<result column="om_customer_order_img" property="customerOrderImg" jdbcType="VARCHAR" />
-	  	<result column="om_invoice_no" property="invoiceNo" jdbcType="VARCHAR" />
 	  	<result column="om_create_by" property="createBy" jdbcType="INTEGER" />
 	  	<result column="om_create_date" property="createDate" jdbcType="TIMESTAMP" />
+	  	<result column="om_remark" property="remark" jdbcType="VARCHAR" />
+	  	<result column="om_invoice_id_ini" property="invoiceIdIni" jdbcType="BIGINT" />
+	  	<result column="om_invoice_id" property="invoiceId" jdbcType="BIGINT" />
     </resultMap>
     <sql id="Base_Column_List" >
-  		id,customer_id,business_by,status,customer_order_code,ep_order_code,order_date,customer_issue_date,check_date,factroy_issue_date,material_remark,supply_id,remark,customer_order_img,invoice_no,create_by,create_date
+  		id,customer_id,business_by,status,customer_order_code,ep_order_code,money_type,invoice_no_ini,invoice_no,order_date,customer_issue_date,check_date,factroy_issue_date,customer_order_img,create_by,create_date,remark,invoice_id_ini,invoice_id
 	</sql>
   	<sql id="Base_Column_List_OrderMaster" >
-  		om.id om_id,om.customer_id om_customer_id,om.business_by om_business_by,om.status om_status,om.customer_order_code om_customer_order_code,om.ep_order_code om_ep_order_code,om.order_date om_order_date,om.customer_issue_date om_customer_issue_date,om.check_date om_check_date,om.factroy_issue_date om_factroy_issue_date,om.material_remark om_material_remark,om.supply_id om_supply_id,om.remark om_remark,om.customer_order_img om_customer_order_img,om.invoice_no om_invoice_no,om.create_by om_create_by,om.create_date om_create_date
+  		om.id om_id,om.customer_id om_customer_id,om.business_by om_business_by,om.status om_status,om.customer_order_code om_customer_order_code,om.ep_order_code om_ep_order_code,om.money_type om_money_type,om.invoice_no_ini om_invoice_no_ini,om.invoice_no om_invoice_no,om.order_date om_order_date,om.customer_issue_date om_customer_issue_date,om.check_date om_check_date,om.factroy_issue_date om_factroy_issue_date,om.customer_order_img om_customer_order_img,om.create_by om_create_by,om.create_date om_create_date,om.remark om_remark,om.invoice_id_ini om_invoice_id_ini,om.invoice_id om_invoice_id
 	</sql>
 	
 	<!-- 系统自定义 -->
@@ -73,6 +77,15 @@
 			<if test="p.epOrderCode!=null and p.epOrderCode!=''">
 		    	and om.ep_order_code like #{p.epOrderCode}
 		    </if>
+			<if test="p.moneyType!=null ">
+		    	and om.money_type=#{p.moneyType}
+		    </if>
+			<if test="p.invoiceNoIni!=null and p.invoiceNoIni!=''">
+		    	and om.invoice_no_ini like #{p.invoiceNoIni}
+		    </if>
+			<if test="p.invoiceNo!=null and p.invoiceNo!=''">
+		    	and om.invoice_no like #{p.invoiceNo}
+		    </if>
 			<if test="p.orderDate!=null ">
 		    	and om.order_date=#{p.orderDate}
 		    </if>
@@ -85,26 +98,23 @@
 			<if test="p.factroyIssueDate!=null ">
 		    	and om.factroy_issue_date=#{p.factroyIssueDate}
 		    </if>
-			<if test="p.materialRemark!=null and p.materialRemark!=''">
-		    	and om.material_remark like #{p.materialRemark}
-		    </if>
-			<if test="p.supplyId!=null ">
-		    	and om.supply_id=#{p.supplyId}
-		    </if>
-			<if test="p.remark!=null and p.remark!=''">
-		    	and om.remark like #{p.remark}
-		    </if>
 			<if test="p.customerOrderImg!=null and p.customerOrderImg!=''">
 		    	and om.customer_order_img like #{p.customerOrderImg}
-		    </if>
-			<if test="p.invoiceNo!=null and p.invoiceNo!=''">
-		    	and om.invoice_no like #{p.invoiceNo}
 		    </if>
 			<if test="p.createBy!=null ">
 		    	and om.create_by=#{p.createBy}
 		    </if>
 			<if test="p.createDate!=null ">
 		    	and om.create_date=#{p.createDate}
+		    </if>
+			<if test="p.remark!=null and p.remark!=''">
+		    	and om.remark like #{p.remark}
+		    </if>
+			<if test="p.invoiceIdIni!=null ">
+		    	and om.invoice_id_ini=#{p.invoiceIdIni}
+		    </if>
+			<if test="p.invoiceId!=null ">
+		    	and om.invoice_id=#{p.invoiceId}
 		    </if>
 		</if>
 		<!--
