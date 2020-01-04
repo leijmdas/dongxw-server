@@ -32,15 +32,20 @@ import java.util.List;
 @RestController
 @RequestMapping("/dongxw/orderline")
 public final class OrderLineController extends BaseController {
-    @Autowired
-    OrderLineService orderLineService;
 
     @Autowired
-    SupplierService supplierService;
+    OrderLineService orderLineService;
+    @Autowired
+    CustomerService customerService;
+    @Autowired
+    OrderMasterService orderMasterService;
+
     @Autowired
     ProductTypeService productTypeService;
     @Autowired
     ProductService productService;
+    @Autowired
+    SupplierService supplierService;
 
     @RequestMapping("/findById/{id}")
     public JsonResult<OrderLine> findById(@PathVariable("id") Integer id, HttpServletResponse response) throws IOException {
@@ -84,10 +89,13 @@ public final class OrderLineController extends BaseController {
         pageResult.setData(orderLineService.findByQueryParam(queryParam));
 
         for(OrderLine orderLine : pageResult.getData()){
-            orderLine.setSupplier (supplierService.findById(orderLine.getSupplierId()));
+            orderLine.setCustomer(customerService.findById(orderLine.getCustomerId()));
+            orderLine.setOrderMaster(orderMasterService.findById(orderLine.getOrderId()));
+
             orderLine.setParentProductType (productTypeService.findById(orderLine.getParentId()));
             orderLine.setProductType (productTypeService.findById(orderLine.getProductTypeId()));
             orderLine.setProduct(productService.findById(orderLine.getProductId()));
+            orderLine.setSupplier (supplierService.findById(orderLine.getSupplierId()));
         }
         return pageResult;
     }

@@ -3,6 +3,7 @@
 <mapper namespace="com.kunlong.dongxw.dongxw.dao.OrderLineMapper" >
 	<resultMap id="BaseResultMap" type="com.kunlong.dongxw.dongxw.domain.OrderLine" >
 	    <id column="id" property="id" jdbcType="INTEGER" />	
+	  	<result column="customer_id" property="customerId" jdbcType="INTEGER" />
 	  	<result column="order_id" property="orderId" jdbcType="INTEGER" />
 	  	<result column="parent_id" property="parentId" jdbcType="INTEGER" />
 	  	<result column="product_type_id" property="productTypeId" jdbcType="INTEGER" />
@@ -33,6 +34,7 @@
     </resultMap>
     <resultMap id="BaseResultMap_OrderLine" type="com.kunlong.dongxw.dongxw.domain.OrderLine" >
 	    <id column="ol_id" property="id" jdbcType="INTEGER" />	
+	  	<result column="ol_customer_id" property="customerId" jdbcType="INTEGER" />
 	  	<result column="ol_order_id" property="orderId" jdbcType="INTEGER" />
 	  	<result column="ol_parent_id" property="parentId" jdbcType="INTEGER" />
 	  	<result column="ol_product_type_id" property="productTypeId" jdbcType="INTEGER" />
@@ -62,10 +64,10 @@
 	  	<result column="ol_status" property="status" jdbcType="TINYINT" />
     </resultMap>
     <sql id="Base_Column_List" >
-  		id,order_id,parent_id,product_type_id,product_id,customer_code,pic_url,size,color,qty,unit,price,currency,money,supplier_id,material,ib_qty,ib_gw,ib_nw,ib_size,ob_qty,ob_gw,ob_nw,ob_size,create_date,create_by,remark,status
+  		id,customer_id,order_id,parent_id,product_type_id,product_id,customer_code,pic_url,size,color,qty,unit,price,currency,money,supplier_id,material,ib_qty,ib_gw,ib_nw,ib_size,ob_qty,ob_gw,ob_nw,ob_size,create_date,create_by,remark,status
 	</sql>
   	<sql id="Base_Column_List_OrderLine" >
-  		ol.id ol_id,ol.order_id ol_order_id,ol.parent_id ol_parent_id,ol.product_type_id ol_product_type_id,ol.product_id ol_product_id,ol.customer_code ol_customer_code,ol.pic_url ol_pic_url,ol.size ol_size,ol.color ol_color,ol.qty ol_qty,ol.unit ol_unit,ol.price ol_price,ol.currency ol_currency,ol.money ol_money,ol.supplier_id ol_supplier_id,ol.material ol_material,ol.ib_qty ol_ib_qty,ol.ib_gw ol_ib_gw,ol.ib_nw ol_ib_nw,ol.ib_size ol_ib_size,ol.ob_qty ol_ob_qty,ol.ob_gw ol_ob_gw,ol.ob_nw ol_ob_nw,ol.ob_size ol_ob_size,ol.create_date ol_create_date,ol.create_by ol_create_by,ol.remark ol_remark,ol.status ol_status
+  		ol.id ol_id,ol.customer_id ol_customer_id,ol.order_id ol_order_id,ol.parent_id ol_parent_id,ol.product_type_id ol_product_type_id,ol.product_id ol_product_id,ol.customer_code ol_customer_code,ol.pic_url ol_pic_url,ol.size ol_size,ol.color ol_color,ol.qty ol_qty,ol.unit ol_unit,ol.price ol_price,ol.currency ol_currency,ol.money ol_money,ol.supplier_id ol_supplier_id,ol.material ol_material,ol.ib_qty ol_ib_qty,ol.ib_gw ol_ib_gw,ol.ib_nw ol_ib_nw,ol.ib_size ol_ib_size,ol.ob_qty ol_ob_qty,ol.ob_gw ol_ob_gw,ol.ob_nw ol_ob_nw,ol.ob_size ol_ob_size,ol.create_date ol_create_date,ol.create_by ol_create_by,ol.remark ol_remark,ol.status ol_status
 	</sql>
 	
 	<!-- 系统自定义 -->
@@ -79,6 +81,9 @@
 			<bind name="p" value="queryParam.param"/>
 			<if test="p.id!=null ">
 		    	and ol.id=#{p.id}
+		    </if>
+			<if test="p.customerId!=null ">
+		    	and ol.customer_id=#{p.customerId}
 		    </if>
 			<if test="p.orderId!=null ">
 		    	and ol.order_id=#{p.orderId}

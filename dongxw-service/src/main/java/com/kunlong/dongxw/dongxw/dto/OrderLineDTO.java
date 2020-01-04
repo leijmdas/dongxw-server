@@ -24,6 +24,12 @@ public class OrderLineDTO implements Serializable {
 	@ApiModelProperty(value = "订单产品标识 ",required = false,notes = "订单产品标识  [自增]")
 	private Integer id;
 	/**
+	  * 客户标识 
+	  * nullable:false,length:11
+	  */
+	@ApiModelProperty(value = "客户标识 ",required = true,notes = "客户标识  ")
+	private Integer customerId;
+	/**
 	  * 订单标识 
 	  * nullable:false,length:11
 	  */
@@ -190,6 +196,12 @@ public class OrderLineDTO implements Serializable {
     }
     public void setId(Integer id){
     	this.id = id;
+    }
+    public Integer getCustomerId(){
+    	return this.customerId;
+    }
+    public void setCustomerId(Integer customerId){
+    	this.customerId = customerId;
     }
     public Integer getOrderId(){
     	return this.orderId;

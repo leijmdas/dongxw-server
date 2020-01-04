@@ -18,7 +18,7 @@ import org.mybatis.hbatis.orm.criteria.support.query.SortOrders;
  * @date 2020年01月04日
  */
 @Table(OrderLine.EntityNode.class)
-public class OrderLine implements Serializable {
+public class OrderLine extends  OrderLineBase implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	/**
@@ -27,6 +27,13 @@ public class OrderLine implements Serializable {
 	  */
 	@Column(primaryKey = true,autoIncrement = true,comment = "订单产品标识 ")	
 	private Integer id;
+	/**
+	  * 客户标识 
+	  * nullable:false,length:11
+	  */
+	@Column(comment = "客户标识 ")	
+	@NotNull
+	private Integer customerId;
 	/**
 	  * 订单标识 
 	  * nullable:false,length:11
@@ -220,6 +227,12 @@ public class OrderLine implements Serializable {
     public void setId(Integer id){
     	this.id = id;
     }
+    public Integer getCustomerId(){
+    	return this.customerId;
+    }
+    public void setCustomerId(Integer customerId){
+    	this.customerId = customerId;
+    }
     public Integer getOrderId(){
     	return this.orderId;
     }
@@ -387,6 +400,8 @@ public class OrderLine implements Serializable {
         public static final EntityNode INSTANCE = new EntityNode("ol");;
     	/** 订单产品标识  */
         public FieldNode<OrderLine, Integer> id =  createFieldNode("id","id",Integer.class,JdbcType.INTEGER);
+    	/** 客户标识  */
+        public FieldNode<OrderLine, Integer> customerId =  createFieldNode("customerId","customer_id",Integer.class,JdbcType.INTEGER);
     	/** 订单标识  */
         public FieldNode<OrderLine, Integer> orderId =  createFieldNode("orderId","order_id",Integer.class,JdbcType.INTEGER);
     	/** 产品大类  */
@@ -460,43 +475,4 @@ public class OrderLine implements Serializable {
 	public static enum ValueField {
 	}
     // ==== 自定义属性 ====
-
-	// ==== 自定义属性 ====
-	Supplier supplier;
-	ProductType productType;
-
-	public Supplier getSupplier() {
-		return supplier;
-	}
-
-	public void setSupplier(Supplier supplier) {
-		this.supplier = supplier;
-	}
-
-	public ProductType getProductType() {
-		return productType;
-	}
-
-	public void setProductType(ProductType productType) {
-		this.productType = productType;
-	}
-
-	public ProductType getParentProductType() {
-		return parentProductType;
-	}
-
-	public void setParentProductType(ProductType parentProductType) {
-		this.parentProductType = parentProductType;
-	}
-
-	public Product getProduct() {
-		return product;
-	}
-
-	public void setProduct(Product product) {
-		this.product = product;
-	}
-
-	ProductType parentProductType;
-	Product product;
 }
