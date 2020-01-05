@@ -40,5 +40,4 @@ public class ProductBase implements Serializable {
 	ProductType productSubType;
 
 	Customer customer;
-
 }

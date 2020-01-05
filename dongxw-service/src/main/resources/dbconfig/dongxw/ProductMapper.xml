@@ -77,13 +77,13 @@
 		    	and p.id=#{p.id}
 		    </if>
 			<if test="p.epCode!=null and p.epCode!=''">
-		    	and p.ep_code like #{p.epCode}
+				and p.epCode like concat('%',#{p.epCode},'%')
 		    </if>
 			<if test="p.code!=null and p.code!=''">
-		    	and p.code like #{p.code}
+		    	and p.code like concat('%',#{p.code},'%')
 		    </if>
 			<if test="p.remark!=null and p.remark!=''">
-		    	and p.remark like #{p.remark}
+		    	and p.remark like concat('%',#{p.remark},'%')
 		    </if>
 			<if test="p.parentId!=null ">
 		    	and p.parent_id=#{p.parentId}
@@ -98,13 +98,13 @@
 		    	and p.bar_code like #{p.barCode}
 		    </if>
 			<if test="p.color!=null and p.color!=''">
-		    	and p.color like #{p.color}
+		    	and p.color like concat('%',#{p.color},'%')
 		    </if>
 			<if test="p.unit!=null and p.unit!=''">
 		    	and p.unit like #{p.unit}
 		    </if>
 			<if test="p.size!=null and p.size!=''">
-		    	and p.size like #{p.size}
+		    	and p.size like concat('%',#{p.size},'%')
 		    </if>
 			<if test="p.upcA!=null and p.upcA!=''">
 		    	and p.upc_a like #{p.upcA}
