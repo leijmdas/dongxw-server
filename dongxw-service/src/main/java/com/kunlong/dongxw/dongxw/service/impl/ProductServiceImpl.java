@@ -12,7 +12,7 @@ import org.mybatis.hbatis.orm.criteria.support.StatementBuilder;
 /**
  * ProductServiceImpl
  * @author generator
- * @date 2020年01月03日
+ * @date 2020年01月05日
  */
 @Service
 public class ProductServiceImpl implements ProductService {

@@ -18,6 +18,16 @@
 	  	<result column="memo" property="memo" jdbcType="VARCHAR" />
 	  	<result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
 	  	<result column="create_by" property="createBy" jdbcType="INTEGER" />
+	  	<result column="customer_id" property="customerId" jdbcType="INTEGER" />
+	  	<result column="img_urls" property="imgUrls" jdbcType="VARCHAR" />
+	  	<result column="ib_qty" property="ibQty" jdbcType="INTEGER" />
+	  	<result column="ib_gw" property="ibGw" jdbcType="DECIMAL" />
+	  	<result column="ib_nw" property="ibNw" jdbcType="DECIMAL" />
+	  	<result column="ib_size" property="ibSize" jdbcType="VARCHAR" />
+	  	<result column="ob_qty" property="obQty" jdbcType="INTEGER" />
+	  	<result column="ob_gw" property="obGw" jdbcType="DECIMAL" />
+	  	<result column="ob_nw" property="obNw" jdbcType="DECIMAL" />
+	  	<result column="ob_size" property="obSize" jdbcType="VARCHAR" />
     </resultMap>
     <resultMap id="BaseResultMap_Product" type="com.kunlong.dongxw.dongxw.domain.Product" >
 	    <id column="p_id" property="id" jdbcType="INTEGER" />	
@@ -36,12 +46,22 @@
 	  	<result column="p_memo" property="memo" jdbcType="VARCHAR" />
 	  	<result column="p_create_date" property="createDate" jdbcType="TIMESTAMP" />
 	  	<result column="p_create_by" property="createBy" jdbcType="INTEGER" />
+	  	<result column="p_customer_id" property="customerId" jdbcType="INTEGER" />
+	  	<result column="p_img_urls" property="imgUrls" jdbcType="VARCHAR" />
+	  	<result column="p_ib_qty" property="ibQty" jdbcType="INTEGER" />
+	  	<result column="p_ib_gw" property="ibGw" jdbcType="DECIMAL" />
+	  	<result column="p_ib_nw" property="ibNw" jdbcType="DECIMAL" />
+	  	<result column="p_ib_size" property="ibSize" jdbcType="VARCHAR" />
+	  	<result column="p_ob_qty" property="obQty" jdbcType="INTEGER" />
+	  	<result column="p_ob_gw" property="obGw" jdbcType="DECIMAL" />
+	  	<result column="p_ob_nw" property="obNw" jdbcType="DECIMAL" />
+	  	<result column="p_ob_size" property="obSize" jdbcType="VARCHAR" />
     </resultMap>
     <sql id="Base_Column_List" >
-  		id,ep_code,code,remark,parent_id,product_type_id,pic_url,bar_code,color,unit,size,upc_a,status,memo,create_date,create_by
+  		id,ep_code,code,remark,parent_id,product_type_id,pic_url,bar_code,color,unit,size,upc_a,status,memo,create_date,create_by,customer_id,img_urls,ib_qty,ib_gw,ib_nw,ib_size,ob_qty,ob_gw,ob_nw,ob_size
 	</sql>
   	<sql id="Base_Column_List_Product" >
-  		p.id p_id,p.ep_code p_ep_code,p.code p_code,p.remark p_remark,p.parent_id p_parent_id,p.product_type_id p_product_type_id,p.pic_url p_pic_url,p.bar_code p_bar_code,p.color p_color,p.unit p_unit,p.size p_size,p.upc_a p_upc_a,p.status p_status,p.memo p_memo,p.create_date p_create_date,p.create_by p_create_by
+  		p.id p_id,p.ep_code p_ep_code,p.code p_code,p.remark p_remark,p.parent_id p_parent_id,p.product_type_id p_product_type_id,p.pic_url p_pic_url,p.bar_code p_bar_code,p.color p_color,p.unit p_unit,p.size p_size,p.upc_a p_upc_a,p.status p_status,p.memo p_memo,p.create_date p_create_date,p.create_by p_create_by,p.customer_id p_customer_id,p.img_urls p_img_urls,p.ib_qty p_ib_qty,p.ib_gw p_ib_gw,p.ib_nw p_ib_nw,p.ib_size p_ib_size,p.ob_qty p_ob_qty,p.ob_gw p_ob_gw,p.ob_nw p_ob_nw,p.ob_size p_ob_size
 	</sql>
 	
 	<!-- 系统自定义 -->
@@ -101,6 +121,36 @@
 			<if test="p.createBy!=null ">
 		    	and p.create_by=#{p.createBy}
 		    </if>
+			<if test="p.customerId!=null ">
+		    	and p.customer_id=#{p.customerId}
+		    </if>
+			<if test="p.imgUrls!=null and p.imgUrls!=''">
+		    	and p.img_urls like #{p.imgUrls}
+		    </if>
+			<if test="p.ibQty!=null ">
+		    	and p.ib_qty=#{p.ibQty}
+		    </if>
+			<if test="p.ibGw!=null ">
+		    	and p.ib_gw=#{p.ibGw}
+		    </if>
+			<if test="p.ibNw!=null ">
+		    	and p.ib_nw=#{p.ibNw}
+		    </if>
+			<if test="p.ibSize!=null and p.ibSize!=''">
+		    	and p.ib_size like #{p.ibSize}
+		    </if>
+			<if test="p.obQty!=null ">
+		    	and p.ob_qty=#{p.obQty}
+		    </if>
+			<if test="p.obGw!=null ">
+		    	and p.ob_gw=#{p.obGw}
+		    </if>
+			<if test="p.obNw!=null ">
+		    	and p.ob_nw=#{p.obNw}
+		    </if>
+			<if test="p.obSize!=null and p.obSize!=''">
+		    	and p.ob_size like #{p.obSize}
+		    </if>
 		</if>
 		<!--
 		<bind name="rp" value="queryParam.ruleParam" />
@@ -112,13 +162,12 @@
 		<include refid="Base_Column_List_Product"></include>
 		from product p where 1=1
 		<include refid="Condition_FindByQueryParam"></include>
-		<!--<if test="queryParam.sortOrders!=null and queryParam.sortOrders.size() gt 0">-->
-			<!--order by -->
-			<!--<foreach collection="queryParam.sortOrders" item="item" separator=",">-->
-				<!--${item.sortField.sqlColumn} ${item.sortType}-->
-			<!--</foreach>-->
-		<!--</if>-->
-		order by id desc
+		<if test="queryParam.sortOrders!=null and queryParam.sortOrders.size() gt 0">
+			order by 
+			<foreach collection="queryParam.sortOrders" item="item" separator=",">
+				${item.sortField.sqlColumn} ${item.sortType}
+			</foreach>
+		</if>
 		<if test="queryParam.limit gt 0">
 	  		limit ${queryParam.start},${queryParam.limit}
 	  	</if>

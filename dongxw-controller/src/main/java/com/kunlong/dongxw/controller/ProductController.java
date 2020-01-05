@@ -6,6 +6,7 @@ import com.kunlong.dongxw.annotation.DateRewritable;
 import com.kunlong.dongxw.consts.ApiConstants;
 import com.kunlong.dongxw.dongxw.domain.Product;
 import com.kunlong.dongxw.dongxw.domain.ProductType;
+import com.kunlong.dongxw.dongxw.service.CustomerService;
 import com.kunlong.dongxw.dongxw.service.ProductService;
 import com.kunlong.dongxw.dongxw.service.ProductTypeService;
 import com.kunlong.dongxw.util.WebFileUtil;
@@ -38,6 +39,9 @@ public final class ProductController extends BaseController{
 
     @Autowired
     ProductTypeService productTypeService;
+
+    @Autowired
+    CustomerService customerService;
 
     @RequestMapping("/findById/{id}")
     public JsonResult<Product> findById(@PathVariable("id") Integer id, HttpServletResponse response) throws IOException {
@@ -86,6 +90,9 @@ public final class ProductController extends BaseController{
         for(Product product : pageResult.getData()){
             product.setProductSubType(productTypeService.findById(product.getProductTypeId()));
             product.setProductType(productTypeService.findById(product.getParentId()));
+            if(product.getCustomerId()!=null) {
+                product.setCustomer(customerService.findById(product.getCustomerId()));
+            }
         }
         return pageResult;
     }

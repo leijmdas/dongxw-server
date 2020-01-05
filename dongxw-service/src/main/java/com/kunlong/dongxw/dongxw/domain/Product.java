@@ -8,15 +8,16 @@ import org.mybatis.hbatis.core.*;
 import java.lang.Integer;
 import java.lang.String;
 import java.util.Date;
+import java.math.BigDecimal;
 import org.mybatis.hbatis.orm.criteria.support.query.AbstractQueryParam;
 import org.mybatis.hbatis.orm.criteria.support.query.SortOrders;
 /**
  * Product 产品
  * @author generator
- * @date 2020年01月03日
+ * @date 2020年01月05日
  */
 @Table(Product.EntityNode.class)
-public class Product implements Serializable {
+public class Product extends ProductBase implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	/**
@@ -41,7 +42,7 @@ public class Product implements Serializable {
 	private String code;
 	/**
 	  * 描述 
-	  * nullable:false,length:128
+	  * nullable:false,length:512
 	  */
 	@Column(comment = "描述 ")	
 	@NotNull
@@ -62,20 +63,20 @@ public class Product implements Serializable {
 	private Integer productTypeId;
 	/**
 	  * 图片 
-	  * nullable:true,length:128
+	  * nullable:true,length:256
 	  */
 	@Column(comment = "图片 ")	
 	private String picUrl;
 	/**
 	  * 条码 
-	  * nullable:false,length:4
+	  * nullable:false,length:64
 	  */
 	@Column(comment = "条码 ")	
 	@NotNull
 	private String barCode;
 	/**
 	  * 配色 
-	  * nullable:false,length:16
+	  * nullable:false,length:64
 	  */
 	@Column(comment = "配色 ")	
 	@NotNull
@@ -89,7 +90,7 @@ public class Product implements Serializable {
 	private String unit;
 	/**
 	  * 尺寸 
-	  * nullable:false,length:24
+	  * nullable:false,length:32
 	  */
 	@Column(comment = "尺寸 ")	
 	@NotNull
@@ -103,7 +104,7 @@ public class Product implements Serializable {
 	private String upcA;
 	/**
 	  * 状态 1-使用 0-停用
-	  * nullable:false,length:11
+	  * nullable:false,length:4
 	  */
 	@Column(comment = "状态 1-使用 0-停用")	
 	@NotNull
@@ -128,6 +129,74 @@ public class Product implements Serializable {
 	@Column(comment = "建档人 ")	
 	@NotNull
 	private Integer createBy;
+	/**
+	  * 
+	  * nullable:true,length:4
+	  */
+	@Column(comment = "")	
+	private Integer customerId;
+	/**
+	  * 图片集
+	  * nullable:true,length:1,024
+	  */
+	@Column(comment = "图片集")	
+	private String imgUrls;
+	/**
+	  * 内盒数量 
+	  * nullable:false,length:11
+	  */
+	@Column(comment = "内盒数量 ")	
+	@NotNull
+	private Integer ibQty;
+	/**
+	  * 毛重 
+	  * nullable:false,length:10
+	  */
+	@Column(comment = "毛重 ")	
+	@NotNull
+	private BigDecimal ibGw;
+	/**
+	  * 净重 
+	  * nullable:false,length:10
+	  */
+	@Column(comment = "净重 ")	
+	@NotNull
+	private BigDecimal ibNw;
+	/**
+	  * 内盒尺寸 
+	  * nullable:false,length:64
+	  */
+	@Column(comment = "内盒尺寸 ")	
+	@NotNull
+	private String ibSize;
+	/**
+	  * 外箱数量 
+	  * nullable:false,length:11
+	  */
+	@Column(comment = "外箱数量 ")	
+	@NotNull
+	private Integer obQty;
+	/**
+	  * 毛重 
+	  * nullable:false,length:10
+	  */
+	@Column(comment = "毛重 ")	
+	@NotNull
+	private BigDecimal obGw;
+	/**
+	  * 净重 
+	  * nullable:false,length:10
+	  */
+	@Column(comment = "净重 ")	
+	@NotNull
+	private BigDecimal obNw;
+	/**
+	  * 
+	  * nullable:false,length:255
+	  */
+	@Column(comment = "")	
+	@NotNull
+	private String obSize;
     public Integer getId(){
     	return this.id;
     }
@@ -224,6 +293,66 @@ public class Product implements Serializable {
     public void setCreateBy(Integer createBy){
     	this.createBy = createBy;
     }
+    public Integer getCustomerId(){
+    	return this.customerId;
+    }
+    public void setCustomerId(Integer customerId){
+    	this.customerId = customerId;
+    }
+    public String getImgUrls(){
+    	return this.imgUrls;
+    }
+    public void setImgUrls(String imgUrls){
+    	this.imgUrls = imgUrls;
+    }
+    public Integer getIbQty(){
+    	return this.ibQty;
+    }
+    public void setIbQty(Integer ibQty){
+    	this.ibQty = ibQty;
+    }
+    public BigDecimal getIbGw(){
+    	return this.ibGw;
+    }
+    public void setIbGw(BigDecimal ibGw){
+    	this.ibGw = ibGw;
+    }
+    public BigDecimal getIbNw(){
+    	return this.ibNw;
+    }
+    public void setIbNw(BigDecimal ibNw){
+    	this.ibNw = ibNw;
+    }
+    public String getIbSize(){
+    	return this.ibSize;
+    }
+    public void setIbSize(String ibSize){
+    	this.ibSize = ibSize;
+    }
+    public Integer getObQty(){
+    	return this.obQty;
+    }
+    public void setObQty(Integer obQty){
+    	this.obQty = obQty;
+    }
+    public BigDecimal getObGw(){
+    	return this.obGw;
+    }
+    public void setObGw(BigDecimal obGw){
+    	this.obGw = obGw;
+    }
+    public BigDecimal getObNw(){
+    	return this.obNw;
+    }
+    public void setObNw(BigDecimal obNw){
+    	this.obNw = obNw;
+    }
+    public String getObSize(){
+    	return this.obSize;
+    }
+    public void setObSize(String obSize){
+    	this.obSize = obSize;
+    }
 
     public static class EntityNode extends AbstractEntityNode<Product> {
         public static final EntityNode INSTANCE = new EntityNode("p");;
@@ -259,6 +388,26 @@ public class Product implements Serializable {
         public FieldNode<Product, Date> createDate =  createFieldNode("createDate","create_date",Date.class,JdbcType.TIMESTAMP);
     	/** 建档人  */
         public FieldNode<Product, Integer> createBy =  createFieldNode("createBy","create_by",Integer.class,JdbcType.INTEGER);
+    	/**  */
+        public FieldNode<Product, Integer> customerId =  createFieldNode("customerId","customer_id",Integer.class,JdbcType.INTEGER);
+    	/** 图片集 */
+        public FieldNode<Product, String> imgUrls =  createFieldNode("imgUrls","img_urls",String.class,JdbcType.VARCHAR);
+    	/** 内盒数量  */
+        public FieldNode<Product, Integer> ibQty =  createFieldNode("ibQty","ib_qty",Integer.class,JdbcType.INTEGER);
+    	/** 毛重  */
+        public FieldNode<Product, BigDecimal> ibGw =  createFieldNode("ibGw","ib_gw",BigDecimal.class,JdbcType.DECIMAL);
+    	/** 净重  */
+        public FieldNode<Product, BigDecimal> ibNw =  createFieldNode("ibNw","ib_nw",BigDecimal.class,JdbcType.DECIMAL);
+    	/** 内盒尺寸  */
+        public FieldNode<Product, String> ibSize =  createFieldNode("ibSize","ib_size",String.class,JdbcType.VARCHAR);
+    	/** 外箱数量  */
+        public FieldNode<Product, Integer> obQty =  createFieldNode("obQty","ob_qty",Integer.class,JdbcType.INTEGER);
+    	/** 毛重  */
+        public FieldNode<Product, BigDecimal> obGw =  createFieldNode("obGw","ob_gw",BigDecimal.class,JdbcType.DECIMAL);
+    	/** 净重  */
+        public FieldNode<Product, BigDecimal> obNw =  createFieldNode("obNw","ob_nw",BigDecimal.class,JdbcType.DECIMAL);
+    	/**  */
+        public FieldNode<Product, String> obSize =  createFieldNode("obSize","ob_size",String.class,JdbcType.VARCHAR);
 	
         /**
          * @param alias 别名
@@ -277,26 +426,5 @@ public class Product implements Serializable {
 	
 	public static enum ValueField {
 	}
-
-	public ProductType getProductType() {
-		return productType;
-	}
-
-	public void setProductType(ProductType productType) {
-		this.productType = productType;
-	}
-
-	public ProductType getProductSubType() {
-		return productSubType;
-	}
-
-	public void setProductSubType(ProductType productSubType) {
-		this.productSubType = productSubType;
-	}
-
-	// ==== 自定义属性 ====
-	ProductType productType;
-	ProductType productSubType;
-
-
+    // ==== 自定义属性 ====
 }

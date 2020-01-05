@@ -4,12 +4,13 @@ import java.io.Serializable;
 import java.lang.Integer;
 import java.lang.String;
 import java.util.Date;
+import java.math.BigDecimal;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 /**
  * Product
  * @author generator
- * @date 2020年01月03日
+ * @date 2020年01月05日
  */
 @ApiModel(value="ProductDTO",description="产品")
 public class ProductDTO implements Serializable {
@@ -35,7 +36,7 @@ public class ProductDTO implements Serializable {
 	private String code;
 	/**
 	  * 描述 
-	  * nullable:false,length:128
+	  * nullable:false,length:512
 	  */
 	@ApiModelProperty(value = "描述 ",required = true,notes = "描述  ")
 	private String remark;
@@ -53,19 +54,19 @@ public class ProductDTO implements Serializable {
 	private Integer productTypeId;
 	/**
 	  * 图片 
-	  * nullable:true,length:128
+	  * nullable:true,length:256
 	  */
 	@ApiModelProperty(value = "图片 ",required = false,notes = "图片  ")
 	private String picUrl;
 	/**
 	  * 条码 
-	  * nullable:false,length:4
+	  * nullable:false,length:64
 	  */
 	@ApiModelProperty(value = "条码 ",required = true,notes = "条码  ")
 	private String barCode;
 	/**
 	  * 配色 
-	  * nullable:false,length:16
+	  * nullable:false,length:64
 	  */
 	@ApiModelProperty(value = "配色 ",required = true,notes = "配色  ")
 	private String color;
@@ -77,7 +78,7 @@ public class ProductDTO implements Serializable {
 	private String unit;
 	/**
 	  * 尺寸 
-	  * nullable:false,length:24
+	  * nullable:false,length:32
 	  */
 	@ApiModelProperty(value = "尺寸 ",required = true,notes = "尺寸  ")
 	private String size;
@@ -89,7 +90,7 @@ public class ProductDTO implements Serializable {
 	private String upcA;
 	/**
 	  * 状态 1-使用 0-停用
-	  * nullable:false,length:11
+	  * nullable:false,length:4
 	  */
 	@ApiModelProperty(value = "状态 1-使用 0-停用",required = true,notes = "状态 1-使用 0-停用 ")
 	private Integer status;
@@ -111,6 +112,66 @@ public class ProductDTO implements Serializable {
 	  */
 	@ApiModelProperty(value = "建档人 ",required = true,notes = "建档人  ")
 	private Integer createBy;
+	/**
+	  * 
+	  * nullable:true,length:4
+	  */
+	@ApiModelProperty(value = "",required = false,notes = " ")
+	private Integer customerId;
+	/**
+	  * 图片集
+	  * nullable:true,length:1,024
+	  */
+	@ApiModelProperty(value = "图片集",required = false,notes = "图片集 ")
+	private String imgUrls;
+	/**
+	  * 内盒数量 
+	  * nullable:false,length:11
+	  */
+	@ApiModelProperty(value = "内盒数量 ",required = true,notes = "内盒数量  ")
+	private Integer ibQty;
+	/**
+	  * 毛重 
+	  * nullable:false,length:10
+	  */
+	@ApiModelProperty(value = "毛重 ",required = true,notes = "毛重  ")
+	private BigDecimal ibGw;
+	/**
+	  * 净重 
+	  * nullable:false,length:10
+	  */
+	@ApiModelProperty(value = "净重 ",required = true,notes = "净重  ")
+	private BigDecimal ibNw;
+	/**
+	  * 内盒尺寸 
+	  * nullable:false,length:64
+	  */
+	@ApiModelProperty(value = "内盒尺寸 ",required = true,notes = "内盒尺寸  ")
+	private String ibSize;
+	/**
+	  * 外箱数量 
+	  * nullable:false,length:11
+	  */
+	@ApiModelProperty(value = "外箱数量 ",required = true,notes = "外箱数量  ")
+	private Integer obQty;
+	/**
+	  * 毛重 
+	  * nullable:false,length:10
+	  */
+	@ApiModelProperty(value = "毛重 ",required = true,notes = "毛重  ")
+	private BigDecimal obGw;
+	/**
+	  * 净重 
+	  * nullable:false,length:10
+	  */
+	@ApiModelProperty(value = "净重 ",required = true,notes = "净重  ")
+	private BigDecimal obNw;
+	/**
+	  * 
+	  * nullable:false,length:255
+	  */
+	@ApiModelProperty(value = "",required = true,notes = " ")
+	private String obSize;
     public Integer getId(){
     	return this.id;
     }
@@ -206,6 +267,66 @@ public class ProductDTO implements Serializable {
     }
     public void setCreateBy(Integer createBy){
     	this.createBy = createBy;
+    }
+    public Integer getCustomerId(){
+    	return this.customerId;
+    }
+    public void setCustomerId(Integer customerId){
+    	this.customerId = customerId;
+    }
+    public String getImgUrls(){
+    	return this.imgUrls;
+    }
+    public void setImgUrls(String imgUrls){
+    	this.imgUrls = imgUrls;
+    }
+    public Integer getIbQty(){
+    	return this.ibQty;
+    }
+    public void setIbQty(Integer ibQty){
+    	this.ibQty = ibQty;
+    }
+    public BigDecimal getIbGw(){
+    	return this.ibGw;
+    }
+    public void setIbGw(BigDecimal ibGw){
+    	this.ibGw = ibGw;
+    }
+    public BigDecimal getIbNw(){
+    	return this.ibNw;
+    }
+    public void setIbNw(BigDecimal ibNw){
+    	this.ibNw = ibNw;
+    }
+    public String getIbSize(){
+    	return this.ibSize;
+    }
+    public void setIbSize(String ibSize){
+    	this.ibSize = ibSize;
+    }
+    public Integer getObQty(){
+    	return this.obQty;
+    }
+    public void setObQty(Integer obQty){
+    	this.obQty = obQty;
+    }
+    public BigDecimal getObGw(){
+    	return this.obGw;
+    }
+    public void setObGw(BigDecimal obGw){
+    	this.obGw = obGw;
+    }
+    public BigDecimal getObNw(){
+    	return this.obNw;
+    }
+    public void setObNw(BigDecimal obNw){
+    	this.obNw = obNw;
+    }
+    public String getObSize(){
+    	return this.obSize;
+    }
+    public void setObSize(String obSize){
+    	this.obSize = obSize;
     }
     // ==== 自定义属性 ====
 }
