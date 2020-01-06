@@ -10,7 +10,7 @@ import io.swagger.annotations.ApiModelProperty;
 /**
  * Product
  * @author generator
- * @date 2020年01月05日
+ * @date 2020年01月07日
  */
 @ApiModel(value="ProductDTO",description="产品")
 public class ProductDTO implements Serializable {
@@ -172,6 +172,30 @@ public class ProductDTO implements Serializable {
 	  */
 	@ApiModelProperty(value = "",required = true,notes = " ")
 	private String obSize;
+	/**
+	  * 
+	  * nullable:true,length:255
+	  */
+	@ApiModelProperty(value = "",required = false,notes = " ")
+	private String pkgFront;
+	/**
+	  * 
+	  * nullable:true,length:255
+	  */
+	@ApiModelProperty(value = "",required = false,notes = " ")
+	private String pkgSide;
+	/**
+	  * 
+	  * nullable:true,length:512
+	  */
+	@ApiModelProperty(value = "",required = false,notes = " ")
+	private String pkgRemark;
+	/**
+	  * 
+	  * nullable:true,length:512
+	  */
+	@ApiModelProperty(value = "",required = false,notes = " ")
+	private String imgRemark;
     public Integer getId(){
     	return this.id;
     }
@@ -327,6 +351,30 @@ public class ProductDTO implements Serializable {
     }
     public void setObSize(String obSize){
     	this.obSize = obSize;
+    }
+    public String getPkgFront(){
+    	return this.pkgFront;
+    }
+    public void setPkgFront(String pkgFront){
+    	this.pkgFront = pkgFront;
+    }
+    public String getPkgSide(){
+    	return this.pkgSide;
+    }
+    public void setPkgSide(String pkgSide){
+    	this.pkgSide = pkgSide;
+    }
+    public String getPkgRemark(){
+    	return this.pkgRemark;
+    }
+    public void setPkgRemark(String pkgRemark){
+    	this.pkgRemark = pkgRemark;
+    }
+    public String getImgRemark(){
+    	return this.imgRemark;
+    }
+    public void setImgRemark(String imgRemark){
+    	this.imgRemark = imgRemark;
     }
     // ==== 自定义属性 ====
 }

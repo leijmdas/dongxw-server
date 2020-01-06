@@ -14,10 +14,10 @@ import org.mybatis.hbatis.orm.criteria.support.query.SortOrders;
 /**
  * Product 产品
  * @author generator
- * @date 2020年01月05日
+ * @date 2020年01月07日
  */
 @Table(Product.EntityNode.class)
-public class Product extends ProductBase implements Serializable {
+public class Product implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	/**
@@ -197,6 +197,30 @@ public class Product extends ProductBase implements Serializable {
 	@Column(comment = "")	
 	@NotNull
 	private String obSize;
+	/**
+	  * 
+	  * nullable:true,length:255
+	  */
+	@Column(comment = "")	
+	private String pkgFront;
+	/**
+	  * 
+	  * nullable:true,length:255
+	  */
+	@Column(comment = "")	
+	private String pkgSide;
+	/**
+	  * 
+	  * nullable:true,length:512
+	  */
+	@Column(comment = "")	
+	private String pkgRemark;
+	/**
+	  * 
+	  * nullable:true,length:512
+	  */
+	@Column(comment = "")	
+	private String imgRemark;
     public Integer getId(){
     	return this.id;
     }
@@ -353,6 +377,30 @@ public class Product extends ProductBase implements Serializable {
     public void setObSize(String obSize){
     	this.obSize = obSize;
     }
+    public String getPkgFront(){
+    	return this.pkgFront;
+    }
+    public void setPkgFront(String pkgFront){
+    	this.pkgFront = pkgFront;
+    }
+    public String getPkgSide(){
+    	return this.pkgSide;
+    }
+    public void setPkgSide(String pkgSide){
+    	this.pkgSide = pkgSide;
+    }
+    public String getPkgRemark(){
+    	return this.pkgRemark;
+    }
+    public void setPkgRemark(String pkgRemark){
+    	this.pkgRemark = pkgRemark;
+    }
+    public String getImgRemark(){
+    	return this.imgRemark;
+    }
+    public void setImgRemark(String imgRemark){
+    	this.imgRemark = imgRemark;
+    }
 
     public static class EntityNode extends AbstractEntityNode<Product> {
         public static final EntityNode INSTANCE = new EntityNode("p");;
@@ -408,6 +456,14 @@ public class Product extends ProductBase implements Serializable {
         public FieldNode<Product, BigDecimal> obNw =  createFieldNode("obNw","ob_nw",BigDecimal.class,JdbcType.DECIMAL);
     	/**  */
         public FieldNode<Product, String> obSize =  createFieldNode("obSize","ob_size",String.class,JdbcType.VARCHAR);
+    	/**  */
+        public FieldNode<Product, String> pkgFront =  createFieldNode("pkgFront","pkg_front",String.class,JdbcType.VARCHAR);
+    	/**  */
+        public FieldNode<Product, String> pkgSide =  createFieldNode("pkgSide","pkg_side",String.class,JdbcType.VARCHAR);
+    	/**  */
+        public FieldNode<Product, String> pkgRemark =  createFieldNode("pkgRemark","pkg_remark",String.class,JdbcType.VARCHAR);
+    	/**  */
+        public FieldNode<Product, String> imgRemark =  createFieldNode("imgRemark","img_remark",String.class,JdbcType.VARCHAR);
 	
         /**
          * @param alias 别名

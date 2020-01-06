@@ -28,6 +28,10 @@
 	  	<result column="ob_gw" property="obGw" jdbcType="DECIMAL" />
 	  	<result column="ob_nw" property="obNw" jdbcType="DECIMAL" />
 	  	<result column="ob_size" property="obSize" jdbcType="VARCHAR" />
+	  	<result column="pkg_front" property="pkgFront" jdbcType="VARCHAR" />
+	  	<result column="pkg_side" property="pkgSide" jdbcType="VARCHAR" />
+	  	<result column="pkg_remark" property="pkgRemark" jdbcType="VARCHAR" />
+	  	<result column="img_remark" property="imgRemark" jdbcType="VARCHAR" />
     </resultMap>
     <resultMap id="BaseResultMap_Product" type="com.kunlong.dongxw.dongxw.domain.Product" >
 	    <id column="p_id" property="id" jdbcType="INTEGER" />	
@@ -56,12 +60,16 @@
 	  	<result column="p_ob_gw" property="obGw" jdbcType="DECIMAL" />
 	  	<result column="p_ob_nw" property="obNw" jdbcType="DECIMAL" />
 	  	<result column="p_ob_size" property="obSize" jdbcType="VARCHAR" />
+	  	<result column="p_pkg_front" property="pkgFront" jdbcType="VARCHAR" />
+	  	<result column="p_pkg_side" property="pkgSide" jdbcType="VARCHAR" />
+	  	<result column="p_pkg_remark" property="pkgRemark" jdbcType="VARCHAR" />
+	  	<result column="p_img_remark" property="imgRemark" jdbcType="VARCHAR" />
     </resultMap>
     <sql id="Base_Column_List" >
-  		id,ep_code,code,remark,parent_id,product_type_id,pic_url,bar_code,color,unit,size,upc_a,status,memo,create_date,create_by,customer_id,img_urls,ib_qty,ib_gw,ib_nw,ib_size,ob_qty,ob_gw,ob_nw,ob_size
+  		id,ep_code,code,remark,parent_id,product_type_id,pic_url,bar_code,color,unit,size,upc_a,status,memo,create_date,create_by,customer_id,img_urls,ib_qty,ib_gw,ib_nw,ib_size,ob_qty,ob_gw,ob_nw,ob_size,pkg_front,pkg_side,pkg_remark,img_remark
 	</sql>
   	<sql id="Base_Column_List_Product" >
-  		p.id p_id,p.ep_code p_ep_code,p.code p_code,p.remark p_remark,p.parent_id p_parent_id,p.product_type_id p_product_type_id,p.pic_url p_pic_url,p.bar_code p_bar_code,p.color p_color,p.unit p_unit,p.size p_size,p.upc_a p_upc_a,p.status p_status,p.memo p_memo,p.create_date p_create_date,p.create_by p_create_by,p.customer_id p_customer_id,p.img_urls p_img_urls,p.ib_qty p_ib_qty,p.ib_gw p_ib_gw,p.ib_nw p_ib_nw,p.ib_size p_ib_size,p.ob_qty p_ob_qty,p.ob_gw p_ob_gw,p.ob_nw p_ob_nw,p.ob_size p_ob_size
+  		p.id p_id,p.ep_code p_ep_code,p.code p_code,p.remark p_remark,p.parent_id p_parent_id,p.product_type_id p_product_type_id,p.pic_url p_pic_url,p.bar_code p_bar_code,p.color p_color,p.unit p_unit,p.size p_size,p.upc_a p_upc_a,p.status p_status,p.memo p_memo,p.create_date p_create_date,p.create_by p_create_by,p.customer_id p_customer_id,p.img_urls p_img_urls,p.ib_qty p_ib_qty,p.ib_gw p_ib_gw,p.ib_nw p_ib_nw,p.ib_size p_ib_size,p.ob_qty p_ob_qty,p.ob_gw p_ob_gw,p.ob_nw p_ob_nw,p.ob_size p_ob_size,p.pkg_front p_pkg_front,p.pkg_side p_pkg_side,p.pkg_remark p_pkg_remark,p.img_remark p_img_remark
 	</sql>
 	
 	<!-- 系统自定义 -->
@@ -77,13 +85,13 @@
 		    	and p.id=#{p.id}
 		    </if>
 			<if test="p.epCode!=null and p.epCode!=''">
-				and p.ep_code like concat('%',#{p.epCode},'%')
+		    	and p.ep_code like #{p.epCode}
 		    </if>
 			<if test="p.code!=null and p.code!=''">
-		    	and p.code like concat('%',#{p.code},'%')
+		    	and p.code like #{p.code}
 		    </if>
 			<if test="p.remark!=null and p.remark!=''">
-		    	and p.remark like concat('%',#{p.remark},'%')
+		    	and p.remark like #{p.remark}
 		    </if>
 			<if test="p.parentId!=null ">
 		    	and p.parent_id=#{p.parentId}
@@ -98,13 +106,13 @@
 		    	and p.bar_code like #{p.barCode}
 		    </if>
 			<if test="p.color!=null and p.color!=''">
-		    	and p.color like concat('%',#{p.color},'%')
+		    	and p.color like #{p.color}
 		    </if>
 			<if test="p.unit!=null and p.unit!=''">
 		    	and p.unit like #{p.unit}
 		    </if>
 			<if test="p.size!=null and p.size!=''">
-		    	and p.size like concat('%',#{p.size},'%')
+		    	and p.size like #{p.size}
 		    </if>
 			<if test="p.upcA!=null and p.upcA!=''">
 		    	and p.upc_a like #{p.upcA}
@@ -150,6 +158,18 @@
 		    </if>
 			<if test="p.obSize!=null and p.obSize!=''">
 		    	and p.ob_size like #{p.obSize}
+		    </if>
+			<if test="p.pkgFront!=null and p.pkgFront!=''">
+		    	and p.pkg_front like #{p.pkgFront}
+		    </if>
+			<if test="p.pkgSide!=null and p.pkgSide!=''">
+		    	and p.pkg_side like #{p.pkgSide}
+		    </if>
+			<if test="p.pkgRemark!=null and p.pkgRemark!=''">
+		    	and p.pkg_remark like #{p.pkgRemark}
+		    </if>
+			<if test="p.imgRemark!=null and p.imgRemark!=''">
+		    	and p.img_remark like #{p.imgRemark}
 		    </if>
 		</if>
 		<!--
