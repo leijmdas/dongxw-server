@@ -14,7 +14,7 @@ import org.mybatis.hbatis.orm.criteria.support.query.SortOrders;
 /**
  * OrderMaster 客户订单
  * @author generator
- * @date 2020年01月04日
+ * @date 2020年01月06日
  */
 @Table(OrderMaster.EntityNode.class)
 public class OrderMaster extends OrderMasterBase implements Serializable {
@@ -146,6 +146,20 @@ public class OrderMaster extends OrderMasterBase implements Serializable {
 	@Column(comment = "正式发票图片 ")	
 	@NotNull
 	private Long invoiceId;
+	/**
+	  * 
+	  * nullable:false,length:11
+	  */
+	@Column(comment = "")	
+	@NotNull
+	private Integer parentId;
+	/**
+	  * 
+	  * nullable:false,length:4
+	  */
+	@Column(comment = "")	
+	@NotNull
+	private Integer orderType;
     public Integer getId(){
     	return this.id;
     }
@@ -260,6 +274,18 @@ public class OrderMaster extends OrderMasterBase implements Serializable {
     public void setInvoiceId(Long invoiceId){
     	this.invoiceId = invoiceId;
     }
+    public Integer getParentId(){
+    	return this.parentId;
+    }
+    public void setParentId(Integer parentId){
+    	this.parentId = parentId;
+    }
+    public Integer getOrderType(){
+    	return this.orderType;
+    }
+    public void setOrderType(Integer orderType){
+    	this.orderType = orderType;
+    }
 
     public static class EntityNode extends AbstractEntityNode<OrderMaster> {
         public static final EntityNode INSTANCE = new EntityNode("om");;
@@ -301,6 +327,10 @@ public class OrderMaster extends OrderMasterBase implements Serializable {
         public FieldNode<OrderMaster, Long> invoiceIdIni =  createFieldNode("invoiceIdIni","invoice_id_ini",Long.class,JdbcType.BIGINT);
     	/** 正式发票图片  */
         public FieldNode<OrderMaster, Long> invoiceId =  createFieldNode("invoiceId","invoice_id",Long.class,JdbcType.BIGINT);
+    	/**  */
+        public FieldNode<OrderMaster, Integer> parentId =  createFieldNode("parentId","parent_id",Integer.class,JdbcType.INTEGER);
+    	/**  */
+        public FieldNode<OrderMaster, Integer> orderType =  createFieldNode("orderType","order_type",Integer.class,JdbcType.INTEGER);
 	
         /**
          * @param alias 别名

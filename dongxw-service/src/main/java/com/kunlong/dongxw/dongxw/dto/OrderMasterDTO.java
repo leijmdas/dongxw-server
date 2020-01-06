@@ -10,7 +10,7 @@ import io.swagger.annotations.ApiModelProperty;
 /**
  * OrderMaster
  * @author generator
- * @date 2020年01月04日
+ * @date 2020年01月06日
  */
 @ApiModel(value="OrderMasterDTO",description="客户订单")
 public class OrderMasterDTO implements Serializable {
@@ -130,6 +130,18 @@ public class OrderMasterDTO implements Serializable {
 	  */
 	@ApiModelProperty(value = "正式发票图片 ",required = true,notes = "正式发票图片  ")
 	private Long invoiceId;
+	/**
+	  * 
+	  * nullable:false,length:11
+	  */
+	@ApiModelProperty(value = "",required = true,notes = " ")
+	private Integer parentId;
+	/**
+	  * 
+	  * nullable:false,length:4
+	  */
+	@ApiModelProperty(value = "",required = true,notes = " ")
+	private Integer orderType;
     public Integer getId(){
     	return this.id;
     }
@@ -243,6 +255,18 @@ public class OrderMasterDTO implements Serializable {
     }
     public void setInvoiceId(Long invoiceId){
     	this.invoiceId = invoiceId;
+    }
+    public Integer getParentId(){
+    	return this.parentId;
+    }
+    public void setParentId(Integer parentId){
+    	this.parentId = parentId;
+    }
+    public Integer getOrderType(){
+    	return this.orderType;
+    }
+    public void setOrderType(Integer orderType){
+    	this.orderType = orderType;
     }
     // ==== 自定义属性 ====
 }

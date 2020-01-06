@@ -22,4 +22,18 @@ public class OrderMasterBase implements Serializable {
 	// ==== 自定义属性 ====
 	Customer customer;
 
+	public OrderMaster getOrderMasterParent() {
+		return orderMasterParent;
+	}
+
+	public void setOrderMasterParent(OrderMaster orderMasterParent) {
+		this.orderMasterParent = orderMasterParent;
+	}
+
+	public static long getSerialVersionUID() {
+		return serialVersionUID;
+	}
+
+	OrderMaster orderMasterParent;
+
 }

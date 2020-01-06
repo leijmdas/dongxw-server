@@ -44,8 +44,8 @@ public final class OrderLineController extends BaseController {
     ProductTypeService productTypeService;
     @Autowired
     ProductService productService;
-    @Autowired
-    SupplierService supplierService;
+//    @Autowired
+//    SupplierService supplierService;
 
     @RequestMapping("/findById/{id}")
     public JsonResult<OrderLine> findById(@PathVariable("id") Integer id, HttpServletResponse response) throws IOException {
@@ -95,7 +95,7 @@ public final class OrderLineController extends BaseController {
             orderLine.setParentProductType (productTypeService.findById(orderLine.getParentId()));
             orderLine.setProductType (productTypeService.findById(orderLine.getProductTypeId()));
             orderLine.setProduct(productService.findById(orderLine.getProductId()));
-            orderLine.setSupplier (supplierService.findById(orderLine.getSupplierId()));
+            //orderLine.setSupplier (supplierService.findById(orderLine.getSupplierId()));
         }
         return pageResult;
     }

@@ -7,7 +7,7 @@ import com.kunlong.dongxw.dongxw.domain.OrderMaster;
 /**
  * OrderMasterMapper
  * @author generator
- * @date 2020年01月04日
+ * @date 2020年01月06日
  */
 public interface OrderMasterMapper extends HbatisMapper<OrderMaster, Integer> {
 	

@@ -85,6 +85,9 @@ public final class OrderMasterController extends BaseController {
 
         for(OrderMaster orderMaster : pageResult.getData()){
             orderMaster.setCustomer(customerService.findById(orderMaster.getCustomerId()));
+            if(orderMaster.getOrderType()==200&&orderMaster.getParentId()>0){
+                orderMaster.setOrderMasterParent(orderMasterService.findById(orderMaster.getParentId()));
+            }
         }
         return pageResult;
     }

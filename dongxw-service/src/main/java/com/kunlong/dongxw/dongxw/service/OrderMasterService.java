@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * OrderMasterService
  * @author generator
- * @date 2020年01月04日
+ * @date 2020年01月06日
  */
 public interface OrderMasterService {
 	
