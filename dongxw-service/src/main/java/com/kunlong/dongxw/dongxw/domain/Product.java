@@ -17,7 +17,7 @@ import org.mybatis.hbatis.orm.criteria.support.query.SortOrders;
  * @date 2020年01月07日
  */
 @Table(Product.EntityNode.class)
-public class Product implements Serializable {
+public class Product extends ProductBase implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	/**
