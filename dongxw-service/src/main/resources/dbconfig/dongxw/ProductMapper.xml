@@ -77,7 +77,7 @@
 		    	and p.id=#{p.id}
 		    </if>
 			<if test="p.epCode!=null and p.epCode!=''">
-				and p.epCode like concat('%',#{p.epCode},'%')
+				and p.ep_code like concat('%',#{p.epCode},'%')
 		    </if>
 			<if test="p.code!=null and p.code!=''">
 		    	and p.code like concat('%',#{p.code},'%')
