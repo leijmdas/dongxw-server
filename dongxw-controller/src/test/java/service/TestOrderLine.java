@@ -1,7 +1,9 @@
 package service;
 
+import com.kunlong.api.service.MailApiService;
 import com.kunlong.dongxw.DongxwControllerApp;
 import com.kunlong.dongxw.dongxw.dao.OrderLineMapper;
+import org.apache.dubbo.config.annotation.Reference;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,33 +12,39 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 /**
- * 
- * @name BaseTest
  * @author zz  | www.xwparking.com
- * @date 2018年11月23日  
+ * @name BaseTest
+ * @date 2018年11月23日
  * @description:
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = DongxwControllerApp.class,webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes = DongxwControllerApp.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 
 public class TestOrderLine {
- @Autowired
- OrderLineMapper orderLineMapper;
+    @Autowired
+    OrderLineMapper orderLineMapper;
+
+    @Reference(lazy = true, version = "${dubbo.service.version}")
+    MailApiService mailApiService;
+
     @Before
     public void setup() {
-       
-    }
-    
-    public static void println(Object obj){
+
     }
 
-       @Test
-       public void test0001_service() {
-           orderLineMapper.selectByPK(1);
-           //String ret = KunlongUtils.toJSONStringPretty(metadataField);
-           //System.out.println(metadataField);
-       }
 
+    @Test
+    public void test0001_service() {
+        orderLineMapper.selectByPK(1);
+        //String ret = KunlongUtils.toJSONStringPretty(metadataField);
+        //System.out.println(metadataField);
+    }
+
+    @Test
+    public void test0002_service() {
+        mailApiService.sendEmail("leijmdas_s@163.com","dubbo","duubo");
+         
+    }
 
 
 }

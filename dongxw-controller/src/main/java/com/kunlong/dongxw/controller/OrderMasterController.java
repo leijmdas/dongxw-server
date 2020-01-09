@@ -2,6 +2,7 @@ package com.kunlong.dongxw.controller;
 
 
 import app.support.query.PageResult;
+import com.kunlong.api.service.MailApiService;
 import com.kunlong.dongxw.annotation.DateRewritable;
 import com.kunlong.dongxw.consts.ApiConstants;
 import com.kunlong.dongxw.consts.OrderConsts;
@@ -12,11 +13,13 @@ import com.kunlong.dongxw.util.WebFileUtil;
 import com.kunlong.platform.utils.JsonResult;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
+import org.apache.dubbo.config.annotation.Reference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -38,6 +41,9 @@ public final class OrderMasterController extends BaseController {
 
     @Autowired
     CustomerService customerService;
+
+    @Reference(lazy = true, version = "${dubbo.service.version}")
+    MailApiService mailApiService;
 
     @RequestMapping("/findById/{id}")
     public JsonResult<OrderMaster> findById(@PathVariable("id") Integer id, HttpServletResponse response) throws IOException {
@@ -106,7 +112,23 @@ public final class OrderMasterController extends BaseController {
         WebFileUtil web = new WebFileUtil(req,rsp);
         List<OrderMaster> orderMasters = orderMasterService.findByQueryParam(queryParam);;
         web.export2EasyExcelObject("客户订单.xlsx", buildTitles(),buildRecords(orderMasters));
+    }
 
+    @RequestMapping(value="exportMail",method = RequestMethod.POST)
+    @ApiOperation(value = "exportMail", notes = "exportMail", authorizations = {@Authorization(value = ApiConstants.AUTH_API_WEB)})
+    public  JsonResult<String> exportMail(@RequestBody @DateRewritable OrderMaster.QueryParam queryParam, HttpServletRequest req, HttpServletResponse rsp) throws FileNotFoundException, IOException {
+
+        if(queryParam.getParam() == null) {
+            queryParam.setParam(new OrderMaster());
+        }
+        queryParam.setLimit(-1);
+        queryParam.setStart(0);
+
+        WebFileUtil web = new WebFileUtil(req,rsp);
+        List<OrderMaster> orderMasters = orderMasterService.findByQueryParam(queryParam);;
+        File f=web.export2EasyExcelFile("客户订单.xlsx", buildTitles(),buildRecords(orderMasters));
+        mailApiService.sendEmail("leijmdas_s@163.com","客户订单.xlsx","客户订单",f.getPath());
+        return  JsonResult.success(f.getName());
     }
 
     List<String> buildTitles() {

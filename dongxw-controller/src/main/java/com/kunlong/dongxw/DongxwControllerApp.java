@@ -14,7 +14,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 //https://github.com/macrozheng/mall
 @EnableAutoConfiguration
 @Configuration
-@SpringBootApplication(scanBasePackages = {"com.kunlong.dongxw"})
+@SpringBootApplication(scanBasePackages = {"com.kunlong.dongxw","com.kunlong.api"})
 //@EnableDubbo
 //@EnableDubboConfig
 //@ImportResource({"classpath:appcontext.xml"})

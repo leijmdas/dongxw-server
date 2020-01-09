@@ -96,7 +96,33 @@ public class WebFileUtil {
 		writer.finish();
 
 
-  }
+	}
+
+	public File export2EasyExcelFile(String fileName, List<String> titleNames, List<List<Object>> records) throws IOException {
+		setExcelHeader(fileName);
+		File file = File.createTempFile(fileName, ".xls");
+		try (OutputStream out = new FileOutputStream(file)) {
+
+			ExcelWriter writer = new ExcelWriter(out, ExcelTypeEnum.XLSX);
+
+			// 设置SHEET
+			Sheet sheet = new Sheet(1, 0);
+			sheet.setSheetName(fileName);
+
+			// 设置标题
+			Table table = new Table(1);
+			List<List<String>> titles = new ArrayList<List<String>>();
+			for (String name : titleNames) {
+				titles.add(Arrays.asList(name));
+
+			}
+			table.setHead(titles);
+
+			writer.write1(records, sheet, table);
+			writer.finish();
+		}
+		return file;
+	}
 
 	public void export2EasyExcelObject(String fileName, List<String> titleNames, List<List<Object>> records) throws IOException {
 		setExcelHeader(fileName);
@@ -111,7 +137,7 @@ public class WebFileUtil {
 		// 设置标题
 		Table table = new Table(1);
 		List<List<String>> titles = new ArrayList<List<String>>();
-		for(String name:titleNames){
+		for (String name : titleNames) {
 			titles.add(Arrays.asList(name));
 
 		}
@@ -121,8 +147,9 @@ public class WebFileUtil {
 		writer.finish();
 
 	}
-  //easyExcel
-  public void export2EasyExcel(String fileName, List<String> titleNames, List<List<String>> records) throws IOException {
+
+	//easyExcel
+	public void export2EasyExcel(String fileName, List<String> titleNames, List<List<String>> records) throws IOException {
     setExcelHeader(fileName);
     OutputStream out = response.getOutputStream();
 
