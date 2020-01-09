@@ -15,17 +15,21 @@ import java.util.*;
 
 public class WebFileUtil {
 
-  private HttpServletRequest request;
+	private HttpServletRequest request;
 	private HttpServletResponse response;
-  private static String dir = "classpath:/templates";
-	
+	private static String dir = "classpath:/templates";
+
 	public WebFileUtil(HttpServletRequest request, HttpServletResponse response) {
 		this.request = request;
 		this.response = response;
 	}
 
+	public WebFileUtil() {
 
-  public static String getFileExtByFilename(String filename) {
+	}
+
+
+	public static String getFileExtByFilename(String filename) {
 		if (StringUtils.trimAllWhitespace(filename).indexOf(".") < 0)
 			return "";
 
@@ -101,7 +105,6 @@ public class WebFileUtil {
 	public File export2EasyExcelFile(String fileName, List<String> titleNames, List<List<Object>> records) throws IOException {
 		setExcelHeader(fileName);
 		File file = File.createTempFile(fileName, ".xls");
-		//System.out.print(file.getPath());
 		try (OutputStream out = new FileOutputStream(file)) {
 
 			ExcelWriter writer = new ExcelWriter(out, ExcelTypeEnum.XLSX);

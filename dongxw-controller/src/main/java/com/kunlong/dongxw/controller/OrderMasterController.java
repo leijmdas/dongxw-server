@@ -116,7 +116,7 @@ public final class OrderMasterController extends BaseController {
 
     @RequestMapping(value="exportMail",method = RequestMethod.POST)
     @ApiOperation(value = "exportMail", notes = "exportMail", authorizations = {@Authorization(value = ApiConstants.AUTH_API_WEB)})
-    public  JsonResult<String> exportMail(@RequestBody @DateRewritable OrderMaster.QueryParam queryParam, HttpServletRequest req, HttpServletResponse rsp) throws FileNotFoundException, IOException {
+    public  JsonResult<String> exportMail(@RequestBody @DateRewritable OrderMaster.QueryParam queryParam ) throws IOException {
 
         if(queryParam.getParam() == null) {
             queryParam.setParam(new OrderMaster());
@@ -124,12 +124,12 @@ public final class OrderMasterController extends BaseController {
         queryParam.setLimit(-1);
         queryParam.setStart(0);
 
-        WebFileUtil web = new WebFileUtil(req,rsp);
+        WebFileUtil web = new WebFileUtil();
         List<OrderMaster> orderMasters = orderMasterService.findByQueryParam(queryParam);
-        ;
-        File f = web.export2EasyExcelFile("客户订单.xlsx", buildTitles(), buildRecords(orderMasters));
-        mailApiService.sendEmail("leijmdas_s@163.com", "客户订单.xlsx", "客户订单", f.getPath());
-        System.err.println(f.getName());
+
+        File f = web.export2EasyExcelFile("客户订单", buildTitles(), buildRecords(orderMasters));
+        mailApiService.sendEmail("leijmdas_s@163.com", "客户订单", "客户订单", f.getPath());
+        System.err.println(f.getPath());
         return JsonResult.success(f.getName());
     }
 

@@ -1,7 +1,7 @@
 package service;
 
 import com.kunlong.api.service.MailApiService;
-import com.kunlong.dongxw.DongxwControllerApp;
+import com.kunlong.dongxw.DongxwCtrlApp;
 import com.kunlong.dongxw.dongxw.dao.OrderLineMapper;
 import org.apache.dubbo.config.annotation.Reference;
 import org.junit.Before;
@@ -18,7 +18,7 @@ import org.springframework.test.context.junit4.SpringRunner;
  * @description:
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = DongxwControllerApp.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes = DongxwCtrlApp.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 
 public class TestOrderLine {
     @Autowired

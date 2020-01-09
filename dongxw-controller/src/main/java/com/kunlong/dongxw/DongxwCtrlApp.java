@@ -1,6 +1,5 @@
 package com.kunlong.dongxw;
 
-import com.kunlong.dongxw.config.CorsConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -19,14 +18,14 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 //@EnableDubboConfig
 //@ImportResource({"classpath:appcontext.xml"})
 @EnableSwagger2
-public class DongxwControllerApp {
-    private static final Logger logger = LoggerFactory.getLogger(DongxwControllerApp.class);
+public class DongxwCtrlApp {
+    private static final Logger logger = LoggerFactory.getLogger(DongxwCtrlApp.class);
 
 
     public static void main(String[] args) {
 
         Class[] classes = new Class[]{
-                DongxwControllerApp.class
+                DongxwCtrlApp.class
         };
         SpringApplication.run(classes, args);
 
