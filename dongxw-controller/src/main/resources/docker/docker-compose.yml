@@ -13,6 +13,7 @@ services:
         restart: always
         ports:
             - '10080:10080' 
+            - '12341:12341'
         #command:
         environment:
             APP_OPTS: --spring.profiles.active=dev

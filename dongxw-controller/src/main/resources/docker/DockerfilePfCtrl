@@ -6,7 +6,7 @@ FROM anapsix/alpine-java
  ADD ./kl-pf-ctrl.jar /root/kl-pf-ctrl.jar
 
  EXPOSE 10080
-
+ EXPOSE 12341
  ENV JAVA_OPTS "-server -Xms64M -Xmx512M -Xss1M -XX:MinHeapFreeRatio=30 -XX:MaxHeapFreeRatio=50 -XX:MaxMetaspaceSize=64M -XX:MinMetaspaceFreeRatio=20 -XX:MaxMetaspaceFreeRatio=30 -Duser.timezone=GMT+08"
 
 #RUN /bin/cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo 'Asia/Shanghai' >/etc/timezone
