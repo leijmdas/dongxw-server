@@ -101,6 +101,7 @@ public class WebFileUtil {
 	public File export2EasyExcelFile(String fileName, List<String> titleNames, List<List<Object>> records) throws IOException {
 		setExcelHeader(fileName);
 		File file = File.createTempFile(fileName, ".xls");
+		//System.out.print(file.getPath());
 		try (OutputStream out = new FileOutputStream(file)) {
 
 			ExcelWriter writer = new ExcelWriter(out, ExcelTypeEnum.XLSX);
@@ -139,7 +140,6 @@ public class WebFileUtil {
 		List<List<String>> titles = new ArrayList<List<String>>();
 		for (String name : titleNames) {
 			titles.add(Arrays.asList(name));
-
 		}
 		table.setHead(titles);
 
