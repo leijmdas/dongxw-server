@@ -11,6 +11,7 @@ import com.jtest.testframe.ITestImpl;
 import com.kunlong.dongxw.util.QRCodeGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -98,6 +99,20 @@ public class TestQRcode extends ITestImpl {
 
     }
 
+    @JTest
+    @JTestClass.title("pdf")
+    @JTestClass.pre("")
+    @JTestClass.step("test_0002_normalPdf")
+    @JTestClass.exp("ok")
+    public void test_0002_uploadXls() throws Exception {
+
+        byte[] b=genQR("http://120.78.136.63:8888/group1/M00/00/00/rBIvIF4O0CCAHhqQAAAKStJzL20007.png",null);
+        try(FileOutputStream fo=new FileOutputStream(new File("/orderUrl.png"))) {
+            fo.write(b);
+        }
+
+
+    }
     public static void main(String[] args) {
 
         run(TestQRcode.class, 2);

@@ -103,7 +103,7 @@ public class WebFileUtil {
 	}
 
 	public File export2EasyExcelFile(String fileName, List<String> titleNames, List<List<Object>> records) throws IOException {
-		setExcelHeader(fileName);
+
 		File file = File.createTempFile(fileName, ".xls");
 		try (OutputStream out = new FileOutputStream(file)) {
 

@@ -1,5 +1,6 @@
 package service;
 
+import cn.integriti.center.api.service.FileApiService;
 import com.kunlong.api.service.MailApiService;
 import com.kunlong.dongxw.DongxwCtrlApp;
 import com.kunlong.dongxw.dongxw.dao.OrderLineMapper;
@@ -23,6 +24,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class TestOrderLine {
     @Autowired
     OrderLineMapper orderLineMapper;
+    @Autowired
+    private FileApiService fileApiService;
 
     @Reference(lazy = true, version = "${dubbo.service.version}")
     MailApiService mailApiService;
@@ -44,6 +47,13 @@ public class TestOrderLine {
     public void test0002_service() {
         mailApiService.sendEmail("leijmdas_s@163.com","dubbo","duubo");
          
+    }
+
+
+    @Test
+    public void test0003_upload() {
+        fileApiService.upload("leijmdas_s@163.com","dubbo",null,null);
+
     }
 
 

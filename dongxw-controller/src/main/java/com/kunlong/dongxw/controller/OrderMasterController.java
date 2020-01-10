@@ -129,7 +129,7 @@ public final class OrderMasterController extends BaseController {
 
         File f = web.export2EasyExcelFile("客户订单", buildTitles(), buildRecords(orderMasters));
         mailApiService.sendEmail("leijmdas_s@163.com", "客户订单", "客户订单", f.getPath());
-        System.err.println(f.getPath());
+
         return JsonResult.success(f.getName());
     }
 
