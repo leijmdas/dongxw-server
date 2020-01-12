@@ -79,9 +79,9 @@
             <plugin>
                 <groupId>com.spotify</groupId>
                 <artifactId>dockerfile-maven-plugin</artifactId>
-                <version>2.0.0.RELEASE</version>
+                <version>1.4.13</version>
                 <configuration>
-                    <mainClass>com.kunlong.dongxw.DongxwCtrlApp</mainClass>
+                    <!--<mainClass>com.kunlong.dongxw.DongxwCtrlApp</mainClass>-->
 
                 </configuration>
                 <executions>
