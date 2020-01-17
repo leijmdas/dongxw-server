@@ -18,16 +18,13 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 //@EnableDubboConfig
 //@ImportResource({"classpath:appcontext.xml"})
 @EnableSwagger2
-public class DongxwCtrlApp {
-    private static final Logger logger = LoggerFactory.getLogger(DongxwCtrlApp.class);
+public class DongxwApp {
+    private static final Logger logger = LoggerFactory.getLogger(DongxwApp.class);
 
 
     public static void main(String[] args) {
 
-        Class[] classes = new Class[]{
-                DongxwCtrlApp.class
-        };
-        SpringApplication.run(classes, args);
+        SpringApplication.run(new Class[]{DongxwApp.class}, args);
 
     }
 }

@@ -65,7 +65,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>2.0.0.RELEASE</version>
                 <configuration>
-                    <mainClass>com.kunlong.dongxw.DongxwServiceApp</mainClass>
+                    <mainClass>com.kunlong.dongxw.DongxwApp</mainClass>
                 </configuration>
                 <executions>
                     <execution>
