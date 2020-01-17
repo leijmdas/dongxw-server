@@ -4,7 +4,7 @@ package com.kunlong.dongxw.customer.config.interceptor;
 import app.support.context.DefaultRequestContextFactory;
 import app.support.context.RequestContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kunlong.dongxw.consts.ApiConstants;
+import com.kunlong.dongxw.customer.consts.ApiConstants;
 import com.kunlong.platform.consts.RequestContextConst;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

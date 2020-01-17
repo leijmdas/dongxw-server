@@ -21,8 +21,8 @@ services:
         volumes:
             - /etc/localtime:/etc/localtime:ro
             #- /etc/hosts:/etc/hosts:ro
-            - /platform/logs/pf:/platform/logs/pf
-            #- /opt/shareISSUE.pfx:/opt/shareISSUE.pfx:ro
+            - /opt/logs/platform:/platform/logs/pf
+            - /tmp:/tmp
         extra_hosts:
             - "mysql.kunlong.com:172.17.0.1"
             - "redis.kunlong.com:172.17.0.1"
@@ -49,7 +49,7 @@ services:
             - /etc/localtime:/etc/localtime:ro
             #- /etc/hosts:/etc/hosts:ro
             - /opt/logs/center:/opt/logs/center
-            #- /opt/shareISSUE.pfx:/opt/shareISSUE.pfx:ro
+            - /tmp:/tmp
         extra_hosts:
             - "mysql.kunlong.com:172.17.0.1"
             - "redis.kunlong.com:172.17.0.1"
@@ -75,10 +75,35 @@ services:
         volumes:
             - /etc/localtime:/etc/localtime:ro
             #- /etc/hosts:/etc/hosts:ro
-            - /dongxw-server/logs:/dongxw-server/logs
-            #- /opt/shareISSUE.pfx:/opt/shareISSUE.pfx:ro
+            - /opt/logs/dongxw:/opt/logs/dongxw
+            - /tmp:/tmp
         extra_hosts:
             - "mysql.kunlong.com:172.17.0.1"
             - "redis.kunlong.com:172.17.0.1"
             - "zookeeper.kunlong.com:172.17.0.1"
-                        
+
+    kl-customer-app:
+        build:
+            context: .
+            dockerfile: DockerfileCustomerApp
+
+        image: kl-customer-app
+        container_name: kl-customer-app
+
+        hostname: kl-customer-app
+        user: root
+        restart: always
+        ports:
+            - '10082:10082'
+        #command:
+        environment:
+            APP_OPTS: --spring.profiles.active=dev
+            #DUBBO_IP_TO_REGISTRY: 120.77.172.83
+        volumes:
+            - /etc/localtime:/etc/localtime:ro
+            #- /etc/hosts:/etc/hosts:ro
+            - /opt/logs/customer:/opt/logs/customer
+        extra_hosts:
+            - "mysql.akunlong.top:172.17.0.1"
+            - "redis.akunlong.top:172.17.0.1"
+            - "zookeeper.akunlong.top:172.17.0.1"                        

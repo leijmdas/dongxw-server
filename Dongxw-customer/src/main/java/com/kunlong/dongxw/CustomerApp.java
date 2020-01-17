@@ -11,7 +11,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 //https://github.com/macrozheng/mall
 @EnableAutoConfiguration
 @Configuration
-@SpringBootApplication(scanBasePackages = {"com.kunlong.dongxw.customer" })
+@SpringBootApplication(scanBasePackages = {"com.kunlong.dongxw" })
 //@ImportResource({"classpath:appcontext.xml"})
 @EnableSwagger2
 public class CustomerApp {
@@ -20,10 +20,7 @@ public class CustomerApp {
 
     public static void main(String[] args) {
 
-        Class[] classes = new Class[]{
-                CustomerApp.class
-        };
-        SpringApplication.run(classes, args);
+        SpringApplication.run(new Class[]{CustomerApp.class}, args);
 
     }
 }

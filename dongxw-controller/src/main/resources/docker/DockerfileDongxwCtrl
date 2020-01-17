@@ -5,7 +5,7 @@ FROM anapsix/alpine-java
 
  ADD ./kl-dongxw-ctrl.jar /root/kl-dongxw-ctrl.jar
 
- EXPOSE 12340
+ EXPOSE 10080
 
  ENV JAVA_OPTS "-server -Xms64M -Xmx1024M -Xss1M -XX:MinHeapFreeRatio=30 -XX:MaxHeapFreeRatio=50 -XX:MaxMetaspaceSize=128M -XX:MinMetaspaceFreeRatio=20 -XX:MaxMetaspaceFreeRatio=30 -Duser.timezone=GMT+08"
 

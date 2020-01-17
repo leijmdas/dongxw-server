@@ -1,0 +1,16 @@
+#docker run -d --name mngr -v /platform/logs:/platform/logs  -p 10080:10080 --add-host mysql.kunlong.com:172.18.47.32 mngr
+FROM anapsix/alpine-java
+
+ ARG JAR_FILE
+
+ ADD ./kl-customer-app.jar /root/kl-customer-app.jar
+
+ EXPOSE 10082
+
+ ENV JAVA_OPTS "-server -Xms32M -Xmx512M -Xss1M -XX:MinHeapFreeRatio=30 -XX:MaxHeapFreeRatio=50 -XX:MaxMetaspaceSize=64M -XX:MinMetaspaceFreeRatio=20 -XX:MaxMetaspaceFreeRatio=30 -Duser.timezone=GMT+08"
+
+#RUN /bin/cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo 'Asia/Shanghai' >/etc/timezone
+
+ 
+
+ ENTRYPOINT ["java", "-server", "-Duser.timezone=GMT+08","-jar", "/root/kl-customer-app.jar"]

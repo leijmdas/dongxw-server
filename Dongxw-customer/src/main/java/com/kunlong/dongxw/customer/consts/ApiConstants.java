@@ -2,7 +2,7 @@ package com.kunlong.dongxw.customer.consts;
 
 /**
  * API常量
- * @author zz
+ * @author leijmdas
  *
  */
 public class ApiConstants {
