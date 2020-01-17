@@ -22,6 +22,7 @@
     <modules>
         <module>dongxw-service</module>
         <module>dongxw-controller</module>
+        <module>Dongxw-customer</module>
     </modules>
 
     <dependencies>
