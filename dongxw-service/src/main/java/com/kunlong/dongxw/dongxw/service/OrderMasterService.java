@@ -35,13 +35,13 @@ public interface OrderMasterService {
 	public OrderMaster findById(Integer pk);
 	/**
 	 * 通过非空属性查询
-	 * @param OrderMaster
+	 * @param entity
 	 * @return
 	 */
 	public List<OrderMaster> findByNotNullProps(OrderMaster entity);
 	/**
 	 * 通过主键更新非空属性
-	 * @param OrderMaster
+	 * @param entity
 	 * @return
 	 */
 	public void updateNotNullPropsById(OrderMaster entity);
@@ -49,13 +49,13 @@ public interface OrderMasterService {
 	
 	/**
 	 * 通过实体参数分页查询
-	 * @param OrderMaster.QueryParam
+	 * @param queryParam
 	 * @return
 	 */
 	public List<OrderMaster> findByQueryParam(OrderMaster.QueryParam queryParam);
 	/**
 	 * 通过实体参数统计
-	 * @param OrderMaster.QueryParam
+	 * @param  queryParam
 	 * @return
 	 */
 	public long countByQueryParam(OrderMaster.QueryParam queryParam);

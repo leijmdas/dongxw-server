@@ -6,6 +6,8 @@ import com.kunlong.api.service.AuthApiService;
 import com.kunlong.dongxw.annotation.DateRewritable;
 import com.kunlong.dongxw.consts.ApiConstants;
 import com.kunlong.dongxw.consts.MoneyTypeConsts;
+import com.kunlong.dongxw.dongxw.domain.OrderMaster;
+import com.kunlong.dongxw.dongxw.service.OrderMasterService;
 import com.kunlong.dongxw.util.WebFileUtil;
 import com.kunlong.platform.utils.JsonResult;
 import com.kunlong.dongxw.dongxw.domain.Customer;
@@ -33,22 +35,32 @@ import java.util.List;
  * Date: Created in 2018/8/23 16:50
  */
 @RestController
-@RequestMapping(ApiConstants.AUTH_API_WEB_DONGXW+"/customer")
-public final class CustomerController extends BaseController{
+@RequestMapping(ApiConstants.AUTH_API_WEB_DONGXW + "/customer")
+public final class CustomerController extends BaseController {
     @Autowired
     CustomerService customerService;
+    @Autowired
+    OrderMasterService orderMasterService;
 
-     @Reference(lazy = true, version = "${dubbo.service.version}")
-     AuthApiService authApiService;
+    @Reference(lazy = true, version = "${dubbo.service.version}")
+    AuthApiService authApiService;
 
     @RequestMapping("/findById/{id}")
-    public JsonResult<Customer> findById(@PathVariable("id") Integer id,HttpServletResponse response) throws IOException {
-       return   JsonResult.success(customerService.findById(id))    ;
+    public JsonResult<Customer> findById(@PathVariable("id") Integer id, HttpServletResponse response) throws IOException {
+        return JsonResult.success(customerService.findById(id));
     }
+
     @RequestMapping("/deleteById/{id}")
     public JsonResult<Integer> deleteById(@PathVariable("id") Integer id, HttpServletResponse response) throws IOException {
+        OrderMaster.QueryParam queryParam=new OrderMaster.QueryParam();
+        queryParam.setParam(new OrderMaster() );
+        queryParam.getParam().setCustomerId(id);
+        long count=orderMasterService.countByQueryParam(queryParam);
+        if(count>0){
+            throw new RuntimeException("客户有订单资料，不能删除！");
+        }
         customerService.deleteById(id);
-        return   JsonResult.success()    ;
+        return JsonResult.success();
     }
 
     @RequestMapping("/save")
