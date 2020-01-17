@@ -81,7 +81,7 @@ public final class ProductTypeController {
 
 
 //    @RequestMapping(value="export",method = RequestMethod.POST)
-//    @ApiOperation(value = "export", notes = "export", authorizations = {@Authorization(value = ApiConstants.AUTH_API_WEB)})
+//    @ApiOperation(value = "export", notes = "export", authorizations = {@Authorization(value = consts.AUTH_API_WEB)})
 //    public void exportCustomer(@RequestBody @DateRewritable Customer.QueryParam queryParam, HttpServletRequest req, HttpServletResponse rsp) throws FileNotFoundException, IOException {
 //
 //        if(queryParam.getParam() == null) {

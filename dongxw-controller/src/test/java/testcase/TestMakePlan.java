@@ -149,7 +149,7 @@ public class TestMakePlan extends ITestImpl {
     @JTestClass.exp("ok")
     public void test_0004_Qry() {
 
-        //httpclient.addHeader(ApiConstants.AUTH_TOKEN_KEY_WEB, authToken.getToken());
+        //httpclient.addHeader(consts.AUTH_TOKEN_KEY_WEB, authToken.getToken());
         String ret = httpclient.post(url_dongxw + "/query", "{}", "application/json");
         httpclient.checkStatusCode(200);
         System.out.println(ret);
