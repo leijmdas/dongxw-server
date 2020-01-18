@@ -1,0 +1,42 @@
+package com.kunlong.dongxw.customer.controller;
+
+import app.support.session.ISessionHolder;
+import com.kunlong.platform.support.service.AuthService;
+import org.apache.dubbo.config.annotation.Reference;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+@RequestMapping("/auth")
+@Controller
+public class AuthController extends BaseController {
+
+	@Autowired
+	private AuthService authService;
+
+//	@Reference(lazy = true, version = "${dubbo.service.version}")
+//	private SysUserApiService userService;
+
+	/**
+	 * 登录
+	 * @param username
+	 * @param password
+	 * @return
+	 */
+	@RequestMapping(value="login",method = RequestMethod.POST)
+	public @ResponseBody
+	AuthService.AuthToken login(String username, String password, String verifyCode) {
+//		String code = AppKlongContext.getLoginContext().getPicCode();
+//		if (!verifyCode.equalsIgnoreCase(code)) {
+//			//throw new RuntimeException("验证码不正确!");
+//		}
+//		SysUserDTO su = userService.checkPass(1,username,password);
+//		AuthService.AuthToken at  = this.authService.createToken("web:user:"+su.getId());
+//		ISessionHolder sessionHolder = SessionHolder.create(at.getToken());
+//		sessionHolder.setAttribute(SessionKeyEnum.WEB_USER.getKey(), su);
+		return null;
+	}
+	
+}

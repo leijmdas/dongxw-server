@@ -32,22 +32,8 @@ public final class CustomerController    {
     //@Reference(lazy = true, version = "${dubbo.service.version}")
     //AuthApiService authApiService;
 
-    /**
-     * 登录
-     * @param username
-     * @param password
-     * @return
-     */
-    @RequestMapping(value="login",method = RequestMethod.POST)
-    public @ResponseBody
-    AuthService.AuthToken login(String username, String password) {
-//        MerchantInfoDTO m = this.merchantInfoService.checkPasswd(username,password);
-//
-//        AuthToken at  = this.authService.createToken("merchant:"+m.getId());
-//        SessionHolder sholder =SessionHolder.create(at.getToken());
-//        sholder.setAttribute(SessionKeyEnum.WEB_MERCHANT_ID.getKey(), m.getId());
-        return null;
-    }
+
+
 
     @RequestMapping("authorization")
     public @ResponseBody
