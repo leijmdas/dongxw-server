@@ -17,6 +17,10 @@
 	  	<result column="status" property="status" jdbcType="INTEGER" />
 	  	<result column="remark" property="remark" jdbcType="VARCHAR" />
 	  	<result column="fax" property="fax" jdbcType="VARCHAR" />
+	  	<result column="login_switch" property="loginSwitch" jdbcType="INTEGER" />
+	  	<result column="login_name" property="loginName" jdbcType="VARCHAR" />
+	  	<result column="language" property="language" jdbcType="INTEGER" />
+	  	<result column="login_password" property="loginPassword" jdbcType="VARCHAR" />
     </resultMap>
     <resultMap id="BaseResultMap_Customer" type="com.kunlong.dongxw.dongxw.domain.Customer" >
 	    <id column="c_id" property="id" jdbcType="INTEGER" />	
@@ -34,12 +38,16 @@
 	  	<result column="c_status" property="status" jdbcType="INTEGER" />
 	  	<result column="c_remark" property="remark" jdbcType="VARCHAR" />
 	  	<result column="c_fax" property="fax" jdbcType="VARCHAR" />
+	  	<result column="c_login_switch" property="loginSwitch" jdbcType="INTEGER" />
+	  	<result column="c_login_name" property="loginName" jdbcType="VARCHAR" />
+	  	<result column="c_language" property="language" jdbcType="INTEGER" />
+	  	<result column="c_login_password" property="loginPassword" jdbcType="VARCHAR" />
     </resultMap>
     <sql id="Base_Column_List" >
-  		id,cust_no,cust_name,cust_sname,country,addr,money_type,contact,tel,email,create_date,create_by,status,remark,fax
+  		id,cust_no,cust_name,cust_sname,country,addr,money_type,contact,tel,email,create_date,create_by,status,remark,fax,login_switch,login_name,language,login_password
 	</sql>
   	<sql id="Base_Column_List_Customer" >
-  		c.id c_id,c.cust_no c_cust_no,c.cust_name c_cust_name,c.cust_sname c_cust_sname,c.country c_country,c.addr c_addr,c.money_type c_money_type,c.contact c_contact,c.tel c_tel,c.email c_email,c.create_date c_create_date,c.create_by c_create_by,c.status c_status,c.remark c_remark,c.fax c_fax
+  		c.id c_id,c.cust_no c_cust_no,c.cust_name c_cust_name,c.cust_sname c_cust_sname,c.country c_country,c.addr c_addr,c.money_type c_money_type,c.contact c_contact,c.tel c_tel,c.email c_email,c.create_date c_create_date,c.create_by c_create_by,c.status c_status,c.remark c_remark,c.fax c_fax,c.login_switch c_login_switch,c.login_name c_login_name,c.language c_language,c.login_password c_login_password
 	</sql>
 	
 	<!-- 系统自定义 -->
@@ -96,6 +104,18 @@
 			<if test="p.fax!=null and p.fax!=''">
 		    	and c.fax like #{p.fax}
 		    </if>
+			<if test="p.loginSwitch!=null ">
+		    	and c.login_switch=#{p.loginSwitch}
+		    </if>
+			<if test="p.loginName!=null and p.loginName!=''">
+		    	and c.login_name like #{p.loginName}
+		    </if>
+			<if test="p.language!=null ">
+		    	and c.language=#{p.language}
+		    </if>
+			<if test="p.loginPassword!=null and p.loginPassword!=''">
+		    	and c.login_password like #{p.loginPassword}
+		    </if>
 		</if>
 		<!--
 		<bind name="rp" value="queryParam.ruleParam" />
@@ -107,16 +127,15 @@
 		<include refid="Base_Column_List_Customer"></include>
 		from customer c where 1=1
 		<include refid="Condition_FindByQueryParam"></include>
-		<!--<if test="queryParam.sortOrders!=null and queryParam.sortOrders.size() gt 0">-->
-			<!--order by -->
-			<!--<foreach collection="queryParam.sortOrders" item="item" separator=",">-->
-				<!--${item.sortField.sqlColumn} ${item.sortType}-->
-			<!--</foreach>-->
-		<!--</if>-->
-		<!--<if test="queryParam.limit gt 0">-->
-	  		<!--limit ${queryParam.start},${queryParam.limit}-->
-	  	<!--</if>-->
-		order by id desc
+		<if test="queryParam.sortOrders!=null and queryParam.sortOrders.size() gt 0">
+			order by 
+			<foreach collection="queryParam.sortOrders" item="item" separator=",">
+				${item.sortField.sqlColumn} ${item.sortType}
+			</foreach>
+		</if>
+		<if test="queryParam.limit gt 0">
+	  		limit ${queryParam.start},${queryParam.limit}
+	  	</if>
 	</select>
 	<select id="countByQueryParam" resultType="long">
 		select count(1) from customer c where 1=1

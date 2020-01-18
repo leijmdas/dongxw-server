@@ -7,7 +7,7 @@ import com.kunlong.dongxw.dongxw.domain.Customer;
 /**
  * CustomerMapper
  * @author generator
- * @date 2020年01月03日
+ * @date 2020年01月18日
  */
 public interface CustomerMapper extends HbatisMapper<Customer, Integer> {
 	

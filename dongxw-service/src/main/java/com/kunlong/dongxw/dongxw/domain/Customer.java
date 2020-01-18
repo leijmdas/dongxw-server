@@ -13,10 +13,10 @@ import org.mybatis.hbatis.orm.criteria.support.query.SortOrders;
 /**
  * Customer 
  * @author generator
- * @date 2020年01月03日
+ * @date 2020年01月18日
  */
 @Table(Customer.EntityNode.class)
-public class Customer implements Serializable {
+public class Customer extends  CustomerBase implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	/**
@@ -116,6 +116,32 @@ public class Customer implements Serializable {
 	  */
 	@Column(comment = "")	
 	private String fax;
+	/**
+	  * 客户登录开关
+	  * nullable:false,length:4
+	  */
+	@Column(comment = "客户登录开关")	
+	@NotNull
+	private Integer loginSwitch;
+	/**
+	  * 
+	  * nullable:true,length:64
+	  */
+	@Column(comment = "")	
+	private String loginName;
+	/**
+	  * 语言类型
+	  * nullable:false,length:4
+	  */
+	@Column(comment = "语言类型")	
+	@NotNull
+	private Integer language;
+	/**
+	  * 
+	  * nullable:true,length:128
+	  */
+	@Column(comment = "")	
+	private String loginPassword;
     public Integer getId(){
     	return this.id;
     }
@@ -206,6 +232,30 @@ public class Customer implements Serializable {
     public void setFax(String fax){
     	this.fax = fax;
     }
+    public Integer getLoginSwitch(){
+    	return this.loginSwitch;
+    }
+    public void setLoginSwitch(Integer loginSwitch){
+    	this.loginSwitch = loginSwitch;
+    }
+    public String getLoginName(){
+    	return this.loginName;
+    }
+    public void setLoginName(String loginName){
+    	this.loginName = loginName;
+    }
+    public Integer getLanguage(){
+    	return this.language;
+    }
+    public void setLanguage(Integer language){
+    	this.language = language;
+    }
+    public String getLoginPassword(){
+    	return this.loginPassword;
+    }
+    public void setLoginPassword(String loginPassword){
+    	this.loginPassword = loginPassword;
+    }
 
     public static class EntityNode extends AbstractEntityNode<Customer> {
         public static final EntityNode INSTANCE = new EntityNode("c");;
@@ -239,6 +289,14 @@ public class Customer implements Serializable {
         public FieldNode<Customer, String> remark =  createFieldNode("remark","remark",String.class,JdbcType.VARCHAR);
     	/**  */
         public FieldNode<Customer, String> fax =  createFieldNode("fax","fax",String.class,JdbcType.VARCHAR);
+    	/** 客户登录开关 */
+        public FieldNode<Customer, Integer> loginSwitch =  createFieldNode("loginSwitch","login_switch",Integer.class,JdbcType.INTEGER);
+    	/**  */
+        public FieldNode<Customer, String> loginName =  createFieldNode("loginName","login_name",String.class,JdbcType.VARCHAR);
+    	/** 语言类型 */
+        public FieldNode<Customer, Integer> language =  createFieldNode("language","language",Integer.class,JdbcType.INTEGER);
+    	/**  */
+        public FieldNode<Customer, String> loginPassword =  createFieldNode("loginPassword","login_password",String.class,JdbcType.VARCHAR);
 	
         /**
          * @param alias 别名

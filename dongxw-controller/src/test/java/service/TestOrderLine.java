@@ -1,6 +1,6 @@
 package service;
 
-import cn.integriti.center.api.service.FileApiService;
+import cn.kunlong.center.api.service.FileApiService;
 import com.kunlong.api.service.MailApiService;
 import com.kunlong.dongxw.DongxwApp;
 import com.kunlong.dongxw.dongxw.dao.OrderLineMapper;

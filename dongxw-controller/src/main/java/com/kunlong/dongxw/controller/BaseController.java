@@ -1,5 +1,7 @@
 package com.kunlong.dongxw.controller;
 
+import cn.kunlong.center.api.model.SysUserDTO;
+import cn.kunlong.center.api.service.SysUserApiService;
 import com.kunlong.api.service.AuthApiService;
 import com.kunlong.dongxw.util.support.CurrentRequestContext;
 import com.kunlong.platform.consts.RequestContextConst;
@@ -9,23 +11,28 @@ public class BaseController {
 	@Reference(lazy = true, version = "${dubbo.service.version}")
 	AuthApiService authApiService;
 
+
+	@Reference(lazy = true, version = "${dubbo.service.version}")
+	SysUserApiService sysUserApiService;
+	public SysUserDTO findUserById(Integer userId){
+		return sysUserApiService.findById(userId);
+	}
+
 	public Integer getCurrentUserId() {
 		String token = (String) CurrentRequestContext.getContext().getAttribute(RequestContextConst.KEY_SESSIONKEY);
 
-		return 0;//authApiService.getCurrentUserId(token);
+		return authApiService.getCurrentUserId(token);
 
 	}
 //	public Map<Object,Object> getSessionValues(){
 //		return SessionHolder.getCurrentSessionValues();
 //	}
-//
-//	private SysUserDTO getCurrentSysUser() {
-//		Map<Object,Object> vals = this.getSessionValues();
-//		Assert.notNull(vals,"Session不存在或已效");
-//		SysUserDTO su = (SysUserDTO)vals.get(SessionKeyEnum.WEB_USER.getKey());
-//		Assert.notNull(su,"User Session不存在或已失效");
-//		return su;
-//	}
+
+	private SysUserDTO getCurrentSysUser() {
+		String token = (String) CurrentRequestContext.getContext().getAttribute(RequestContextConst.KEY_SESSIONKEY);
+
+		return authApiService.getCurrentSysUser(token);
+	}
 
 
 	

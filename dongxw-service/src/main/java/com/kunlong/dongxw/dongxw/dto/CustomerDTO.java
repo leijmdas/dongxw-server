@@ -9,7 +9,7 @@ import io.swagger.annotations.ApiModelProperty;
 /**
  * Customer
  * @author generator
- * @date 2020年01月03日
+ * @date 2020年01月18日
  */
 @ApiModel(value="CustomerDTO",description="")
 public class CustomerDTO implements Serializable {
@@ -105,6 +105,30 @@ public class CustomerDTO implements Serializable {
 	  */
 	@ApiModelProperty(value = "",required = false,notes = " ")
 	private String fax;
+	/**
+	  * 客户登录开关
+	  * nullable:false,length:4
+	  */
+	@ApiModelProperty(value = "客户登录开关",required = true,notes = "客户登录开关 ")
+	private Integer loginSwitch;
+	/**
+	  * 
+	  * nullable:true,length:64
+	  */
+	@ApiModelProperty(value = "",required = false,notes = " ")
+	private String loginName;
+	/**
+	  * 语言类型
+	  * nullable:false,length:4
+	  */
+	@ApiModelProperty(value = "语言类型",required = true,notes = "语言类型 ")
+	private Integer language;
+	/**
+	  * 
+	  * nullable:true,length:128
+	  */
+	@ApiModelProperty(value = "",required = false,notes = " ")
+	private String loginPassword;
     public Integer getId(){
     	return this.id;
     }
@@ -194,6 +218,30 @@ public class CustomerDTO implements Serializable {
     }
     public void setFax(String fax){
     	this.fax = fax;
+    }
+    public Integer getLoginSwitch(){
+    	return this.loginSwitch;
+    }
+    public void setLoginSwitch(Integer loginSwitch){
+    	this.loginSwitch = loginSwitch;
+    }
+    public String getLoginName(){
+    	return this.loginName;
+    }
+    public void setLoginName(String loginName){
+    	this.loginName = loginName;
+    }
+    public Integer getLanguage(){
+    	return this.language;
+    }
+    public void setLanguage(Integer language){
+    	this.language = language;
+    }
+    public String getLoginPassword(){
+    	return this.loginPassword;
+    }
+    public void setLoginPassword(String loginPassword){
+    	this.loginPassword = loginPassword;
     }
     // ==== 自定义属性 ====
 }

@@ -14,14 +14,14 @@
     <packaging>jar</packaging>
     <version>2.0</version>
     <properties>
-        <integriti-center.version>1.0.0-SNAPSHOT</integriti-center.version>
+        <integriti-center.version>2.0</integriti-center.version>
 
     </properties>
     <dependencies>
 
 
         <dependency>
-            <groupId>cn.integriti</groupId>
+            <groupId>cn.kunlong</groupId>
             <artifactId>center-api</artifactId>
             <version>${integriti-center.version}</version>
         </dependency>

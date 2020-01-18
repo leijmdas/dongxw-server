@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * CustomerService
  * @author generator
- * @date 2020年01月03日
+ * @date 2020年01月18日
  */
 public interface CustomerService {
 	

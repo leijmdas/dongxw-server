@@ -2,6 +2,7 @@ package com.kunlong.dongxw.controller;
 
 
 import app.support.query.PageResult;
+import cn.kunlong.center.api.model.SysUserDTO;
 import com.kunlong.api.service.AuthApiService;
 import com.kunlong.dongxw.annotation.DateRewritable;
 import com.kunlong.dongxw.consts.ApiConstants;
@@ -41,6 +42,7 @@ public final class CustomerController extends BaseController {
     CustomerService customerService;
     @Autowired
     OrderMasterService orderMasterService;
+
 
     @Reference(lazy = true, version = "${dubbo.service.version}")
     AuthApiService authApiService;
@@ -85,6 +87,10 @@ public final class CustomerController extends BaseController {
 
         pageResult.setTotal(customerService.countByQueryParam(queryParam));
         pageResult.setData(customerService.findByQueryParam(queryParam));
+        for(Customer customer:pageResult.getData()){
+            SysUserDTO sysUserDTO=findUserById(customer.getCreateBy());
+            customer.setCreateByName(sysUserDTO==null?null:sysUserDTO.getUsername());
+        }
         //System.err.println(authApiService.checkExists("1111"));
         return pageResult;
     }
