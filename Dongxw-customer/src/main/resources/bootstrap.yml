@@ -2,7 +2,7 @@
 
 spring:
   application:
-    name:dongxw-controller
+    name:customer-ctl
   profiles:
     active: dev
 server:

@@ -12,15 +12,12 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableAutoConfiguration
 @Configuration
 @SpringBootApplication(scanBasePackages = {"com.kunlong.dongxw" })
-//@ImportResource({"classpath:appcontext.xml"})
 @EnableSwagger2
 public class CustomerApp {
-    //private static final Logger logger = LoggerFactory.getLogger(CustomerApp.class);
-
 
     public static void main(String[] args) {
 
-        SpringApplication.run(new Class[]{CustomerApp.class}, args);
+        SpringApplication.run( new Class[]{CustomerApp.class}, args);
 
     }
 }

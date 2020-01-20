@@ -10,7 +10,6 @@ import com.jtest.annotation.JTest;
 import com.jtest.annotation.JTestClass;
 import com.jtest.testframe.ITestImpl;
 import com.kunlong.dongxw.consts.ApiConstants;
-import com.kunlong.dongxw.manager.domain.DictDatatype;
 import com.kunlong.platform.support.service.AuthService;
 import com.kunlong.platform.utils.JsonResult;
 import com.kunlong.dongxw.dongxw.domain.Customer;
@@ -103,14 +102,6 @@ public class TestCustomer extends ITestImpl {
     public void test_0002_managerFindDictDatatypeById() {
 
 
-        String ret = httpclient.post(url_manager + "/findById/3", "{}", "application/json");
-        httpclient.checkStatusCode(200);
-
-        JsonResult<DictDatatype> result = JSON.parseObject(ret, JsonResult.class);
-        System.out.println(ret);
-        //System.out.println(result.getData());
-        System.out.println(result);
-
     }
     //url_manager
     @JTest
@@ -121,14 +112,6 @@ public class TestCustomer extends ITestImpl {
     public void test_0003_findCustDongxw() {
 
 
-        String ret = httpclient.post(url_dongxw + "/findById/1", "{}", "application/json");
-        httpclient.checkStatusCode(200);
-        httpclient.addHeader("Access-Token","4aee85e19a2e467380dee5afa8136f24");
-
-        JsonResult<DictDatatype> result = JSON.parseObject(ret, JsonResult.class);
-        System.out.println(ret);
-        //System.out.println(result.getData());
-        System.out.println(result);
 
     }
 

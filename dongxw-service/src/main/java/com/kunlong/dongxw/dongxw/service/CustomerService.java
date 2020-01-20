@@ -8,7 +8,6 @@ import java.util.List;
  * @date 2020年01月18日
  */
 public interface CustomerService {
-	
 	/**
 	 * 保存
 	 * @param entity

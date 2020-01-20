@@ -3,7 +3,7 @@ package com.kunlong.dongxw.controller;
 import cn.kunlong.center.api.model.SysUserDTO;
 import cn.kunlong.center.api.service.SysUserApiService;
 import com.kunlong.api.service.AuthApiService;
-import com.kunlong.dongxw.util.support.CurrentRequestContext;
+import com.kunlong.dongxw.context.CurrentRequestContext;
 import com.kunlong.platform.consts.RequestContextConst;
 import org.apache.dubbo.config.annotation.Reference;
 
@@ -24,9 +24,6 @@ public class BaseController {
 		return authApiService.getCurrentUserId(token);
 
 	}
-//	public Map<Object,Object> getSessionValues(){
-//		return SessionHolder.getCurrentSessionValues();
-//	}
 
 	private SysUserDTO getCurrentSysUser() {
 		String token = (String) CurrentRequestContext.getContext().getAttribute(RequestContextConst.KEY_SESSIONKEY);

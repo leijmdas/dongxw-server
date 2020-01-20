@@ -1,37 +1,39 @@
 package com.kunlong.dongxw.customer.controller;
 
-//import com.kunlong.api.service.AuthApiService;
-//import com.kunlong.dongxw.util.support.CurrentRequestContext;
+import com.alibaba.fastjson.JSON;
+import com.kunlong.api.service.AuthApiService;
+import com.kunlong.dongxw.customer.consts.SessionKeyEnum;
+import com.kunlong.dongxw.customer.context.CurrentRequestContext;
+import com.kunlong.dongxw.dongxw.domain.Customer;
+import com.kunlong.dongxw.dongxw.service.CustomerService;
 import com.kunlong.platform.consts.RequestContextConst;
+import com.kunlong.platform.utils.KunlongUtils;
 import org.apache.dubbo.config.annotation.Reference;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class BaseController {
-//	@Reference(lazy = true, version = "${dubbo.service.version}")
-//	AuthApiService authApiService;
+	@Reference(lazy = true, version = "${dubbo.service.version}")
+	AuthApiService authApiService;
 
-	public Integer getCurrentUserId() {
-		//String token = (String) CurrentRequestContext.getContext().getAttribute(RequestContextConst.KEY_SESSIONKEY);
+	//@Autowired
+	//CustomerService customerService;
 
-		return 0;//authApiService.getCurrentUserId(token);
+	Customer getCustomer() {
+		String token = (String) CurrentRequestContext.getContext().getAttribute(RequestContextConst.KEY_SESSIONKEY);
+		Object map = authApiService.getAttribute(token, SessionKeyEnum.WEB_CUSTOMER.getKey());
+		//System.out.println(KunlongUtils.toJSONStringPretty(map));
+		return JSON.parseObject(KunlongUtils.toJSONStringPretty(map),Customer.class);
 
 	}
-//	public Map<Object,Object> getSessionValues(){
-//		return SessionHolder.getCurrentSessionValues();
-//	}
-//
-//	private SysUserDTO getCurrentSysUser() {
-//		Map<Object,Object> vals = this.getSessionValues();
-//		Assert.notNull(vals,"Session不存在或已效");
-//		SysUserDTO su = (SysUserDTO)vals.get(SessionKeyEnum.WEB_USER.getKey());
-//		Assert.notNull(su,"User Session不存在或已失效");
-//		return su;
-//	}
 
+	Integer getCustomerId() {
 
-	
-//	public Integer getCurrentCorpId() {
-//		return getCurrentSysUser().getCorpId();
-//	}
-	
-	
+		Customer customer=getCustomer();
+		return customer==null?-1:customer.getId();
+
+	}
+
 }

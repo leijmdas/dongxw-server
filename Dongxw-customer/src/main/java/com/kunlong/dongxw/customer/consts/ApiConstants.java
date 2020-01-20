@@ -12,6 +12,7 @@ public class ApiConstants {
 	 * 用在API注解上 APP
 	 */
 	public static final String AUTH_API_WEB_DONGXW = "dongxw";
+	public static final String AUTH_API_WEB_CUSTOMER = "customer";
 
 	/**
 	 * 用在API注解上 APP

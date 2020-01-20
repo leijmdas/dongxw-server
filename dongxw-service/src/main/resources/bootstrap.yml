@@ -2,9 +2,9 @@
 
 spring:
   application:
-    name:dongxw-controller
+    name:dongxw-service
   profiles:
     active: dev
 server:
-  port: 10081
+  port: 10070
   contextPath: /
