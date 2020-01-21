@@ -19,8 +19,11 @@ public class TestAuth extends ITestImpl {
 
     private static final Logger logger = LoggerFactory.getLogger(TestAuth.class);
 
-    String url_login = "http://127.0.0.1:10082/customer/auth/login?username=mw&password=123456";
-    String url_auth = "http://127.0.0.1:10082/customer/auth/authorization";
+//    String url_login = "http://127.0.0.1:10082/customer/auth/login?username=mw&password=123456";
+//    String url_auth = "http://127.0.0.1:10082/customer/auth/authorization";
+    String url_login_test = "http://120.77.172.83:10082/customer/auth/login?username=mw&password=123456";
+    String url_auth = "http://120.79.98.67:82/customer/auth/authorization";
+    String url_login = "http://120.79.98.67:82/customer/auth/login?username=mw&password=123456";
 
     @Inject(filename = "node.xml", value = "httpclient")
     HttpClientNode httpclient;
@@ -81,7 +84,21 @@ public class TestAuth extends ITestImpl {
 
 
     }
+    @JTest
+    @JTestClass.title("获取列表")
+    @JTestClass.pre("")
+    @JTestClass.step("test_0001_login")
+    @JTestClass.exp("ok")
+    public void test_0002_login() {
+//        String ret = httpclient.post(url_login, "{}", "application/json");
+//        httpclient.checkStatusCode(200);
+//
+//        JsonResult<Customer> result = JSON.parseObject(ret, JsonResult.class);
+//        System.out.println(ret);
+//        System.out.println(result);
 
+
+    }
     public static void main(String[] args) {
 
         run(TestAuth.class, 1);

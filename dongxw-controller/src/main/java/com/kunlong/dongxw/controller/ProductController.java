@@ -4,6 +4,7 @@ package com.kunlong.dongxw.controller;
 import app.support.query.PageResult;
 import com.kunlong.dongxw.annotation.DateRewritable;
 import com.kunlong.dongxw.consts.ApiConstants;
+import com.kunlong.dongxw.dongxw.domain.Customer;
 import com.kunlong.dongxw.dongxw.domain.Product;
 import com.kunlong.dongxw.dongxw.domain.ProductType;
 import com.kunlong.dongxw.dongxw.service.CustomerService;
@@ -129,11 +130,18 @@ public final class ProductController extends BaseController{
 
     List<String> buildTitles() {
         List<String> strings = new ArrayList<>();
+        strings.add("客户名称");
 
-        strings.add("产品类型");
         strings.add("EP款号");
         strings.add("客款码");
+        strings.add("产品大类");
+        strings.add("产品小类");
         strings.add("产品描述");
+        strings.add("单位");
+        strings.add("颜色");
+        strings.add("尺寸");
+        strings.add("条码");
+
 
         return strings;
     }
@@ -142,15 +150,32 @@ public final class ProductController extends BaseController{
         List<List<Object>> records = new ArrayList<>();
         for (Product product : orderMasters) {
             List<Object> r = new ArrayList<>();
+            Customer customer = customerService.findById(product.getCustomerId());
+            r.add(customer == null ? "-" : customer.getCustName());
 
-            ProductType productType=productTypeService.findById(product.getProductTypeId());
-            r.add(productType==null?"-":productType.getCode());
             r.add(product.getEpCode());
             r.add(product.getCode());
+
+            ProductType productTypeP = productTypeService.findById(product.getParentId());
+            r.add(productTypeP == null ? "-" : productTypeP.getCode());
+
+            ProductType productType = productTypeService.findById(product.getProductTypeId());
+            r.add(productType == null ? "-" : productType.getCode());
             r.add(product.getRemark());
+            //strings.add("单位");
+            r.add(product.getUnit());
+            //strings.add("颜色");
+            r.add(product.getColor());
+            //strings.add("尺寸");
+            r.add(product.getSize());
+
+            //strings.add("条码");
+            r.add(product.getBarCode());
 
             records.add(r);
         }
+
+
         return records;
     }
 

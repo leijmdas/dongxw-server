@@ -1,6 +1,34 @@
 version: '3.2'
 services:
-    kl-pf-ctrl:
+ 
+    kl-center-srv:
+        build:
+            context: .
+            dockerfile: DockerfileCenterService
+
+        image: kl-center-srv
+        container_name: kl-center-srv
+
+        hostname: kl-center-srv
+        user: root
+        restart: always
+        ports:
+            - '12340:12340' 
+        #command:
+        environment:
+            APP_OPTS: --spring.profiles.active=dev
+            DUBBO_IP_TO_REGISTRY: 120.78.136.63
+        volumes:
+            - /etc/localtime:/etc/localtime:ro
+            #- /etc/hosts:/etc/hosts:ro
+            - /opt/logs/center:/opt/logs/center
+            - /tmp:/tmp
+        extra_hosts:
+            - "mysql.kunlong.com:172.17.0.1"
+            - "redis.kunlong.com:172.17.0.1"
+            - "zookeeper.kunlong.com:172.17.0.1"
+            
+    kl-pf-ctl:
         build:
             context: .
             dockerfile: DockerfilePfCtrl
@@ -17,45 +45,18 @@ services:
         #command:
         environment:
             APP_OPTS: --spring.profiles.active=dev
-            #DUBBO_IP_TO_REGISTRY: 120.77.172.83
+            DUBBO_IP_TO_REGISTRY: 120.78.136.63
         volumes:
             - /etc/localtime:/etc/localtime:ro
             #- /etc/hosts:/etc/hosts:ro
-            - /opt/logs/platform:/platform/logs/pf
+            - /opt/logs/platform:/opt/logs/pf
             - /tmp:/tmp
         extra_hosts:
             - "mysql.kunlong.com:172.17.0.1"
             - "redis.kunlong.com:172.17.0.1"
             - "zookeeper.kunlong.com:172.17.0.1"
 
-    kl-center-service:
-        build:
-            context: .
-            dockerfile: DockerfileCenterService
-
-        image: kl-center-srv
-        container_name: kl-center-srv
-
-        hostname: kl-center-srv
-        user: root
-        restart: always
-        ports:
-            - '12340:12340' 
-        #command:
-        environment:
-            APP_OPTS: --spring.profiles.active=dev
-            #DUBBO_IP_TO_REGISTRY: 120.77.172.83
-        volumes:
-            - /etc/localtime:/etc/localtime:ro
-            #- /etc/hosts:/etc/hosts:ro
-            - /opt/logs/center:/opt/logs/center
-            - /tmp:/tmp
-        extra_hosts:
-            - "mysql.kunlong.com:172.17.0.1"
-            - "redis.kunlong.com:172.17.0.1"
-            - "zookeeper.kunlong.com:172.17.0.1"            
-
-    kl-dongxw-ctrl:
+    kl-dongxw-ctl:
         build:
             context: .
             dockerfile: DockerfileDongxwCtrl
@@ -71,7 +72,7 @@ services:
         #command:
         environment:
             APP_OPTS: --spring.profiles.active=dev
-            #DUBBO_IP_TO_REGISTRY: 120.77.172.83
+            DUBBO_IP_TO_REGISTRY: 120.78.136.63
         volumes:
             - /etc/localtime:/etc/localtime:ro
             #- /etc/hosts:/etc/hosts:ro
@@ -98,7 +99,7 @@ services:
         #command:
         environment:
             APP_OPTS: --spring.profiles.active=dev
-            #DUBBO_IP_TO_REGISTRY: 120.77.172.83
+            DUBBO_IP_TO_REGISTRY: 120.78.136.63
         volumes:
             - /etc/localtime:/etc/localtime:ro
             #- /etc/hosts:/etc/hosts:ro
