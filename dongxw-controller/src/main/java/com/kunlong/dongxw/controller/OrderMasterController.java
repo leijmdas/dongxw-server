@@ -2,6 +2,7 @@ package com.kunlong.dongxw.controller;
 
 
 import app.support.query.PageResult;
+import cn.kunlong.center.api.model.SysUserDTO;
 import com.kunlong.api.service.MailApiService;
 import com.kunlong.dongxw.annotation.DateRewritable;
 import com.kunlong.dongxw.consts.*;
@@ -9,6 +10,7 @@ import com.kunlong.dongxw.dongxw.domain.Customer;
 import com.kunlong.dongxw.dongxw.domain.OrderMaster;
 import com.kunlong.dongxw.dongxw.service.CustomerService;
 import com.kunlong.dongxw.dongxw.service.OrderMasterService;
+import com.kunlong.dongxw.support.BeanMapper;
 import com.kunlong.dongxw.util.WebFileUtil;
 import com.kunlong.platform.utils.JsonResult;
 import io.swagger.annotations.ApiOperation;
@@ -47,7 +49,12 @@ public final class OrderMasterController extends BaseController {
 
     @RequestMapping("/findById/{id}")
     public JsonResult<OrderMaster> findById(@PathVariable("id") Integer id, HttpServletResponse response) throws IOException {
-         return   JsonResult.success(orderMasterService.findById(id))    ;
+        OrderMaster orderMaster = orderMasterService.findById(id);
+        SysUserDTO sysUserDTO = sysUserApiService.findById(orderMaster.getCreateBy());
+        orderMaster.setCreateByName(sysUserDTO == null ? "-" : sysUserDTO.getUsername());
+
+        return JsonResult.success(orderMaster);
+
     }
 
     @RequestMapping("/save")
@@ -56,7 +63,6 @@ public final class OrderMasterController extends BaseController {
         if (orderMaster.getId() == null) {
             orderMaster.setCreateBy(getCurrentUserId());
             orderMaster.setCreateDate(new Date());
-
             orderMasterService.save(orderMaster);
         } else {
             orderMasterService.update(orderMaster);
@@ -86,13 +92,18 @@ public final class OrderMasterController extends BaseController {
         PageResult<OrderMaster> pageResult = new PageResult<>();
         // Customer.QueryParam qp = BeanMapper.getInstance().map(pageResult, Customer.QueryParam.class);
 
+
         pageResult.setTotal(orderMasterService.countByQueryParam(queryParam));
         pageResult.setData(orderMasterService.findByQueryParam(queryParam));
 
-        for(OrderMaster orderMaster : pageResult.getData()){
+        for (OrderMaster orderMaster : pageResult.getData()) {
             orderMaster.setCustomer(customerService.findById(orderMaster.getCustomerId()));
-            if(orderMaster.getOrderType()==200&&orderMaster.getParentId()>0){
+            if (orderMaster.getOrderType() == 200 && orderMaster.getParentId() > 0) {
                 orderMaster.setOrderMasterParent(orderMasterService.findById(orderMaster.getParentId()));
+            }
+            SysUserDTO sysUserDTO = sysUserApiService.findById(orderMaster.getCreateBy());
+            if (sysUserDTO != null) {
+                orderMaster.setCreateByName(sysUserDTO.getUsername());
             }
         }
         return pageResult;

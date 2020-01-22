@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * MakePlanService
  * @author generator
- * @date 2019年12月27日
+ * @date 2020年01月23日
  */
 public interface MakePlanService {
 	
@@ -70,5 +70,5 @@ public interface MakePlanService {
 	 * @param items
 	 * @param field
 	 */
-	public void fillValues(List<MakePlan> items, MakePlan.ValueField... field);
+	public void fillValues(List<MakePlan> items,MakePlan.ValueField ...field);
 }

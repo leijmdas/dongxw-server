@@ -5,6 +5,7 @@ import app.support.query.PageResult;
 import com.kunlong.dongxw.annotation.DateRewritable;
 import com.kunlong.dongxw.consts.ApiConstants;
 import com.kunlong.dongxw.dongxw.domain.OrderLine;
+import com.kunlong.dongxw.dongxw.domain.Product;
 import com.kunlong.dongxw.dongxw.service.*;
 import com.kunlong.dongxw.util.WebFileUtil;
 import com.kunlong.platform.utils.JsonResult;
@@ -32,20 +33,19 @@ import java.util.List;
 @RestController
 @RequestMapping("/dongxw/orderline")
 public final class OrderLineController extends BaseController {
-
-    @Autowired
-    OrderLineService orderLineService;
     @Autowired
     CustomerService customerService;
+
     @Autowired
     OrderMasterService orderMasterService;
 
     @Autowired
-    ProductTypeService productTypeService;
+    OrderLineService orderLineService;
     @Autowired
     ProductService productService;
-//    @Autowired
-//    SupplierService supplierService;
+
+    @Autowired
+    ProductTypeService productTypeService;
 
     @RequestMapping("/findById/{id}")
     public JsonResult<OrderLine> findById(@PathVariable("id") Integer id, HttpServletResponse response) throws IOException {
@@ -56,7 +56,14 @@ public final class OrderLineController extends BaseController {
     public JsonResult<Integer> save(@RequestBody OrderLine orderLine) {
 
         orderLine.setMoney(orderLine.getPrice().multiply(new BigDecimal(orderLine.getQty())));
-
+        orderLine.setMoney(orderLine.getMoney().setScale(2, BigDecimal.ROUND_HALF_UP));
+        if (orderLine.getProductId() != null) {
+            Product product = productService.findById(orderLine.getProductId());
+            if (product != null) {
+                orderLine.setParentId(product.getParentId());
+                orderLine.setProductTypeId(product.getProductTypeId());
+            }
+        }
         if (orderLine.getId() == null) {
             orderLine.setCreateBy(getCurrentUserId());
             orderLine.setCreateDate(new Date());

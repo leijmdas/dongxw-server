@@ -13,7 +13,7 @@ import org.mybatis.hbatis.orm.criteria.support.query.SortOrders;
 /**
  * ProductType 
  * @author generator
- * @date 2020年01月02日
+ * @date 2020年01月22日
  */
 @Table(ProductType.EntityNode.class)
 public class ProductType implements Serializable {
@@ -51,6 +51,13 @@ public class ProductType implements Serializable {
 	@Column(comment = "父类")	
 	@NotNull
 	private Integer parentId;
+	/**
+	  * 0-成品100-半成品-200-原料
+	  * nullable:false,length:4
+	  */
+	@Column(comment = "0-成品100-半成品-200-原料")	
+	@NotNull
+	private Integer prdFlag;
     public Integer getId(){
     	return this.id;
     }
@@ -81,6 +88,12 @@ public class ProductType implements Serializable {
     public void setParentId(Integer parentId){
     	this.parentId = parentId;
     }
+    public Integer getPrdFlag(){
+    	return this.prdFlag;
+    }
+    public void setPrdFlag(Integer prdFlag){
+    	this.prdFlag = prdFlag;
+    }
 
     public static class EntityNode extends AbstractEntityNode<ProductType> {
         public static final EntityNode INSTANCE = new EntityNode("pt");;
@@ -94,6 +107,8 @@ public class ProductType implements Serializable {
         public FieldNode<ProductType, String> name =  createFieldNode("name","name",String.class,JdbcType.VARCHAR);
     	/** 父类 */
         public FieldNode<ProductType, Integer> parentId =  createFieldNode("parentId","parent_id",Integer.class,JdbcType.INTEGER);
+    	/** 0-成品100-半成品-200-原料 */
+        public FieldNode<ProductType, Integer> prdFlag =  createFieldNode("prdFlag","prd_flag",Integer.class,JdbcType.INTEGER);
 	
         /**
          * @param alias 别名

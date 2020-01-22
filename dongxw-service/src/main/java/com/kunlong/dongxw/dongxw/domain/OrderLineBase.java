@@ -1,6 +1,6 @@
 package com.kunlong.dongxw.dongxw.domain;
 
-import org.mybatis.hbatis.core.annotation.Table;
+import com.kunlong.platform.model.KunlongModel;
 
 import java.io.Serializable;
 
@@ -10,18 +10,27 @@ import java.io.Serializable;
  * @author generator
  * @date 2020年01月04日
  */
-public class OrderLineBase implements Serializable {
+public class OrderLineBase extends KunlongModel implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	// ==== 自定义属性 ====
 	Customer customer;
 
-
 	OrderMaster orderMaster;
 	ProductType productType;
 	ProductType parentProductType;
 	Product product;
-	Supplier supplier;
+	//Supplier supplier;
+
+	public String getCreateByName() {
+		return createByName;
+	}
+
+	public void setCreateByName(String createByName) {
+		this.createByName = createByName;
+	}
+
+	String createByName;
 
 	public Customer getCustomer() {
 		return customer;
@@ -37,13 +46,6 @@ public class OrderLineBase implements Serializable {
 
 	public void setOrderMaster(OrderMaster orderMaster) {
 		this.orderMaster = orderMaster;
-	}
-	public Supplier getSupplier() {
-		return supplier;
-	}
-
-	public void setSupplier(Supplier supplier) {
-		this.supplier = supplier;
 	}
 
 	public ProductType getProductType() {

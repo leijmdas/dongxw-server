@@ -132,6 +132,9 @@
 			<if test="p.customerId!=null ">
 		    	and p.customer_id=#{p.customerId}
 		    </if>
+			<if test="p.customerId==null ">
+				and p.customer_id>0
+			</if>
 			<if test="p.imgUrls!=null and p.imgUrls!=''">
 		    	and p.img_urls like #{p.imgUrls}
 		    </if>
@@ -182,12 +185,13 @@
 		<include refid="Base_Column_List_Product"></include>
 		from product p where 1=1
 		<include refid="Condition_FindByQueryParam"></include>
-		<if test="queryParam.sortOrders!=null and queryParam.sortOrders.size() gt 0">
-			order by 
-			<foreach collection="queryParam.sortOrders" item="item" separator=",">
-				${item.sortField.sqlColumn} ${item.sortType}
-			</foreach>
-		</if>
+		<!--<if test="queryParam.sortOrders!=null and queryParam.sortOrders.size() gt 0">-->
+			<!--order by -->
+			<!--<foreach collection="queryParam.sortOrders" item="item" separator=",">-->
+				<!--${item.sortField.sqlColumn} ${item.sortType}-->
+			<!--</foreach>-->
+		<!--</if>-->
+		order by id desc
 		<if test="queryParam.limit gt 0">
 	  		limit ${queryParam.start},${queryParam.limit}
 	  	</if>

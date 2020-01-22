@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * ProductTypeService
  * @author generator
- * @date 2020年01月02日
+ * @date 2020年01月22日
  */
 public interface ProductTypeService {
 	

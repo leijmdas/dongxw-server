@@ -1,5 +1,7 @@
 package com.kunlong.dongxw.dongxw.domain;
 
+import com.kunlong.platform.model.KunlongModel;
+
 import java.io.Serializable;
 
 
@@ -8,7 +10,7 @@ import java.io.Serializable;
  * @author generator
  * @date 2020年01月04日
  */
-public class ProductBase implements Serializable {
+public class ProductBase extends KunlongModel implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	public ProductType getProductType() {
@@ -40,4 +42,14 @@ public class ProductBase implements Serializable {
 	ProductType productSubType;
 
 	Customer customer;
+
+	public String getCreateByName() {
+		return createByName;
+	}
+
+	public void setCreateByName(String createByName) {
+		this.createByName = createByName;
+	}
+
+	String createByName;
 }

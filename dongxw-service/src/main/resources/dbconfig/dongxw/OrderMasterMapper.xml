@@ -131,6 +131,49 @@
 		<bind name="rp" value="queryParam.ruleParam" />
 		<include refid="org.mybatis.hbatis.orm.mapper.HbatisMapper.RuleParam"/>
 		-->
+		<if test="queryParam.dateRanges!=null">
+			<bind name="dr" value="queryParam.dateRanges"/>
+			<bind name="orderDate" value="dr['orderDate']"/>
+			<bind name="customerIssueDate" value="dr['customerIssueDate']"/>
+			<bind name="checkDate" value="dr['checkDate']"/>
+			<bind name="factroyIssueDate" value="dr['factroyIssueDate']"/>
+			<if test="orderDate!=null"> <!-- 按创建时间 -->
+				<if test="orderDate.startDate!=null">
+					and om.order_date <![CDATA[>=]]> #{orderDate.startDate}
+				</if>
+				<if test="dr['orderDate'].endDate!=null">
+					and om.order_date <![CDATA[<=]]> #{orderDate.endDate}
+				</if>
+			</if>
+
+			<if test="customerIssueDate!=null"> <!-- 按创建时间 -->
+				<if test="customerIssueDate.startDate!=null">
+					and om.customer_issue_date <![CDATA[>=]]> #{customerIssueDate.startDate}
+				</if>
+				<if test="dr['customerIssueDate'].endDate!=null">
+					and om.customer_issue_date <![CDATA[<=]]> #{customerIssueDate.endDate}
+				</if>
+			</if>
+			<if test="checkDate!=null"> <!-- 按创建时间 -->
+				<if test="checkDate.startDate!=null">
+					and om.check_date <![CDATA[>=]]> #{checkDate.startDate}
+				</if>
+				<if test="dr['checkDate'].endDate!=null">
+					and om.check_date <![CDATA[<=]]> #{checkDate.endDate}
+				</if>
+			</if>
+			<if test="factroyIssueDate!=null"> <!-- 按创建时间 -->
+				<if test="factroyIssueDate.startDate!=null">
+					and om.factroy_issue_date <![CDATA[>=]]> #{factroyIssueDate.startDate}
+				</if>
+				<if test="dr['factroyIssueDate'].endDate!=null">
+					and om.factroy_issue_date <![CDATA[<=]]> #{factroyIssueDate.endDate}
+				</if>
+			</if>
+
+
+		</if>
+
 	</sql>
 	<select id="findByQueryParam" resultMap="ResultMap_FindByQueryParam">
 		select

@@ -6,111 +6,120 @@ import org.mybatis.hbatis.core.type.JdbcType;
 import org.mybatis.hbatis.core.annotation.*;
 import org.mybatis.hbatis.core.*;
 import java.lang.Integer;
-import java.lang.String;
 import java.util.Date;
+import java.lang.String;
 import org.mybatis.hbatis.orm.criteria.support.query.AbstractQueryParam;
 import org.mybatis.hbatis.orm.criteria.support.query.SortOrders;
 /**
- * MakePlan 
+ * MakePlan 生产计划表
  * @author generator
- * @date 2019年12月27日
+ * @date 2020年01月23日
  */
 @Table(MakePlan.EntityNode.class)
-public class MakePlan implements Serializable {
+public class MakePlan extends MakePlanBase implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	/**
-	  * 
+	  * 计划标识 
 	  * nullable:true,length:11
 	  */
-	@Column(primaryKey = true,autoIncrement = true,comment = "")	
+	@Column(primaryKey = true,autoIncrement = true,comment = "计划标识 ")	
 	private Integer id;
 	/**
-	  * 客户
+	  * 客户标识 
 	  * nullable:false,length:11
 	  */
-	@Column(comment = "客户")	
+	@Column(comment = "客户标识 ")	
 	@NotNull
-	private Integer custId;
+	private Integer customerId;
 	/**
-	  * 订单号
+	  * 订单标识 
 	  * nullable:false,length:11
 	  */
-	@Column(comment = "订单号")	
+	@Column(comment = "订单标识 ")	
 	@NotNull
 	private Integer orderId;
 	/**
-	  * 款号
+	  * 订单产品标识 
 	  * nullable:false,length:11
 	  */
-	@Column(comment = "款号")	
+	@Column(comment = "订单产品标识 ")	
 	@NotNull
-	private Integer productId;
+	private Integer orederLineId;
 	/**
-	  * 数量
-	  * nullable:true,length:11
+	  * 发外标志 0--自产1--外发
+	  * nullable:false,length:11
 	  */
-	@Column(comment = "数量")	
-	private Integer qty;
+	@Column(comment = "发外标志 0--自产1--外发")	
+	@NotNull
+	private Integer outFlag;
 	/**
-	  * 颜色
-	  * nullable:true,length:32
-	  */
-	@Column(comment = "颜色")	
-	private String color;
-	/**
-	  * 接单日期
+	  * 接单日期 
 	  * nullable:true,length:10
 	  */
-	@Column(comment = "接单日期")	
+	@Column(comment = "接单日期 ")	
 	private Date orderDate;
 	/**
-	  * 要求交期
+	  * 要求交期 
 	  * nullable:true,length:10
 	  */
-	@Column(comment = "要求交期")	
+	@Column(comment = "要求交期 ")	
 	private Date issueDate;
 	/**
-	  * 物料到位日期
+	  * 物料到位日期 
 	  * nullable:true,length:10
 	  */
-	@Column(comment = "物料到位日期")	
-	private Date preItemDate;
+	@Column(comment = "物料到位日期 ")	
+	private Date rmDate;
 	/**
-	  * 包装到位日期
+	  * 包材到位日期 
 	  * nullable:true,length:10
 	  */
-	@Column(comment = "包装到位日期")	
-	private Date prePackageDate;
+	@Column(comment = "包材到位日期 ")	
+	private Date pkgDate;
 	/**
-	  * 计划上线
+	  * 计划上线 
 	  * nullable:true,length:10
 	  */
-	@Column(comment = "计划上线")	
-	private Date planOnlineDate;
+	@Column(comment = "计划上线 ")	
+	private Date planStart;
 	/**
-	  * 计划完成
+	  * 计划完成 
 	  * nullable:true,length:10
 	  */
-	@Column(comment = "计划完成")	
-	private Date planFinishDate;
+	@Column(comment = "计划完成 ")	
+	private Date planEnd;
 	/**
-	  * 备注
-	  * nullable:true,length:255
+	  * 实际完成日期 
+	  * nullable:true,length:10
 	  */
-	@Column(comment = "备注")	
+	@Column(comment = "实际完成日期 ")	
+	private Date realEnd;
+	/**
+	  * 完成标志 0--未完成1--完成
+	  * nullable:true,length:11
+	  */
+	@Column(comment = "完成标志 0--未完成1--完成")	
+	private Integer finishFlag;
+	/**
+	  * 备注 
+	  * nullable:true,length:128
+	  */
+	@Column(comment = "备注 ")	
 	private String remark;
 	/**
-	  * 状态 1-草稿2-批准-3完成4-取消
-	  * nullable:true,length:4
+	  * 建档时间 
+	  * nullable:false,length:10
 	  */
-	@Column(comment = "状态 1-草稿2-批准-3完成4-取消")	
-	private Integer status;
+	@Column(comment = "建档时间 ")	
+	@NotNull
+	private Date createDate;
 	/**
-	  * 制定人
-	  * nullable:true,length:4
+	  * 建档人 
+	  * nullable:false,length:11
 	  */
-	@Column(comment = "制定人")	
+	@Column(comment = "建档人 ")	
+	@NotNull
 	private Integer createBy;
     public Integer getId(){
     	return this.id;
@@ -118,11 +127,11 @@ public class MakePlan implements Serializable {
     public void setId(Integer id){
     	this.id = id;
     }
-    public Integer getCustId(){
-    	return this.custId;
+    public Integer getCustomerId(){
+    	return this.customerId;
     }
-    public void setCustId(Integer custId){
-    	this.custId = custId;
+    public void setCustomerId(Integer customerId){
+    	this.customerId = customerId;
     }
     public Integer getOrderId(){
     	return this.orderId;
@@ -130,23 +139,17 @@ public class MakePlan implements Serializable {
     public void setOrderId(Integer orderId){
     	this.orderId = orderId;
     }
-    public Integer getProductId(){
-    	return this.productId;
+    public Integer getOrederLineId(){
+    	return this.orederLineId;
     }
-    public void setProductId(Integer productId){
-    	this.productId = productId;
+    public void setOrederLineId(Integer orederLineId){
+    	this.orederLineId = orederLineId;
     }
-    public Integer getQty(){
-    	return this.qty;
+    public Integer getOutFlag(){
+    	return this.outFlag;
     }
-    public void setQty(Integer qty){
-    	this.qty = qty;
-    }
-    public String getColor(){
-    	return this.color;
-    }
-    public void setColor(String color){
-    	this.color = color;
+    public void setOutFlag(Integer outFlag){
+    	this.outFlag = outFlag;
     }
     public Date getOrderDate(){
     	return this.orderDate;
@@ -160,29 +163,41 @@ public class MakePlan implements Serializable {
     public void setIssueDate(Date issueDate){
     	this.issueDate = issueDate;
     }
-    public Date getPreItemDate(){
-    	return this.preItemDate;
+    public Date getRmDate(){
+    	return this.rmDate;
     }
-    public void setPreItemDate(Date preItemDate){
-    	this.preItemDate = preItemDate;
+    public void setRmDate(Date rmDate){
+    	this.rmDate = rmDate;
     }
-    public Date getPrePackageDate(){
-    	return this.prePackageDate;
+    public Date getPkgDate(){
+    	return this.pkgDate;
     }
-    public void setPrePackageDate(Date prePackageDate){
-    	this.prePackageDate = prePackageDate;
+    public void setPkgDate(Date pkgDate){
+    	this.pkgDate = pkgDate;
     }
-    public Date getPlanOnlineDate(){
-    	return this.planOnlineDate;
+    public Date getPlanStart(){
+    	return this.planStart;
     }
-    public void setPlanOnlineDate(Date planOnlineDate){
-    	this.planOnlineDate = planOnlineDate;
+    public void setPlanStart(Date planStart){
+    	this.planStart = planStart;
     }
-    public Date getPlanFinishDate(){
-    	return this.planFinishDate;
+    public Date getPlanEnd(){
+    	return this.planEnd;
     }
-    public void setPlanFinishDate(Date planFinishDate){
-    	this.planFinishDate = planFinishDate;
+    public void setPlanEnd(Date planEnd){
+    	this.planEnd = planEnd;
+    }
+    public Date getRealEnd(){
+    	return this.realEnd;
+    }
+    public void setRealEnd(Date realEnd){
+    	this.realEnd = realEnd;
+    }
+    public Integer getFinishFlag(){
+    	return this.finishFlag;
+    }
+    public void setFinishFlag(Integer finishFlag){
+    	this.finishFlag = finishFlag;
     }
     public String getRemark(){
     	return this.remark;
@@ -190,11 +205,11 @@ public class MakePlan implements Serializable {
     public void setRemark(String remark){
     	this.remark = remark;
     }
-    public Integer getStatus(){
-    	return this.status;
+    public Date getCreateDate(){
+    	return this.createDate;
     }
-    public void setStatus(Integer status){
-    	this.status = status;
+    public void setCreateDate(Date createDate){
+    	this.createDate = createDate;
     }
     public Integer getCreateBy(){
     	return this.createBy;
@@ -205,35 +220,37 @@ public class MakePlan implements Serializable {
 
     public static class EntityNode extends AbstractEntityNode<MakePlan> {
         public static final EntityNode INSTANCE = new EntityNode("mp");;
-    	/**  */
+    	/** 计划标识  */
         public FieldNode<MakePlan, Integer> id =  createFieldNode("id","id",Integer.class,JdbcType.INTEGER);
-    	/** 客户 */
-        public FieldNode<MakePlan, Integer> custId =  createFieldNode("custId","cust_id",Integer.class,JdbcType.INTEGER);
-    	/** 订单号 */
+    	/** 客户标识  */
+        public FieldNode<MakePlan, Integer> customerId =  createFieldNode("customerId","customer_id",Integer.class,JdbcType.INTEGER);
+    	/** 订单标识  */
         public FieldNode<MakePlan, Integer> orderId =  createFieldNode("orderId","order_id",Integer.class,JdbcType.INTEGER);
-    	/** 款号 */
-        public FieldNode<MakePlan, Integer> productId =  createFieldNode("productId","product_id",Integer.class,JdbcType.INTEGER);
-    	/** 数量 */
-        public FieldNode<MakePlan, Integer> qty =  createFieldNode("qty","qty",Integer.class,JdbcType.INTEGER);
-    	/** 颜色 */
-        public FieldNode<MakePlan, String> color =  createFieldNode("color","color",String.class,JdbcType.VARCHAR);
-    	/** 接单日期 */
+    	/** 订单产品标识  */
+        public FieldNode<MakePlan, Integer> orederLineId =  createFieldNode("orederLineId","oreder_line_id",Integer.class,JdbcType.INTEGER);
+    	/** 发外标志 0--自产1--外发 */
+        public FieldNode<MakePlan, Integer> outFlag =  createFieldNode("outFlag","out_flag",Integer.class,JdbcType.INTEGER);
+    	/** 接单日期  */
         public FieldNode<MakePlan, Date> orderDate =  createFieldNode("orderDate","order_date",Date.class,JdbcType.DATE);
-    	/** 要求交期 */
+    	/** 要求交期  */
         public FieldNode<MakePlan, Date> issueDate =  createFieldNode("issueDate","issue_date",Date.class,JdbcType.DATE);
-    	/** 物料到位日期 */
-        public FieldNode<MakePlan, Date> preItemDate =  createFieldNode("preItemDate","pre_item_date",Date.class,JdbcType.DATE);
-    	/** 包装到位日期 */
-        public FieldNode<MakePlan, Date> prePackageDate =  createFieldNode("prePackageDate","pre_package_date",Date.class,JdbcType.DATE);
-    	/** 计划上线 */
-        public FieldNode<MakePlan, Date> planOnlineDate =  createFieldNode("planOnlineDate","plan_online_date",Date.class,JdbcType.DATE);
-    	/** 计划完成 */
-        public FieldNode<MakePlan, Date> planFinishDate =  createFieldNode("planFinishDate","plan_finish_date",Date.class,JdbcType.DATE);
-    	/** 备注 */
+    	/** 物料到位日期  */
+        public FieldNode<MakePlan, Date> rmDate =  createFieldNode("rmDate","rm_date",Date.class,JdbcType.DATE);
+    	/** 包材到位日期  */
+        public FieldNode<MakePlan, Date> pkgDate =  createFieldNode("pkgDate","pkg_date",Date.class,JdbcType.DATE);
+    	/** 计划上线  */
+        public FieldNode<MakePlan, Date> planStart =  createFieldNode("planStart","plan_start",Date.class,JdbcType.DATE);
+    	/** 计划完成  */
+        public FieldNode<MakePlan, Date> planEnd =  createFieldNode("planEnd","plan_end",Date.class,JdbcType.DATE);
+    	/** 实际完成日期  */
+        public FieldNode<MakePlan, Date> realEnd =  createFieldNode("realEnd","real_end",Date.class,JdbcType.DATE);
+    	/** 完成标志 0--未完成1--完成 */
+        public FieldNode<MakePlan, Integer> finishFlag =  createFieldNode("finishFlag","finish_flag",Integer.class,JdbcType.INTEGER);
+    	/** 备注  */
         public FieldNode<MakePlan, String> remark =  createFieldNode("remark","remark",String.class,JdbcType.VARCHAR);
-    	/** 状态 1-草稿2-批准-3完成4-取消 */
-        public FieldNode<MakePlan, Integer> status =  createFieldNode("status","status",Integer.class,JdbcType.INTEGER);
-    	/** 制定人 */
+    	/** 建档时间  */
+        public FieldNode<MakePlan, Date> createDate =  createFieldNode("createDate","create_date",Date.class,JdbcType.DATE);
+    	/** 建档人  */
         public FieldNode<MakePlan, Integer> createBy =  createFieldNode("createBy","create_by",Integer.class,JdbcType.INTEGER);
 	
         /**

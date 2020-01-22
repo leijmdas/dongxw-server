@@ -7,7 +7,7 @@ import com.kunlong.dongxw.dongxw.domain.OrderLine;
 /**
  * OrderLineMapper
  * @author generator
- * @date 2020年01月04日
+ * @date 2020年01月22日
  */
 public interface OrderLineMapper extends HbatisMapper<OrderLine, Integer> {
 	

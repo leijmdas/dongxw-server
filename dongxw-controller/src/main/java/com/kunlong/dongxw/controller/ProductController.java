@@ -2,12 +2,15 @@ package com.kunlong.dongxw.controller;
 
 
 import app.support.query.PageResult;
+import cn.kunlong.center.api.model.SysUserDTO;
 import com.kunlong.dongxw.annotation.DateRewritable;
 import com.kunlong.dongxw.consts.ApiConstants;
 import com.kunlong.dongxw.dongxw.domain.Customer;
+import com.kunlong.dongxw.dongxw.domain.OrderLine;
 import com.kunlong.dongxw.dongxw.domain.Product;
 import com.kunlong.dongxw.dongxw.domain.ProductType;
 import com.kunlong.dongxw.dongxw.service.CustomerService;
+import com.kunlong.dongxw.dongxw.service.OrderLineService;
 import com.kunlong.dongxw.dongxw.service.ProductService;
 import com.kunlong.dongxw.dongxw.service.ProductTypeService;
 import com.kunlong.dongxw.util.WebFileUtil;
@@ -43,10 +46,16 @@ public final class ProductController extends BaseController{
 
     @Autowired
     CustomerService customerService;
+    @Autowired
+    OrderLineService orderLineService;
 
     @RequestMapping("/findById/{id}")
     public JsonResult<Product> findById(@PathVariable("id") Integer id, HttpServletResponse response) throws IOException {
-         return   JsonResult.success(productService.findById(id))    ;
+        JsonResult<Product> result = JsonResult.success(productService.findById(id));
+        SysUserDTO sysUserDTO = sysUserApiService.findById(result.getData().getCreateBy());
+
+        result.getData().setCreateByName(sysUserDTO != null ? sysUserDTO.getUsername() : "-");
+        return result;
     }
 
     @RequestMapping("/save")
@@ -58,6 +67,7 @@ public final class ProductController extends BaseController{
 
             productService.save(product);
         } else {
+
             productService.update(product);
         }
 
@@ -66,8 +76,16 @@ public final class ProductController extends BaseController{
 
     @PostMapping("/deleteById/{id}")
     public JsonResult<Integer> deleteById(@PathVariable("id") Integer id) throws IOException {
-        productService.deleteById(id) ;
-
+        productService.deleteById(id);
+        OrderLine.QueryParam queryParam = new OrderLine.QueryParam();
+        queryParam.setParam(new OrderLine());
+        queryParam.getParam().setProductId(id);
+        queryParam.setLimit(1);
+        long count = orderLineService.countByQueryParam(queryParam);
+        if (count > 0) {
+            throw new RuntimeException("产品已经有订单使用不能删除!");
+        }
+        //有BOM使用不能使用
 //        Product product=productService.findById(id);
 //        if(product!=null){
 //            if(product.getStatus().compareTo(OrderConsts.ORDER_STATUS_DRAFT)>0){
@@ -94,6 +112,10 @@ public final class ProductController extends BaseController{
             if(product.getCustomerId()!=null) {
                 product.setCustomer(customerService.findById(product.getCustomerId()));
             }
+            SysUserDTO sysUserDTO=sysUserApiService.findById(product.getCreateBy());
+
+            product.setCreateByName(sysUserDTO!=null?sysUserDTO.getUsername():"-");
+
         }
         return pageResult;
     }

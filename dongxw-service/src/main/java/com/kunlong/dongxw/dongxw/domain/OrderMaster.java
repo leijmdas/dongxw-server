@@ -9,7 +9,11 @@ import java.lang.Integer;
 import java.lang.String;
 import java.util.Date;
 import java.lang.Long;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.mybatis.hbatis.orm.criteria.support.query.AbstractQueryParam;
+import org.mybatis.hbatis.orm.criteria.support.query.DateRange;
 import org.mybatis.hbatis.orm.criteria.support.query.SortOrders;
 /**
  * OrderMaster 客户订单
@@ -344,6 +348,18 @@ public class OrderMaster extends OrderMasterBase implements Serializable {
 	public static class QueryParam extends AbstractQueryParam<OrderMaster> {
 		public QueryParam() {
 			this.setSortOrders(new SortOrders<OrderMaster>(EntityNode.INSTANCE));
+		}
+
+
+
+		private Map<String, DateRange> dateRanges = new HashMap<String, DateRange>();
+
+		public Map<String, DateRange> getDateRanges() {
+			return dateRanges;
+		}
+
+		public void setDateRanges(Map<String, DateRange> dateRanges) {
+			this.dateRanges = dateRanges;
 		}
 	}
 	

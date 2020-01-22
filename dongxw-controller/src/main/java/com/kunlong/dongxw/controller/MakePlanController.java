@@ -2,20 +2,24 @@ package com.kunlong.dongxw.controller;
 
 
 import app.support.query.PageResult;
+import cn.kunlong.center.api.model.SysUserDTO;
 import com.kunlong.api.service.AuthApiService;
 import com.kunlong.dongxw.annotation.DateRewritable;
 import com.kunlong.dongxw.consts.ApiConstants;
+import com.kunlong.dongxw.consts.MakePlanConst;
 import com.kunlong.dongxw.consts.MoneyTypeConsts;
 import com.kunlong.dongxw.dongxw.domain.Customer;
 import com.kunlong.dongxw.dongxw.domain.MakePlan;
-import com.kunlong.dongxw.dongxw.service.CustomerService;
-import com.kunlong.dongxw.dongxw.service.MakePlanService;
+import com.kunlong.dongxw.dongxw.domain.OrderLine;
+import com.kunlong.dongxw.dongxw.domain.OrderMaster;
+import com.kunlong.dongxw.dongxw.service.*;
 import com.kunlong.dongxw.util.WebFileUtil;
 import com.kunlong.platform.utils.JsonResult;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
 import org.apache.dubbo.config.annotation.Reference;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -35,15 +39,91 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/dongxw/makeplan")
-public final class MakePlanController {
+public  class MakePlanController extends BaseController {
     @Autowired
     MakePlanService makePlanService;
 
+    @Autowired
+    CustomerService customerService;
+
+    @Autowired
+    OrderMasterService orderMasterService;
+
+    @Autowired
+    OrderLineService orderLineService;
+    @Autowired
+    ProductService productService;
+
+    @Autowired
+    ProductTypeService productTypeService;
+
+    @Transactional
+    @RequestMapping("/makePlanByOrder/{orderId}")
+    public JsonResult<Integer> makePlanByOrder(@PathVariable("orderId") Integer orderId) throws IOException {
+        OrderLine.QueryParam queryParam=new OrderLine.QueryParam();
+        queryParam.setParam(new OrderLine());
+        queryParam.getParam().setOrderId(orderId);
+        queryParam.setLimit(-1);
+
+        List<OrderLine> orderLines = orderLineService.findByQueryParam(queryParam);
+        for (OrderLine orderLine : orderLines) {
+            if (!checkExistsByOrderLine(orderLine.getId())) {
+                MakePlan makePlan=new MakePlan();
+                makePlan.setCustomerId(orderLine.getCustomerId());
+                makePlan.setOrderId(orderLine.getOrderId());
+                makePlan.setOrederLineId(orderLine.getId());
+                makePlan.setCreateDate(new Date());
+                makePlan.setCreateBy(this.getCurrentUserId());
+                OrderMaster orderMaster = orderMasterService.findById(orderLine.getOrderId());
+
+                makePlan.setOrderDate(orderMaster != null ? orderMaster.getOrderDate() : null);
+                makePlan.setIssueDate(orderMaster != null ? orderMaster.getFactroyIssueDate() : null);
+                makePlan.setOutFlag(MakePlanConst.OUT_FLAG_SELF);
+                makePlan.setFinishFlag(MakePlanConst.FINISH_FLAG_UN);
+                makePlanService.save(makePlan);
+
+            }
+        }
+
+        return JsonResult.success(0);
+    }
+
+    public boolean checkExistsByOrderLine(Integer orderLineId) throws IOException {
+
+        List<MakePlan> plans = findByOrderLine(orderLineId);
+        return plans != null && plans.size() > 0;
+    }
+
+    public List<MakePlan> findByOrderLine(Integer orderLineId) throws IOException {
+        MakePlan.QueryParam queryParam = new MakePlan.QueryParam();
+        queryParam.setParam(new MakePlan());
+        queryParam.getParam().setOrederLineId(orderLineId);
+        queryParam.setLimit(1);
+
+        return makePlanService.findByQueryParam(queryParam);
+    }
+
+    @PostMapping("/deleteById/{id}")
+    public JsonResult<Integer> deleteById(@PathVariable("id") Integer id) throws IOException {
+
+        makePlanService.deleteById(id);
+
+
+        return JsonResult.success();
+    }
 
     @RequestMapping("/findById/{id}")
     public JsonResult<MakePlan> findById(@PathVariable("id") Integer id, HttpServletResponse response) throws IOException {
-         return   JsonResult.success(makePlanService.findById(id))    ;
-    }
+        MakePlan makePlan = makePlanService.findById(id);
+        OrderLine orderLine = orderLineService.findById(makePlan.getOrederLineId());
+        makePlan.setProduct(productService.findById(orderLine.getProductId()));
+        makePlan.setOrderLine(orderLine);
+        SysUserDTO sysUserDTO = sysUserApiService.findById(makePlan.getCreateBy());
+        makePlan.setCreateByName(sysUserDTO == null ? "-" : sysUserDTO.getUsername());
+
+        return JsonResult.success(makePlan);
+
+}
 
     @RequestMapping("/save")
     public JsonResult<Integer> save(@RequestBody MakePlan makePlan) {
@@ -61,10 +141,25 @@ public final class MakePlanController {
     @PostMapping("/query")
     public PageResult<MakePlan> query(@RequestBody MakePlan.QueryParam queryParam) throws IOException {
         PageResult<MakePlan> pageResult = new PageResult<MakePlan>();
-        // Customer.QueryParam qp = BeanMapper.getInstance().map(pageResult, Customer.QueryParam.class);
 
         pageResult.setTotal(makePlanService.countByQueryParam(queryParam));
         pageResult.setData(makePlanService.findByQueryParam(queryParam));
+
+        for (MakePlan makePlan : pageResult.getData()) {
+            OrderLine orderLine = orderLineService.findById(makePlan.getOrederLineId());
+            if (orderLine != null) {
+                makePlan.setCustomer(customerService.findById(orderLine.getCustomerId()));
+
+                OrderMaster orderMaster=orderMasterService.findById(orderLine.getOrderId());
+                makePlan.setOrderMaster(orderMaster);
+                makePlan.setOrderLine(orderLine);
+
+                makePlan.setProduct(productService.findById(orderLine.getProductId()));
+
+            }
+            SysUserDTO sysUserDTO = sysUserApiService.findById(makePlan.getCreateBy());
+            makePlan.setCreateByName(sysUserDTO == null ? "-" : sysUserDTO.getUsername());
+        }
         return pageResult;
     }
 
@@ -88,8 +183,8 @@ public final class MakePlanController {
     List<String> buildTitles(){
         List<String> strings=new ArrayList<>();
 
-         strings.add("日期");
-        strings.add("颜色");
+        strings.add("日期");
+        //strings.add("颜色");
 
         return strings;
     }
@@ -112,7 +207,7 @@ public final class MakePlanController {
             List<Object> r = new ArrayList<>();
 
             r.add(transDate(makePlan.getIssueDate()));
-            r.add(makePlan.getColor());
+            //r.add(makePlan.getColor());
 
             //r.add(transDate(customer.getCreateDate()));
 

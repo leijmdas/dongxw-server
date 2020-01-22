@@ -4,7 +4,9 @@ package com.kunlong.dongxw.controller;
 import app.support.query.PageResult;
 import com.kunlong.dongxw.consts.MoneyTypeConsts;
 import com.kunlong.dongxw.dongxw.domain.Customer;
+import com.kunlong.dongxw.dongxw.domain.Product;
 import com.kunlong.dongxw.dongxw.domain.ProductType;
+import com.kunlong.dongxw.dongxw.service.ProductService;
 import com.kunlong.dongxw.dongxw.service.ProductTypeService;
 import com.kunlong.platform.utils.JsonResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,10 @@ import java.util.List;
 public final class ProductTypeController {
     @Autowired
     ProductTypeService productTypeService;
+
+    @Autowired
+    ProductService productService;
+
     @RequestMapping("/findById/{id}")
     public JsonResult<ProductType> findById(@PathVariable("id") Integer id, HttpServletResponse response) throws IOException {
 
@@ -48,14 +54,27 @@ public final class ProductTypeController {
 
     @RequestMapping("/deleteById/{id}")
     public JsonResult<Integer> deleteById(@PathVariable("id") Integer id, HttpServletResponse response) throws IOException {
-        checkSubType(id);
+        if(id>0) {
+            checkSubType(id);
+        }else{
+            Product.QueryParam queryParam=new Product.QueryParam();
+            queryParam.setParam(new Product());
+            queryParam.getParam().setProductTypeId(id);
+            queryParam.setLimit(1);
+            long count=productService.countByQueryParam(queryParam);
+            if (count > 0) {
+                throw new RuntimeException("小类有产品不能删除!");
+            }
+        }
         productTypeService.deleteById(id);
         return JsonResult.success();
     }
 
     @RequestMapping("/save")
     public JsonResult<Integer> save(@RequestBody ProductType productType) {
-
+        if(productType.getPrdFlag()==null) {
+            productType.setPrdFlag(0);
+        }
         if (productType.getId() == null) {
             productTypeService.save(productType);
         } else {
