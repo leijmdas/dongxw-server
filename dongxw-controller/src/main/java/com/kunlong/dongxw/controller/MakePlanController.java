@@ -8,6 +8,7 @@ import com.kunlong.dongxw.annotation.DateRewritable;
 import com.kunlong.dongxw.consts.ApiConstants;
 import com.kunlong.dongxw.consts.MakePlanConst;
 import com.kunlong.dongxw.consts.MoneyTypeConsts;
+import com.kunlong.dongxw.consts.OrderStatusConsts;
 import com.kunlong.dongxw.dongxw.domain.Customer;
 import com.kunlong.dongxw.dongxw.domain.MakePlan;
 import com.kunlong.dongxw.dongxw.domain.OrderLine;
@@ -59,8 +60,14 @@ public  class MakePlanController extends BaseController {
 
     @Transactional
     @RequestMapping("/makePlanByOrder/{orderId}")
-    public JsonResult<Integer> makePlanByOrder(@PathVariable("orderId") Integer orderId) throws IOException {
-        OrderLine.QueryParam queryParam=new OrderLine.QueryParam();
+    public JsonResult<String> makePlanByOrder(@PathVariable("orderId") Integer orderId) throws IOException {
+        OrderMaster orderMaster = orderMasterService.findById(orderId);
+        if (orderMaster.getStatus().equals(OrderStatusConsts.OrderStatus_DRAFT)) {
+
+            return JsonResult.failure("订单在草稿状态，暂不能生成计划！");
+        }
+
+        OrderLine.QueryParam queryParam = new OrderLine.QueryParam();
         queryParam.setParam(new OrderLine());
         queryParam.getParam().setOrderId(orderId);
         queryParam.setLimit(-1);
@@ -74,7 +81,6 @@ public  class MakePlanController extends BaseController {
                 makePlan.setOrederLineId(orderLine.getId());
                 makePlan.setCreateDate(new Date());
                 makePlan.setCreateBy(this.getCurrentUserId());
-                OrderMaster orderMaster = orderMasterService.findById(orderLine.getOrderId());
 
                 makePlan.setOrderDate(orderMaster != null ? orderMaster.getOrderDate() : null);
                 makePlan.setIssueDate(orderMaster != null ? orderMaster.getFactroyIssueDate() : null);
@@ -85,7 +91,7 @@ public  class MakePlanController extends BaseController {
             }
         }
 
-        return JsonResult.success(0);
+        return JsonResult.success("成功！");
     }
 
     public boolean checkExistsByOrderLine(Integer orderLineId) throws IOException {
@@ -115,12 +121,12 @@ public  class MakePlanController extends BaseController {
     @RequestMapping("/findById/{id}")
     public JsonResult<MakePlan> findById(@PathVariable("id") Integer id, HttpServletResponse response) throws IOException {
         MakePlan makePlan = makePlanService.findById(id);
-        OrderLine orderLine = orderLineService.findById(makePlan.getOrederLineId());
-        makePlan.setProduct(productService.findById(orderLine.getProductId()));
-        makePlan.setOrderLine(orderLine);
-        SysUserDTO sysUserDTO = sysUserApiService.findById(makePlan.getCreateBy());
-        makePlan.setCreateByName(sysUserDTO == null ? "-" : sysUserDTO.getUsername());
-
+//        OrderLine orderLine = orderLineService.findById(makePlan.getOrederLineId());
+//        makePlan.setProduct(productService.findById(orderLine.getProductId()));
+//        makePlan.setOrderLine(orderLine);
+//        SysUserDTO sysUserDTO = sysUserApiService.findById(makePlan.getCreateBy());
+//        makePlan.setCreateByName(sysUserDTO == null ? "-" : sysUserDTO.getUsername());
+        fillMakePlan(makePlan);
         return JsonResult.success(makePlan);
 
 }
@@ -137,29 +143,32 @@ public  class MakePlanController extends BaseController {
         return JsonResult.success(makePlan.getId());
     }
 
+    void fillMakePlan(MakePlan makePlan){
+        OrderLine orderLine = orderLineService.findById(makePlan.getOrederLineId());
+        if (orderLine != null) {
+            makePlan.setCustomer(customerService.findById(orderLine.getCustomerId()));
+            OrderMaster orderMaster=orderMasterService.findById(orderLine.getOrderId());
+            makePlan.setOrderMaster(orderMaster);
+            makePlan.setOrderLine(orderLine);
+            makePlan.setProduct(productService.findById(orderLine.getProductId()));
+        }
+        SysUserDTO sysUserDTO = sysUserApiService.findById(makePlan.getCreateBy());
+        makePlan.setCreateByName(sysUserDTO == null ? "-" : sysUserDTO.getUsername());
+    }
 
+    void fillMakePlans(List<MakePlan> makePlans){
+
+        for (MakePlan makePlan : makePlans) {
+            fillMakePlan(makePlan);
+        }
+    }
     @PostMapping("/query")
     public PageResult<MakePlan> query(@RequestBody MakePlan.QueryParam queryParam) throws IOException {
         PageResult<MakePlan> pageResult = new PageResult<MakePlan>();
 
         pageResult.setTotal(makePlanService.countByQueryParam(queryParam));
         pageResult.setData(makePlanService.findByQueryParam(queryParam));
-
-        for (MakePlan makePlan : pageResult.getData()) {
-            OrderLine orderLine = orderLineService.findById(makePlan.getOrederLineId());
-            if (orderLine != null) {
-                makePlan.setCustomer(customerService.findById(orderLine.getCustomerId()));
-
-                OrderMaster orderMaster=orderMasterService.findById(orderLine.getOrderId());
-                makePlan.setOrderMaster(orderMaster);
-                makePlan.setOrderLine(orderLine);
-
-                makePlan.setProduct(productService.findById(orderLine.getProductId()));
-
-            }
-            SysUserDTO sysUserDTO = sysUserApiService.findById(makePlan.getCreateBy());
-            makePlan.setCreateByName(sysUserDTO == null ? "-" : sysUserDTO.getUsername());
-        }
+        fillMakePlans(pageResult.getData());
         return pageResult;
     }
 
@@ -171,11 +180,13 @@ public  class MakePlanController extends BaseController {
         if(queryParam.getParam() == null) {
             queryParam.setParam(new MakePlan());
         }
-        queryParam.setLimit(-1);
+        queryParam.setLimit(3000);
         queryParam.setStart(0);
 
         WebFileUtil web = new WebFileUtil(req,rsp);
-        List<MakePlan> makePlans = this.makePlanService.findByQueryParam(queryParam);;
+        List<MakePlan> makePlans = this.makePlanService.findByQueryParam(queryParam);
+        fillMakePlans(makePlans);
+
         web.export2EasyExcelObject("生产计划表.xlsx", buildTitles(),buildRecords(makePlans));
 
     }
@@ -183,38 +194,83 @@ public  class MakePlanController extends BaseController {
     List<String> buildTitles(){
         List<String> strings=new ArrayList<>();
 
-        strings.add("日期");
-        //strings.add("颜色");
+        strings.add("发外标志");
+        strings.add("客户名称");
+        strings.add("客户订单号");
+        strings.add("客款号");
+        strings.add("颜色");
+        strings.add("数量");
 
+        strings.add("接单日期");
+        strings.add("要求交期");
+        strings.add("物料到位日期");
+        strings.add("包材到位日期");
+        strings.add("计划上线日期");
+        strings.add("计划完成日期");
+        strings.add("是否完成");
+        strings.add("实际完成日期");
+        strings.add("备注");
         return strings;
     }
-
-    //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    //r.add(sdf.format(payOrder.getPayTime()));
-    String transDatetime(Date d) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        return sdf.format(d);
-    }
-
-    String transDate(Date d) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        return sdf.format(d);
-    }
-
     List<List<Object>> buildRecords(List<MakePlan> makePlans) {
         List<List<Object>> records = new ArrayList<>();
         for (MakePlan makePlan : makePlans) {
             List<Object> r = new ArrayList<>();
+             //strings.add("发外标志");
+            r.add(MakePlanConst.getOutFlag(makePlan.getOutFlag()));
+            // strings.add("客户名称");
+            r.add(makePlan.getCustomer()==null?"-":makePlan.getCustomer().getCustName());
+            //strings.add("客户订单号");
+            r.add(makePlan.getOrderMaster()==null?"-":makePlan.getOrderMaster().getCustomerOrderCode());
+            //strings.add("客款号");
+            r.add(makePlan.getProduct()==null?"-":makePlan.getProduct().getCode());
+            //strings.add("颜色");
+            r.add(makePlan.getProduct()==null?"-":makePlan.getProduct().getCode());
+            //strings.add("数量");
+            r.add(makePlan.getOrderLine()==null?"-":makePlan.getOrderLine().getQty());
 
+            //strings.add("接单日期");
+            r.add(transDate(makePlan.getOrderDate()));
+            //strings.add("要求交期");
             r.add(transDate(makePlan.getIssueDate()));
-            //r.add(makePlan.getColor());
+            //strings.add("物料到位日期");
+            r.add(transDate(makePlan.getRmDate()));
+            //strings.add("包材到位日期");
+            r.add(transDate(makePlan.getPkgDate()));
+            //strings.add("计划上线日期");
+            r.add(transDate(makePlan.getPlanStart()));
+            //strings.add("计划完成日期");
+            r.add(transDate(makePlan.getPlanEnd()));
+            //strings.add("是否完成");
+            r.add(MakePlanConst.getFinishFlag(makePlan.getFinishFlag()));
 
-            //r.add(transDate(customer.getCreateDate()));
+            //strings.add("实际完成日期");
+            r.add(transDate(makePlan.getRealEnd()));
+            //strings.add("备注");
+            r.add(makePlan.getRemark());
 
             records.add(r);
         }
         return records;
     }
+
+    String transDatetime(Date d) {
+        if(d==null){
+            return "";
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return sdf.format(d);
+    }
+
+    String transDate(Date d) {
+        if(d==null){
+            return "";
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        return sdf.format(d);
+    }
+
+
 
 }
 

@@ -1,10 +1,9 @@
 package com.kunlong.dongxw.util;
 
 import com.alibaba.excel.ExcelWriter;
-import com.alibaba.excel.metadata.BaseRowModel;
-import com.alibaba.excel.metadata.Sheet;
-import com.alibaba.excel.metadata.Table;
+import com.alibaba.excel.metadata.*;
 import com.alibaba.excel.support.ExcelTypeEnum;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -140,6 +139,23 @@ public class WebFileUtil {
 
 		// 设置标题
 		Table table = new Table(1);
+		 //定义Excel正文背景颜色
+ 		 TableStyle tableStyle = new TableStyle();
+ 		 tableStyle.setTableContentBackGroundColor(IndexedColors.WHITE);
+
+  		//定义Excel正文字体大小
+		Font fontContent = new Font();
+		fontContent.setFontHeightInPoints((short) 10);
+		fontContent.setBold(false);
+
+ 		tableStyle.setTableContentFont(fontContent);
+		Font font = new Font();
+		font.setFontHeightInPoints((short) 12);
+		font.setBold(false);
+
+		tableStyle.setTableHeadFont(font);
+ 		table.setTableStyle(tableStyle);
+
 		List<List<String>> titles = new ArrayList<List<String>>();
 		for (String name : titleNames) {
 			titles.add(Arrays.asList(name));

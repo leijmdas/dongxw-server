@@ -44,6 +44,9 @@ public class AuthController extends BaseController {
 			 if (!customers.get(0).getLoginPassword().equalsIgnoreCase(password)) {
 				 throw new RuntimeException("Customer login info error!");
 			 }
+			 if (!customers.get(0).getLoginSwitch().equals(0)) {
+				 throw new RuntimeException("Customer login disabled!");
+			 }
 			 return customers.get(0);
 		 }
 
