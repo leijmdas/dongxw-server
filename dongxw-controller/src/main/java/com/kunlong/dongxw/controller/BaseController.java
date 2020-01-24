@@ -11,8 +11,6 @@ public class BaseController {
 	@Reference(lazy = true, version = "${dubbo.service.version}")
 	AuthApiService authApiService;
 
-	@Reference(lazy = true, version = "${dubbo.service.version}")
-	private SysUserApiService sysUserService;
 
 	@Reference(lazy = true, version = "${dubbo.service.version}")
 	SysUserApiService sysUserApiService;

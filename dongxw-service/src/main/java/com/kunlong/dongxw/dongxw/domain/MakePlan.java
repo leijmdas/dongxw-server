@@ -8,7 +8,11 @@ import org.mybatis.hbatis.core.*;
 import java.lang.Integer;
 import java.util.Date;
 import java.lang.String;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.mybatis.hbatis.orm.criteria.support.query.AbstractQueryParam;
+import org.mybatis.hbatis.orm.criteria.support.query.DateRange;
 import org.mybatis.hbatis.orm.criteria.support.query.SortOrders;
 /**
  * MakePlan 生产计划表
@@ -262,11 +266,12 @@ public class MakePlan extends MakePlanBase implements Serializable {
     }
     
     //-- 实体参数(允许新增属性) 
-	public static class QueryParam extends AbstractQueryParam<MakePlan> {
+	public static class QueryParam extends QueryParamBase  {
 		public QueryParam() {
 			this.setSortOrders(new SortOrders<MakePlan>(EntityNode.INSTANCE));
 		}
-	}
+
+    }
 	
 	public static enum ValueField {
 	}

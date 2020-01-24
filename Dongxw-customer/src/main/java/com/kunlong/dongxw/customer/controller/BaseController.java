@@ -1,5 +1,6 @@
 package com.kunlong.dongxw.customer.controller;
 
+import cn.kunlong.center.api.service.SysUserApiService;
 import com.alibaba.fastjson.JSON;
 import com.kunlong.api.service.AuthApiService;
 import com.kunlong.dongxw.customer.consts.SessionKeyEnum;
@@ -18,21 +19,18 @@ public class BaseController {
 	@Reference(lazy = true, version = "${dubbo.service.version}")
 	AuthApiService authApiService;
 
-	//@Autowired
-	//CustomerService customerService;
 
-	Customer getCustomer() {
+	protected Customer getCustomer() {
 		String token = (String) CurrentRequestContext.getContext().getAttribute(RequestContextConst.KEY_SESSIONKEY);
 		Object map = authApiService.getAttribute(token, SessionKeyEnum.WEB_CUSTOMER.getKey());
-		//System.out.println(KunlongUtils.toJSONStringPretty(map));
+
 		return JSON.parseObject(KunlongUtils.toJSONStringPretty(map),Customer.class);
 
 	}
 
-	Integer getCustomerId() {
-
-		Customer customer=getCustomer();
-		return customer==null?-1:customer.getId();
+	protected Integer getCustomerId() {
+		Customer customer = getCustomer();
+		return customer == null ? -1 : customer.getId();
 
 	}
 

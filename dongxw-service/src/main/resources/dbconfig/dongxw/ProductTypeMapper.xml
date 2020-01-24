@@ -8,6 +8,7 @@
 	  	<result column="name" property="name" jdbcType="VARCHAR" />
 	  	<result column="parent_id" property="parentId" jdbcType="INTEGER" />
 	  	<result column="prd_flag" property="prdFlag" jdbcType="INTEGER" />
+	  	<result column="remark" property="remark" jdbcType="VARCHAR" />
     </resultMap>
     <resultMap id="BaseResultMap_ProductType" type="com.kunlong.dongxw.dongxw.domain.ProductType" >
 	    <id column="pt_id" property="id" jdbcType="INTEGER" />	
@@ -16,12 +17,13 @@
 	  	<result column="pt_name" property="name" jdbcType="VARCHAR" />
 	  	<result column="pt_parent_id" property="parentId" jdbcType="INTEGER" />
 	  	<result column="pt_prd_flag" property="prdFlag" jdbcType="INTEGER" />
+	  	<result column="pt_remark" property="remark" jdbcType="VARCHAR" />
     </resultMap>
     <sql id="Base_Column_List" >
-  		id,active,code,name,parent_id,prd_flag
+  		id,active,code,name,parent_id,prd_flag,remark
 	</sql>
   	<sql id="Base_Column_List_ProductType" >
-  		pt.id pt_id,pt.active pt_active,pt.code pt_code,pt.name pt_name,pt.parent_id pt_parent_id,pt.prd_flag pt_prd_flag
+  		pt.id pt_id,pt.active pt_active,pt.code pt_code,pt.name pt_name,pt.parent_id pt_parent_id,pt.prd_flag pt_prd_flag,pt.remark pt_remark
 	</sql>
 	
 	<!-- 系统自定义 -->
@@ -51,6 +53,13 @@
 			<if test="p.prdFlag!=null ">
 		    	and pt.prd_flag=#{p.prdFlag}
 		    </if>
+			<if test="p.remark!=null and p.remark!=''">
+		    	and pt.remark like #{p.remark}
+		    </if>
+			<if test="p.prdFlagNot!=null ">
+				and pt.prd_flag!=#{p.prdFlagNot}
+			</if>
+
 		</if>
 		<!--
 		<bind name="rp" value="queryParam.ruleParam" />

@@ -5,6 +5,7 @@ import app.support.query.PageResult;
 import cn.kunlong.center.api.model.SysUserDTO;
 import com.kunlong.dongxw.annotation.DateRewritable;
 import com.kunlong.dongxw.consts.ApiConstants;
+import com.kunlong.dongxw.consts.ProductTypeConst;
 import com.kunlong.dongxw.dongxw.domain.Customer;
 import com.kunlong.dongxw.dongxw.domain.OrderLine;
 import com.kunlong.dongxw.dongxw.domain.Product;
@@ -121,25 +122,38 @@ public final class ProductController extends BaseController{
     }
 
 
-    @RequestMapping(value="export",method = RequestMethod.POST)
+    @RequestMapping(value = "export", method = RequestMethod.POST)
     @ApiOperation(value = "export", notes = "export", authorizations = {@Authorization(value = ApiConstants.AUTH_API_WEB)})
     public void export(@RequestBody @DateRewritable Product.QueryParam queryParam, HttpServletRequest req, HttpServletResponse rsp) throws FileNotFoundException, IOException {
 
-        if(queryParam.getParam() == null) {
+        if (queryParam.getParam() == null) {
             queryParam.setParam(new Product());
         }
         queryParam.setLimit(-1);
         queryParam.setStart(0);
+        WebFileUtil web = new WebFileUtil(req, rsp);
+        List<Product> products = productService.findByQueryParam(queryParam);
 
-        WebFileUtil web = new WebFileUtil(req,rsp);
-        List<Product> products = productService.findByQueryParam(queryParam);;
-        web.export2EasyExcelObject("产品列表.xlsx", buildTitles(),buildRecords(products));
+        Integer custid = queryParam.getParam().getCustomerId();
+        web.export2EasyExcelObject("产品清单.xlsx", buildTitles(), buildRecords(products));
 
     }
 
+    @RequestMapping(value = "exportRm", method = RequestMethod.POST)
+    @ApiOperation(value = "exportRm", notes = "exportRm", authorizations = {@Authorization(value = ApiConstants.AUTH_API_WEB)})
+    public void exportRm(@RequestBody @DateRewritable Product.QueryParam queryParam, HttpServletRequest req, HttpServletResponse rsp) throws FileNotFoundException, IOException {
 
-    //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    //r.add(sdf.format(payOrder.getPayTime()));
+        if (queryParam.getParam() == null) {
+            queryParam.setParam(new Product());
+        }
+        queryParam.setLimit(-1);
+        queryParam.setStart(0);
+        WebFileUtil web = new WebFileUtil(req, rsp);
+        List<Product> products = productService.findByQueryParam(queryParam);
+        web.export2EasyExcelObject("物料清单.xlsx", rmBuildTitles(), rmBuildRecords(products));
+
+    }
+
     String transDatetime(Date d) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return sdf.format(d);
@@ -153,9 +167,8 @@ public final class ProductController extends BaseController{
     List<String> buildTitles() {
         List<String> strings = new ArrayList<>();
         strings.add("客户名称");
-
-        strings.add("EP款号");
         strings.add("客款码");
+        strings.add("EP款号");
         strings.add("产品大类");
         strings.add("产品小类");
         strings.add("产品描述");
@@ -163,8 +176,6 @@ public final class ProductController extends BaseController{
         strings.add("颜色");
         strings.add("尺寸");
         strings.add("条码");
-
-
         return strings;
     }
 
@@ -174,9 +185,9 @@ public final class ProductController extends BaseController{
             List<Object> r = new ArrayList<>();
             Customer customer = customerService.findById(product.getCustomerId());
             r.add(customer == null ? "-" : customer.getCustName());
+            r.add(product.getCode());
 
             r.add(product.getEpCode());
-            r.add(product.getCode());
 
             ProductType productTypeP = productTypeService.findById(product.getParentId());
             r.add(productTypeP == null ? "-" : productTypeP.getCode());
@@ -193,6 +204,51 @@ public final class ProductController extends BaseController{
 
             //strings.add("条码");
             r.add(product.getBarCode());
+
+            records.add(r);
+        }
+
+
+        return records;
+    }
+    List<String> rmBuildTitles() {
+        List<String> strings = new ArrayList<>();
+        strings.add("存货分类");
+        strings.add("编码");
+        //strings.add("供编码");
+        strings.add("大类");
+        strings.add("小类");
+        strings.add("描述");
+        strings.add("单位");
+        strings.add("颜色");
+        strings.add("尺寸");
+        return strings;
+    }
+
+    List<List<Object>> rmBuildRecords(List<Product> orderMasters) {
+        List<List<Object>> records = new ArrayList<>();
+        for (Product product : orderMasters) {
+            List<Object> r = new ArrayList<>();
+            // Customer customer = customerService.findById(product.getCustomerId());
+            //r.add(customer == null ? "-" : customer.getCustName());
+            //r.add(product.getCode());
+            ProductType productTypeP = productTypeService.findById(product.getParentId());
+            r.add(productTypeP == null ? "-" : ProductTypeConst.getStoreType(productTypeP.getPrdFlag()));
+
+            r.add(product.getEpCode());
+
+            r.add(productTypeP == null ? "-" : productTypeP.getName());
+
+            ProductType productType = productTypeService.findById(product.getProductTypeId());
+            r.add(productType == null ? "-" : productType.getName());
+            r.add(product.getRemark());
+            //strings.add("单位");
+            r.add(product.getUnit());
+            //strings.add("颜色");
+            r.add(product.getColor());
+            //strings.add("尺寸");
+            r.add(product.getSize());
+
 
             records.add(r);
         }

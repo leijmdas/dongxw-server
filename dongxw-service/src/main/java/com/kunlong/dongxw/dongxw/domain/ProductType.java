@@ -13,10 +13,10 @@ import org.mybatis.hbatis.orm.criteria.support.query.SortOrders;
 /**
  * ProductType 
  * @author generator
- * @date 2020年01月22日
+ * @date 2020年01月24日
  */
 @Table(ProductType.EntityNode.class)
-public class ProductType implements Serializable {
+public class ProductType extends ProductTypeBase implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	/**
@@ -58,6 +58,12 @@ public class ProductType implements Serializable {
 	@Column(comment = "0-成品100-半成品-200-原料")	
 	@NotNull
 	private Integer prdFlag;
+	/**
+	  * 描述
+	  * nullable:true,length:255
+	  */
+	@Column(comment = "描述")	
+	private String remark;
     public Integer getId(){
     	return this.id;
     }
@@ -94,6 +100,12 @@ public class ProductType implements Serializable {
     public void setPrdFlag(Integer prdFlag){
     	this.prdFlag = prdFlag;
     }
+    public String getRemark(){
+    	return this.remark;
+    }
+    public void setRemark(String remark){
+    	this.remark = remark;
+    }
 
     public static class EntityNode extends AbstractEntityNode<ProductType> {
         public static final EntityNode INSTANCE = new EntityNode("pt");;
@@ -109,6 +121,8 @@ public class ProductType implements Serializable {
         public FieldNode<ProductType, Integer> parentId =  createFieldNode("parentId","parent_id",Integer.class,JdbcType.INTEGER);
     	/** 0-成品100-半成品-200-原料 */
         public FieldNode<ProductType, Integer> prdFlag =  createFieldNode("prdFlag","prd_flag",Integer.class,JdbcType.INTEGER);
+    	/** 描述 */
+        public FieldNode<ProductType, String> remark =  createFieldNode("remark","remark",String.class,JdbcType.VARCHAR);
 	
         /**
          * @param alias 别名

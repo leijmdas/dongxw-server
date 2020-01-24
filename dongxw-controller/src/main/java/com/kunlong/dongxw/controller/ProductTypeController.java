@@ -41,39 +41,55 @@ public final class ProductTypeController {
         return JsonResult.success(productTypeService.findById(id));
     }
 
-    void checkSubType(int parentId) throws IOException {
+    long checkSubType(int parentId) throws IOException {
         ProductType.QueryParam queryParam = new ProductType.QueryParam();
         queryParam.setParam(new ProductType());
         queryParam.getParam().setParentId(parentId);
         long num = productTypeService.countByQueryParam(queryParam);
-        if (num > 0) {
-            throw new RuntimeException("大类有小类不能删除!");
-        }
-
+        return num;
     }
 
+    long checkPrdUseType(int id) throws IOException {
+        Product.QueryParam queryParam = new Product.QueryParam();
+        queryParam.setParam(new Product());
+        queryParam.getParam().setProductTypeId(id);
+        queryParam.setLimit(1);
+        return productService.countByQueryParam(queryParam);
+    }
+    long checkPrdUseParentType(int id) throws IOException {
+        Product.QueryParam queryParam = new Product.QueryParam();
+        queryParam.setParam(new Product());
+        queryParam.getParam().setParentId(id);
+        queryParam.setLimit(1);
+        return productService.countByQueryParam(queryParam);
+    }
     @RequestMapping("/deleteById/{id}")
-    public JsonResult<Integer> deleteById(@PathVariable("id") Integer id, HttpServletResponse response) throws IOException {
-        if(id>0) {
-            checkSubType(id);
-        }else{
-            Product.QueryParam queryParam=new Product.QueryParam();
-            queryParam.setParam(new Product());
-            queryParam.getParam().setProductTypeId(id);
-            queryParam.setLimit(1);
-            long count=productService.countByQueryParam(queryParam);
-            if (count > 0) {
-                throw new RuntimeException("小类有产品不能删除!");
-            }
+    public JsonResult<String> deleteById(@PathVariable("id") Integer id, HttpServletResponse response) throws IOException {
+        if (id != null && id > 0 && checkSubType(id) > 0) {
+            return JsonResult.failure("大类有小类不能删除!");
+        }
+        if (checkPrdUseType(id) > 0) {
+            return JsonResult.failure("小类有产品不能删除!");
+        }
+
+        if (checkPrdUseParentType(id) > 0) {
+            return JsonResult.failure("大类有产品不能删除!");
         }
         productTypeService.deleteById(id);
-        return JsonResult.success();
+        return JsonResult.success("ok");
     }
 
     @RequestMapping("/save")
     public JsonResult<Integer> save(@RequestBody ProductType productType) {
-        if(productType.getPrdFlag()==null) {
+        if (productType.getPrdFlag() == null) {
             productType.setPrdFlag(0);
+        }
+        //如果是子类型，根据父类添加存货类型
+        if(productType.getParentId()>0){
+            ProductType pp = productTypeService.findById(productType.getParentId());
+            if(pp!=null){
+                productType.setPrdFlag(pp.getPrdFlag());
+            }
         }
         if (productType.getId() == null) {
             productTypeService.save(productType);

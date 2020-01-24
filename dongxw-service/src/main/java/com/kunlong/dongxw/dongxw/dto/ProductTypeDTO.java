@@ -9,7 +9,7 @@ import io.swagger.annotations.ApiModelProperty;
 /**
  * ProductType
  * @author generator
- * @date 2020年01月22日
+ * @date 2020年01月24日
  */
 @ApiModel(value="ProductTypeDTO",description="")
 public class ProductTypeDTO implements Serializable {
@@ -51,6 +51,12 @@ public class ProductTypeDTO implements Serializable {
 	  */
 	@ApiModelProperty(value = "0-成品100-半成品-200-原料",required = true,notes = "0-成品100-半成品-200-原料 ")
 	private Integer prdFlag;
+	/**
+	  * 描述
+	  * nullable:true,length:255
+	  */
+	@ApiModelProperty(value = "描述",required = false,notes = "描述 ")
+	private String remark;
     public Integer getId(){
     	return this.id;
     }
@@ -86,6 +92,12 @@ public class ProductTypeDTO implements Serializable {
     }
     public void setPrdFlag(Integer prdFlag){
     	this.prdFlag = prdFlag;
+    }
+    public String getRemark(){
+    	return this.remark;
+    }
+    public void setRemark(String remark){
+    	this.remark = remark;
     }
     // ==== 自定义属性 ====
 }

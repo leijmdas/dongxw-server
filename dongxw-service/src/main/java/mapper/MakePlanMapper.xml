@@ -101,6 +101,15 @@
 			<if test="p.createBy!=null ">
 		    	and mp.create_by=#{p.createBy}
 		    </if>
+
+
+			<if test="p.dtoOrderDate!=null and p.dtoOrderDate.start!=null ">
+				and mp.order_date >= #{p.dtoOrderDate.start,jdbcType=TIMESTAMP}
+			</if>
+			<if test="p.dtoOrderDate!=null and p.dtoOrderDate.end!=null ">
+				and mp.order_date &lt;= #{p.dtoOrderDate.end,jdbcType=TIMESTAMP}
+			</if>
+
 		</if>
 		<!--
 		<bind name="rp" value="queryParam.ruleParam" />

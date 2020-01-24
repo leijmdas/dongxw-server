@@ -1,13 +1,18 @@
 package com.kunlong.dongxw.customer.controller;
 
+import app.support.session.ISessionHolder;
+import cn.kunlong.center.api.model.SysUserDTO;
 import com.alibaba.fastjson.JSON;
 import com.kunlong.api.service.AuthApiService;
 import com.kunlong.dongxw.customer.consts.ApiConstants;
 import com.kunlong.dongxw.customer.consts.SessionKeyEnum;
+import com.kunlong.dongxw.customer.context.CurrentRequestContext;
 import com.kunlong.dongxw.dongxw.domain.Customer;
 import com.kunlong.dongxw.dongxw.service.CustomerService;
+import com.kunlong.platform.consts.RequestContextConst;
 import com.kunlong.platform.model.KunlongModel;
 import com.kunlong.platform.support.service.AuthService;
+import com.kunlong.platform.utils.JsonResult;
 import com.kunlong.platform.utils.KunlongUtils;
 import org.apache.dubbo.config.annotation.Reference;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +49,7 @@ public class AuthController extends BaseController {
 			 if (!customers.get(0).getLoginPassword().equalsIgnoreCase(password)) {
 				 throw new RuntimeException("Customer login info error!");
 			 }
-			 if (!customers.get(0).getLoginSwitch().equals(0)) {
+			 if ( customers.get(0).getLoginSwitch().equals(0)) {
 				 throw new RuntimeException("Customer login disabled!");
 			 }
 			 return customers.get(0);
@@ -58,11 +63,17 @@ public class AuthController extends BaseController {
 	 */
 	@RequestMapping(value="login",method = RequestMethod.POST)
 	public @ResponseBody
-	AuthService.AuthToken login(String username, String password, String verifyCode) {
+	JsonResult<AuthService.AuthToken> login(String username, String password, String verifyCode) {
 
-		Customer customer = checkPasswd(username, password);
-		return authApiService.createToken("web:customer:" + customer.getId(),
-				SessionKeyEnum.WEB_CUSTOMER.getKey(), customer, TOKEN_TIMEOUT);
+		try {
+			Customer customer = checkPasswd(username, password);
+			AuthService.AuthToken authToken = authApiService.createToken("web:customer:" + customer.getId(),
+					SessionKeyEnum.WEB_CUSTOMER.getKey(), customer, TOKEN_TIMEOUT);
+
+			return JsonResult.success(authToken);
+		} catch (RuntimeException e) {
+			return JsonResult.failure(null, e.getMessage());
+		}
 	}
 
 
@@ -70,7 +81,8 @@ public class AuthController extends BaseController {
 	public @ResponseBody
 	Map<String, Object> authorization(String token, HttpServletResponse response) {
 		Object map = authApiService.getAttribute(token, SessionKeyEnum.WEB_CUSTOMER.getKey());
-		System.out.println(KunlongUtils.toJSONStringPretty(map));
+
+
 		MiniCustomer customer = JSON.parseObject(KunlongUtils.toJSONStringPretty(map), MiniCustomer.class);
 		if (customer == null) {
 			response.setStatus(401);
@@ -83,13 +95,10 @@ public class AuthController extends BaseController {
 	}
 
 	public static class MiniCustomer extends KunlongModel {
+
 		private Integer id;
-
 		private String custNo;
-
-
 		private String custName;
-
 		private String headerImg;
 
 		public Integer getId() {
