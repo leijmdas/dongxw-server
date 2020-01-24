@@ -61,7 +61,10 @@ public final class ProductController extends BaseController{
 
     @RequestMapping("/save")
     public JsonResult<Integer> save(@RequestBody Product product) {
-
+        ProductType productType  = productTypeService.findById(product.getProductTypeId()) ;
+        if(productType!=null){
+            product.setPrdFlag(productType.getPrdFlag().shortValue());
+        }
         if (product.getId() == null) {
             product.setCreateBy(getCurrentUserId());
             product.setCreateDate(new Date());
@@ -87,15 +90,7 @@ public final class ProductController extends BaseController{
             throw new RuntimeException("产品已经有订单使用不能删除!");
         }
         //有BOM使用不能使用
-//        Product product=productService.findById(id);
-//        if(product!=null){
-//            if(product.getStatus().compareTo(OrderConsts.ORDER_STATUS_DRAFT)>0){
-//                throw new RuntimeException("非草稿不能删除！");
-//            }else{
-//                productService.deleteById(id) ;
-//            }
-//
-//        }
+
 
         return JsonResult.success();
     }
@@ -103,6 +98,7 @@ public final class ProductController extends BaseController{
     @PostMapping("/query")
     public PageResult<Product> query(@RequestBody Product.QueryParam queryParam) throws IOException {
         PageResult<Product> pageResult = new PageResult<>();
+        queryParam.setSortBys("id|desc");
 
         pageResult.setTotal(productService.countByQueryParam(queryParam));
         pageResult.setData(productService.findByQueryParam(queryParam));
@@ -131,6 +127,8 @@ public final class ProductController extends BaseController{
         }
         queryParam.setLimit(-1);
         queryParam.setStart(0);
+        queryParam.setSortBys("customerId|asc,code|asc");
+
         WebFileUtil web = new WebFileUtil(req, rsp);
         List<Product> products = productService.findByQueryParam(queryParam);
 
@@ -148,6 +146,8 @@ public final class ProductController extends BaseController{
         }
         queryParam.setLimit(-1);
         queryParam.setStart(0);
+        queryParam.setSortBys("parentId|asc,id|asc");
+
         WebFileUtil web = new WebFileUtil(req, rsp);
         List<Product> products = productService.findByQueryParam(queryParam);
         web.export2EasyExcelObject("物料清单.xlsx", rmBuildTitles(), rmBuildRecords(products));
@@ -167,7 +167,7 @@ public final class ProductController extends BaseController{
     List<String> buildTitles() {
         List<String> strings = new ArrayList<>();
         strings.add("客户名称");
-        strings.add("客款码");
+        strings.add("客款号");
         strings.add("EP款号");
         strings.add("产品大类");
         strings.add("产品小类");
@@ -214,14 +214,16 @@ public final class ProductController extends BaseController{
     List<String> rmBuildTitles() {
         List<String> strings = new ArrayList<>();
         strings.add("存货分类");
-        strings.add("编码");
-        //strings.add("供编码");
+        strings.add("物料代号");
+        strings.add("物料名称");
         strings.add("大类");
         strings.add("小类");
-        strings.add("描述");
-        strings.add("单位");
+        strings.add("规格型号");
         strings.add("颜色");
-        strings.add("尺寸");
+        strings.add("单位");
+        strings.add("备注");
+
+//        strings.add("尺寸");
         return strings;
     }
 
@@ -235,19 +237,21 @@ public final class ProductController extends BaseController{
             ProductType productTypeP = productTypeService.findById(product.getParentId());
             r.add(productTypeP == null ? "-" : ProductTypeConst.getStoreType(productTypeP.getPrdFlag()));
 
-            r.add(product.getEpCode());
+            r.add(product.getCode());
+            r.add(product.getName());
 
             r.add(productTypeP == null ? "-" : productTypeP.getName());
 
             ProductType productType = productTypeService.findById(product.getProductTypeId());
             r.add(productType == null ? "-" : productType.getName());
             r.add(product.getRemark());
-            //strings.add("单位");
-            r.add(product.getUnit());
             //strings.add("颜色");
             r.add(product.getColor());
+            //strings.add("单位");
+            r.add(product.getUnit());
+            r.add(product.getRemark());
             //strings.add("尺寸");
-            r.add(product.getSize());
+            //r.add(product.getSize());
 
 
             records.add(r);

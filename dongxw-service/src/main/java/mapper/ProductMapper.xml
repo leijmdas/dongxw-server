@@ -32,6 +32,8 @@
 	  	<result column="pkg_side" property="pkgSide" jdbcType="VARCHAR" />
 	  	<result column="pkg_remark" property="pkgRemark" jdbcType="VARCHAR" />
 	  	<result column="img_remark" property="imgRemark" jdbcType="VARCHAR" />
+	  	<result column="name" property="name" jdbcType="VARCHAR" />
+	  	<result column="prd_flag" property="prdFlag" jdbcType="SMALLINT" />
     </resultMap>
     <resultMap id="BaseResultMap_Product" type="com.kunlong.dongxw.dongxw.domain.Product" >
 	    <id column="p_id" property="id" jdbcType="INTEGER" />	
@@ -64,12 +66,14 @@
 	  	<result column="p_pkg_side" property="pkgSide" jdbcType="VARCHAR" />
 	  	<result column="p_pkg_remark" property="pkgRemark" jdbcType="VARCHAR" />
 	  	<result column="p_img_remark" property="imgRemark" jdbcType="VARCHAR" />
+	  	<result column="p_name" property="name" jdbcType="VARCHAR" />
+	  	<result column="p_prd_flag" property="prdFlag" jdbcType="SMALLINT" />
     </resultMap>
     <sql id="Base_Column_List" >
-  		id,ep_code,code,remark,parent_id,product_type_id,pic_url,bar_code,color,unit,size,upc_a,status,memo,create_date,create_by,customer_id,img_urls,ib_qty,ib_gw,ib_nw,ib_size,ob_qty,ob_gw,ob_nw,ob_size,pkg_front,pkg_side,pkg_remark,img_remark
+  		id,ep_code,code,remark,parent_id,product_type_id,pic_url,bar_code,color,unit,size,upc_a,status,memo,create_date,create_by,customer_id,img_urls,ib_qty,ib_gw,ib_nw,ib_size,ob_qty,ob_gw,ob_nw,ob_size,pkg_front,pkg_side,pkg_remark,img_remark,name,prd_flag
 	</sql>
   	<sql id="Base_Column_List_Product" >
-  		p.id p_id,p.ep_code p_ep_code,p.code p_code,p.remark p_remark,p.parent_id p_parent_id,p.product_type_id p_product_type_id,p.pic_url p_pic_url,p.bar_code p_bar_code,p.color p_color,p.unit p_unit,p.size p_size,p.upc_a p_upc_a,p.status p_status,p.memo p_memo,p.create_date p_create_date,p.create_by p_create_by,p.customer_id p_customer_id,p.img_urls p_img_urls,p.ib_qty p_ib_qty,p.ib_gw p_ib_gw,p.ib_nw p_ib_nw,p.ib_size p_ib_size,p.ob_qty p_ob_qty,p.ob_gw p_ob_gw,p.ob_nw p_ob_nw,p.ob_size p_ob_size,p.pkg_front p_pkg_front,p.pkg_side p_pkg_side,p.pkg_remark p_pkg_remark,p.img_remark p_img_remark
+  		p.id p_id,p.ep_code p_ep_code,p.code p_code,p.remark p_remark,p.parent_id p_parent_id,p.product_type_id p_product_type_id,p.pic_url p_pic_url,p.bar_code p_bar_code,p.color p_color,p.unit p_unit,p.size p_size,p.upc_a p_upc_a,p.status p_status,p.memo p_memo,p.create_date p_create_date,p.create_by p_create_by,p.customer_id p_customer_id,p.img_urls p_img_urls,p.ib_qty p_ib_qty,p.ib_gw p_ib_gw,p.ib_nw p_ib_nw,p.ib_size p_ib_size,p.ob_qty p_ob_qty,p.ob_gw p_ob_gw,p.ob_nw p_ob_nw,p.ob_size p_ob_size,p.pkg_front p_pkg_front,p.pkg_side p_pkg_side,p.pkg_remark p_pkg_remark,p.img_remark p_img_remark,p.name p_name,p.prd_flag p_prd_flag
 	</sql>
 	
 	<!-- 系统自定义 -->
@@ -132,9 +136,6 @@
 			<if test="p.customerId!=null ">
 		    	and p.customer_id=#{p.customerId}
 		    </if>
-			<if test="p.customerId==null ">
-				and p.customer_id>0
-			</if>
 			<if test="p.imgUrls!=null and p.imgUrls!=''">
 		    	and p.img_urls like #{p.imgUrls}
 		    </if>
@@ -174,6 +175,12 @@
 			<if test="p.imgRemark!=null and p.imgRemark!=''">
 		    	and p.img_remark like #{p.imgRemark}
 		    </if>
+			<if test="p.name!=null and p.name!=''">
+		    	and p.name like #{p.name}
+		    </if>
+			<if test="p.prdFlag!=null ">
+		    	and p.prd_flag=#{p.prdFlag}
+		    </if>
 		</if>
 		<!--
 		<bind name="rp" value="queryParam.ruleParam" />
@@ -185,13 +192,12 @@
 		<include refid="Base_Column_List_Product"></include>
 		from product p where 1=1
 		<include refid="Condition_FindByQueryParam"></include>
-		<!--<if test="queryParam.sortOrders!=null and queryParam.sortOrders.size() gt 0">-->
-			<!--order by -->
-			<!--<foreach collection="queryParam.sortOrders" item="item" separator=",">-->
-				<!--${item.sortField.sqlColumn} ${item.sortType}-->
-			<!--</foreach>-->
-		<!--</if>-->
-		order by id desc
+		<if test="queryParam.sortOrders!=null and queryParam.sortOrders.size() gt 0">
+			order by 
+			<foreach collection="queryParam.sortOrders" item="item" separator=",">
+				${item.sortField.sqlColumn} ${item.sortType}
+			</foreach>
+		</if>
 		<if test="queryParam.limit gt 0">
 	  		limit ${queryParam.start},${queryParam.limit}
 	  	</if>

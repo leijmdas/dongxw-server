@@ -2,16 +2,22 @@ package com.kunlong.dongxw.controller;
 
 
 import app.support.query.PageResult;
+import com.kunlong.dongxw.annotation.DateRewritable;
+import com.kunlong.dongxw.consts.ApiConstants;
 import com.kunlong.dongxw.consts.MoneyTypeConsts;
 import com.kunlong.dongxw.dongxw.domain.Customer;
 import com.kunlong.dongxw.dongxw.domain.Product;
 import com.kunlong.dongxw.dongxw.domain.ProductType;
 import com.kunlong.dongxw.dongxw.service.ProductService;
 import com.kunlong.dongxw.dongxw.service.ProductTypeService;
+import com.kunlong.dongxw.util.WebFileUtil;
 import com.kunlong.platform.utils.JsonResult;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.Authorization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -105,51 +111,67 @@ public final class ProductTypeController {
     @RequestMapping("/query")
     public PageResult<ProductType> query(@RequestBody ProductType.QueryParam queryParam) throws IOException {
         PageResult<ProductType> pageResult = new PageResult<ProductType>();
-        // Customer.QueryParam qp = BeanMapper.getInstance().map(pageResult, Customer.QueryParam.class);
         if (queryParam.getSortOrders() == null) {
             queryParam.setSortBys("id|desc");
         }
         pageResult.setTotal(productTypeService.countByQueryParam(queryParam));
         pageResult.setData(productTypeService.findByQueryParam(queryParam));
+        for(ProductType productType:pageResult.getData()){
+            if(productType.getParentId()!=null&&productType.getParentId()>0) {
+                productType.setpProductType(productTypeService.findById(productType.getParentId()));
+            }
+        }
         return pageResult;
     }
 
 
-//    @RequestMapping(value="export",method = RequestMethod.POST)
-//    @ApiOperation(value = "export", notes = "export", authorizations = {@Authorization(value = consts.AUTH_API_WEB)})
-//    public void exportCustomer(@RequestBody @DateRewritable Customer.QueryParam queryParam, HttpServletRequest req, HttpServletResponse rsp) throws FileNotFoundException, IOException {
-//
-//        if(queryParam.getParam() == null) {
-//            queryParam.setParam(new Customer());
-//        }
-//        queryParam.setLimit(-1);
-//        queryParam.setStart(0);
-//
-//        WebFileUtil web = new WebFileUtil(req,rsp);
-//        List<Customer> customers = this.customerService.findByQueryParam(queryParam);;
-//        //web.export2EasyExcel2File("客户名单.xlsx", buildTitles(),buildRecords(customers));
-//        web.export2EasyExcelObject("客户名单.xlsx", buildTitles(),buildRecords(customers));
-//        //rsp.getOutputStream().write("123".getBytes());
-//        //rsp.getOutputStream().flush();
-//    }
+    @RequestMapping(value="export",method = RequestMethod.POST)
+    @ApiOperation(value = "export", notes = "export", authorizations = {@Authorization(value = ApiConstants.AUTH_API_WEB)})
+    public void export(@RequestBody @DateRewritable ProductType.QueryParam queryParam, HttpServletRequest req, HttpServletResponse rsp) throws FileNotFoundException, IOException {
+
+        if(queryParam.getParam() == null) {
+            queryParam.setParam(new ProductType());
+        }
+        queryParam.setLimit(-1);
+        queryParam.setStart(0);
+        queryParam.setSortBys("parentId|asc,id|asc");
+
+        WebFileUtil web = new WebFileUtil(req,rsp);
+        List<ProductType> productTypes = productTypeService.findByQueryParam(queryParam);;
+        web.export2EasyExcelObject("产品类型.xlsx", buildTitles(),buildRecords(productTypes));
+
+    }
 
     List<String> buildTitles(){
         List<String> strings=new ArrayList<>();
-        strings.add("客户编号");
-        strings.add("客户名称");
-        strings.add("客户详细名称");
-        strings.add("客户国家");
-        strings.add("客户地址");
-        strings.add("结算币种");
-        strings.add("联系人");
-        strings.add("联系人电话");
-        strings.add("建档日期");
+        strings.add("类型级别");
+        strings.add("父类");
+
+        strings.add("类型编码");
+        strings.add("类型名称");
+        strings.add("描述");
 
         return strings;
     }
 
-    //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    //r.add(sdf.format(payOrder.getPayTime()));
+    List<List<Object>> buildRecords(List<ProductType> productTypes) {
+        List<List<Object>> records = new ArrayList<>();
+        for (ProductType productType : productTypes) {
+            List<Object> r = new ArrayList<>();
+
+            r.add(productType.getParentId()==0?"1":"2");
+            ProductType p=productTypeService.findById(productType.getParentId());
+            r.add(p==null?productType.getParentId():p.getCode());
+
+            r.add(productType.getCode());
+            r.add(productType.getName());
+            r.add(productType.getRemark());
+
+            records.add(r);
+        }
+        return records;
+    }
+
     String transDatetime(Date d) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return sdf.format(d);
@@ -160,26 +182,7 @@ public final class ProductTypeController {
         return sdf.format(d);
     }
 
-    List<List<Object>> buildRecords(List<Customer> customers) {
-        List<List<Object>> records = new ArrayList<>();
-        for (Customer customer : customers) {
-            List<Object> r = new ArrayList<>();
 
-            r.add(customer.getCustNo());
-            r.add(customer.getCustName());
-            r.add(customer.getCustSname());
-            r.add(customer.getCountry());
-            r.add(customer.getAddr());
-            r.add(MoneyTypeConsts.getMoneyType(customer.getMoneyType()));
-            r.add(customer.getContact());
-
-            r.add(customer.getTel());
-            r.add(transDate(customer.getCreateDate()));
-
-            records.add(r);
-        }
-        return records;
-    }
 
 }
 

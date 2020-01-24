@@ -9,12 +9,13 @@ import java.lang.Integer;
 import java.lang.String;
 import java.util.Date;
 import java.math.BigDecimal;
+import java.lang.Short;
 import org.mybatis.hbatis.orm.criteria.support.query.AbstractQueryParam;
 import org.mybatis.hbatis.orm.criteria.support.query.SortOrders;
 /**
  * Product 产品
  * @author generator
- * @date 2020年01月07日
+ * @date 2020年01月24日
  */
 @Table(Product.EntityNode.class)
 public class Product extends ProductBase implements Serializable {
@@ -41,10 +42,10 @@ public class Product extends ProductBase implements Serializable {
 	@NotNull
 	private String code;
 	/**
-	  * 描述 
+	  * 描述
 	  * nullable:false,length:512
 	  */
-	@Column(comment = "描述 ")	
+	@Column(comment = "描述")	
 	@NotNull
 	private String remark;
 	/**
@@ -221,6 +222,19 @@ public class Product extends ProductBase implements Serializable {
 	  */
 	@Column(comment = "")	
 	private String imgRemark;
+	/**
+	  * 产品类型名称
+	  * nullable:true,length:255
+	  */
+	@Column(comment = "产品类型名称")	
+	private String name;
+	/**
+	  * 0-成品100-半成品-200-原料
+	  * nullable:false,length:255
+	  */
+	@Column(comment = "0-成品100-半成品-200-原料")	
+	@NotNull
+	private Short prdFlag;
     public Integer getId(){
     	return this.id;
     }
@@ -401,6 +415,18 @@ public class Product extends ProductBase implements Serializable {
     public void setImgRemark(String imgRemark){
     	this.imgRemark = imgRemark;
     }
+    public String getName(){
+    	return this.name;
+    }
+    public void setName(String name){
+    	this.name = name;
+    }
+    public Short getPrdFlag(){
+    	return this.prdFlag;
+    }
+    public void setPrdFlag(Short prdFlag){
+    	this.prdFlag = prdFlag;
+    }
 
     public static class EntityNode extends AbstractEntityNode<Product> {
         public static final EntityNode INSTANCE = new EntityNode("p");;
@@ -410,7 +436,7 @@ public class Product extends ProductBase implements Serializable {
         public FieldNode<Product, String> epCode =  createFieldNode("epCode","ep_code",String.class,JdbcType.VARCHAR);
     	/** 编码 */
         public FieldNode<Product, String> code =  createFieldNode("code","code",String.class,JdbcType.VARCHAR);
-    	/** 描述  */
+    	/** 描述 */
         public FieldNode<Product, String> remark =  createFieldNode("remark","remark",String.class,JdbcType.VARCHAR);
     	/** 父类 */
         public FieldNode<Product, Integer> parentId =  createFieldNode("parentId","parent_id",Integer.class,JdbcType.INTEGER);
@@ -464,6 +490,10 @@ public class Product extends ProductBase implements Serializable {
         public FieldNode<Product, String> pkgRemark =  createFieldNode("pkgRemark","pkg_remark",String.class,JdbcType.VARCHAR);
     	/**  */
         public FieldNode<Product, String> imgRemark =  createFieldNode("imgRemark","img_remark",String.class,JdbcType.VARCHAR);
+    	/** 产品类型名称 */
+        public FieldNode<Product, String> name =  createFieldNode("name","name",String.class,JdbcType.VARCHAR);
+    	/** 0-成品100-半成品-200-原料 */
+        public FieldNode<Product, Short> prdFlag =  createFieldNode("prdFlag","prd_flag",Short.class,JdbcType.SMALLINT);
 	
         /**
          * @param alias 别名

@@ -166,6 +166,7 @@ public  class MakePlanController extends BaseController {
     public PageResult<MakePlan> query(@RequestBody MakePlan.QueryParam queryParam) throws IOException {
         PageResult<MakePlan> pageResult = new PageResult<MakePlan>();
 
+        queryParam.setSortBys("id|desc");
         pageResult.setTotal(makePlanService.countByQueryParam(queryParam));
         pageResult.setData(makePlanService.findByQueryParam(queryParam));
         fillMakePlans(pageResult.getData());

@@ -5,12 +5,13 @@ import java.lang.Integer;
 import java.lang.String;
 import java.util.Date;
 import java.math.BigDecimal;
+import java.lang.Short;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 /**
  * Product
  * @author generator
- * @date 2020年01月07日
+ * @date 2020年01月24日
  */
 @ApiModel(value="ProductDTO",description="产品")
 public class ProductDTO implements Serializable {
@@ -35,10 +36,10 @@ public class ProductDTO implements Serializable {
 	@ApiModelProperty(value = "编码",required = true,notes = "编码 ")
 	private String code;
 	/**
-	  * 描述 
+	  * 描述
 	  * nullable:false,length:512
 	  */
-	@ApiModelProperty(value = "描述 ",required = true,notes = "描述  ")
+	@ApiModelProperty(value = "描述",required = true,notes = "描述 ")
 	private String remark;
 	/**
 	  * 父类
@@ -196,6 +197,18 @@ public class ProductDTO implements Serializable {
 	  */
 	@ApiModelProperty(value = "",required = false,notes = " ")
 	private String imgRemark;
+	/**
+	  * 产品类型名称
+	  * nullable:true,length:255
+	  */
+	@ApiModelProperty(value = "产品类型名称",required = false,notes = "产品类型名称 ")
+	private String name;
+	/**
+	  * 0-成品100-半成品-200-原料
+	  * nullable:false,length:255
+	  */
+	@ApiModelProperty(value = "0-成品100-半成品-200-原料",required = true,notes = "0-成品100-半成品-200-原料 ")
+	private Short prdFlag;
     public Integer getId(){
     	return this.id;
     }
@@ -375,6 +388,18 @@ public class ProductDTO implements Serializable {
     }
     public void setImgRemark(String imgRemark){
     	this.imgRemark = imgRemark;
+    }
+    public String getName(){
+    	return this.name;
+    }
+    public void setName(String name){
+    	this.name = name;
+    }
+    public Short getPrdFlag(){
+    	return this.prdFlag;
+    }
+    public void setPrdFlag(Short prdFlag){
+    	this.prdFlag = prdFlag;
     }
     // ==== 自定义属性 ====
 }
