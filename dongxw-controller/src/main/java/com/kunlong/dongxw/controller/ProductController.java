@@ -3,13 +3,11 @@ package com.kunlong.dongxw.controller;
 
 import app.support.query.PageResult;
 import cn.kunlong.center.api.model.SysUserDTO;
+import com.kunlong.api.dto.ExportResultDTO;
 import com.kunlong.dongxw.annotation.DateRewritable;
 import com.kunlong.dongxw.consts.ApiConstants;
 import com.kunlong.dongxw.consts.ProductTypeConst;
-import com.kunlong.dongxw.dongxw.domain.Customer;
-import com.kunlong.dongxw.dongxw.domain.OrderLine;
-import com.kunlong.dongxw.dongxw.domain.Product;
-import com.kunlong.dongxw.dongxw.domain.ProductType;
+import com.kunlong.dongxw.dongxw.domain.*;
 import com.kunlong.dongxw.dongxw.service.CustomerService;
 import com.kunlong.dongxw.dongxw.service.OrderLineService;
 import com.kunlong.dongxw.dongxw.service.ProductService;
@@ -23,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -53,9 +52,15 @@ public final class ProductController extends BaseController{
     @RequestMapping("/findById/{id}")
     public JsonResult<Product> findById(@PathVariable("id") Integer id, HttpServletResponse response) throws IOException {
         JsonResult<Product> result = JsonResult.success(productService.findById(id));
-        SysUserDTO sysUserDTO = sysUserApiService.findById(result.getData().getCreateBy());
+        Product product=result.getData();
+        SysUserDTO sysUserDTO = sysUserApiService.findById(product.getCreateBy());
 
-        result.getData().setCreateByName(sysUserDTO != null ? sysUserDTO.getUsername() : "-");
+        product.setProductSubType(productTypeService.findById(product.getProductTypeId()));
+        product.setProductType(productTypeService.findById(product.getParentId()));
+        if(product.getCustomerId()!=null) {
+            product.setCustomer(customerService.findById(product.getCustomerId()));
+        }
+        product.setCreateByName(sysUserDTO != null ? sysUserDTO.getUsername() : "-");
         return result;
     }
 
@@ -110,7 +115,6 @@ public final class ProductController extends BaseController{
                 product.setCustomer(customerService.findById(product.getCustomerId()));
             }
             SysUserDTO sysUserDTO=sysUserApiService.findById(product.getCreateBy());
-
             product.setCreateByName(sysUserDTO!=null?sysUserDTO.getUsername():"-");
 
         }
@@ -125,6 +129,7 @@ public final class ProductController extends BaseController{
         if (queryParam.getParam() == null) {
             queryParam.setParam(new Product());
         }
+        queryParam.getParam().setPrdFlag(ProductTypeConst.PT_PRD.shortValue());
         queryParam.setLimit(-1);
         queryParam.setStart(0);
         queryParam.setSortBys("customerId|asc,code|asc");
@@ -137,6 +142,29 @@ public final class ProductController extends BaseController{
 
     }
 
+    @RequestMapping(value="exportMail",method = RequestMethod.POST)
+    @ApiOperation(value = "exportMail", notes = "exportMail", authorizations = {@Authorization(value = ApiConstants.AUTH_API_WEB)})
+    public  JsonResult<ExportResultDTO> exportMail(@RequestBody @DateRewritable Product.QueryParam queryParam ) throws IOException {
+
+        if(queryParam.getParam() == null) {
+            queryParam.setParam(new Product());
+        }
+        queryParam.getParam().setPrdFlag(ProductTypeConst.PT_PRD.shortValue());
+        queryParam.setLimit(-1);
+        queryParam.setStart(0);
+        queryParam.setSortBys("customerId|asc,code|asc");
+
+        WebFileUtil web = new WebFileUtil();
+        List<Product> products = productService.findByQueryParam(queryParam);
+
+        File f = web.export2EasyExcelFile("产品清单", buildTitles(), buildRecords(products));
+        mailApiService.sendEmail("leijmdas_s@163.com", "产品清单", "产品清单", f.getPath());
+        ExportResultDTO exportResultDTO=new ExportResultDTO();
+        exportResultDTO.setFilename(f.getName());
+        exportResultDTO.setRecordNumber(products.size());
+        return JsonResult.success(exportResultDTO);
+    }
+
     @RequestMapping(value = "exportRm", method = RequestMethod.POST)
     @ApiOperation(value = "exportRm", notes = "exportRm", authorizations = {@Authorization(value = ApiConstants.AUTH_API_WEB)})
     public void exportRm(@RequestBody @DateRewritable Product.QueryParam queryParam, HttpServletRequest req, HttpServletResponse rsp) throws FileNotFoundException, IOException {
@@ -144,6 +172,7 @@ public final class ProductController extends BaseController{
         if (queryParam.getParam() == null) {
             queryParam.setParam(new Product());
         }
+        //queryParam.getParam().setPrdFlag(ProductTypeConst.PT_PRD.shortValue());
         queryParam.setLimit(-1);
         queryParam.setStart(0);
         queryParam.setSortBys("parentId|asc,id|asc");
@@ -172,9 +201,9 @@ public final class ProductController extends BaseController{
         strings.add("产品大类");
         strings.add("产品小类");
         strings.add("产品描述");
-        strings.add("单位");
         strings.add("颜色");
         strings.add("尺寸");
+        strings.add("单位");
         strings.add("条码");
         return strings;
     }
@@ -195,12 +224,12 @@ public final class ProductController extends BaseController{
             ProductType productType = productTypeService.findById(product.getProductTypeId());
             r.add(productType == null ? "-" : productType.getCode());
             r.add(product.getRemark());
-            //strings.add("单位");
-            r.add(product.getUnit());
-            //strings.add("颜色");
+             //strings.add("颜色");
             r.add(product.getColor());
             //strings.add("尺寸");
             r.add(product.getSize());
+            //strings.add("单位");
+            r.add(product.getUnit());
 
             //strings.add("条码");
             r.add(product.getBarCode());

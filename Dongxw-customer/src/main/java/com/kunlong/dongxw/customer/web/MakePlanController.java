@@ -129,7 +129,7 @@ public  class MakePlanController extends BaseController {
         WebFileUtil web = new WebFileUtil(req,rsp);
         List<MakePlan> makePlans = this.makePlanService.findByQueryParam(queryParam);
         fillMakePlans(makePlans);
-
+        rsp.setHeader("file","生产计划表.xlsx");
         web.export2EasyExcelObject("生产计划表.xlsx", buildTitles(),buildRecords(makePlans));
 
     }
@@ -168,7 +168,7 @@ public  class MakePlanController extends BaseController {
             //strings.add("客款号");
             r.add(makePlan.getProduct()==null?"-":makePlan.getProduct().getCode());
             //strings.add("颜色");
-            r.add(makePlan.getProduct()==null?"-":makePlan.getProduct().getCode());
+            r.add(makePlan.getProduct()==null?"-":makePlan.getProduct().getColor());
             //strings.add("数量");
             r.add(makePlan.getOrderLine()==null?"-":makePlan.getOrderLine().getQty());
 

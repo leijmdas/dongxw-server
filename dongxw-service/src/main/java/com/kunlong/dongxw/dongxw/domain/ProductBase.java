@@ -11,6 +11,22 @@ import java.io.Serializable;
  * @date 2020年01月04日
  */
 public class ProductBase extends KunlongModel implements Serializable {
+	public Integer getPrdFlagNot() {
+		return prdFlagNot;
+	}
+
+	public void setPrdFlagNot(Integer prdFlagNot) {
+		this.prdFlagNot = prdFlagNot;
+	}
+
+	private Integer prdFlagNot ;
+	// ==== 自定义属性 ====
+	ProductType productType;
+	ProductType productSubType;
+
+	Customer customer;
+
+	String createByName;
 
 	private static final long serialVersionUID = 1L;
 	public ProductType getProductType() {
@@ -37,11 +53,6 @@ public class ProductBase extends KunlongModel implements Serializable {
 		this.customer = customer;
 	}
 
-	// ==== 自定义属性 ====
-	ProductType productType;
-	ProductType productSubType;
-
-	Customer customer;
 
 	public String getCreateByName() {
 		return createByName;
@@ -51,5 +62,4 @@ public class ProductBase extends KunlongModel implements Serializable {
 		this.createByName = createByName;
 	}
 
-	String createByName;
 }

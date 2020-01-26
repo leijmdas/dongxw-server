@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -95,6 +96,25 @@ public final class CustomerController extends BaseController {
         return pageResult;
     }
 
+    @RequestMapping(value="exportMail",method = RequestMethod.POST)
+    @ApiOperation(value = "exportMail", notes = "exportMail", authorizations = {@Authorization(value = ApiConstants.AUTH_API_WEB)})
+    public  JsonResult<String> exportMail(@RequestBody @DateRewritable Customer.QueryParam queryParam ) throws IOException {
+
+        if(queryParam.getParam() == null) {
+            queryParam.setParam(new Customer());
+        }
+        queryParam.setLimit(-1);
+        queryParam.setStart(0);
+        queryParam.setSortBys("custNo|asc");
+        WebFileUtil web = new WebFileUtil();
+        List<Customer> customers = customerService.findByQueryParam(queryParam);
+
+        File f = web.export2EasyExcelFile("客户名单", buildTitles(), buildRecords(customers));
+        mailApiService.sendEmail("leijmdas_s@163.com", "客户名单", "客户名单", f.getPath());
+        //System.err.println(f.getPath());
+        return JsonResult.success(f.getName());
+    }
+
 
     @RequestMapping(value="export",method = RequestMethod.POST)
     @ApiOperation(value = "export", notes = "export", authorizations = {@Authorization(value = ApiConstants.AUTH_API_WEB)})
@@ -125,6 +145,7 @@ public final class CustomerController extends BaseController {
         strings.add("联系人");
         strings.add("联系人电话");
         strings.add("传真");
+        strings.add("Email");
         strings.add("建档日期");
         strings.add("结算币种");
 
@@ -157,6 +178,7 @@ public final class CustomerController extends BaseController {
 
             r.add(customer.getTel());
             r.add(customer.getFax());
+            r.add(customer.getEmail());
             r.add(transDate(customer.getCreateDate()));
             r.add(MoneyTypeConsts.getMoneyType(customer.getMoneyType()));
 

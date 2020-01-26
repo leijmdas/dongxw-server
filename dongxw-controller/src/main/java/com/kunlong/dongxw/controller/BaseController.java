@@ -3,11 +3,15 @@ package com.kunlong.dongxw.controller;
 import cn.kunlong.center.api.model.SysUserDTO;
 import cn.kunlong.center.api.service.SysUserApiService;
 import com.kunlong.api.service.AuthApiService;
+import com.kunlong.api.service.MailApiService;
 import com.kunlong.dongxw.context.CurrentRequestContext;
 import com.kunlong.platform.consts.RequestContextConst;
 import org.apache.dubbo.config.annotation.Reference;
 
 public class BaseController {
+	@Reference(lazy = true, version = "${dubbo.service.version}")
+	MailApiService mailApiService;
+
 	@Reference(lazy = true, version = "${dubbo.service.version}")
 	AuthApiService authApiService;
 

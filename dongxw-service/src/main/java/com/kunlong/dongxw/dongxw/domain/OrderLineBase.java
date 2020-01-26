@@ -14,6 +14,7 @@ public class OrderLineBase extends KunlongModel implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	// ==== 自定义属性 ====
+	String createByName;
 	Customer customer;
 
 	OrderMaster orderMaster;
@@ -30,7 +31,6 @@ public class OrderLineBase extends KunlongModel implements Serializable {
 		this.createByName = createByName;
 	}
 
-	String createByName;
 
 	public Customer getCustomer() {
 		return customer;

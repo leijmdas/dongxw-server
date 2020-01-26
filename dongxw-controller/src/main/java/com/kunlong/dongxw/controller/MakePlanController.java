@@ -27,6 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -58,6 +59,29 @@ public  class MakePlanController extends BaseController {
     @Autowired
     ProductTypeService productTypeService;
 
+    @RequestMapping("/checkPlanByOrder/{orderId}")
+    public JsonResult<Integer> checkPlanByOrder(@PathVariable("orderId") Integer orderId) throws IOException {
+        OrderMaster orderMaster = orderMasterService.findById(orderId);
+
+        OrderLine.QueryParam queryParam = new OrderLine.QueryParam();
+        queryParam.setParam(new OrderLine());
+        queryParam.getParam().setOrderId(orderId);
+        queryParam.setLimit(-1);
+        long total = orderLineService.countByQueryParam(queryParam);
+        MakePlan.QueryParam param = new MakePlan.QueryParam();
+        param.setParam(new MakePlan());
+        param.getParam().setOrderId(orderId);
+        long t = makePlanService.countByQueryParam(param);
+        if (total == t) {
+            return JsonResult.success(0,"订单产品数与计划产品数相等！");
+        } else if (total > t) {
+            return JsonResult.failure(1,"订单产品数>计划产品数！");
+        } else if (total < t) {
+            return JsonResult.failure(-1,"订单产品数<计划产品数！");
+        }
+        return JsonResult.failure(-2,"订单产品数与计划产品数不等");
+    }
+
     @Transactional
     @RequestMapping("/makePlanByOrder/{orderId}")
     public JsonResult<String> makePlanByOrder(@PathVariable("orderId") Integer orderId) throws IOException {
@@ -66,6 +90,40 @@ public  class MakePlanController extends BaseController {
 
             return JsonResult.failure("订单在草稿状态，暂不能生成计划！");
         }
+
+        OrderLine.QueryParam queryParam = new OrderLine.QueryParam();
+        queryParam.setParam(new OrderLine());
+        queryParam.getParam().setOrderId(orderId);
+        queryParam.setLimit(-1);
+
+        List<OrderLine> orderLines = orderLineService.findByQueryParam(queryParam);
+        for (OrderLine orderLine : orderLines) {
+            if (!checkExistsByOrderLine(orderLine.getId())) {
+                MakePlan makePlan=new MakePlan();
+                makePlan.setCustomerId(orderLine.getCustomerId());
+                makePlan.setOrderId(orderLine.getOrderId());
+                makePlan.setOrederLineId(orderLine.getId());
+                makePlan.setCreateDate(new Date());
+                makePlan.setCreateBy(this.getCurrentUserId());
+
+                makePlan.setOrderDate(orderMaster != null ? orderMaster.getOrderDate() : null);
+                makePlan.setIssueDate(orderMaster != null ? orderMaster.getFactroyIssueDate() : null);
+                makePlan.setOutFlag(MakePlanConst.OUT_FLAG_SELF);
+                makePlan.setFinishFlag(MakePlanConst.FINISH_FLAG_UN);
+                makePlanService.save(makePlan);
+
+            }
+        }
+
+        return JsonResult.success("成功！");
+    }
+
+    /*删除多余计费产品*/
+    @Transactional
+    @RequestMapping("/rmPlanByOrder/{orderId}")
+    public JsonResult<String> rmPlanByOrder(@PathVariable("orderId") Integer orderId) throws IOException {
+        OrderMaster orderMaster = orderMasterService.findById(orderId);
+
 
         OrderLine.QueryParam queryParam = new OrderLine.QueryParam();
         queryParam.setParam(new OrderLine());
@@ -109,6 +167,7 @@ public  class MakePlanController extends BaseController {
         return makePlanService.findByQueryParam(queryParam);
     }
 
+    //检查有计划
     @PostMapping("/deleteById/{id}")
     public JsonResult<Integer> deleteById(@PathVariable("id") Integer id) throws IOException {
 
@@ -183,10 +242,12 @@ public  class MakePlanController extends BaseController {
         }
         queryParam.setLimit(3000);
         queryParam.setStart(0);
+        queryParam.setSortBys("customerId|asc,orderId|asc");
 
         WebFileUtil web = new WebFileUtil(req,rsp);
         List<MakePlan> makePlans = this.makePlanService.findByQueryParam(queryParam);
         fillMakePlans(makePlans);
+        rsp.setHeader("file",URLEncoder.encode(  "生产计划表.xlsx","UTF-8"));
 
         web.export2EasyExcelObject("生产计划表.xlsx", buildTitles(),buildRecords(makePlans));
 
@@ -226,7 +287,7 @@ public  class MakePlanController extends BaseController {
             //strings.add("客款号");
             r.add(makePlan.getProduct()==null?"-":makePlan.getProduct().getCode());
             //strings.add("颜色");
-            r.add(makePlan.getProduct()==null?"-":makePlan.getProduct().getCode());
+            r.add(makePlan.getProduct()==null?"-":makePlan.getProduct().getColor());
             //strings.add("数量");
             r.add(makePlan.getOrderLine()==null?"-":makePlan.getOrderLine().getQty());
 

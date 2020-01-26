@@ -7,8 +7,10 @@ import com.kunlong.api.service.MailApiService;
 import com.kunlong.dongxw.annotation.DateRewritable;
 import com.kunlong.dongxw.consts.*;
 import com.kunlong.dongxw.dongxw.domain.Customer;
+import com.kunlong.dongxw.dongxw.domain.OrderLine;
 import com.kunlong.dongxw.dongxw.domain.OrderMaster;
 import com.kunlong.dongxw.dongxw.service.CustomerService;
+import com.kunlong.dongxw.dongxw.service.OrderLineService;
 import com.kunlong.dongxw.dongxw.service.OrderMasterService;
 import com.kunlong.dongxw.support.BeanMapper;
 import com.kunlong.dongxw.util.WebFileUtil;
@@ -38,14 +40,14 @@ import java.util.List;
 @RestController
 @RequestMapping("/dongxw/ordermaster")
 public final class OrderMasterController extends BaseController {
-    @Autowired
+       @Autowired
     OrderMasterService orderMasterService;
+    @Autowired
+    OrderLineService orderLineService;
 
     @Autowired
     CustomerService customerService;
 
-    @Reference(lazy = true, version = "${dubbo.service.version}")
-    MailApiService mailApiService;
 
     @RequestMapping("/findById/{id}")
     public JsonResult<OrderMaster> findById(@PathVariable("id") Integer id, HttpServletResponse response) throws IOException {
@@ -74,17 +76,27 @@ public final class OrderMasterController extends BaseController {
     @PostMapping("/deleteById/{id}")
     public JsonResult<Integer> deleteById(@PathVariable("id") Integer id) throws IOException {
 
-        OrderMaster orderMaster=orderMasterService.findById(id);
-        if(orderMaster!=null){
-            if(orderMaster.getStatus().compareTo(OrderConsts.ORDER_STATUS_DRAFT)>0){
-                throw new RuntimeException("非草稿不能删除！");
-            }else{
-                orderMasterService.deleteById(id) ;
+        OrderMaster orderMaster = orderMasterService.findById(id);
+        if (orderMaster != null) {
+            if (orderMaster.getStatus().compareTo(OrderConsts.ORDER_STATUS_DRAFT) > 0) {
+                //throw new RuntimeException("非草稿不能删除！");
+                return JsonResult.failure(0,"非草稿不能删除！");
             }
 
         }
+        OrderLine.QueryParam queryParam=new OrderLine.QueryParam();
+        queryParam.setParam(new OrderLine());
+        queryParam.getParam().setOrderId(id);
+        queryParam.setLimit(1);
+        List<OrderLine> orderLines=orderLineService.findByQueryParam(queryParam);
+        if (orderLines.size()>0){
+            return JsonResult.failure(0,"已经有产品 ，不能删除！");
+           // throw new RuntimeException("已经有产品 ，不能删除！");
 
-        return JsonResult.success();
+        }
+        orderMasterService.deleteById(id);
+
+        return JsonResult.success(id);
     }
 
     @PostMapping("/query")

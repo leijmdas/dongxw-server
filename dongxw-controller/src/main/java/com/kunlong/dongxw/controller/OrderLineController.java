@@ -2,8 +2,11 @@ package com.kunlong.dongxw.controller;
 
 
 import app.support.query.PageResult;
+import cn.kunlong.center.api.model.SysUserDTO;
+import cn.kunlong.center.api.service.SysUserApiService;
 import com.kunlong.dongxw.annotation.DateRewritable;
 import com.kunlong.dongxw.consts.ApiConstants;
+import com.kunlong.dongxw.consts.MoneyTypeConsts;
 import com.kunlong.dongxw.dongxw.domain.OrderLine;
 import com.kunlong.dongxw.dongxw.domain.Product;
 import com.kunlong.dongxw.dongxw.service.*;
@@ -49,7 +52,10 @@ public final class OrderLineController extends BaseController {
 
     @RequestMapping("/findById/{id}")
     public JsonResult<OrderLine> findById(@PathVariable("id") Integer id, HttpServletResponse response) throws IOException {
-         return   JsonResult.success(orderLineService.findById(id))    ;
+        OrderLine orderLine = orderLineService.findById(id);
+        orderLine.setProduct(productService.findById(orderLine.getProductId()));
+
+        return JsonResult.success(orderLine);
     }
 
     @RequestMapping("/save")
@@ -62,6 +68,7 @@ public final class OrderLineController extends BaseController {
             if (product != null) {
                 orderLine.setParentId(product.getParentId());
                 orderLine.setProductTypeId(product.getProductTypeId());
+                orderLine.setCustomerId(product.getCustomerId());
             }
         }
         if (orderLine.getId() == null) {
@@ -92,6 +99,8 @@ public final class OrderLineController extends BaseController {
     public PageResult<OrderLine> query(@RequestBody OrderLine.QueryParam queryParam) throws IOException {
         PageResult<OrderLine> pageResult = new PageResult<>();
 
+        queryParam.setSortBys("id|desc");
+
         pageResult.setTotal(orderLineService.countByQueryParam(queryParam));
         pageResult.setData(orderLineService.findByQueryParam(queryParam));
 
@@ -102,7 +111,8 @@ public final class OrderLineController extends BaseController {
             orderLine.setParentProductType (productTypeService.findById(orderLine.getParentId()));
             orderLine.setProductType (productTypeService.findById(orderLine.getProductTypeId()));
             orderLine.setProduct(productService.findById(orderLine.getProductId()));
-            //orderLine.setSupplier (supplierService.findById(orderLine.getSupplierId()));
+            SysUserDTO sysUserDTO=sysUserApiService.findById(orderLine.getCreateBy());
+            orderLine.setCreateByName(sysUserDTO==null?"-":sysUserDTO.getUsername());
         }
         return pageResult;
     }
@@ -138,12 +148,23 @@ public final class OrderLineController extends BaseController {
     List<String> buildTitles() {
         List<String> strings = new ArrayList<>();
 
-        //strings.add("主料");
-
-        strings.add("产品");
+        strings.add("客户名称");
+        strings.add("客订单号");
+        strings.add("EP订单号");
+        strings.add("大类");
+        strings.add("小类");
+        strings.add("客款号");
+        strings.add("EP款号");
+        strings.add("产品描述");
+        strings.add("颜色");
+        strings.add("尺寸");
         strings.add("数量");
+        strings.add("单位");
         strings.add("单价");
         strings.add("金额");
+        strings.add("币种");
+        strings.add("条码");
+        strings.add("备注");
 
         return strings;
     }
@@ -151,17 +172,48 @@ public final class OrderLineController extends BaseController {
         List<List<Object>> records = new ArrayList<>();
         for (OrderLine orderLine : orderMasters) {
             List<Object> r = new ArrayList<>();
-//            if(orderLine.getMaterial()!=null) {
-//                r.add(orderLine.getMaterial());
-//            }else{
-//                r.add("");
-//            }
 
+            //strings.add("客户名称");
+            r.add(orderLine.getCustomer().getCustName());
+            //strings.add("客订单号");
+            System.out.println(orderLine);
+            System.out.println(orderLine.getOrderMaster());
+
+            r.add(orderLine.getOrderMaster()==null?'-':orderLine.getOrderMaster().getCustomerOrderCode());
+            //strings.add("EP订单号");
+            r.add(orderLine.getOrderMaster()==null?'-':orderLine.getOrderMaster().getEpOrderCode());
+            //strings.add("大类");
+            r.add(orderLine.getParentProductType().getCode());
+            //strings.add("小类");
+            r.add(orderLine.getProductType().getCode());
+            //strings.add("客款号");
             r.add(orderLine.getProduct().getCode());
-            r.add(orderLine.getQty());
-            r.add(orderLine.getPrice());
-            r.add(orderLine.getMoney());
+            //strings.add("EP款号");
+            r.add(orderLine.getProduct().getEpCode());
+            //strings.add("产品描述");
+            r.add(orderLine.getProduct().getRemark());
+            //strings.add("颜色");
+            r.add(orderLine.getProduct().getColor());
+            //strings.add("尺寸");
+            r.add(orderLine.getProduct().getSize());
 
+            //strings.add("数量");
+            r.add(orderLine.getQty());
+            // strings.add("单位");
+            r.add(orderLine.getProduct().getUnit());
+            //strings.add("单价");
+            r.add(orderLine.getPrice());
+            //strings.add("金额");
+            r.add(orderLine.getMoney());
+            //strings.add("币种");
+            //r.add(orderLine.getOrderMaster()==null?'-':orderLine.getOrderMaster().getMoneyType());
+            r.add(MoneyTypeConsts.getMoneyType(
+                    orderLine.getOrderMaster()==null?-1:orderLine.getOrderMaster().getMoneyType()));
+
+            //strings.add("条码");
+            r.add(orderLine.getProduct().getBarCode());
+            //strings.add("备注");
+            r.add(orderLine.getRemark());
 
             records.add(r);
         }

@@ -204,6 +204,30 @@ public class ProductDTO implements Serializable {
 	@ApiModelProperty(value = "产品类型名称",required = false,notes = "产品类型名称 ")
 	private String name;
 	/**
+	  * 
+	  * nullable:true,length:512
+	  */
+	@ApiModelProperty(value = "",required = false,notes = " ")
+	private String pkgSideImgRemark;
+	/**
+	  * 
+	  * nullable:true,length:1,024
+	  */
+	@ApiModelProperty(value = "",required = false,notes = " ")
+	private String pkgFrontImgUrls;
+	/**
+	  * 
+	  * nullable:true,length:1,024
+	  */
+	@ApiModelProperty(value = "",required = false,notes = " ")
+	private String pkgSideImgUrls;
+	/**
+	  * 
+	  * nullable:true,length:512
+	  */
+	@ApiModelProperty(value = "",required = false,notes = " ")
+	private String pkgFrontImgRemark;
+	/**
 	  * 0-成品100-半成品-200-原料
 	  * nullable:false,length:255
 	  */
@@ -394,6 +418,30 @@ public class ProductDTO implements Serializable {
     }
     public void setName(String name){
     	this.name = name;
+    }
+    public String getPkgSideImgRemark(){
+    	return this.pkgSideImgRemark;
+    }
+    public void setPkgSideImgRemark(String pkgSideImgRemark){
+    	this.pkgSideImgRemark = pkgSideImgRemark;
+    }
+    public String getPkgFrontImgUrls(){
+    	return this.pkgFrontImgUrls;
+    }
+    public void setPkgFrontImgUrls(String pkgFrontImgUrls){
+    	this.pkgFrontImgUrls = pkgFrontImgUrls;
+    }
+    public String getPkgSideImgUrls(){
+    	return this.pkgSideImgUrls;
+    }
+    public void setPkgSideImgUrls(String pkgSideImgUrls){
+    	this.pkgSideImgUrls = pkgSideImgUrls;
+    }
+    public String getPkgFrontImgRemark(){
+    	return this.pkgFrontImgRemark;
+    }
+    public void setPkgFrontImgRemark(String pkgFrontImgRemark){
+    	this.pkgFrontImgRemark = pkgFrontImgRemark;
     }
     public Short getPrdFlag(){
     	return this.prdFlag;

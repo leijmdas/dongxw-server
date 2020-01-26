@@ -103,9 +103,10 @@ public class WebFileUtil {
 
 	public File export2EasyExcelFile(String fileName, List<String> titleNames, List<List<Object>> records) throws IOException {
 
-		File file = File.createTempFile(fileName, ".xls");
-		try (OutputStream out = new FileOutputStream(file)) {
+		File file = File.createTempFile(fileName, ".xlsx");
+		OutputStream out = new FileOutputStream(file);
 
+			//export2EasyExcelOut(out,fileName,titleNames,records);
 			ExcelWriter writer = new ExcelWriter(out, ExcelTypeEnum.XLSX);
 
 			// 设置SHEET
@@ -114,22 +115,95 @@ public class WebFileUtil {
 
 			// 设置标题
 			Table table = new Table(1);
+			//定义Excel正文背景颜色
+			TableStyle tableStyle = new TableStyle();
+			tableStyle.setTableContentBackGroundColor(IndexedColors.WHITE);
+
+			//定义Excel正文字体大小
+			Font fontContent = new Font();
+			fontContent.setFontHeightInPoints((short) 10);
+			fontContent.setBold(false);
+
+			tableStyle.setTableContentFont(fontContent);
+			Font font = new Font();
+			font.setFontHeightInPoints((short) 12);
+			font.setBold(false);
+
+			tableStyle.setTableHeadFont(font);
+			table.setTableStyle(tableStyle);
+
 			List<List<String>> titles = new ArrayList<List<String>>();
 			for (String name : titleNames) {
 				titles.add(Arrays.asList(name));
-
 			}
 			table.setHead(titles);
 
 			writer.write1(records, sheet, table);
 			writer.finish();
-		}
+
+//			ExcelWriter writer = new ExcelWriter(out, ExcelTypeEnum.XLSX);
+//
+//			// 设置SHEET
+//			Sheet sheet = new Sheet(1, 0);
+//			sheet.setSheetName(fileName);
+//
+//			// 设置标题
+//			Table table = new Table(1);
+//			List<List<String>> titles = new ArrayList<List<String>>();
+//			for (String name : titleNames) {
+//				titles.add(Arrays.asList(name));
+//
+//			}
+//			table.setHead(titles);
+//
+//			writer.write1(records, sheet, table);
+//			writer.finish();
+
 		return file;
 	}
 
 	public void export2EasyExcelObject(String fileName, List<String> titleNames, List<List<Object>> records) throws IOException {
 		setExcelHeader(fileName);
 		OutputStream out = response.getOutputStream();
+		export2EasyExcelOut(out,fileName,titleNames,records);
+//		ExcelWriter writer = new ExcelWriter(out, ExcelTypeEnum.XLSX);
+//
+//		// 设置SHEET
+//		Sheet sheet = new Sheet(1, 0);
+//		sheet.setSheetName(fileName);
+//
+//		// 设置标题
+//		Table table = new Table(1);
+//		//定义Excel正文背景颜色
+//		TableStyle tableStyle = new TableStyle();
+//		tableStyle.setTableContentBackGroundColor(IndexedColors.WHITE);
+//
+//		//定义Excel正文字体大小
+//		Font fontContent = new Font();
+//		fontContent.setFontHeightInPoints((short) 10);
+//		fontContent.setBold(false);
+//
+//		tableStyle.setTableContentFont(fontContent);
+//		Font font = new Font();
+//		font.setFontHeightInPoints((short) 12);
+//		font.setBold(false);
+//
+//		tableStyle.setTableHeadFont(font);
+//		table.setTableStyle(tableStyle);
+//
+//		List<List<String>> titles = new ArrayList<List<String>>();
+//		for (String name : titleNames) {
+//			titles.add(Arrays.asList(name));
+//		}
+//		table.setHead(titles);
+//
+//		writer.write1(records, sheet, table);
+//		writer.finish();
+
+	}
+
+	  void export2EasyExcelOut (OutputStream out,String fileName, List<String> titleNames, List<List<Object>> records) throws IOException {
+
 
 		ExcelWriter writer = new ExcelWriter(out, ExcelTypeEnum.XLSX);
 
@@ -139,22 +213,22 @@ public class WebFileUtil {
 
 		// 设置标题
 		Table table = new Table(1);
-		 //定义Excel正文背景颜色
- 		 TableStyle tableStyle = new TableStyle();
- 		 tableStyle.setTableContentBackGroundColor(IndexedColors.WHITE);
+		//定义Excel正文背景颜色
+		TableStyle tableStyle = new TableStyle();
+		tableStyle.setTableContentBackGroundColor(IndexedColors.WHITE);
 
-  		//定义Excel正文字体大小
+		//定义Excel正文字体大小
 		Font fontContent = new Font();
 		fontContent.setFontHeightInPoints((short) 10);
 		fontContent.setBold(false);
 
- 		tableStyle.setTableContentFont(fontContent);
+		tableStyle.setTableContentFont(fontContent);
 		Font font = new Font();
 		font.setFontHeightInPoints((short) 12);
 		font.setBold(false);
 
 		tableStyle.setTableHeadFont(font);
- 		table.setTableStyle(tableStyle);
+		table.setTableStyle(tableStyle);
 
 		List<List<String>> titles = new ArrayList<List<String>>();
 		for (String name : titleNames) {
@@ -166,7 +240,6 @@ public class WebFileUtil {
 		writer.finish();
 
 	}
-
 	//easyExcel
 	public void export2EasyExcel(String fileName, List<String> titleNames, List<List<String>> records) throws IOException {
     setExcelHeader(fileName);
@@ -192,30 +265,30 @@ public class WebFileUtil {
 
   }
 
-	public void export2EasyExcel2File(String fileName, List<String> titleNames, List<List<String>> records) throws IOException {
-		setExcelHeader(fileName);
-		//OutputStream out = response.getOutputStream();
-		OutputStream out=new FileOutputStream(new File("c:/expost1.xls"));
-
-		ExcelWriter writer = new ExcelWriter(out, ExcelTypeEnum.XLSX);
-
-		// 设置SHEET
-		Sheet sheet = new Sheet(1, 0);
-		sheet.setSheetName("明细单");
-
-		// 设置标题
-		Table table = new Table(1);
-		List<List<String>> titles = new ArrayList<List<String>>();
-		for(String name:titleNames){
-			titles.add(Arrays.asList(name));
-
-		}
-		table.setHead(titles);
-
-		writer.write0(records, sheet, table);
-		writer.finish();
-
-	}
+//	public void export2EasyExcel2File(String fileName, List<String> titleNames, List<List<String>> records) throws IOException {
+//		setExcelHeader(fileName);
+//		//OutputStream out = response.getOutputStream();
+//		OutputStream out=new FileOutputStream(new File("c:/expost1.xls"));
+//
+//		ExcelWriter writer = new ExcelWriter(out, ExcelTypeEnum.XLSX);
+//
+//		// 设置SHEET
+//		Sheet sheet = new Sheet(1, 0);
+//		sheet.setSheetName("明细单");
+//
+//		// 设置标题
+//		Table table = new Table(1);
+//		List<List<String>> titles = new ArrayList<List<String>>();
+//		for(String name:titleNames){
+//			titles.add(Arrays.asList(name));
+//
+//		}
+//		table.setHead(titles);
+//
+//		writer.write0(records, sheet, table);
+//		writer.finish();
+//
+//	}
 
   public void export2Excel(File tplFile, Map<String, Object> params, String fileName) throws IOException {
 		setExcelHeader(fileName);

@@ -10,26 +10,29 @@ import com.jtest.annotation.JTest;
 import com.jtest.annotation.JTestClass;
 import com.jtest.testframe.ITestImpl;
 import com.kunlong.dongxw.consts.ApiConstants;
+import com.kunlong.dongxw.dongxw.domain.Customer;
+import com.kunlong.dongxw.dongxw.domain.OrderMaster;
 import com.kunlong.platform.support.service.AuthService;
 import com.kunlong.platform.utils.JsonResult;
-import com.kunlong.dongxw.dongxw.domain.Customer;
+import com.kunlong.platform.utils.KunlongUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pub.Login;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 @JTestClass.author("leijmdas")
-public class TestCustomer extends ITestImpl {
+public class TestProduct extends ITestImpl {
 
-    private static final Logger logger = LoggerFactory.getLogger(TestCustomer.class);
+    private static final Logger logger = LoggerFactory.getLogger(TestProduct.class);
 
     String url_login ="http://127.0.0.1:10080/auth/login?username=admin&password=123456&verifyCode=";
     String url_auth = "http://127.0.0.1:10080/sys/user/authorization";
 
-    String url_dongxw  = "http://127.0.0.1:8098/api/dongxw/customer";
     String url_cust = "http://127.0.0.1:10081/dongxw/customer";
-    String url_manager = "http://127.0.0.1:10081/dongxw/manager";
+    String url_prd = "http://127.0.0.1:10081/dongxw/product";
 
     @Inject(filename = "node.xml", value = "httpclient")
     HttpClientNode httpclient;
@@ -178,15 +181,20 @@ public class TestCustomer extends ITestImpl {
     @JTest
     @JTestClass.title("获取列表")
     @JTestClass.pre("")
-    @JTestClass.step("test_0006_custExport")
+    @JTestClass.step("test_0006_export")
     @JTestClass.exp("ok")
-    public void test_0006_custExport() {
+    public void test_0006_export() throws IOException {
+        OrderMaster.QueryParam queryParam=new OrderMaster.QueryParam ();
+        queryParam.setParam(new OrderMaster());
+        queryParam.getParam().setId(10);
 
-
-        String ret = httpclient.post(url_cust + "/export", "{}", "application/json");
+        byte[] ret = httpclient.postHttpEntity(url_prd + "/export", KunlongUtils.toJSONString(queryParam),"application/json");
         httpclient.checkStatusCode(200);
-        System.out.println(ret);
-
+        System.out.println(new String(ret));
+        File f=new File("l:/1.xlsx");
+        try(FileOutputStream out=new FileOutputStream(f)){
+            out.write(ret);
+        }
 
     }
     @JTest
@@ -196,8 +204,25 @@ public class TestCustomer extends ITestImpl {
     @JTestClass.exp("ok")
     public void test_0007_mailExport() {
 
+        OrderMaster.QueryParam queryParam=new OrderMaster.QueryParam ();
+        queryParam.setParam(new OrderMaster());
+        queryParam.getParam().setId(10);
+        String ret = httpclient.post(url_prd + "/exportMail", KunlongUtils.toJSONString(queryParam), "application/json");
+        httpclient.checkStatusCode(200);
+        System.out.println(ret);
 
-        String ret = httpclient.post(url_cust + "/exportMail", "{}", "application/json");
+
+    } @JTest
+    @JTestClass.title("获取列表")
+    @JTestClass.pre("")
+    @JTestClass.step("test_0007_mailExport")
+    @JTestClass.exp("ok")
+    public void test_0008_mailExport() {
+
+        OrderMaster.QueryParam queryParam=new OrderMaster.QueryParam ();
+        queryParam.setParam(new OrderMaster());
+        //queryParam.getParam().setId(10);
+        String ret = httpclient.post(url_prd + "/exportMail", KunlongUtils.toJSONString(queryParam), "application/json");
         httpclient.checkStatusCode(200);
         System.out.println(ret);
 
@@ -205,7 +230,7 @@ public class TestCustomer extends ITestImpl {
     }
     public static void main(String[] args) {
 
-        run(TestCustomer.class, 7);
+        run(TestProduct.class, 8);
 
     }
 

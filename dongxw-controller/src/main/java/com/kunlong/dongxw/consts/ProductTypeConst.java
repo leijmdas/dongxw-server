@@ -5,9 +5,9 @@ import java.util.Map;
 
 public class ProductTypeConst {
     //成品
-    public static final int PT_PRD = 0;
-    public static final int PT_HALF = 100;
-    public static final int PT_RM = 200;
+    public static final Integer PT_PRD = 0;
+    public static final Integer PT_HALF = 100;
+    public static final Integer PT_RM = 200;
 
     static Map<Integer, String> mapStoreType = new HashMap<Integer, String>() {
         {

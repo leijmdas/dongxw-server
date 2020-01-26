@@ -229,6 +229,30 @@ public class Product extends ProductBase implements Serializable {
 	@Column(comment = "产品类型名称")	
 	private String name;
 	/**
+	  * 
+	  * nullable:true,length:512
+	  */
+	@Column(comment = "")	
+	private String pkgSideImgRemark;
+	/**
+	  * 
+	  * nullable:true,length:1,024
+	  */
+	@Column(comment = "")	
+	private String pkgFrontImgUrls;
+	/**
+	  * 
+	  * nullable:true,length:1,024
+	  */
+	@Column(comment = "")	
+	private String pkgSideImgUrls;
+	/**
+	  * 
+	  * nullable:true,length:512
+	  */
+	@Column(comment = "")	
+	private String pkgFrontImgRemark;
+	/**
 	  * 0-成品100-半成品-200-原料
 	  * nullable:false,length:255
 	  */
@@ -421,6 +445,30 @@ public class Product extends ProductBase implements Serializable {
     public void setName(String name){
     	this.name = name;
     }
+    public String getPkgSideImgRemark(){
+    	return this.pkgSideImgRemark;
+    }
+    public void setPkgSideImgRemark(String pkgSideImgRemark){
+    	this.pkgSideImgRemark = pkgSideImgRemark;
+    }
+    public String getPkgFrontImgUrls(){
+    	return this.pkgFrontImgUrls;
+    }
+    public void setPkgFrontImgUrls(String pkgFrontImgUrls){
+    	this.pkgFrontImgUrls = pkgFrontImgUrls;
+    }
+    public String getPkgSideImgUrls(){
+    	return this.pkgSideImgUrls;
+    }
+    public void setPkgSideImgUrls(String pkgSideImgUrls){
+    	this.pkgSideImgUrls = pkgSideImgUrls;
+    }
+    public String getPkgFrontImgRemark(){
+    	return this.pkgFrontImgRemark;
+    }
+    public void setPkgFrontImgRemark(String pkgFrontImgRemark){
+    	this.pkgFrontImgRemark = pkgFrontImgRemark;
+    }
     public Short getPrdFlag(){
     	return this.prdFlag;
     }
@@ -492,6 +540,14 @@ public class Product extends ProductBase implements Serializable {
         public FieldNode<Product, String> imgRemark =  createFieldNode("imgRemark","img_remark",String.class,JdbcType.VARCHAR);
     	/** 产品类型名称 */
         public FieldNode<Product, String> name =  createFieldNode("name","name",String.class,JdbcType.VARCHAR);
+    	/**  */
+        public FieldNode<Product, String> pkgSideImgRemark =  createFieldNode("pkgSideImgRemark","pkg_side_img_remark",String.class,JdbcType.VARCHAR);
+    	/**  */
+        public FieldNode<Product, String> pkgFrontImgUrls =  createFieldNode("pkgFrontImgUrls","pkg_front_img_urls",String.class,JdbcType.VARCHAR);
+    	/**  */
+        public FieldNode<Product, String> pkgSideImgUrls =  createFieldNode("pkgSideImgUrls","pkg_side_img_urls",String.class,JdbcType.VARCHAR);
+    	/**  */
+        public FieldNode<Product, String> pkgFrontImgRemark =  createFieldNode("pkgFrontImgRemark","pkg_front_img_remark",String.class,JdbcType.VARCHAR);
     	/** 0-成品100-半成品-200-原料 */
         public FieldNode<Product, Short> prdFlag =  createFieldNode("prdFlag","prd_flag",Short.class,JdbcType.SMALLINT);
 	
