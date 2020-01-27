@@ -260,6 +260,7 @@ public  class MakePlanController extends BaseController {
         strings.add("客户名称");
         strings.add("客户订单号");
         strings.add("客款号");
+        strings.add("产品描述");
         strings.add("颜色");
         strings.add("数量");
 
@@ -286,6 +287,8 @@ public  class MakePlanController extends BaseController {
             r.add(makePlan.getOrderMaster()==null?"-":makePlan.getOrderMaster().getCustomerOrderCode());
             //strings.add("客款号");
             r.add(makePlan.getProduct()==null?"-":makePlan.getProduct().getCode());
+            //strings.add("产品描述");
+            r.add(makePlan.getProduct()==null?"-":makePlan.getProduct().getRemark());
             //strings.add("颜色");
             r.add(makePlan.getProduct()==null?"-":makePlan.getProduct().getColor());
             //strings.add("数量");

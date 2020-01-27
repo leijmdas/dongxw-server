@@ -1,14 +1,13 @@
-package com.kunlong.dongxw.customer.web;
+package com.kunlong.dongxw.controller;
 
 
 import app.support.query.PageResult;
-import com.kunlong.dongxw.customer.annotation.DateRewritable;
-import com.kunlong.dongxw.customer.consts.ApiConstants;
-import com.kunlong.dongxw.customer.consts.MakePlanConst;
-import com.kunlong.dongxw.customer.controller.BaseController;
+import com.kunlong.dongxw.annotation.DateRewritable;
+import com.kunlong.dongxw.consts.ApiConstants;
+import com.kunlong.dongxw.consts.MakePlanConst;
+import com.kunlong.dongxw.dongxw.domain.Bom;
 import com.kunlong.dongxw.dongxw.domain.MakePlan;
-import com.kunlong.dongxw.dongxw.domain.OrderLine;
-import com.kunlong.dongxw.dongxw.domain.OrderMaster;
+import com.kunlong.dongxw.dongxw.domain.Product;
 import com.kunlong.dongxw.dongxw.service.*;
 import com.kunlong.dongxw.util.WebFileUtil;
 import com.kunlong.platform.utils.JsonResult;
@@ -21,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -33,19 +33,14 @@ import java.util.List;
  * Date: Created in 2018/8/23 16:50
  */
 @RestController
-@RequestMapping(ApiConstants.AUTH_API_WEB_CUSTOMER+"/makeplan")
-public  class MakePlanController extends BaseController {
+@RequestMapping("/dongxw/bom")
+public  class BomController extends BaseController {
     @Autowired
-    MakePlanService makePlanService;
+    BomService bomService;
 
     @Autowired
     CustomerService customerService;
 
-    @Autowired
-    OrderMasterService orderMasterService;
-
-    @Autowired
-    OrderLineService orderLineService;
     @Autowired
     ProductService productService;
 
@@ -54,68 +49,71 @@ public  class MakePlanController extends BaseController {
 
 
 
-    public boolean checkExistsByOrderLine(Integer orderLineId) throws IOException {
 
-        List<MakePlan> plans = findByOrderLine(orderLineId);
-        return plans != null && plans.size() > 0;
+
+
+    //检查有计划
+    @PostMapping("/deleteById/{id}")
+    public JsonResult<Integer> deleteById(@PathVariable("id") Integer id) throws IOException {
+
+        bomService.deleteById(id);
+
+        return JsonResult.success();
     }
 
-    public List<MakePlan> findByOrderLine(Integer orderLineId) throws IOException {
-        MakePlan.QueryParam queryParam = new MakePlan.QueryParam();
-        queryParam.setParam(new MakePlan());
-        queryParam.getParam().setOrederLineId(orderLineId);
-        queryParam.setLimit(1);
+    @RequestMapping("/findById/{id}")
+    public JsonResult<Bom> findById(@PathVariable("id") Integer id, HttpServletResponse response) throws IOException {
+        Bom bom = bomService.findById(id);
 
-        return makePlanService.findByQueryParam(queryParam);
-    }
+        return JsonResult.success(bom);
 
+}
 
+    @RequestMapping("/save")
+    public JsonResult<Integer> save(@RequestBody Bom bom) {
 
-    @PostMapping("/findById/{id}")
-    public JsonResult<MakePlan> findById(@PathVariable("id") Integer id, HttpServletResponse response) throws IOException {
-        MakePlan makePlan = makePlanService.findById(id);
-
-        fillMakePlan(makePlan);
-        return JsonResult.success(makePlan);
-
-    }
-
-    void fillMakePlan(MakePlan makePlan){
-        OrderLine orderLine = orderLineService.findById(makePlan.getOrederLineId());
-        if (orderLine != null) {
-            makePlan.setCustomer(customerService.findById(orderLine.getCustomerId()));
-            OrderMaster orderMaster=orderMasterService.findById(orderLine.getOrderId());
-            makePlan.setOrderMaster(orderMaster);
-            makePlan.setOrderLine(orderLine);
-            makePlan.setProduct(productService.findById(orderLine.getProductId()));
+        bom.setMoney(bom.getPrice().multiply(bom.getQty()));
+        if (bom.getChildId() != null && bom.getChildId() > 0) {
+            Product product=productService.findById(bom.getChildId());
+            if(product!=null){
+                bom.setBigType(product.getParentId());
+                bom.setSmallType(product.getProductTypeId());
+            }
         }
-        //SysUserDTO sysUserDTO = sysUserApiService.findById(makePlan.getCreateBy());
-        //makePlan.setCreateByName(sysUserDTO == null ? "-" : sysUserDTO.getUsername());
-    }
-
-    void fillMakePlans(List<MakePlan> makePlans){
-
-        for (MakePlan makePlan : makePlans) {
-            fillMakePlan(makePlan);
+        if (bom.getId() == null) {
+            bom.setCreateBy(getCurrentUserId());
+            bom.setCreateDate(new Date());
+            bomService.save(bom);
+        } else {
+            bomService.update(bom);
         }
+
+        return JsonResult.success(bom.getId());
     }
+
+
     @PostMapping("/query")
-    public PageResult<MakePlan> query(@RequestBody MakePlan.QueryParam queryParam) throws IOException {
-        if(queryParam.getParam() == null) {
-            queryParam.setParam(new MakePlan());
+    public PageResult<Bom> query(@RequestBody Bom.QueryParam queryParam) throws IOException {
+        PageResult<Bom> pageResult = new PageResult<Bom>();
+
+        queryParam.setSortBys("id|desc");
+        pageResult.setTotal(bomService.countByQueryParam(queryParam));
+        pageResult.setData(bomService.findByQueryParam(queryParam));
+        //fillMakePlans(pageResult.getData());
+        for(Bom bom:pageResult.getData()){
+            bom.setChildRm(productService.findById(bom.getChildId()));
+            bom.setProduct(productService.findById(bom.getProductId()));
+            if(bom.getChildRm()!=null){
+                bom.getChildRm().setProductSubType(productTypeService.findById(bom.getChildRm().getProductTypeId()));
+                bom.getChildRm().setProductType(productTypeService.findById(bom.getChildRm().getParentId()));
+
+            }
         }
-        queryParam.getParam().setCustomerId(this.getCustomer().getId());
-
-        PageResult<MakePlan> pageResult = new PageResult<MakePlan>();
-
-        pageResult.setTotal(makePlanService.countByQueryParam(queryParam));
-        pageResult.setData(makePlanService.findByQueryParam(queryParam));
-        fillMakePlans(pageResult.getData());
         return pageResult;
     }
 
 
-    @PostMapping(value = "export")
+    @RequestMapping(value="export",method = RequestMethod.POST)
     @ApiOperation(value = "export", notes = "export", authorizations = {@Authorization(value = ApiConstants.AUTH_API_WEB)})
     public void export(@RequestBody @DateRewritable MakePlan.QueryParam queryParam, HttpServletRequest req, HttpServletResponse rsp) throws FileNotFoundException, IOException {
 
@@ -124,23 +122,25 @@ public  class MakePlanController extends BaseController {
         }
         queryParam.setLimit(3000);
         queryParam.setStart(0);
-        queryParam.getParam().setCustomerId(this.getCustomer().getId());
+        queryParam.setSortBys("customerId|asc,orderId|asc");
 
         WebFileUtil web = new WebFileUtil(req,rsp);
-        List<MakePlan> makePlans = this.makePlanService.findByQueryParam(queryParam);
-        fillMakePlans(makePlans);
-        rsp.setHeader("file","生产计划表.xlsx");
-        web.export2EasyExcelObject("生产计划表.xlsx", buildTitles(),buildRecords(makePlans));
+        //List<MakePlan> makePlans = this.makePlanService.findByQueryParam(queryParam);
+        //fillMakePlans(makePlans);
+        rsp.setHeader("file",URLEncoder.encode(  "生产计划表.xlsx","UTF-8"));
+
+        //web.export2EasyExcelObject("生产计划表.xlsx", buildTitles(),buildRecords(makePlans));
 
     }
 
     List<String> buildTitles(){
         List<String> strings=new ArrayList<>();
 
-        //strings.add("发外标志");
+        strings.add("发外标志");
         strings.add("客户名称");
         strings.add("客户订单号");
         strings.add("客款号");
+        strings.add("产品描述");
         strings.add("颜色");
         strings.add("数量");
 
@@ -160,13 +160,15 @@ public  class MakePlanController extends BaseController {
         for (MakePlan makePlan : makePlans) {
             List<Object> r = new ArrayList<>();
              //strings.add("发外标志");
-            //r.add(MakePlanConst.getOutFlag(makePlan.getOutFlag()));
+            r.add(MakePlanConst.getOutFlag(makePlan.getOutFlag()));
             // strings.add("客户名称");
             r.add(makePlan.getCustomer()==null?"-":makePlan.getCustomer().getCustName());
             //strings.add("客户订单号");
             r.add(makePlan.getOrderMaster()==null?"-":makePlan.getOrderMaster().getCustomerOrderCode());
             //strings.add("客款号");
             r.add(makePlan.getProduct()==null?"-":makePlan.getProduct().getCode());
+            //strings.add("产品描述");
+            r.add(makePlan.getProduct()==null?"-":makePlan.getProduct().getRemark());
             //strings.add("颜色");
             r.add(makePlan.getProduct()==null?"-":makePlan.getProduct().getColor());
             //strings.add("数量");

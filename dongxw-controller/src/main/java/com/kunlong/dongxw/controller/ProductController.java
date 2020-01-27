@@ -57,7 +57,7 @@ public final class ProductController extends BaseController{
 
         product.setProductSubType(productTypeService.findById(product.getProductTypeId()));
         product.setProductType(productTypeService.findById(product.getParentId()));
-        if(product.getCustomerId()!=null) {
+        if (product.getCustomerId() != null && product.getCustomerId() > 0) {
             product.setCustomer(customerService.findById(product.getCustomerId()));
         }
         product.setCreateByName(sysUserDTO != null ? sysUserDTO.getUsername() : "-");
