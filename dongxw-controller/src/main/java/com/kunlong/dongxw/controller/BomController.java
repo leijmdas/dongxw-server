@@ -2,6 +2,7 @@ package com.kunlong.dongxw.controller;
 
 
 import app.support.query.PageResult;
+import cn.kunlong.center.api.model.SysUserDTO;
 import com.kunlong.dongxw.annotation.DateRewritable;
 import com.kunlong.dongxw.consts.ApiConstants;
 import com.kunlong.dongxw.consts.MakePlanConst;
@@ -108,6 +109,8 @@ public  class BomController extends BaseController {
                 bom.getChildRm().setProductType(productTypeService.findById(bom.getChildRm().getParentId()));
 
             }
+            SysUserDTO sysUserDTO = sysUserApiService.findById(bom.getCreateBy());
+            bom.setCreateByName(sysUserDTO==null?"-":sysUserDTO.getUsername());
         }
         return pageResult;
     }
