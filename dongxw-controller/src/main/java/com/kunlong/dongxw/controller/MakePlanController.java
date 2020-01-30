@@ -109,7 +109,9 @@ public  class MakePlanController extends BaseController {
                 makePlan.setOrderDate(orderMaster != null ? orderMaster.getOrderDate() : null);
                 makePlan.setIssueDate(orderMaster != null ? orderMaster.getFactroyIssueDate() : null);
                 makePlan.setOutFlag(MakePlanConst.OUT_FLAG_SELF);
+                makePlan.setOutPrepareRm(Short.valueOf((short)0));
                 makePlan.setFinishFlag(MakePlanConst.FINISH_FLAG_UN);
+                makePlan.setStatus(0);
                 makePlanService.save(makePlan);
 
             }

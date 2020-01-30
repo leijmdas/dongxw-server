@@ -8,6 +8,7 @@
 	  	<result column="oreder_line_id" property="orederLineId" jdbcType="INTEGER" />
 	  	<result column="out_flag" property="outFlag" jdbcType="INTEGER" />
 	  	<result column="order_date" property="orderDate" jdbcType="DATE" />
+	  	<result column="out_prepare_rm" property="outPrepareRm" jdbcType="SMALLINT" />
 	  	<result column="issue_date" property="issueDate" jdbcType="DATE" />
 	  	<result column="rm_date" property="rmDate" jdbcType="DATE" />
 	  	<result column="pkg_date" property="pkgDate" jdbcType="DATE" />
@@ -15,6 +16,7 @@
 	  	<result column="plan_end" property="planEnd" jdbcType="DATE" />
 	  	<result column="real_end" property="realEnd" jdbcType="DATE" />
 	  	<result column="finish_flag" property="finishFlag" jdbcType="INTEGER" />
+	  	<result column="status" property="status" jdbcType="INTEGER" />
 	  	<result column="remark" property="remark" jdbcType="VARCHAR" />
 	  	<result column="create_date" property="createDate" jdbcType="DATE" />
 	  	<result column="create_by" property="createBy" jdbcType="INTEGER" />
@@ -26,6 +28,7 @@
 	  	<result column="mp_oreder_line_id" property="orederLineId" jdbcType="INTEGER" />
 	  	<result column="mp_out_flag" property="outFlag" jdbcType="INTEGER" />
 	  	<result column="mp_order_date" property="orderDate" jdbcType="DATE" />
+	  	<result column="mp_out_prepare_rm" property="outPrepareRm" jdbcType="SMALLINT" />
 	  	<result column="mp_issue_date" property="issueDate" jdbcType="DATE" />
 	  	<result column="mp_rm_date" property="rmDate" jdbcType="DATE" />
 	  	<result column="mp_pkg_date" property="pkgDate" jdbcType="DATE" />
@@ -33,15 +36,16 @@
 	  	<result column="mp_plan_end" property="planEnd" jdbcType="DATE" />
 	  	<result column="mp_real_end" property="realEnd" jdbcType="DATE" />
 	  	<result column="mp_finish_flag" property="finishFlag" jdbcType="INTEGER" />
+	  	<result column="mp_status" property="status" jdbcType="INTEGER" />
 	  	<result column="mp_remark" property="remark" jdbcType="VARCHAR" />
 	  	<result column="mp_create_date" property="createDate" jdbcType="DATE" />
 	  	<result column="mp_create_by" property="createBy" jdbcType="INTEGER" />
     </resultMap>
     <sql id="Base_Column_List" >
-  		id,customer_id,order_id,oreder_line_id,out_flag,order_date,issue_date,rm_date,pkg_date,plan_start,plan_end,real_end,finish_flag,remark,create_date,create_by
+  		id,customer_id,order_id,oreder_line_id,out_flag,order_date,out_prepare_rm,issue_date,rm_date,pkg_date,plan_start,plan_end,real_end,finish_flag,status,remark,create_date,create_by
 	</sql>
   	<sql id="Base_Column_List_MakePlan" >
-  		mp.id mp_id,mp.customer_id mp_customer_id,mp.order_id mp_order_id,mp.oreder_line_id mp_oreder_line_id,mp.out_flag mp_out_flag,mp.order_date mp_order_date,mp.issue_date mp_issue_date,mp.rm_date mp_rm_date,mp.pkg_date mp_pkg_date,mp.plan_start mp_plan_start,mp.plan_end mp_plan_end,mp.real_end mp_real_end,mp.finish_flag mp_finish_flag,mp.remark mp_remark,mp.create_date mp_create_date,mp.create_by mp_create_by
+  		mp.id mp_id,mp.customer_id mp_customer_id,mp.order_id mp_order_id,mp.oreder_line_id mp_oreder_line_id,mp.out_flag mp_out_flag,mp.order_date mp_order_date,mp.out_prepare_rm mp_out_prepare_rm,mp.issue_date mp_issue_date,mp.rm_date mp_rm_date,mp.pkg_date mp_pkg_date,mp.plan_start mp_plan_start,mp.plan_end mp_plan_end,mp.real_end mp_real_end,mp.finish_flag mp_finish_flag,mp.status mp_status,mp.remark mp_remark,mp.create_date mp_create_date,mp.create_by mp_create_by
 	</sql>
 	
 	<!-- 系统自定义 -->
@@ -71,6 +75,9 @@
 			<if test="p.orderDate!=null ">
 		    	and mp.order_date=#{p.orderDate}
 		    </if>
+			<if test="p.outPrepareRm!=null ">
+		    	and mp.out_prepare_rm=#{p.outPrepareRm}
+		    </if>
 			<if test="p.issueDate!=null ">
 		    	and mp.issue_date=#{p.issueDate}
 		    </if>
@@ -92,6 +99,9 @@
 			<if test="p.finishFlag!=null ">
 		    	and mp.finish_flag=#{p.finishFlag}
 		    </if>
+			<if test="p.status!=null ">
+		    	and mp.status=#{p.status}
+		    </if>
 			<if test="p.remark!=null and p.remark!=''">
 		    	and mp.remark like #{p.remark}
 		    </if>
@@ -106,76 +116,6 @@
 		<bind name="rp" value="queryParam.ruleParam" />
 		<include refid="org.mybatis.hbatis.orm.mapper.HbatisMapper.RuleParam"/>
 		-->
-
-		<if test="queryParam.dateRanges!=null">
-			<bind name="dr" value="queryParam.dateRanges"/>
-			<bind name="orderDate" value="dr['orderDate']"/>
-			<if test="orderDate!=null"> <!-- 按创建时间 -->
-				<if test="orderDate.startDate!=null">
-					and mp.order_date <![CDATA[>=]]> #{orderDate.startDate}
-				</if>
-				<if test="orderDate.endDate!=null">
-					and mp.order_date <![CDATA[<=]]> #{orderDate.endDate}
-				</if>
-			</if>
-			<bind name="issueDate" value="dr['issueDate']"/>
-			<if test="issueDate!=null"> <!-- 按创建时间 -->
-				<if test="issueDate.startDate!=null">
-					and mp.issue_date <![CDATA[>=]]> #{issueDate.startDate}
-				</if>
-				<if test="issue_date.endDate!=null">
-					and mp.issue_date <![CDATA[<=]]> #{issueDate.endDate}
-				</if>
-			</if>
-			<bind name="rmDate" value="dr['rmDate']"/>
-			<if test="rmDate!=null"> <!-- 按创建时间 -->
-				<if test="rmDate.startDate!=null">
-					and mp.rm_date <![CDATA[>=]]> #{rmDate.startDate}
-				</if>
-				<if test="rmDate.endDate!=null">
-					and mp.rm_date <![CDATA[<=]]> #{rmDate.endDate}
-				</if>
-			</if>
-
-			<bind name="pkgDate" value="dr['pkgDate']"/>
-			<if test="pkgDate!=null"> <!-- 按创建时间 -->
-				<if test="pkgDate.startDate!=null">
-					and mp.pkg_date <![CDATA[>=]]> #{pkgDate.startDate}
-				</if>
-				<if test="pkgDate.endDate!=null">
-					and mp.pkg_date <![CDATA[<=]]> #{pkgDate.endDate}
-				</if>
-			</if>
-			<bind name="planStart" value="dr['planStart']"/>
-			<if test="planStart!=null"> <!-- 按创建时间 -->
-				<if test="planStart.startDate!=null">
-					and mp.plan_start <![CDATA[>=]]> #{planStart.startDate}
-				</if>
-				<if test="planStart.endDate!=null">
-					and mp.plan_start <![CDATA[<=]]> #{planStart.endDate}
-				</if>
-			</if>
-			<bind name="planEnd" value="dr['planEnd']"/>
-			<if test="planEnd!=null"> <!-- 按创建时间 -->
-				<if test="planEnd.startDate!=null">
-					and mp.plan_end <![CDATA[>=]]> #{planEnd.startDate}
-				</if>
-				<if test="planEnd.endDate!=null">
-					and mp.plan_end <![CDATA[<=]]> #{planEnd.endDate}
-				</if>
-			</if>
-
-			<bind name="realEnd" value="dr['realEnd']"/>
-			<if test="realEnd!=null"> <!-- 按创建时间 -->
-				<if test="realEnd.startDate!=null">
-					and mp.real_end <![CDATA[>=]]> #{realEnd.startDate}
-				</if>
-				<if test="realEnd.endDate!=null">
-					and mp.real_end <![CDATA[<=]]> #{realEnd.endDate}
-				</if>
-			</if>
-
-		</if>
 	</sql>
 	<select id="findByQueryParam" resultMap="ResultMap_FindByQueryParam">
 		select

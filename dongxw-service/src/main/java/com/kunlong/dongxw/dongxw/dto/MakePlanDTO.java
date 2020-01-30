@@ -3,13 +3,14 @@ package com.kunlong.dongxw.dongxw.dto;
 import java.io.Serializable;
 import java.lang.Integer;
 import java.util.Date;
+import java.lang.Short;
 import java.lang.String;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 /**
  * MakePlan
  * @author generator
- * @date 2020年01月23日
+ * @date 2020年01月28日
  */
 @ApiModel(value="MakePlanDTO",description="生产计划表")
 public class MakePlanDTO implements Serializable {
@@ -52,6 +53,12 @@ public class MakePlanDTO implements Serializable {
 	@ApiModelProperty(value = "接单日期 ",required = false,notes = "接单日期  ")
 	private Date orderDate;
 	/**
+	  * 外发备料 
+	  * nullable:false,length:6
+	  */
+	@ApiModelProperty(value = "外发备料 ",required = true,notes = "外发备料  ")
+	private Short outPrepareRm;
+	/**
 	  * 要求交期 
 	  * nullable:true,length:10
 	  */
@@ -93,6 +100,12 @@ public class MakePlanDTO implements Serializable {
 	  */
 	@ApiModelProperty(value = "完成标志 0--未完成1--完成",required = false,notes = "完成标志 0--未完成1--完成 ")
 	private Integer finishFlag;
+	/**
+	  * 审核状态 
+	  * nullable:false,length:11
+	  */
+	@ApiModelProperty(value = "审核状态 ",required = true,notes = "审核状态  ")
+	private Integer status;
 	/**
 	  * 备注 
 	  * nullable:true,length:128
@@ -147,6 +160,12 @@ public class MakePlanDTO implements Serializable {
     public void setOrderDate(Date orderDate){
     	this.orderDate = orderDate;
     }
+    public Short getOutPrepareRm(){
+    	return this.outPrepareRm;
+    }
+    public void setOutPrepareRm(Short outPrepareRm){
+    	this.outPrepareRm = outPrepareRm;
+    }
     public Date getIssueDate(){
     	return this.issueDate;
     }
@@ -188,6 +207,12 @@ public class MakePlanDTO implements Serializable {
     }
     public void setFinishFlag(Integer finishFlag){
     	this.finishFlag = finishFlag;
+    }
+    public Integer getStatus(){
+    	return this.status;
+    }
+    public void setStatus(Integer status){
+    	this.status = status;
     }
     public String getRemark(){
     	return this.remark;

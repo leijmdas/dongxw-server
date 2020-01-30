@@ -7,17 +7,14 @@ import org.mybatis.hbatis.core.annotation.*;
 import org.mybatis.hbatis.core.*;
 import java.lang.Integer;
 import java.util.Date;
+import java.lang.Short;
 import java.lang.String;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.mybatis.hbatis.orm.criteria.support.query.AbstractQueryParam;
-import org.mybatis.hbatis.orm.criteria.support.query.DateRange;
 import org.mybatis.hbatis.orm.criteria.support.query.SortOrders;
 /**
  * MakePlan 生产计划表
  * @author generator
- * @date 2020年01月23日
+ * @date 2020年01月28日
  */
 @Table(MakePlan.EntityNode.class)
 public class MakePlan extends MakePlanBase implements Serializable {
@@ -64,6 +61,13 @@ public class MakePlan extends MakePlanBase implements Serializable {
 	@Column(comment = "接单日期 ")	
 	private Date orderDate;
 	/**
+	  * 外发备料 
+	  * nullable:false,length:6
+	  */
+	@Column(comment = "外发备料 ")	
+	@NotNull
+	private Short outPrepareRm;
+	/**
 	  * 要求交期 
 	  * nullable:true,length:10
 	  */
@@ -105,6 +109,13 @@ public class MakePlan extends MakePlanBase implements Serializable {
 	  */
 	@Column(comment = "完成标志 0--未完成1--完成")	
 	private Integer finishFlag;
+	/**
+	  * 审核状态 
+	  * nullable:false,length:11
+	  */
+	@Column(comment = "审核状态 ")	
+	@NotNull
+	private Integer status;
 	/**
 	  * 备注 
 	  * nullable:true,length:128
@@ -161,6 +172,12 @@ public class MakePlan extends MakePlanBase implements Serializable {
     public void setOrderDate(Date orderDate){
     	this.orderDate = orderDate;
     }
+    public Short getOutPrepareRm(){
+    	return this.outPrepareRm;
+    }
+    public void setOutPrepareRm(Short outPrepareRm){
+    	this.outPrepareRm = outPrepareRm;
+    }
     public Date getIssueDate(){
     	return this.issueDate;
     }
@@ -203,6 +220,12 @@ public class MakePlan extends MakePlanBase implements Serializable {
     public void setFinishFlag(Integer finishFlag){
     	this.finishFlag = finishFlag;
     }
+    public Integer getStatus(){
+    	return this.status;
+    }
+    public void setStatus(Integer status){
+    	this.status = status;
+    }
     public String getRemark(){
     	return this.remark;
     }
@@ -236,6 +259,8 @@ public class MakePlan extends MakePlanBase implements Serializable {
         public FieldNode<MakePlan, Integer> outFlag =  createFieldNode("outFlag","out_flag",Integer.class,JdbcType.INTEGER);
     	/** 接单日期  */
         public FieldNode<MakePlan, Date> orderDate =  createFieldNode("orderDate","order_date",Date.class,JdbcType.DATE);
+    	/** 外发备料  */
+        public FieldNode<MakePlan, Short> outPrepareRm =  createFieldNode("outPrepareRm","out_prepare_rm",Short.class,JdbcType.SMALLINT);
     	/** 要求交期  */
         public FieldNode<MakePlan, Date> issueDate =  createFieldNode("issueDate","issue_date",Date.class,JdbcType.DATE);
     	/** 物料到位日期  */
@@ -250,6 +275,8 @@ public class MakePlan extends MakePlanBase implements Serializable {
         public FieldNode<MakePlan, Date> realEnd =  createFieldNode("realEnd","real_end",Date.class,JdbcType.DATE);
     	/** 完成标志 0--未完成1--完成 */
         public FieldNode<MakePlan, Integer> finishFlag =  createFieldNode("finishFlag","finish_flag",Integer.class,JdbcType.INTEGER);
+    	/** 审核状态  */
+        public FieldNode<MakePlan, Integer> status =  createFieldNode("status","status",Integer.class,JdbcType.INTEGER);
     	/** 备注  */
         public FieldNode<MakePlan, String> remark =  createFieldNode("remark","remark",String.class,JdbcType.VARCHAR);
     	/** 建档时间  */
@@ -266,12 +293,11 @@ public class MakePlan extends MakePlanBase implements Serializable {
     }
     
     //-- 实体参数(允许新增属性) 
-	public static class QueryParam extends QueryParamBase  {
+	public static class QueryParam extends AbstractQueryParam<MakePlan> {
 		public QueryParam() {
 			this.setSortOrders(new SortOrders<MakePlan>(EntityNode.INSTANCE));
 		}
-
-    }
+	}
 	
 	public static enum ValueField {
 	}

@@ -83,7 +83,7 @@ public class BomDTO implements Serializable {
 	  * nullable:false,length:10
 	  */
 	@ApiModelProperty(value = "损耗率(%) ",required = true,notes = "损耗率(%)  ")
-	private BigDecimal lossRate;
+	private BigDecimal lossType;
 	/**
 	  * 损耗数 
 	  * nullable:false,length:6
@@ -210,11 +210,11 @@ public class BomDTO implements Serializable {
     public void setMoney(BigDecimal money){
     	this.money = money;
     }
-    public BigDecimal getLossRate(){
-    	return this.lossRate;
+    public BigDecimal getLossType(){
+    	return this.lossType;
     }
-    public void setLossRate(BigDecimal lossRate){
-    	this.lossRate = lossRate;
+    public void setLossType(BigDecimal lossType){
+    	this.lossType = lossType;
     }
     public Short getLossQty(){
     	return this.lossQty;

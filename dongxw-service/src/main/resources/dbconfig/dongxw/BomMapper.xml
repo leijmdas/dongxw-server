@@ -12,7 +12,7 @@
 	  	<result column="qty" property="qty" jdbcType="DECIMAL" />
 	  	<result column="price" property="price" jdbcType="DECIMAL" />
 	  	<result column="money" property="money" jdbcType="DECIMAL" />
-	  	<result column="loss_rate" property="lossRate" jdbcType="DECIMAL" />
+	  	<result column="loss_type" property="lossType" jdbcType="DECIMAL" />
 	  	<result column="loss_qty" property="lossQty" jdbcType="SMALLINT" />
 	  	<result column="size_l" property="sizeL" jdbcType="DECIMAL" />
 	  	<result column="size_x" property="sizeX" jdbcType="VARCHAR" />
@@ -36,7 +36,7 @@
 	  	<result column="b_qty" property="qty" jdbcType="DECIMAL" />
 	  	<result column="b_price" property="price" jdbcType="DECIMAL" />
 	  	<result column="b_money" property="money" jdbcType="DECIMAL" />
-	  	<result column="b_loss_rate" property="lossRate" jdbcType="DECIMAL" />
+	  	<result column="b_loss_type" property="lossType" jdbcType="DECIMAL" />
 	  	<result column="b_loss_qty" property="lossQty" jdbcType="SMALLINT" />
 	  	<result column="b_size_l" property="sizeL" jdbcType="DECIMAL" />
 	  	<result column="b_size_x" property="sizeX" jdbcType="VARCHAR" />
@@ -50,10 +50,10 @@
 	  	<result column="b_create_date" property="createDate" jdbcType="TIMESTAMP" />
     </resultMap>
     <sql id="Base_Column_List" >
-  		id,product_id,parent_id,big_type,small_type,child_id,unit,qty,price,money,loss_rate,loss_qty,size_l,size_x,size_w,length,width,knife_qty,depth,source,create_by,create_date
+  		id,product_id,parent_id,big_type,small_type,child_id,unit,qty,price,money,loss_type,loss_qty,size_l,size_x,size_w,length,width,knife_qty,depth,source,create_by,create_date
 	</sql>
   	<sql id="Base_Column_List_Bom" >
-  		b.id b_id,b.product_id b_product_id,b.parent_id b_parent_id,b.big_type b_big_type,b.small_type b_small_type,b.child_id b_child_id,b.unit b_unit,b.qty b_qty,b.price b_price,b.money b_money,b.loss_rate b_loss_rate,b.loss_qty b_loss_qty,b.size_l b_size_l,b.size_x b_size_x,b.size_w b_size_w,b.length b_length,b.width b_width,b.knife_qty b_knife_qty,b.depth b_depth,b.source b_source,b.create_by b_create_by,b.create_date b_create_date
+  		b.id b_id,b.product_id b_product_id,b.parent_id b_parent_id,b.big_type b_big_type,b.small_type b_small_type,b.child_id b_child_id,b.unit b_unit,b.qty b_qty,b.price b_price,b.money b_money,b.loss_type b_loss_type,b.loss_qty b_loss_qty,b.size_l b_size_l,b.size_x b_size_x,b.size_w b_size_w,b.length b_length,b.width b_width,b.knife_qty b_knife_qty,b.depth b_depth,b.source b_source,b.create_by b_create_by,b.create_date b_create_date
 	</sql>
 	
 	<!-- 系统自定义 -->
@@ -95,8 +95,8 @@
 			<if test="p.money!=null ">
 		    	and b.money=#{p.money}
 		    </if>
-			<if test="p.lossRate!=null ">
-		    	and b.loss_rate=#{p.lossRate}
+			<if test="p.lossType!=null ">
+		    	and b.loss_type=#{p.lossType}
 		    </if>
 			<if test="p.lossQty!=null ">
 		    	and b.loss_qty=#{p.lossQty}
