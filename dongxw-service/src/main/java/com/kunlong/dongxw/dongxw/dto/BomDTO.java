@@ -12,17 +12,17 @@ import io.swagger.annotations.ApiModelProperty;
 /**
  * Bom
  * @author generator
- * @date 2020年01月28日
+ * @date 2020年02月02日
  */
 @ApiModel(value="BomDTO",description="BOM表")
 public class BomDTO implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	/**
-	  * BOM标识 
+	  * BOM成本标识 
 	  * nullable:true,length:11
 	  */
-	@ApiModelProperty(value = "BOM标识 ",required = false,notes = "BOM标识  [自增]")
+	@ApiModelProperty(value = "BOM成本标识 ",required = false,notes = "BOM成本标识  [自增]")
 	private Integer id;
 	/**
 	  * 产品标识 
@@ -80,10 +80,10 @@ public class BomDTO implements Serializable {
 	private BigDecimal money;
 	/**
 	  * 损耗率(%) 
-	  * nullable:false,length:10
+	  * nullable:false,length:8
 	  */
 	@ApiModelProperty(value = "损耗率(%) ",required = true,notes = "损耗率(%)  ")
-	private BigDecimal lossType;
+	private Integer lossType;
 	/**
 	  * 损耗数 
 	  * nullable:false,length:6
@@ -210,10 +210,10 @@ public class BomDTO implements Serializable {
     public void setMoney(BigDecimal money){
     	this.money = money;
     }
-    public BigDecimal getLossType(){
+    public Integer getLossType(){
     	return this.lossType;
     }
-    public void setLossType(BigDecimal lossType){
+    public void setLossType(Integer lossType){
     	this.lossType = lossType;
     }
     public Short getLossQty(){

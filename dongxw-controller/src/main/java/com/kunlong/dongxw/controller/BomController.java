@@ -5,6 +5,7 @@ import app.support.query.PageResult;
 import cn.kunlong.center.api.model.SysUserDTO;
 import com.kunlong.dongxw.annotation.DateRewritable;
 import com.kunlong.dongxw.consts.ApiConstants;
+import com.kunlong.dongxw.consts.BomConsts;
 import com.kunlong.dongxw.consts.MakePlanConst;
 import com.kunlong.dongxw.dongxw.domain.Bom;
 import com.kunlong.dongxw.dongxw.domain.MakePlan;
@@ -21,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -50,15 +52,19 @@ public  class BomController extends BaseController {
 
 
 
+    @Autowired
+    BomJoinService bomJoinService;
 
 
 
     //检查有计划
     @PostMapping("/deleteById/{id}")
     public JsonResult<Integer> deleteById(@PathVariable("id") Integer id) throws IOException {
+        Bom bom = bomService.findById(id);
 
         bomService.deleteById(id);
 
+        bomJoinService.reSaveBomCostByProduct(bom.getProductId());
         return JsonResult.success();
     }
 
@@ -68,15 +74,15 @@ public  class BomController extends BaseController {
 
         return JsonResult.success(bom);
 
-}
+    }
 
     @RequestMapping("/save")
     public JsonResult<Integer> save(@RequestBody Bom bom) {
 
         bom.setMoney(bom.getPrice().multiply(bom.getQty()));
         if (bom.getChildId() != null && bom.getChildId() > 0) {
-            Product product=productService.findById(bom.getChildId());
-            if(product!=null){
+            Product product = productService.findById(bom.getChildId());
+            if (product != null) {
                 bom.setBigType(product.getParentId());
                 bom.setSmallType(product.getProductTypeId());
             }
@@ -89,6 +95,7 @@ public  class BomController extends BaseController {
             bomService.update(bom);
         }
 
+        bomJoinService.reSaveBomCostByProduct(bom.getProductId());
         return JsonResult.success(bom.getId());
     }
 
@@ -100,17 +107,21 @@ public  class BomController extends BaseController {
         queryParam.setSortBys("id|desc");
         pageResult.setTotal(bomService.countByQueryParam(queryParam));
         pageResult.setData(bomService.findByQueryParam(queryParam));
-        //fillMakePlans(pageResult.getData());
         for(Bom bom:pageResult.getData()){
             bom.setChildRm(productService.findById(bom.getChildId()));
             bom.setProduct(productService.findById(bom.getProductId()));
             if(bom.getChildRm()!=null){
                 bom.getChildRm().setProductSubType(productTypeService.findById(bom.getChildRm().getProductTypeId()));
                 bom.getChildRm().setProductType(productTypeService.findById(bom.getChildRm().getParentId()));
-
+                if(bom.getLossType().equals(BomConsts.TYPE_LOSS_QTY)){
+                    bom.setLossMoney(bom.getPrice().multiply(BigDecimal.valueOf(bom.getLossQty())));
+                 }else {
+                    bom.setLossMoney(bom.getMoney().divide(BigDecimal.valueOf(100)).multiply(BigDecimal.valueOf(bom.getLossQty())));
+                 }
+                bom.setTotalMoney(bom.getMoney().add(bom.getLossMoney()));
             }
             SysUserDTO sysUserDTO = sysUserApiService.findById(bom.getCreateBy());
-            bom.setCreateByName(sysUserDTO==null?"-":sysUserDTO.getUsername());
+            bom.setCreateByName(sysUserDTO == null ? "-" : sysUserDTO.getUsername());
         }
         return pageResult;
     }

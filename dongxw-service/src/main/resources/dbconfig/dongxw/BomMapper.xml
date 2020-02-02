@@ -12,7 +12,7 @@
 	  	<result column="qty" property="qty" jdbcType="DECIMAL" />
 	  	<result column="price" property="price" jdbcType="DECIMAL" />
 	  	<result column="money" property="money" jdbcType="DECIMAL" />
-	  	<result column="loss_type" property="lossType" jdbcType="DECIMAL" />
+	  	<result column="loss_type" property="lossType" jdbcType="INTEGER" />
 	  	<result column="loss_qty" property="lossQty" jdbcType="SMALLINT" />
 	  	<result column="size_l" property="sizeL" jdbcType="DECIMAL" />
 	  	<result column="size_x" property="sizeX" jdbcType="VARCHAR" />
@@ -36,7 +36,7 @@
 	  	<result column="b_qty" property="qty" jdbcType="DECIMAL" />
 	  	<result column="b_price" property="price" jdbcType="DECIMAL" />
 	  	<result column="b_money" property="money" jdbcType="DECIMAL" />
-	  	<result column="b_loss_type" property="lossType" jdbcType="DECIMAL" />
+	  	<result column="b_loss_type" property="lossType" jdbcType="INTEGER" />
 	  	<result column="b_loss_qty" property="lossQty" jdbcType="SMALLINT" />
 	  	<result column="b_size_l" property="sizeL" jdbcType="DECIMAL" />
 	  	<result column="b_size_x" property="sizeX" jdbcType="VARCHAR" />

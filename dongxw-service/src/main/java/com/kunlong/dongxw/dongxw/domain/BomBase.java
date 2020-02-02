@@ -3,6 +3,7 @@ package com.kunlong.dongxw.dongxw.domain;
 import com.kunlong.platform.model.KunlongModel;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 
 /**
@@ -11,6 +12,9 @@ import java.io.Serializable;
  * @date 2020年01月04日
  */
 public class BomBase extends KunlongModel implements Serializable {
+	BigDecimal lossMoney;
+	BigDecimal totalMoney;
+
 
 	private static final long serialVersionUID = 1L;
 	// ==== 自定义属性 ====
@@ -18,7 +22,21 @@ public class BomBase extends KunlongModel implements Serializable {
 	ProductType productSubType;
 	//子件
 	Product childRm;
+	public BigDecimal getLossMoney() {
+		return lossMoney;
+	}
 
+	public void setLossMoney(BigDecimal lossMoney) {
+		this.lossMoney = lossMoney;
+	}
+
+	public BigDecimal getTotalMoney() {
+		return totalMoney;
+	}
+
+	public void setTotalMoney(BigDecimal totalMoney) {
+		this.totalMoney = totalMoney;
+	}
 	public Product getProduct() {
 		return product;
 	}

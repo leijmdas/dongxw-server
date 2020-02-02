@@ -16,17 +16,17 @@ import org.mybatis.hbatis.orm.criteria.support.query.SortOrders;
 /**
  * Bom BOM表
  * @author generator
- * @date 2020年01月28日
+ * @date 2020年02月02日
  */
 @Table(Bom.EntityNode.class)
-public class Bom extends  BomBase implements Serializable {
-	
+public class Bom extends BomBase implements Serializable {
+
 	private static final long serialVersionUID = 1L;
 	/**
-	  * BOM标识 
-	  * nullable:true,length:11
-	  */
-	@Column(primaryKey = true,autoIncrement = true,comment = "BOM标识 ")	
+	 * BOM成本标识
+	 * nullable:true,length:11
+	 */
+	@Column(primaryKey = true, autoIncrement = true,comment = "BOM成本标识 ")
 	private Integer id;
 	/**
 	  * 产品标识 
@@ -91,11 +91,11 @@ public class Bom extends  BomBase implements Serializable {
 	private BigDecimal money;
 	/**
 	  * 损耗率(%) 
-	  * nullable:false,length:10
+	  * nullable:false,length:8
 	  */
 	@Column(comment = "损耗率(%) ")	
 	@NotNull
-	private BigDecimal lossType;
+	private Integer lossType;
 	/**
 	  * 损耗数 
 	  * nullable:false,length:6
@@ -231,10 +231,10 @@ public class Bom extends  BomBase implements Serializable {
     public void setMoney(BigDecimal money){
     	this.money = money;
     }
-    public BigDecimal getLossType(){
+    public Integer getLossType(){
     	return this.lossType;
     }
-    public void setLossType(BigDecimal lossType){
+    public void setLossType(Integer lossType){
     	this.lossType = lossType;
     }
     public Short getLossQty(){
@@ -306,7 +306,7 @@ public class Bom extends  BomBase implements Serializable {
 
     public static class EntityNode extends AbstractEntityNode<Bom> {
         public static final EntityNode INSTANCE = new EntityNode("b");;
-    	/** BOM标识  */
+    	/** BOM成本标识  */
         public FieldNode<Bom, Integer> id =  createFieldNode("id","id",Integer.class,JdbcType.INTEGER);
     	/** 产品标识  */
         public FieldNode<Bom, Integer> productId =  createFieldNode("productId","product_id",Integer.class,JdbcType.INTEGER);
@@ -327,7 +327,7 @@ public class Bom extends  BomBase implements Serializable {
     	/** 金额  */
         public FieldNode<Bom, BigDecimal> money =  createFieldNode("money","money",BigDecimal.class,JdbcType.DECIMAL);
     	/** 损耗率(%)  */
-        public FieldNode<Bom, BigDecimal> lossType =  createFieldNode("lossType","loss_type",BigDecimal.class,JdbcType.DECIMAL);
+        public FieldNode<Bom, Integer> lossType =  createFieldNode("lossType","loss_type",Integer.class,JdbcType.INTEGER);
     	/** 损耗数  */
         public FieldNode<Bom, Short> lossQty =  createFieldNode("lossQty","loss_qty",Short.class,JdbcType.SMALLINT);
     	/** 尺寸(长）  */
