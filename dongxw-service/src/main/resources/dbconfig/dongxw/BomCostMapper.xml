@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kunlong.dongxw.dongxw.dao.BomCostMapper" >
+	<resultMap id="BaseResultMap" type="com.kunlong.dongxw.dongxw.domain.BomCost" >
+	    <id column="id" property="id" jdbcType="INTEGER" />	
+	  	<result column="product_id" property="productId" jdbcType="INTEGER" />
+	  	<result column="version" property="version" jdbcType="VARCHAR" />
+	  	<result column="rm_fee" property="rmFee" jdbcType="DECIMAL" />
+	  	<result column="loss_rm" property="lossRm" jdbcType="DECIMAL" />
+	  	<result column="cut_rm" property="cutRm" jdbcType="DECIMAL" />
+	  	<result column="knife_model" property="knifeModel" jdbcType="DECIMAL" />
+	  	<result column="work_fee" property="workFee" jdbcType="DECIMAL" />
+	  	<result column="shipping_fee" property="shippingFee" jdbcType="DECIMAL" />
+	  	<result column="total_fee" property="totalFee" jdbcType="DECIMAL" />
+	  	<result column="remark" property="remark" jdbcType="VARCHAR" />
+	  	<result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+	  	<result column="create_by" property="createBy" jdbcType="INTEGER" />
+    </resultMap>
+    <resultMap id="BaseResultMap_BomCost" type="com.kunlong.dongxw.dongxw.domain.BomCost" >
+	    <id column="bc_id" property="id" jdbcType="INTEGER" />	
+	  	<result column="bc_product_id" property="productId" jdbcType="INTEGER" />
+	  	<result column="bc_version" property="version" jdbcType="VARCHAR" />
+	  	<result column="bc_rm_fee" property="rmFee" jdbcType="DECIMAL" />
+	  	<result column="bc_loss_rm" property="lossRm" jdbcType="DECIMAL" />
+	  	<result column="bc_cut_rm" property="cutRm" jdbcType="DECIMAL" />
+	  	<result column="bc_knife_model" property="knifeModel" jdbcType="DECIMAL" />
+	  	<result column="bc_work_fee" property="workFee" jdbcType="DECIMAL" />
+	  	<result column="bc_shipping_fee" property="shippingFee" jdbcType="DECIMAL" />
+	  	<result column="bc_total_fee" property="totalFee" jdbcType="DECIMAL" />
+	  	<result column="bc_remark" property="remark" jdbcType="VARCHAR" />
+	  	<result column="bc_create_date" property="createDate" jdbcType="TIMESTAMP" />
+	  	<result column="bc_create_by" property="createBy" jdbcType="INTEGER" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+  		id,product_id,version,rm_fee,loss_rm,cut_rm,knife_model,work_fee,shipping_fee,total_fee,remark,create_date,create_by
+	</sql>
+  	<sql id="Base_Column_List_BomCost" >
+  		bc.id bc_id,bc.product_id bc_product_id,bc.version bc_version,bc.rm_fee bc_rm_fee,bc.loss_rm bc_loss_rm,bc.cut_rm bc_cut_rm,bc.knife_model bc_knife_model,bc.work_fee bc_work_fee,bc.shipping_fee bc_shipping_fee,bc.total_fee bc_total_fee,bc.remark bc_remark,bc.create_date bc_create_date,bc.create_by bc_create_by
+	</sql>
+	
+	<!-- 系统自定义 -->
+	<!-- 实体参数查询结果[START] -->
+	<resultMap id="ResultMap_FindByQueryParam" type="com.kunlong.dongxw.dongxw.domain.BomCost" extends="BaseResultMap_BomCost">
+		
+	</resultMap>
+
+	<sql id="Condition_FindByQueryParam">
+		<if test="queryParam.param!=null">
+			<bind name="p" value="queryParam.param"/>
+			<if test="p.id!=null ">
+		    	and bc.id=#{p.id}
+		    </if>
+			<if test="p.productId!=null ">
+		    	and bc.product_id=#{p.productId}
+		    </if>
+			<if test="p.version!=null and p.version!=''">
+		    	and bc.version like #{p.version}
+		    </if>
+			<if test="p.rmFee!=null ">
+		    	and bc.rm_fee=#{p.rmFee}
+		    </if>
+			<if test="p.lossRm!=null ">
+		    	and bc.loss_rm=#{p.lossRm}
+		    </if>
+			<if test="p.cutRm!=null ">
+		    	and bc.cut_rm=#{p.cutRm}
+		    </if>
+			<if test="p.knifeModel!=null ">
+		    	and bc.knife_model=#{p.knifeModel}
+		    </if>
+			<if test="p.workFee!=null ">
+		    	and bc.work_fee=#{p.workFee}
+		    </if>
+			<if test="p.shippingFee!=null ">
+		    	and bc.shipping_fee=#{p.shippingFee}
+		    </if>
+			<if test="p.totalFee!=null ">
+		    	and bc.total_fee=#{p.totalFee}
+		    </if>
+			<if test="p.remark!=null and p.remark!=''">
+		    	and bc.remark like #{p.remark}
+		    </if>
+			<if test="p.createDate!=null ">
+		    	and bc.create_date=#{p.createDate}
+		    </if>
+			<if test="p.createBy!=null ">
+		    	and bc.create_by=#{p.createBy}
+		    </if>
+		</if>
+		<!--
+		<bind name="rp" value="queryParam.ruleParam" />
+		<include refid="org.mybatis.hbatis.orm.mapper.HbatisMapper.RuleParam"/>
+		-->
+	</sql>
+	<select id="findByQueryParam" resultMap="ResultMap_FindByQueryParam">
+		select
+		<include refid="Base_Column_List_BomCost"></include>
+		from bom_cost bc where 1=1
+		<include refid="Condition_FindByQueryParam"></include>
+		<if test="queryParam.sortOrders!=null and queryParam.sortOrders.size() gt 0">
+			order by 
+			<foreach collection="queryParam.sortOrders" item="item" separator=",">
+				${item.sortField.sqlColumn} ${item.sortType}
+			</foreach>
+		</if>
+		<if test="queryParam.limit gt 0">
+	  		limit ${queryParam.start},${queryParam.limit}
+	  	</if>
+	</select>
+	<select id="countByQueryParam" resultType="long">
+		select count(1) from bom_cost bc where 1=1
+		<include refid="Condition_FindByQueryParam"></include>
+	</select>
+	
+	<!-- 实体参数查询结果[END] -->
+	<!-- 用户自定义 -->
+	
+</mapper>
