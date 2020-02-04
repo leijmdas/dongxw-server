@@ -3,7 +3,6 @@ package com.kunlong.dongxw.controller;
 
 import app.support.query.PageResult;
 import cn.kunlong.center.api.model.SysUserDTO;
-import cn.kunlong.center.api.service.SysUserApiService;
 import com.kunlong.dongxw.annotation.DateRewritable;
 import com.kunlong.dongxw.consts.ApiConstants;
 import com.kunlong.dongxw.consts.MoneyTypeConsts;
@@ -207,8 +206,7 @@ public final class OrderLineController extends BaseController {
             r.add(orderLine.getMoney());
             //strings.add("币种");
             //r.add(orderLine.getOrderMaster()==null?'-':orderLine.getOrderMaster().getMoneyType());
-            r.add(MoneyTypeConsts.getMoneyType(
-                    orderLine.getOrderMaster()==null?-1:orderLine.getOrderMaster().getMoneyType()));
+            r.add(MoneyTypeConsts.getMoneyType(orderLine.getOrderMaster() == null ? -1 : orderLine.getOrderMaster().getMoneyType()));
 
             //strings.add("条码");
             r.add(orderLine.getProduct().getBarCode());

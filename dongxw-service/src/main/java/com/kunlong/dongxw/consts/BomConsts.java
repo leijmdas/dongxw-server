@@ -4,15 +4,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class BomConsts {
-    public static Integer TYPE_LOSS_RATE = 1;
     public static Integer TYPE_LOSS_QTY = 0;
-    public static Integer TYPE_SUB = 200;
 
+    public static Integer TYPE_LOSS_RATE = 1;
     static Map<Integer, String> mapType = new HashMap<Integer, String>() {
         {
-//            put(TYPE_NORMARL, "'损耗率(%)'");
-//            put(TYPE_PARENT, "'损耗数'");
-//            put(TYPE_SUB, "子订单");
+            put(TYPE_LOSS_QTY, "损耗数");
+            put(TYPE_LOSS_RATE, "损耗率(%)");
         }
     };
 

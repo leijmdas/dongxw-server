@@ -4,8 +4,6 @@ package com.kunlong.dongxw.controller;
 import app.support.query.PageResult;
 import com.kunlong.dongxw.annotation.DateRewritable;
 import com.kunlong.dongxw.consts.ApiConstants;
-import com.kunlong.dongxw.consts.MoneyTypeConsts;
-import com.kunlong.dongxw.dongxw.domain.Customer;
 import com.kunlong.dongxw.dongxw.domain.Product;
 import com.kunlong.dongxw.dongxw.domain.ProductType;
 import com.kunlong.dongxw.dongxw.service.ProductService;

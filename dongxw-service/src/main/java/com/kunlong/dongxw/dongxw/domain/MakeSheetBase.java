@@ -11,7 +11,7 @@ import java.math.BigDecimal;
  * @author generator
  * @date 2020年01月04日
  */
-public class BomBase extends KunlongModel implements Serializable {
+public class MakeSheetBase extends KunlongModel implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	// ==== 自定义属性 ====

@@ -40,7 +40,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/dongxw/ordermaster")
 public final class OrderMasterController extends BaseController {
-       @Autowired
+    @Autowired
     OrderMasterService orderMasterService;
     @Autowired
     OrderLineService orderLineService;

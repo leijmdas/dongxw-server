@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kunlong.dongxw.dongxw.dao.MakeSheetMapper" >
+	<resultMap id="BaseResultMap" type="com.kunlong.dongxw.dongxw.domain.MakeSheet" >
+	    <id column="id" property="id" jdbcType="INTEGER" />	
+	  	<result column="order_id" property="orderId" jdbcType="INTEGER" />
+	  	<result column="order_line_id" property="orderLineId" jdbcType="INTEGER" />
+	  	<result column="plan_id" property="planId" jdbcType="INTEGER" />
+	  	<result column="product_id" property="productId" jdbcType="INTEGER" />
+	  	<result column="rm_id" property="rmId" jdbcType="INTEGER" />
+	  	<result column="parent_id" property="parentId" jdbcType="INTEGER" />
+	  	<result column="big_type" property="bigType" jdbcType="INTEGER" />
+	  	<result column="small_type" property="smallType" jdbcType="INTEGER" />
+	  	<result column="child_id" property="childId" jdbcType="INTEGER" />
+	  	<result column="unit" property="unit" jdbcType="VARCHAR" />
+	  	<result column="p_qty" property="pQty" jdbcType="DECIMAL" />
+	  	<result column="qty" property="qty" jdbcType="DECIMAL" />
+	  	<result column="total_qty" property="totalQty" jdbcType="DECIMAL" />
+	  	<result column="price" property="price" jdbcType="DECIMAL" />
+	  	<result column="money" property="money" jdbcType="DECIMAL" />
+	  	<result column="loss_type" property="lossType" jdbcType="INTEGER" />
+	  	<result column="loss_qty" property="lossQty" jdbcType="DECIMAL" />
+	  	<result column="size_l" property="sizeL" jdbcType="DECIMAL" />
+	  	<result column="size_x" property="sizeX" jdbcType="VARCHAR" />
+	  	<result column="size_w" property="sizeW" jdbcType="DECIMAL" />
+	  	<result column="length" property="length" jdbcType="INTEGER" />
+	  	<result column="width" property="width" jdbcType="INTEGER" />
+	  	<result column="knife_qty" property="knifeQty" jdbcType="SMALLINT" />
+	  	<result column="depth" property="depth" jdbcType="SMALLINT" />
+	  	<result column="source" property="source" jdbcType="TINYINT" />
+	  	<result column="create_by" property="createBy" jdbcType="INTEGER" />
+	  	<result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    </resultMap>
+    <resultMap id="BaseResultMap_MakeSheet" type="com.kunlong.dongxw.dongxw.domain.MakeSheet" >
+	    <id column="ms_id" property="id" jdbcType="INTEGER" />	
+	  	<result column="ms_order_id" property="orderId" jdbcType="INTEGER" />
+	  	<result column="ms_order_line_id" property="orderLineId" jdbcType="INTEGER" />
+	  	<result column="ms_plan_id" property="planId" jdbcType="INTEGER" />
+	  	<result column="ms_product_id" property="productId" jdbcType="INTEGER" />
+	  	<result column="ms_rm_id" property="rmId" jdbcType="INTEGER" />
+	  	<result column="ms_parent_id" property="parentId" jdbcType="INTEGER" />
+	  	<result column="ms_big_type" property="bigType" jdbcType="INTEGER" />
+	  	<result column="ms_small_type" property="smallType" jdbcType="INTEGER" />
+	  	<result column="ms_child_id" property="childId" jdbcType="INTEGER" />
+	  	<result column="ms_unit" property="unit" jdbcType="VARCHAR" />
+	  	<result column="ms_p_qty" property="pQty" jdbcType="DECIMAL" />
+	  	<result column="ms_qty" property="qty" jdbcType="DECIMAL" />
+	  	<result column="ms_total_qty" property="totalQty" jdbcType="DECIMAL" />
+	  	<result column="ms_price" property="price" jdbcType="DECIMAL" />
+	  	<result column="ms_money" property="money" jdbcType="DECIMAL" />
+	  	<result column="ms_loss_type" property="lossType" jdbcType="INTEGER" />
+	  	<result column="ms_loss_qty" property="lossQty" jdbcType="DECIMAL" />
+	  	<result column="ms_size_l" property="sizeL" jdbcType="DECIMAL" />
+	  	<result column="ms_size_x" property="sizeX" jdbcType="VARCHAR" />
+	  	<result column="ms_size_w" property="sizeW" jdbcType="DECIMAL" />
+	  	<result column="ms_length" property="length" jdbcType="INTEGER" />
+	  	<result column="ms_width" property="width" jdbcType="INTEGER" />
+	  	<result column="ms_knife_qty" property="knifeQty" jdbcType="SMALLINT" />
+	  	<result column="ms_depth" property="depth" jdbcType="SMALLINT" />
+	  	<result column="ms_source" property="source" jdbcType="TINYINT" />
+	  	<result column="ms_create_by" property="createBy" jdbcType="INTEGER" />
+	  	<result column="ms_create_date" property="createDate" jdbcType="TIMESTAMP" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+  		id,order_id,order_line_id,plan_id,product_id,rm_id,parent_id,big_type,small_type,child_id,unit,p_qty,qty,total_qty,price,money,loss_type,loss_qty,size_l,size_x,size_w,length,width,knife_qty,depth,source,create_by,create_date
+	</sql>
+  	<sql id="Base_Column_List_MakeSheet" >
+  		ms.id ms_id,ms.order_id ms_order_id,ms.order_line_id ms_order_line_id,ms.plan_id ms_plan_id,ms.product_id ms_product_id,ms.rm_id ms_rm_id,ms.parent_id ms_parent_id,ms.big_type ms_big_type,ms.small_type ms_small_type,ms.child_id ms_child_id,ms.unit ms_unit,ms.p_qty ms_p_qty,ms.qty ms_qty,ms.total_qty ms_total_qty,ms.price ms_price,ms.money ms_money,ms.loss_type ms_loss_type,ms.loss_qty ms_loss_qty,ms.size_l ms_size_l,ms.size_x ms_size_x,ms.size_w ms_size_w,ms.length ms_length,ms.width ms_width,ms.knife_qty ms_knife_qty,ms.depth ms_depth,ms.source ms_source,ms.create_by ms_create_by,ms.create_date ms_create_date
+	</sql>
+	
+	<!-- 系统自定义 -->
+	<!-- 实体参数查询结果[START] -->
+	<resultMap id="ResultMap_FindByQueryParam" type="com.kunlong.dongxw.dongxw.domain.MakeSheet" extends="BaseResultMap_MakeSheet">
+		
+	</resultMap>
+
+	<sql id="Condition_FindByQueryParam">
+		<if test="queryParam.param!=null">
+			<bind name="p" value="queryParam.param"/>
+			<if test="p.id!=null ">
+		    	and ms.id=#{p.id}
+		    </if>
+			<if test="p.orderId!=null ">
+		    	and ms.order_id=#{p.orderId}
+		    </if>
+			<if test="p.orderLineId!=null ">
+		    	and ms.order_line_id=#{p.orderLineId}
+		    </if>
+			<if test="p.planId!=null ">
+		    	and ms.plan_id=#{p.planId}
+		    </if>
+			<if test="p.productId!=null ">
+		    	and ms.product_id=#{p.productId}
+		    </if>
+			<if test="p.rmId!=null ">
+		    	and ms.rm_id=#{p.rmId}
+		    </if>
+			<if test="p.parentId!=null ">
+		    	and ms.parent_id=#{p.parentId}
+		    </if>
+			<if test="p.bigType!=null ">
+		    	and ms.big_type=#{p.bigType}
+		    </if>
+			<if test="p.smallType!=null ">
+		    	and ms.small_type=#{p.smallType}
+		    </if>
+			<if test="p.childId!=null ">
+		    	and ms.child_id=#{p.childId}
+		    </if>
+			<if test="p.unit!=null and p.unit!=''">
+		    	and ms.unit like #{p.unit}
+		    </if>
+			<if test="p.pQty!=null ">
+		    	and ms.p_qty=#{p.pQty}
+		    </if>
+			<if test="p.qty!=null ">
+		    	and ms.qty=#{p.qty}
+		    </if>
+			<if test="p.totalQty!=null ">
+		    	and ms.total_qty=#{p.totalQty}
+		    </if>
+			<if test="p.price!=null ">
+		    	and ms.price=#{p.price}
+		    </if>
+			<if test="p.money!=null ">
+		    	and ms.money=#{p.money}
+		    </if>
+			<if test="p.lossType!=null ">
+		    	and ms.loss_type=#{p.lossType}
+		    </if>
+			<if test="p.lossQty!=null ">
+		    	and ms.loss_qty=#{p.lossQty}
+		    </if>
+			<if test="p.sizeL!=null ">
+		    	and ms.size_l=#{p.sizeL}
+		    </if>
+			<if test="p.sizeX!=null and p.sizeX!=''">
+		    	and ms.size_x like #{p.sizeX}
+		    </if>
+			<if test="p.sizeW!=null ">
+		    	and ms.size_w=#{p.sizeW}
+		    </if>
+			<if test="p.length!=null ">
+		    	and ms.length=#{p.length}
+		    </if>
+			<if test="p.width!=null ">
+		    	and ms.width=#{p.width}
+		    </if>
+			<if test="p.knifeQty!=null ">
+		    	and ms.knife_qty=#{p.knifeQty}
+		    </if>
+			<if test="p.depth!=null ">
+		    	and ms.depth=#{p.depth}
+		    </if>
+			<if test="p.source!=null ">
+		    	and ms.source=#{p.source}
+		    </if>
+			<if test="p.createBy!=null ">
+		    	and ms.create_by=#{p.createBy}
+		    </if>
+			<if test="p.createDate!=null ">
+		    	and ms.create_date=#{p.createDate}
+		    </if>
+		</if>
+		<!--
+		<bind name="rp" value="queryParam.ruleParam" />
+		<include refid="org.mybatis.hbatis.orm.mapper.HbatisMapper.RuleParam"/>
+		-->
+	</sql>
+	<select id="findByQueryParam" resultMap="ResultMap_FindByQueryParam">
+		select
+		<include refid="Base_Column_List_MakeSheet"></include>
+		from make_sheet ms where 1=1
+		<include refid="Condition_FindByQueryParam"></include>
+		<if test="queryParam.sortOrders!=null and queryParam.sortOrders.size() gt 0">
+			order by 
+			<foreach collection="queryParam.sortOrders" item="item" separator=",">
+				${item.sortField.sqlColumn} ${item.sortType}
+			</foreach>
+		</if>
+		<if test="queryParam.limit gt 0">
+	  		limit ${queryParam.start},${queryParam.limit}
+	  	</if>
+	</select>
+	<select id="countByQueryParam" resultType="long">
+		select count(1) from make_sheet ms where 1=1
+		<include refid="Condition_FindByQueryParam"></include>
+	</select>
+	
+	<!-- 实体参数查询结果[END] -->
+	<!-- 用户自定义 -->
+	
+</mapper>

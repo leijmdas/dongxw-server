@@ -1,6 +1,7 @@
 package com.kunlong.dongxw.testcase;
 
 import com.jtest.utility.testlog.TestLog;
+import com.kunlong.dongxw.dongxw.service.MakePlanJoinService;
 import com.kunlong.dongxw.pub.TestBaseApp;
 import com.kunlong.dongxw.dongxw.domain.Customer;
 import com.kunlong.dongxw.dongxw.service.CustomerService;
@@ -8,9 +9,12 @@ import com.kunlong.platform.utils.JsonResult;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.IOException;
 import java.util.List;
 
 public class TestDongxwService extends TestBaseApp {
+    @Autowired
+    MakePlanJoinService makePlanJoinService;
 
     @Autowired
     CustomerService customerService;
@@ -62,6 +66,11 @@ public class TestDongxwService extends TestBaseApp {
 
 
 
+    }
+
+    @Test
+    public void test005_MakePlanJoinService_makeSheetByPlanOrder() throws IOException {
+        makePlanJoinService.makeSheetByPlanOrder(4,0);
     }
 }
 
