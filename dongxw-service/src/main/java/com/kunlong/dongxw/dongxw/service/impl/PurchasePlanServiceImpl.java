@@ -3,27 +3,27 @@ package com.kunlong.dongxw.dongxw.service.impl;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.kunlong.dongxw.dongxw.domain.OrderLine;
-import com.kunlong.dongxw.dongxw.dao.OrderLineMapper;
-import com.kunlong.dongxw.dongxw.service.OrderLineService;
+import com.kunlong.dongxw.dongxw.domain.PurchasePlan;
+import com.kunlong.dongxw.dongxw.dao.PurchasePlanMapper;
+import com.kunlong.dongxw.dongxw.service.PurchasePlanService;
 import org.mybatis.hbatis.orm.criteria.statement.SelectStatement;
 import org.mybatis.hbatis.orm.criteria.statement.UpdateStatement;
 import org.mybatis.hbatis.orm.criteria.support.StatementBuilder;
 /**
- * OrderLineServiceImpl
+ * PurchasePlanServiceImpl
  * @author generator
  * @date 2020年02月05日
  */
 @Service
-public class OrderLineServiceImpl implements OrderLineService {
+public class PurchasePlanServiceImpl implements PurchasePlanService {
 	
 	@Autowired
-	private OrderLineMapper repo;
+	private PurchasePlanMapper repo;
 	/**
 	 * 保存
 	 * @param entity
 	 */
-	public void save(OrderLine entity){
+	public void save(PurchasePlan entity){
 		this.checkEntity(entity);
 		repo.insert(entity);
 	}
@@ -32,7 +32,7 @@ public class OrderLineServiceImpl implements OrderLineService {
 	 * 修改
 	 * @param entity
 	 */
-	public void update(OrderLine entity){
+	public void update(PurchasePlan entity){
 		this.checkEntity(entity);
 		repo.update(entity);
 	}
@@ -40,7 +40,7 @@ public class OrderLineServiceImpl implements OrderLineService {
 	 * 较验实体
 	 * @param entity
 	 */
-	public void checkEntity(OrderLine entity){
+	public void checkEntity(PurchasePlan entity){
 	
 	}
 	/**
@@ -56,44 +56,44 @@ public class OrderLineServiceImpl implements OrderLineService {
 	 * @param id
 	 * @return
 	 */
-	public OrderLine findById(Integer pk){
+	public PurchasePlan findById(Integer pk){
 		return repo.selectByPK(pk);
 	}
 	/**
 	 * 通过非空属性查询
-	 * @param OrderLine
+	 * @param PurchasePlan
 	 * @return
 	 */
-	public List<OrderLine> findByNotNullProps(OrderLine entity){
+	public List<PurchasePlan> findByNotNullProps(PurchasePlan entity){
 		
-		SelectStatement<OrderLine> st = StatementBuilder.buildSelectSelective(entity);
+		SelectStatement<PurchasePlan> st = StatementBuilder.buildSelectSelective(entity);
 		return repo.selectByStatement(st);
 	}
 	/**
 	 * 通过主键更新非空属性
-	 * @param OrderLine
+	 * @param PurchasePlan
 	 * @return
 	 */
-	public void updateNotNullPropsById(OrderLine entity){
+	public void updateNotNullPropsById(PurchasePlan entity){
 		
-		UpdateStatement<OrderLine> st = StatementBuilder.buildUpdateSelective(entity);
+		UpdateStatement<PurchasePlan> st = StatementBuilder.buildUpdateSelective(entity);
 		repo.updateByStatement(st);
 	}
 	
 	/**
 	 * 通过实体参数分页查询
-	 * @param OrderLine.QueryParam
+	 * @param PurchasePlan.QueryParam
 	 * @return
 	 */
-	public List<OrderLine> findByQueryParam(OrderLine.QueryParam queryParam){
+	public List<PurchasePlan> findByQueryParam(PurchasePlan.QueryParam queryParam){
 		return repo.findByQueryParam(queryParam);
 	}
 	/**
 	 * 通过实体参数统计
-	 * @param OrderLine.QueryParam
+	 * @param PurchasePlan.QueryParam
 	 * @return
 	 */
-	public long countByQueryParam(OrderLine.QueryParam queryParam) {
+	public long countByQueryParam(PurchasePlan.QueryParam queryParam) {
 		return repo.countByQueryParam(queryParam);
 	}
 	/**
@@ -101,13 +101,13 @@ public class OrderLineServiceImpl implements OrderLineService {
 	 * @param List<Integer> pks
 	 * @return
 	 */
-	public List<OrderLine> findByIds(List<Integer> pks) {
+	public List<PurchasePlan> findByIds(List<Integer> pks) {
 		return repo.selectByPKS(pks);
 	}
 	/**
 	 * 值填充
 	 */
-	public void fillValues(List<OrderLine> items, OrderLine.ValueField... field) {
+	public void fillValues(List<PurchasePlan> items, PurchasePlan.ValueField... field) {
 		if (items == null || items.isEmpty() || field.length < 1) {
 			return;
 		}

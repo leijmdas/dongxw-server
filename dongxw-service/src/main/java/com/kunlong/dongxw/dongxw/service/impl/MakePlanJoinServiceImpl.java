@@ -29,6 +29,9 @@ public class MakePlanJoinServiceImpl implements MakePlanJoinService {
     @Autowired
     MakeSheetService makeSheetService;
 
+    @Autowired
+    PurchasePlanService purchasePlanService;
+
 
     public boolean checkExistsByOrderLine(Integer orderLineId) throws IOException {
 
@@ -39,7 +42,7 @@ public class MakePlanJoinServiceImpl implements MakePlanJoinService {
     public List<MakePlan> findByOrderLine(Integer orderLineId) throws IOException {
         MakePlan.QueryParam queryParam = new MakePlan.QueryParam();
         queryParam.setParam(new MakePlan());
-        queryParam.getParam().setOrederLineId(orderLineId);
+        queryParam.getParam().setOrderLineId(orderLineId);
         queryParam.setLimit(1);
 
         return makePlanService.findByQueryParam(queryParam);
@@ -68,22 +71,37 @@ public class MakePlanJoinServiceImpl implements MakePlanJoinService {
      * */
     public boolean checkExistsSheetByPlan(Integer planId,Integer rmId) throws IOException {
 
-        List<MakeSheet> plans = chkFindSheetByPlan(planId,rmId);
+        List<MakeSheet> sheets = chkFindSheetByPlan(planId,rmId);
+        return sheets != null && sheets.size() > 0;
+    }
+    //采购计划
+    public boolean checkExistsPpByPlan(Integer planId,Integer rmId) throws IOException {
+
+        List<PurchasePlan> plans = chkFindPpByOrderPlan(planId,rmId);
         return plans != null && plans.size() > 0;
+    }
+    public List<PurchasePlan> chkFindPpByOrderPlan(Integer planId,Integer rmId) throws IOException {
+        PurchasePlan.QueryParam queryParam = new PurchasePlan.QueryParam();
+        queryParam.setParam(new PurchasePlan());
+        queryParam.getParam().setPlanId(planId);
+        queryParam.getParam().setRmId(rmId);
+        queryParam.setLimit(1);
+
+        return purchasePlanService.findByQueryParam(queryParam);
     }
 
     public void makeSheetByPlan(Integer planId, Integer sysUserId) throws IOException {
 
         MakePlan makePlan = makePlanService.findById(planId);
         if (makePlan != null) {
-            OrderLine orderLine = orderLineService.findById(makePlan.getOrederLineId());
+            OrderLine orderLine = orderLineService.findById(makePlan.getOrderLineId());
             if (orderLine != null) {
                 List<Bom> boms = bomJoinService.queryBomByProduct(orderLine.getProductId());
                 for (Bom bom : boms) {
                     logger.info(bom.toString());
-                    if (!checkExistsSheetByPlan(makePlan.getId(),bom.getChildId())) {
+                    if (!checkExistsSheetByPlan(makePlan.getId(), bom.getChildId())) {
                         logger.info(makePlan.toString());
-                        MakeSheet makeSheet=copy2MakeSheet(makePlan,bom,sysUserId,orderLine);
+                        MakeSheet makeSheet = copy2MakeSheet(makePlan, bom, sysUserId, orderLine);
                         makeSheetService.save(makeSheet);
 
                     }
@@ -91,12 +109,34 @@ public class MakePlanJoinServiceImpl implements MakePlanJoinService {
             }
         }
     }
+    //purchasePlanService
+    PurchasePlan copy2PurchasePlan(MakePlan makePlan, Bom bom, Integer sysUserId, OrderLine orderLine) {
+        PurchasePlan purchasePlan = JSON.parseObject(bom.toString(), PurchasePlan.class);
+        purchasePlan.setId(null);
+        purchasePlan.setRmId(bom.getChildId());
+        purchasePlan.setOrderLineId(makePlan.getOrderLineId());
+        purchasePlan.setOrderId(makePlan.getOrderId());
+        purchasePlan.setPlanId(makePlan.getId());
+        purchasePlan.setCreateDate(new Date());
+        purchasePlan.setCreateBy(sysUserId);
+        // pkg rm
+        if(bom.getBigType().equals(300)){
+            purchasePlan.setRmDate(makePlan.getPkgDate());
+        }else {
+            purchasePlan.setRmDate(makePlan.getRmDate());
+        }
+        purchasePlan.setLossQty(bom.getQty().multiply(bom.newBigDecimal(bom.getLossQty())).divide(bom.newBigDecimal(100)));
+        purchasePlan.setpQty(bom.getQty());
+        purchasePlan.setQty(purchasePlan.getpQty().add(purchasePlan.getLossQty()));
+        purchasePlan.setTotalQty(purchasePlan.getQty().multiply(bom.newBigDecimal(orderLine.getQty())));
+        return purchasePlan;
+    }
 
     MakeSheet copy2MakeSheet(MakePlan makePlan,Bom bom,Integer sysUserId,OrderLine orderLine){
         MakeSheet makeSheet = JSON.parseObject(bom.toString(), MakeSheet.class);
         makeSheet.setId(null);
         makeSheet.setRmId(bom.getChildId());
-        makeSheet.setOrderLineId(makePlan.getOrederLineId());
+        makeSheet.setOrderLineId(makePlan.getOrderLineId());
         makeSheet.setOrderId(makePlan.getOrderId());
         makeSheet.setPlanId(makePlan.getId());
         makeSheet.setCreateDate(new Date());
@@ -107,6 +147,7 @@ public class MakePlanJoinServiceImpl implements MakePlanJoinService {
         makeSheet.setTotalQty(makeSheet.getQty().multiply(bom.newBigDecimal(orderLine.getQty())));
         return makeSheet;
     }
+
     public void makeSheetByPlanOrder( Integer orderId,Integer sysUserId) throws IOException {
 
         MakePlan.QueryParam queryParam = new MakePlan.QueryParam();
@@ -117,7 +158,7 @@ public class MakePlanJoinServiceImpl implements MakePlanJoinService {
         List<MakePlan> makePlans = makePlanService.findByQueryParam(queryParam);
         for (MakePlan makePlan : makePlans) {
             if (makePlan.getOutFlag().equals(MakePlanConst.OUT_FLAG_SELF)) {
-                OrderLine orderLine = orderLineService.findById(makePlan.getOrederLineId());
+                OrderLine orderLine = orderLineService.findById(makePlan.getOrderLineId());
                 if (orderLine != null) {
                     List<Bom> boms = bomJoinService.queryBomByProduct(orderLine.getProductId());
                     for (Bom bom : boms) {
@@ -126,6 +167,33 @@ public class MakePlanJoinServiceImpl implements MakePlanJoinService {
                             logger.info("makeSheetByPlanOrder makePlan:{}",makePlan);
                             MakeSheet makeSheet=copy2MakeSheet(makePlan,bom,sysUserId,orderLine);
                             makeSheetService.save(makeSheet);
+
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public void makePurchasePlanByOrder(Integer orderId, Integer sysUserId) throws IOException {
+
+        MakePlan.QueryParam queryParam = new MakePlan.QueryParam();
+        queryParam.setParam(new MakePlan());
+        queryParam.getParam().setOrderId(orderId);
+        queryParam.setLimit(-1);
+
+        List<MakePlan> makePlans = makePlanService.findByQueryParam(queryParam);
+        for (MakePlan makePlan : makePlans) {
+            if (makePlan.getOutFlag().equals(MakePlanConst.OUT_FLAG_SELF)) {
+                OrderLine orderLine = orderLineService.findById(makePlan.getOrderLineId());
+                if (orderLine != null) {
+                    List<Bom> boms = bomJoinService.queryBomByProduct(orderLine.getProductId());
+                    for (Bom bom : boms) {
+                        logger.debug("makePurchasePlanByOrder bom:{}", bom.toString());
+                        if (!checkExistsPpByPlan(makePlan.getId(), bom.getChildId())) {
+                            logger.debug("makePurchasePlanByOrder makePlan:{}", makePlan);
+                            PurchasePlan purchasePlan = copy2PurchasePlan(makePlan, bom, sysUserId, orderLine);
+                            purchasePlanService.save(purchasePlan);
 
                         }
                     }
@@ -149,7 +217,7 @@ public class MakePlanJoinServiceImpl implements MakePlanJoinService {
                 MakePlan makePlan = new MakePlan();
                 makePlan.setCustomerId(orderLine.getCustomerId());
                 makePlan.setOrderId(orderLine.getOrderId());
-                makePlan.setOrederLineId(orderLine.getId());
+                makePlan.setOrderLineId(orderLine.getId());
                 makePlan.setCreateDate(new Date());
                 makePlan.setCreateBy(sysUserId);
 

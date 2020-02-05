@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kunlong.dongxw.dongxw.dao.PurchasePlanMapper" >
+	<resultMap id="BaseResultMap" type="com.kunlong.dongxw.dongxw.domain.PurchasePlan" >
+	    <id column="id" property="id" jdbcType="INTEGER" />	
+	  	<result column="order_id" property="orderId" jdbcType="INTEGER" />
+	  	<result column="order_line_id" property="orderLineId" jdbcType="INTEGER" />
+	  	<result column="plan_id" property="planId" jdbcType="INTEGER" />
+	  	<result column="product_id" property="productId" jdbcType="INTEGER" />
+	  	<result column="rm_id" property="rmId" jdbcType="INTEGER" />
+	  	<result column="parent_id" property="parentId" jdbcType="INTEGER" />
+	  	<result column="big_type" property="bigType" jdbcType="INTEGER" />
+	  	<result column="small_type" property="smallType" jdbcType="INTEGER" />
+	  	<result column="child_id" property="childId" jdbcType="INTEGER" />
+	  	<result column="unit" property="unit" jdbcType="VARCHAR" />
+	  	<result column="p_qty" property="pQty" jdbcType="DECIMAL" />
+	  	<result column="qty" property="qty" jdbcType="DECIMAL" />
+	  	<result column="total_qty" property="totalQty" jdbcType="DECIMAL" />
+	  	<result column="price" property="price" jdbcType="DECIMAL" />
+	  	<result column="money" property="money" jdbcType="DECIMAL" />
+	  	<result column="loss_type" property="lossType" jdbcType="INTEGER" />
+	  	<result column="loss_qty" property="lossQty" jdbcType="DECIMAL" />
+	  	<result column="size_l" property="sizeL" jdbcType="DECIMAL" />
+	  	<result column="size_x" property="sizeX" jdbcType="VARCHAR" />
+	  	<result column="size_w" property="sizeW" jdbcType="DECIMAL" />
+	  	<result column="length" property="length" jdbcType="INTEGER" />
+	  	<result column="width" property="width" jdbcType="INTEGER" />
+	  	<result column="knife_qty" property="knifeQty" jdbcType="SMALLINT" />
+	  	<result column="depth" property="depth" jdbcType="SMALLINT" />
+	  	<result column="source" property="source" jdbcType="TINYINT" />
+	  	<result column="rm_date" property="rmDate" jdbcType="DATE" />
+	  	<result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+	  	<result column="create_by" property="createBy" jdbcType="INTEGER" />
+    </resultMap>
+    <resultMap id="BaseResultMap_PurchasePlan" type="com.kunlong.dongxw.dongxw.domain.PurchasePlan" >
+	    <id column="pp_id" property="id" jdbcType="INTEGER" />	
+	  	<result column="pp_order_id" property="orderId" jdbcType="INTEGER" />
+	  	<result column="pp_order_line_id" property="orderLineId" jdbcType="INTEGER" />
+	  	<result column="pp_plan_id" property="planId" jdbcType="INTEGER" />
+	  	<result column="pp_product_id" property="productId" jdbcType="INTEGER" />
+	  	<result column="pp_rm_id" property="rmId" jdbcType="INTEGER" />
+	  	<result column="pp_parent_id" property="parentId" jdbcType="INTEGER" />
+	  	<result column="pp_big_type" property="bigType" jdbcType="INTEGER" />
+	  	<result column="pp_small_type" property="smallType" jdbcType="INTEGER" />
+	  	<result column="pp_child_id" property="childId" jdbcType="INTEGER" />
+	  	<result column="pp_unit" property="unit" jdbcType="VARCHAR" />
+	  	<result column="pp_p_qty" property="pQty" jdbcType="DECIMAL" />
+	  	<result column="pp_qty" property="qty" jdbcType="DECIMAL" />
+	  	<result column="pp_total_qty" property="totalQty" jdbcType="DECIMAL" />
+	  	<result column="pp_price" property="price" jdbcType="DECIMAL" />
+	  	<result column="pp_money" property="money" jdbcType="DECIMAL" />
+	  	<result column="pp_loss_type" property="lossType" jdbcType="INTEGER" />
+	  	<result column="pp_loss_qty" property="lossQty" jdbcType="DECIMAL" />
+	  	<result column="pp_size_l" property="sizeL" jdbcType="DECIMAL" />
+	  	<result column="pp_size_x" property="sizeX" jdbcType="VARCHAR" />
+	  	<result column="pp_size_w" property="sizeW" jdbcType="DECIMAL" />
+	  	<result column="pp_length" property="length" jdbcType="INTEGER" />
+	  	<result column="pp_width" property="width" jdbcType="INTEGER" />
+	  	<result column="pp_knife_qty" property="knifeQty" jdbcType="SMALLINT" />
+	  	<result column="pp_depth" property="depth" jdbcType="SMALLINT" />
+	  	<result column="pp_source" property="source" jdbcType="TINYINT" />
+	  	<result column="pp_rm_date" property="rmDate" jdbcType="DATE" />
+	  	<result column="pp_create_date" property="createDate" jdbcType="TIMESTAMP" />
+	  	<result column="pp_create_by" property="createBy" jdbcType="INTEGER" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+  		id,order_id,order_line_id,plan_id,product_id,rm_id,parent_id,big_type,small_type,child_id,unit,p_qty,qty,total_qty,price,money,loss_type,loss_qty,size_l,size_x,size_w,length,width,knife_qty,depth,source,rm_date,create_date,create_by
+	</sql>
+  	<sql id="Base_Column_List_PurchasePlan" >
+  		pp.id pp_id,pp.order_id pp_order_id,pp.order_line_id pp_order_line_id,pp.plan_id pp_plan_id,pp.product_id pp_product_id,pp.rm_id pp_rm_id,pp.parent_id pp_parent_id,pp.big_type pp_big_type,pp.small_type pp_small_type,pp.child_id pp_child_id,pp.unit pp_unit,pp.p_qty pp_p_qty,pp.qty pp_qty,pp.total_qty pp_total_qty,pp.price pp_price,pp.money pp_money,pp.loss_type pp_loss_type,pp.loss_qty pp_loss_qty,pp.size_l pp_size_l,pp.size_x pp_size_x,pp.size_w pp_size_w,pp.length pp_length,pp.width pp_width,pp.knife_qty pp_knife_qty,pp.depth pp_depth,pp.source pp_source,pp.rm_date pp_rm_date,pp.create_date pp_create_date,pp.create_by pp_create_by
+	</sql>
+	
+	<!-- 系统自定义 -->
+	<!-- 实体参数查询结果[START] -->
+	<resultMap id="ResultMap_FindByQueryParam" type="com.kunlong.dongxw.dongxw.domain.PurchasePlan" extends="BaseResultMap_PurchasePlan">
+		
+	</resultMap>
+
+	<sql id="Condition_FindByQueryParam">
+		<if test="queryParam.param!=null">
+			<bind name="p" value="queryParam.param"/>
+			<if test="p.id!=null ">
+		    	and pp.id=#{p.id}
+		    </if>
+			<if test="p.orderId!=null ">
+		    	and pp.order_id=#{p.orderId}
+		    </if>
+			<if test="p.orderLineId!=null ">
+		    	and pp.order_line_id=#{p.orderLineId}
+		    </if>
+			<if test="p.planId!=null ">
+		    	and pp.plan_id=#{p.planId}
+		    </if>
+			<if test="p.productId!=null ">
+		    	and pp.product_id=#{p.productId}
+		    </if>
+			<if test="p.rmId!=null ">
+		    	and pp.rm_id=#{p.rmId}
+		    </if>
+			<if test="p.parentId!=null ">
+		    	and pp.parent_id=#{p.parentId}
+		    </if>
+			<if test="p.bigType!=null ">
+		    	and pp.big_type=#{p.bigType}
+		    </if>
+			<if test="p.smallType!=null ">
+		    	and pp.small_type=#{p.smallType}
+		    </if>
+			<if test="p.childId!=null ">
+		    	and pp.child_id=#{p.childId}
+		    </if>
+			<if test="p.unit!=null and p.unit!=''">
+		    	and pp.unit like #{p.unit}
+		    </if>
+			<if test="p.pQty!=null ">
+		    	and pp.p_qty=#{p.pQty}
+		    </if>
+			<if test="p.qty!=null ">
+		    	and pp.qty=#{p.qty}
+		    </if>
+			<if test="p.totalQty!=null ">
+		    	and pp.total_qty=#{p.totalQty}
+		    </if>
+			<if test="p.price!=null ">
+		    	and pp.price=#{p.price}
+		    </if>
+			<if test="p.money!=null ">
+		    	and pp.money=#{p.money}
+		    </if>
+			<if test="p.lossType!=null ">
+		    	and pp.loss_type=#{p.lossType}
+		    </if>
+			<if test="p.lossQty!=null ">
+		    	and pp.loss_qty=#{p.lossQty}
+		    </if>
+			<if test="p.sizeL!=null ">
+		    	and pp.size_l=#{p.sizeL}
+		    </if>
+			<if test="p.sizeX!=null and p.sizeX!=''">
+		    	and pp.size_x like #{p.sizeX}
+		    </if>
+			<if test="p.sizeW!=null ">
+		    	and pp.size_w=#{p.sizeW}
+		    </if>
+			<if test="p.length!=null ">
+		    	and pp.length=#{p.length}
+		    </if>
+			<if test="p.width!=null ">
+		    	and pp.width=#{p.width}
+		    </if>
+			<if test="p.knifeQty!=null ">
+		    	and pp.knife_qty=#{p.knifeQty}
+		    </if>
+			<if test="p.depth!=null ">
+		    	and pp.depth=#{p.depth}
+		    </if>
+			<if test="p.source!=null ">
+		    	and pp.source=#{p.source}
+		    </if>
+			<if test="p.rmDate!=null ">
+		    	and pp.rm_date=#{p.rmDate}
+		    </if>
+			<if test="p.createDate!=null ">
+		    	and pp.create_date=#{p.createDate}
+		    </if>
+			<if test="p.createBy!=null ">
+		    	and pp.create_by=#{p.createBy}
+		    </if>
+		</if>
+		<!--
+		<bind name="rp" value="queryParam.ruleParam" />
+		<include refid="org.mybatis.hbatis.orm.mapper.HbatisMapper.RuleParam"/>
+		-->
+	</sql>
+	<select id="findByQueryParam" resultMap="ResultMap_FindByQueryParam">
+		select
+		<include refid="Base_Column_List_PurchasePlan"></include>
+		from purchase_plan pp where 1=1
+		<include refid="Condition_FindByQueryParam"></include>
+		<if test="queryParam.sortOrders!=null and queryParam.sortOrders.size() gt 0">
+			order by 
+			<foreach collection="queryParam.sortOrders" item="item" separator=",">
+				${item.sortField.sqlColumn} ${item.sortType}
+			</foreach>
+		</if>
+		<if test="queryParam.limit gt 0">
+	  		limit ${queryParam.start},${queryParam.limit}
+	  	</if>
+	</select>
+	<select id="countByQueryParam" resultType="long">
+		select count(1) from purchase_plan pp where 1=1
+		<include refid="Condition_FindByQueryParam"></include>
+	</select>
+	
+	<!-- 实体参数查询结果[END] -->
+	<!-- 用户自定义 -->
+	
+</mapper>

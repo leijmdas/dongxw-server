@@ -11,7 +11,7 @@ import io.swagger.annotations.ApiModelProperty;
 /**
  * OrderLine
  * @author generator
- * @date 2020年01月22日
+ * @date 2020年02月05日
  */
 @ApiModel(value="OrderLineDTO",description="订单产品表")
 public class OrderLineDTO implements Serializable {

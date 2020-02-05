@@ -7,7 +7,7 @@ import com.kunlong.dongxw.dongxw.domain.MakePlan;
 /**
  * MakePlanMapper
  * @author generator
- * @date 2020年01月28日
+ * @date 2020年02月05日
  */
 public interface MakePlanMapper extends HbatisMapper<MakePlan, Integer> {
 	

@@ -6,7 +6,6 @@ import cn.kunlong.center.api.model.SysUserDTO;
 import com.kunlong.dongxw.annotation.DateRewritable;
 import com.kunlong.dongxw.consts.ApiConstants;
 import com.kunlong.dongxw.consts.MakePlanConst;
-import com.kunlong.dongxw.consts.OrderStatusConsts;
 import com.kunlong.dongxw.dongxw.domain.*;
 import com.kunlong.dongxw.dongxw.service.*;
 import com.kunlong.dongxw.util.WebFileUtil;
@@ -34,14 +33,14 @@ import java.util.List;
  * Date: Created in 2018/8/23 16:50
  */
 @RestController
-@RequestMapping("/dongxw/makeplan")
-public  class MakePlanController extends BaseController {
+@RequestMapping("/dongxw/purchaseplan")
+public  class PurchasePlanController extends BaseController {
     @Autowired
     MakePlanJoinService makePlanJoinService;
     @Autowired
     MakePlanService makePlanService;
     @Autowired
-    MakeSheetService makeSheetService;
+    PurchasePlanService purchasePlanService;
 
     @Autowired
     BomJoinService bomJoinService;
@@ -59,90 +58,50 @@ public  class MakePlanController extends BaseController {
 
     @Autowired
     ProductTypeService productTypeService;
-
-    @RequestMapping("/checkPlanByOrder/{orderId}")
-    public JsonResult<Integer> checkPlanByOrder(@PathVariable("orderId") Integer orderId) throws IOException {
-        OrderMaster orderMaster = orderMasterService.findById(orderId);
-
-        OrderLine.QueryParam queryParam = new OrderLine.QueryParam();
-        queryParam.setParam(new OrderLine());
-        queryParam.getParam().setOrderId(orderId);
-        queryParam.setLimit(-1);
-        long total = orderLineService.countByQueryParam(queryParam);
-        MakePlan.QueryParam param = new MakePlan.QueryParam();
-        param.setParam(new MakePlan());
-        param.getParam().setOrderId(orderId);
-        long t = makePlanService.countByQueryParam(param);
-        if (total == t) {
-            return JsonResult.success(0,"订单产品数与计划产品数相等！");
-        } else if (total > t) {
-            return JsonResult.failure(1,"订单产品数>计划产品数！");
-        } else if (total < t) {
-            return JsonResult.failure(-1,"订单产品数<计划产品数！");
-        }
-        return JsonResult.failure(-2,"订单产品数与计划产品数不等");
-    }
+//    @Transactional
+//    @RequestMapping("/makeSheetByPlan/{planId}")
+//    public JsonResult<String> makeSheetByPlan(@PathVariable("planId") Integer planId) throws IOException {
+//
+//        makePlanJoinService.makeSheetByPlan(planId,getCurrentUserId());
+//        return JsonResult.success("成功！");
+//    }
 
     @Transactional
-    @RequestMapping("/makeSheetByPlan/{orderId}")
-    public JsonResult<String> makeSheetByPlan(@PathVariable("orderId") Integer orderId) throws IOException {
+    @RequestMapping("/makePurchasePlanByOrder/{orderId}")
+    public JsonResult<String> makePurchasePlanByOrder(@PathVariable("orderId") Integer orderId) throws IOException {
 
-        makePlanJoinService.makeSheetByPlan(orderId,getCurrentUserId());
+        makePlanJoinService.makePurchasePlanByOrder(orderId,getCurrentUserId());
         return JsonResult.success("成功！");
     }
-
-    @Transactional
-    @RequestMapping("/makePlanByOrder/{orderId}")
-    public JsonResult<String> makePlanByOrder(@PathVariable("orderId") Integer orderId) throws IOException {
-        OrderMaster orderMaster = orderMasterService.findById(orderId);
-        if (orderMaster.getStatus().equals(OrderStatusConsts.OrderStatus_DRAFT)) {
-
-            return JsonResult.failure("订单在草稿状态，暂不能生成计划！");
-        }
-        makePlanJoinService.makePlanByOrder(orderId,orderMaster,getCurrentUserId());
-
-
-
-        return JsonResult.success("成功！");
-    }
-    /*删除多余计费产品*/
-    @Transactional
-    @RequestMapping("/rmPlanByOrder/{orderId}")
-    public JsonResult<String> rmPlanByOrder(@PathVariable("orderId") Integer orderId) throws IOException {
-        makePlanJoinService.rmPlanByOrder(orderId);
-
-        return JsonResult.success("成功！");
-    }
-
 
     //检查有计划
     @PostMapping("/deleteById/{id}")
     public JsonResult<Integer> deleteById(@PathVariable("id") Integer id) throws IOException {
 
-        makePlanService.deleteById(id);
+        purchasePlanService.deleteById(id);
 
 
         return JsonResult.success();
     }
 
     @RequestMapping("/findById/{id}")
-    public JsonResult<MakePlan> findById(@PathVariable("id") Integer id, HttpServletResponse response) throws IOException {
-        MakePlan makePlan = makePlanService.findById(id);
-        fillMakePlan(makePlan);
-        return JsonResult.success(makePlan);
+    public JsonResult<PurchasePlan> findById(@PathVariable("id") Integer id, HttpServletResponse response) throws IOException {
+        PurchasePlan purchasePlan = purchasePlanService.findById(id);
+        //fillMakePlan(makeSheet);
+        return JsonResult.success(purchasePlan);
 
     }
 
     @RequestMapping("/save")
-    public JsonResult<Integer> save(@RequestBody MakePlan makePlan) {
+    public JsonResult<Integer> save(@RequestBody PurchasePlan purchasePlan) {
 
-        if (makePlan.getId() == null) {
-            makePlanService.save(makePlan);
+        if (purchasePlan.getId() == null) {
+            purchasePlanService.save(purchasePlan);
         } else {
-            makePlanService.update(makePlan);
+            purchasePlanService.update(purchasePlan);
         }
 
-        return JsonResult.success(makePlan.getId());
+        return JsonResult.success(purchasePlan.getId());
     }
 
     void fillMakePlan(MakePlan makePlan) {
@@ -165,13 +124,23 @@ public  class MakePlanController extends BaseController {
         }
     }
     @PostMapping("/query")
-    public PageResult<MakePlan> query(@RequestBody MakePlan.QueryParam queryParam) throws IOException {
-        PageResult<MakePlan> pageResult = new PageResult<MakePlan>();
+    public PageResult<PurchasePlan> query(@RequestBody PurchasePlan.QueryParam queryParam) throws IOException {
+        PageResult<PurchasePlan> pageResult = new PageResult<PurchasePlan>();
 
         queryParam.setSortBys("id|desc");
-        pageResult.setTotal(makePlanService.countByQueryParam(queryParam));
-        pageResult.setData(makePlanService.findByQueryParam(queryParam));
-        fillMakePlans(pageResult.getData());
+        pageResult.setTotal(purchasePlanService.countByQueryParam(queryParam));
+        pageResult.setData(purchasePlanService.findByQueryParam(queryParam));
+        for(PurchasePlan sheet:pageResult.getData()){
+            sheet.setChildRm(productService.findById(sheet.getChildId()));
+            sheet.setProduct(productService.findById(sheet.getProductId()));
+            if(sheet.getChildRm()!=null){
+                sheet.getChildRm().setProductSubType(productTypeService.findById(sheet.getChildRm().getProductTypeId()));
+                sheet.getChildRm().setProductType(productTypeService.findById(sheet.getChildRm().getParentId()));
+
+            }
+            SysUserDTO sysUserDTO = sysUserApiService.findById(sheet.getCreateBy());
+            sheet.setCreateByName(sysUserDTO == null ? "-" : sysUserDTO.getUsername());
+        }
         return pageResult;
     }
 

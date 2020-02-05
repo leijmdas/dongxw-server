@@ -5,7 +5,6 @@ import app.support.query.PageResult;
 import cn.kunlong.center.api.model.SysUserDTO;
 import com.kunlong.dongxw.annotation.DateRewritable;
 import com.kunlong.dongxw.consts.ApiConstants;
-import com.kunlong.dongxw.consts.BomConsts;
 import com.kunlong.dongxw.consts.MakePlanConst;
 import com.kunlong.dongxw.dongxw.domain.*;
 import com.kunlong.dongxw.dongxw.service.*;
@@ -21,7 +20,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -107,7 +105,7 @@ public  class MakeSheetController extends BaseController {
     }
 
     void fillMakePlan(MakePlan makePlan) {
-        OrderLine orderLine = orderLineService.findById(makePlan.getOrederLineId());
+        OrderLine orderLine = orderLineService.findById(makePlan.getOrderLineId());
         if (orderLine != null) {
             makePlan.setCustomer(customerService.findById(orderLine.getCustomerId()));
             OrderMaster orderMaster = orderMasterService.findById(orderLine.getOrderId());

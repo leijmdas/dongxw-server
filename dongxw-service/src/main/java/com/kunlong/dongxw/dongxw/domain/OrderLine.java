@@ -15,7 +15,7 @@ import org.mybatis.hbatis.orm.criteria.support.query.SortOrders;
 /**
  * OrderLine 订单产品表
  * @author generator
- * @date 2020年01月22日
+ * @date 2020年02月05日
  */
 @Table(OrderLine.EntityNode.class)
 public class OrderLine extends OrderLineBase implements Serializable {

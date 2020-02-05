@@ -14,10 +14,10 @@ import org.mybatis.hbatis.orm.criteria.support.query.SortOrders;
 /**
  * MakePlan 生产计划表
  * @author generator
- * @date 2020年01月28日
+ * @date 2020年02月05日
  */
 @Table(MakePlan.EntityNode.class)
-public class MakePlan extends MakePlanBase implements Serializable {
+public class MakePlan extends  MakePlanBase implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	/**
@@ -46,12 +46,12 @@ public class MakePlan extends MakePlanBase implements Serializable {
 	  */
 	@Column(comment = "订单产品标识 ")	
 	@NotNull
-	private Integer orederLineId;
+	private Integer orderLineId;
 	/**
-	  * 发外标志 0--自产1--外发
+	  * 发外标志 0--生产1--外发
 	  * nullable:false,length:11
 	  */
-	@Column(comment = "发外标志 0--自产1--外发")	
+	@Column(comment = "发外标志 0--生产1--外发")	
 	@NotNull
 	private Integer outFlag;
 	/**
@@ -154,11 +154,11 @@ public class MakePlan extends MakePlanBase implements Serializable {
     public void setOrderId(Integer orderId){
     	this.orderId = orderId;
     }
-    public Integer getOrederLineId(){
-    	return this.orederLineId;
+    public Integer getOrderLineId(){
+    	return this.orderLineId;
     }
-    public void setOrederLineId(Integer orederLineId){
-    	this.orederLineId = orederLineId;
+    public void setOrderLineId(Integer orderLineId){
+    	this.orderLineId = orderLineId;
     }
     public Integer getOutFlag(){
     	return this.outFlag;
@@ -254,8 +254,8 @@ public class MakePlan extends MakePlanBase implements Serializable {
     	/** 订单标识  */
         public FieldNode<MakePlan, Integer> orderId =  createFieldNode("orderId","order_id",Integer.class,JdbcType.INTEGER);
     	/** 订单产品标识  */
-        public FieldNode<MakePlan, Integer> orederLineId =  createFieldNode("orederLineId","oreder_line_id",Integer.class,JdbcType.INTEGER);
-    	/** 发外标志 0--自产1--外发 */
+        public FieldNode<MakePlan, Integer> orderLineId =  createFieldNode("orderLineId","order_line_id",Integer.class,JdbcType.INTEGER);
+    	/** 发外标志 0--生产1--外发 */
         public FieldNode<MakePlan, Integer> outFlag =  createFieldNode("outFlag","out_flag",Integer.class,JdbcType.INTEGER);
     	/** 接单日期  */
         public FieldNode<MakePlan, Date> orderDate =  createFieldNode("orderDate","order_date",Date.class,JdbcType.DATE);

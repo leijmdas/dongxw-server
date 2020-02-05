@@ -25,5 +25,7 @@ public interface MakePlanJoinService {
 
     void rmPlanByOrder(Integer orderId) throws IOException;
 
+    void makePurchasePlanByOrder(Integer orderId, Integer sysUserId) throws IOException;
+
 
 }

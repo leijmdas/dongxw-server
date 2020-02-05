@@ -10,7 +10,7 @@ import io.swagger.annotations.ApiModelProperty;
 /**
  * MakePlan
  * @author generator
- * @date 2020年01月28日
+ * @date 2020年02月05日
  */
 @ApiModel(value="MakePlanDTO",description="生产计划表")
 public class MakePlanDTO implements Serializable {
@@ -39,12 +39,12 @@ public class MakePlanDTO implements Serializable {
 	  * nullable:false,length:11
 	  */
 	@ApiModelProperty(value = "订单产品标识 ",required = true,notes = "订单产品标识  ")
-	private Integer orederLineId;
+	private Integer orderLineId;
 	/**
-	  * 发外标志 0--自产1--外发
+	  * 发外标志 0--生产1--外发
 	  * nullable:false,length:11
 	  */
-	@ApiModelProperty(value = "发外标志 0--自产1--外发",required = true,notes = "发外标志 0--自产1--外发 ")
+	@ApiModelProperty(value = "发外标志 0--生产1--外发",required = true,notes = "发外标志 0--生产1--外发 ")
 	private Integer outFlag;
 	/**
 	  * 接单日期 
@@ -142,11 +142,11 @@ public class MakePlanDTO implements Serializable {
     public void setOrderId(Integer orderId){
     	this.orderId = orderId;
     }
-    public Integer getOrederLineId(){
-    	return this.orederLineId;
+    public Integer getOrderLineId(){
+    	return this.orderLineId;
     }
-    public void setOrederLineId(Integer orederLineId){
-    	this.orederLineId = orederLineId;
+    public void setOrderLineId(Integer orderLineId){
+    	this.orderLineId = orderLineId;
     }
     public Integer getOutFlag(){
     	return this.outFlag;
