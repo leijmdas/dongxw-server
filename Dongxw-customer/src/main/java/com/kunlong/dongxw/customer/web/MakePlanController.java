@@ -63,7 +63,7 @@ public  class MakePlanController extends BaseController {
     public List<MakePlan> findByOrderLine(Integer orderLineId) throws IOException {
         MakePlan.QueryParam queryParam = new MakePlan.QueryParam();
         queryParam.setParam(new MakePlan());
-        queryParam.getParam().setOrederLineId(orderLineId);
+        queryParam.getParam().setOrderLineId(orderLineId);
         queryParam.setLimit(1);
 
         return makePlanService.findByQueryParam(queryParam);
@@ -81,7 +81,7 @@ public  class MakePlanController extends BaseController {
     }
 
     void fillMakePlan(MakePlan makePlan){
-        OrderLine orderLine = orderLineService.findById(makePlan.getOrederLineId());
+        OrderLine orderLine = orderLineService.findById(makePlan.getOrderLineId());
         if (orderLine != null) {
             makePlan.setCustomer(customerService.findById(orderLine.getCustomerId()));
             OrderMaster orderMaster=orderMasterService.findById(orderLine.getOrderId());
