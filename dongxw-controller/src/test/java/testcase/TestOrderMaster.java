@@ -10,8 +10,8 @@ import com.jtest.annotation.JTest;
 import com.jtest.annotation.JTestClass;
 import com.jtest.testframe.ITestImpl;
 import com.kunlong.dongxw.consts.ApiConstants;
-import com.kunlong.dongxw.dongxw.domain.Customer;
-import com.kunlong.dongxw.dongxw.domain.OrderMaster;
+import com.kunlong.dongxw.data.domain.Customer;
+import com.kunlong.dongxw.data.domain.OrderMaster;
 import com.kunlong.platform.support.service.AuthService;
 import com.kunlong.platform.utils.JsonResult;
 import com.kunlong.platform.utils.KunlongUtils;
@@ -20,7 +20,6 @@ import org.slf4j.LoggerFactory;
 import pub.Login;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -32,8 +31,8 @@ public class TestOrderMaster extends ITestImpl {
     String url_login ="http://127.0.0.1:10080/auth/login?username=admin&password=123456&verifyCode=";
     String url_auth = "http://127.0.0.1:10080/sys/user/authorization";
 
-    String url_cust = "http://127.0.0.1:10081/dongxw/customer";
-    String url_order = "http://127.0.0.1:10081/dongxw/ordermaster";
+    String url_cust = "http://127.0.0.1:10081/data/customer";
+    String url_order = "http://127.0.0.1:10081/data/ordermaster";
 
     @Inject(filename = "node.xml", value = "httpclient")
     HttpClientNode httpclient;

@@ -2,21 +2,16 @@ package com.kunlong.dongxw.customer.web;
 
 
 import app.support.query.PageResult;
-//import com.kunlong.dongxw.annotation.DateRewritable;
+//import com.kunlong.data.annotation.DateRewritable;
 import com.kunlong.dongxw.customer.consts.ApiConstants;
 import com.kunlong.dongxw.customer.controller.BaseController;
-import com.kunlong.dongxw.dongxw.domain.Customer;
-import com.kunlong.dongxw.dongxw.service.CustomerService;
-import com.kunlong.platform.support.service.AuthService;
+import com.kunlong.dongxw.data.domain.Customer;
+import com.kunlong.dongxw.data.service.CustomerService;
 import com.kunlong.platform.utils.JsonResult;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate5.SessionHolder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * cust类

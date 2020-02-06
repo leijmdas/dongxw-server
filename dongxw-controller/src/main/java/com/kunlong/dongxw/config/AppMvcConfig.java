@@ -6,7 +6,6 @@ import com.kunlong.dongxw.config.interceptor.AppRequestHandler;
 import com.kunlong.dongxw.config.interceptor.WapRequestHandler;
 import com.kunlong.dongxw.config.interceptor.WebRequestHandler;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.web.servlet.WebMvcRegistrations;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -14,7 +13,6 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -33,7 +31,7 @@ public class AppMvcConfig implements WebMvcConfigurer {
 	@Autowired
 	private WebRequestHandler webRequestHandler;
 
-	private static final String[] ignorUrls = new String[] { "/public/**", "/error/**", "/auth/**" };
+	private static final String[] IGNOR_URLS = new String[] { "/public/**", "/error/**", "/auth/**" };
 //
 //	@Configuration
 //	public static class WebMvcRegistrationsConfig implements WebMvcRegistrations {
@@ -50,8 +48,8 @@ public class AppMvcConfig implements WebMvcConfigurer {
 		registry.addInterceptor(appRequestHandler).addPathPatterns("/app/**").excludePathPatterns("/app/auth/**", "/app/public/**");
 
 		registry.addInterceptor(wapRequestHandler).addPathPatterns("/wap/**").excludePathPatterns("/wap/app/**", "/wap/auth/**", "/wap/public/**");
-		registry.addInterceptor(webRequestHandler).addPathPatterns("/**").excludePathPatterns(concat(ignorUrls, new String[] { "/wap/**", "/app/**" })).excludePathPatterns("/swagger-resources/**",
-				"/dongxw-auth/**",	"/webjars/**", "/v2/**", "/swagger-ui.html/**","/rest/**");
+		registry.addInterceptor(webRequestHandler).addPathPatterns("/**").excludePathPatterns(concat(IGNOR_URLS, new String[] { "/wap/**", "/app/**" })).excludePathPatterns("/swagger-resources/**",
+				"/data-auth/**",	"/webjars/**", "/v2/**", "/swagger-ui.html/**","/rest/**");
 	}
 
 	private String[] concat(String[] res, String[] res2) {

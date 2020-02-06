@@ -25,7 +25,7 @@ public class AppMvcConfig implements WebMvcConfigurer {
 	@Autowired
 	private WebRequestHandler webRequestHandler;
 
-	private static final String[] ignorUrls = new String[] { "/public/**", "/error/**", "/auth/**" };
+	private static final String[] IGNOR_URLS = new String[] { "/public/**", "/error/**", "/auth/**" };
 
 //	@Configuration
 //	public static class WebMvcRegistrationsConfig implements WebMvcRegistrations {
@@ -42,7 +42,7 @@ public class AppMvcConfig implements WebMvcConfigurer {
 		registry.addInterceptor(appRequestHandler).addPathPatterns("/app/**").excludePathPatterns("/app/auth/**", "/app/public/**");
 
 		registry.addInterceptor(wapRequestHandler).addPathPatterns("/wap/**").excludePathPatterns("/wap/app/**", "/wap/auth/**", "/wap/public/**");
-		registry.addInterceptor(webRequestHandler).addPathPatterns("/**").excludePathPatterns(concat(ignorUrls, new String[]
+		registry.addInterceptor(webRequestHandler).addPathPatterns("/**").excludePathPatterns(concat(IGNOR_URLS, new String[]
 				{ "/wap/**", "/app/**" })).excludePathPatterns("/swagger-resources/**",
 				"/customer/auth/**",	"/webjars/**", "/v2/**", "/swagger-ui.html/**","/rest/**");
 	}

@@ -9,7 +9,7 @@ import com.jtest.NodesFactroy.Node.HttpClientNode;
 import com.jtest.annotation.JTest;
 import com.jtest.annotation.JTestClass;
 import com.jtest.testframe.ITestImpl;
-import com.kunlong.dongxw.dongxw.domain.Customer;
+import com.kunlong.dongxw.data.domain.Customer;
 import com.kunlong.platform.utils.JsonResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,10 +24,10 @@ public class TestProductType extends ITestImpl {
     private static final Logger logger = LoggerFactory.getLogger(TestProductType.class);
 
     String url_sysuser = "http://127.0.0.1:10080/rest/sysuser";
-    String url_producttype = "http://127.0.0.1:10081/dongxw/producttype";
-    String url_export = "http://127.0.0.1:10081/dongxw/export";
-    String url_manager = "http://127.0.0.1:10081/dongxw/manager";
-    String url_dongxw  = "http://127.0.0.1:8098/api/dongxw/customer";
+    String url_producttype = "http://127.0.0.1:10081/data/producttype";
+    String url_export = "http://127.0.0.1:10081/data/export";
+    String url_manager = "http://127.0.0.1:10081/data/manager";
+    String url_dongxw  = "http://127.0.0.1:8098/api/data/customer";
     //http://localhost:8098/api/dongxw/customer/findById/1
 
     @Inject(filename = "node.xml", value = "httpclient")

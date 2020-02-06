@@ -25,7 +25,7 @@ public class SimpleSequenceGenerator {
     }
 
     public static String getRandomSeq() {
-        long val = getCRC32Value(UUID.randomUUID().toString().replaceAll("-", ""));
+        long val = getcrc32Value(UUID.randomUUID().toString().replaceAll("-", ""));
         String tmp = Long.toString(val, 31).toUpperCase();
         if(tmp.length()<7) {
         	tmp = StringUtils.leftPad(tmp, 7, "0");
@@ -33,7 +33,7 @@ public class SimpleSequenceGenerator {
         return tmp.replaceAll("I", "X").replaceAll("O", "Y");
     }
 
-    public static long getCRC32Value(String str) {
+    public static long getcrc32Value(String str) {
         CRC32 crc32 = new CRC32();
         crc32.update(str.getBytes());
 

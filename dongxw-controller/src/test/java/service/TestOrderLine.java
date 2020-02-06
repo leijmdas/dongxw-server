@@ -1,9 +1,8 @@
 package service;
 
-import cn.kunlong.center.api.service.FileApiService;
 import com.kunlong.api.service.MailApiService;
 import com.kunlong.dongxw.DongxwApp;
-import com.kunlong.dongxw.dongxw.dao.OrderLineMapper;
+import com.kunlong.dongxw.data.dao.OrderLineMapper;
 import org.apache.dubbo.config.annotation.Reference;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
 
 /**
  * @author zz  | www.xwparking.com
@@ -24,8 +24,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class TestOrderLine {
     @Autowired
     OrderLineMapper orderLineMapper;
-    @Autowired
-    private FileApiService fileApiService;
+    //    @Autowired
+    //    private FileApiService fileApiService;
 
     @Reference(lazy = true, version = "${dubbo.service.version}")
     MailApiService mailApiService;
@@ -52,10 +52,28 @@ public class TestOrderLine {
 
     @Test
     public void test0003_upload() {
-        fileApiService.upload("leijmdas_s@163.com","dubbo",null,null);
+        //fileApiService.upload("leijmdas_s@163.com","dubbo",null,null);
 
     }
 
-
+//
+//    @Autowired
+//    BomModelMapper bomModelMapper;
+//
+//    @Test
+//    public void test0004_bomModelMapper() throws IOException {
+//        BomModelExample example = new BomModelExample();
+//        example.createCriteria().andBigTypeIsNotNull();
+//
+//        long count = bomModelMapper.countByExample(example);
+//        RowBounds rowBounds = new RowBounds(0, 1);
+//
+//        List<BomModel> bomModels = bomModelMapper.selectByExampleWithRowbounds(example, rowBounds);
+//
+//        System.out.println(count);
+//        for (BomModel bomModel : bomModels) {
+//            System.out.println(bomModel);
+//        }
+//    }
 }
 

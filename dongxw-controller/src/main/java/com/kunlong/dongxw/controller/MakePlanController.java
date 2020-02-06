@@ -7,8 +7,8 @@ import com.kunlong.dongxw.annotation.DateRewritable;
 import com.kunlong.dongxw.consts.ApiConstants;
 import com.kunlong.dongxw.consts.MakePlanConst;
 import com.kunlong.dongxw.consts.OrderStatusConsts;
-import com.kunlong.dongxw.dongxw.domain.*;
-import com.kunlong.dongxw.dongxw.service.*;
+import com.kunlong.dongxw.data.domain.*;
+import com.kunlong.dongxw.data.service.*;
 import com.kunlong.dongxw.util.WebFileUtil;
 import com.kunlong.platform.utils.JsonResult;
 import io.swagger.annotations.ApiOperation;
@@ -100,7 +100,6 @@ public  class MakePlanController extends BaseController {
             return JsonResult.failure("订单在草稿状态，暂不能生成计划！");
         }
         makePlanJoinService.makePlanByOrder(orderId,orderMaster,getCurrentUserId());
-
 
 
         return JsonResult.success("成功！");

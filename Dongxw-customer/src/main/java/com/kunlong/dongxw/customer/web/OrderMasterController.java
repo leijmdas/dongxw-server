@@ -2,7 +2,6 @@ package com.kunlong.dongxw.customer.web;
 
 
 import app.support.query.PageResult;
-import cn.kunlong.center.api.model.SysUserDTO;
 import com.kunlong.api.service.MailApiService;
 import com.kunlong.dongxw.customer.annotation.DateRewritable;
 import com.kunlong.dongxw.customer.consts.ApiConstants;
@@ -10,10 +9,10 @@ import com.kunlong.dongxw.customer.consts.MoneyTypeConsts;
 import com.kunlong.dongxw.customer.consts.OrderStatusConsts;
 import com.kunlong.dongxw.customer.consts.OrderTypeConsts;
 import com.kunlong.dongxw.customer.controller.BaseController;
-import com.kunlong.dongxw.dongxw.domain.Customer;
-import com.kunlong.dongxw.dongxw.domain.OrderMaster;
-import com.kunlong.dongxw.dongxw.service.CustomerService;
-import com.kunlong.dongxw.dongxw.service.OrderMasterService;
+import com.kunlong.dongxw.data.domain.Customer;
+import com.kunlong.dongxw.data.domain.OrderMaster;
+import com.kunlong.dongxw.data.service.CustomerService;
+import com.kunlong.dongxw.data.service.OrderMasterService;
 import com.kunlong.dongxw.util.WebFileUtil;
 import com.kunlong.platform.utils.JsonResult;
 import io.swagger.annotations.ApiOperation;

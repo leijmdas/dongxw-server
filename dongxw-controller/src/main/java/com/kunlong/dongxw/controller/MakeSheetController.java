@@ -6,8 +6,8 @@ import cn.kunlong.center.api.model.SysUserDTO;
 import com.kunlong.dongxw.annotation.DateRewritable;
 import com.kunlong.dongxw.consts.ApiConstants;
 import com.kunlong.dongxw.consts.MakePlanConst;
-import com.kunlong.dongxw.dongxw.domain.*;
-import com.kunlong.dongxw.dongxw.service.*;
+import com.kunlong.dongxw.data.domain.*;
+import com.kunlong.dongxw.data.service.*;
 import com.kunlong.dongxw.util.WebFileUtil;
 import com.kunlong.platform.utils.JsonResult;
 import io.swagger.annotations.ApiOperation;
@@ -58,7 +58,7 @@ public  class MakeSheetController extends BaseController {
 
     @Autowired
     ProductTypeService productTypeService;
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @RequestMapping("/makeSheetByPlan/{planId}")
     public JsonResult<String> makeSheetByPlan(@PathVariable("planId") Integer planId) throws IOException {
 
@@ -66,7 +66,7 @@ public  class MakeSheetController extends BaseController {
         return JsonResult.success("成功！");
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @RequestMapping("/makeSheetByPlanOrder/{orderId}")
     public JsonResult<String> makeSheetByPlanOrder(@PathVariable("orderId") Integer orderId) throws IOException {
 

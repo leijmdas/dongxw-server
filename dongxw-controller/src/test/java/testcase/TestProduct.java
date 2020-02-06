@@ -10,8 +10,8 @@ import com.jtest.annotation.JTest;
 import com.jtest.annotation.JTestClass;
 import com.jtest.testframe.ITestImpl;
 import com.kunlong.dongxw.consts.ApiConstants;
-import com.kunlong.dongxw.dongxw.domain.Customer;
-import com.kunlong.dongxw.dongxw.domain.OrderMaster;
+import com.kunlong.dongxw.data.domain.Customer;
+import com.kunlong.dongxw.data.domain.OrderMaster;
 import com.kunlong.platform.support.service.AuthService;
 import com.kunlong.platform.utils.JsonResult;
 import com.kunlong.platform.utils.KunlongUtils;
@@ -31,8 +31,8 @@ public class TestProduct extends ITestImpl {
     String url_login ="http://127.0.0.1:10080/auth/login?username=admin&password=123456&verifyCode=";
     String url_auth = "http://127.0.0.1:10080/sys/user/authorization";
 
-    String url_cust = "http://127.0.0.1:10081/dongxw/customer";
-    String url_prd = "http://127.0.0.1:10081/dongxw/product";
+    String url_cust = "http://127.0.0.1:10081/data/customer";
+    String url_prd = "http://127.0.0.1:10081/data/product";
 
     @Inject(filename = "node.xml", value = "httpclient")
     HttpClientNode httpclient;

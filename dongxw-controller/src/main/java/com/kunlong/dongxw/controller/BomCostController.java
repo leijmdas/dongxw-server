@@ -3,18 +3,14 @@ package com.kunlong.dongxw.controller;
 
 import app.support.query.PageResult;
 import cn.kunlong.center.api.model.SysUserDTO;
-import com.kunlong.dongxw.dongxw.domain.Bom;
-import com.kunlong.dongxw.dongxw.domain.BomCost;
-import com.kunlong.dongxw.dongxw.service.*;
+import com.kunlong.dongxw.data.domain.BomCost;
+import com.kunlong.dongxw.data.service.*;
 import com.kunlong.platform.utils.JsonResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
 
 /**
  * cust类

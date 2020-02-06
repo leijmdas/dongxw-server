@@ -1,11 +1,14 @@
 package com.kunlong.dongxw.testcase;
 
 import com.jtest.utility.testlog.TestLog;
-import com.kunlong.dongxw.dongxw.service.MakePlanJoinService;
+import com.kunlong.data.dao.BomModelMapper;
+import com.kunlong.data.entity.BomModel;
+import com.kunlong.data.entity.BomModelExample;
+import com.kunlong.dongxw.data.service.MakePlanJoinService;
 import com.kunlong.dongxw.pub.TestBaseApp;
-import com.kunlong.dongxw.dongxw.domain.Customer;
-import com.kunlong.dongxw.dongxw.service.CustomerService;
-import com.kunlong.platform.utils.JsonResult;
+import com.kunlong.dongxw.data.domain.Customer;
+import com.kunlong.dongxw.data.service.CustomerService;
+import org.apache.ibatis.session.RowBounds;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -18,15 +21,10 @@ public class TestDongxwService extends TestBaseApp {
 
     @Autowired
     CustomerService customerService;
-   // @Autowired
-   //DictDatatypeService dictDatatypeService;
-
     @Test
-    public void test001_findById() {
-        Customer c = customerService.findById(1);
+    public void test001_findCustomerById() {
+        Customer c = customerService.findById(22);
         TestLog.logJtest("Customer", c);
-        //DictDatatype dictDatatype = dictDatatypeService.findById(3);
-       //TestLog.logJtest("dictDatatype", dictDatatype);
 
     }
 
@@ -45,8 +43,6 @@ public class TestDongxwService extends TestBaseApp {
 
         List<Customer> customers = customerService.findByQueryParam(new Customer.QueryParam());
         TestLog.logJtest("customers", customers);
-
-
         //Document document = new Document();
         ////Step 2—Get a PdfWriter instance.
         //PdfWriter.getInstance(document, new FileOutputStream(FILE_DIR + "createSamplePDF.pdf"));
@@ -72,5 +68,25 @@ public class TestDongxwService extends TestBaseApp {
     public void test005_MakePlanJoinService_makeSheetByPlanOrder() throws IOException {
         makePlanJoinService.makeSheetByPlanOrder(4,0);
     }
+
+    @Autowired
+    BomModelMapper bomModelMapper;
+
+    @Test
+    public void test006_bomModelMapper() throws IOException {
+        BomModelExample example = new BomModelExample();
+        example.createCriteria().andBigTypeIsNotNull();
+
+        long count = bomModelMapper.countByExample(example);
+        RowBounds rowBounds = new RowBounds(0, 3);
+
+        List<BomModel> bomModels = bomModelMapper.selectByExampleWithRowbounds(example, rowBounds);
+
+        System.out.println(count);
+        for (BomModel bomModel : bomModels) {
+            System.out.println(bomModel);
+        }
+    }
+
 }
 

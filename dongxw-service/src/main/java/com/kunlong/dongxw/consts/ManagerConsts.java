@@ -12,7 +12,7 @@ public class ManagerConsts {
 	
 	protected static String[] MYBATIS_MAPPER_LOCATIONS = new String[] {"classpath*:/dbconfig/manager/*.xml"};
 	
-	protected static String MYBATIS_BASE_PACKAGE = "com.kunlong.dongxw.manager.dao";
+	protected static String MYBATIS_BASE_PACKAGE = "com.kunlong.data.manager.dao";
 	
 	
 	

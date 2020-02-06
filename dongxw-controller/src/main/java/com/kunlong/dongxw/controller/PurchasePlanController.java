@@ -6,8 +6,8 @@ import cn.kunlong.center.api.model.SysUserDTO;
 import com.kunlong.dongxw.annotation.DateRewritable;
 import com.kunlong.dongxw.consts.ApiConstants;
 import com.kunlong.dongxw.consts.MakePlanConst;
-import com.kunlong.dongxw.dongxw.domain.*;
-import com.kunlong.dongxw.dongxw.service.*;
+import com.kunlong.dongxw.data.domain.*;
+import com.kunlong.dongxw.data.service.*;
 import com.kunlong.dongxw.util.WebFileUtil;
 import com.kunlong.platform.utils.JsonResult;
 import io.swagger.annotations.ApiOperation;
@@ -74,7 +74,7 @@ public  class PurchasePlanController extends BaseController {
         return JsonResult.success("成功！");
     }
 
-    //检查有计划
+    /**检查有计划*/
     @PostMapping("/deleteById/{id}")
     public JsonResult<Integer> deleteById(@PathVariable("id") Integer id) throws IOException {
 

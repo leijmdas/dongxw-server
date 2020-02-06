@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.kunlong.dongxw.dongxw.dao.MakeSheetMapper" >
-	<resultMap id="BaseResultMap" type="com.kunlong.dongxw.dongxw.domain.MakeSheet" >
+<mapper namespace="com.kunlong.dongxw.data.dao.MakeSheetMapper" >
+	<resultMap id="BaseResultMap" type="com.kunlong.dongxw.data.domain.MakeSheet" >
 	    <id column="id" property="id" jdbcType="INTEGER" />	
 	  	<result column="order_id" property="orderId" jdbcType="INTEGER" />
 	  	<result column="order_line_id" property="orderLineId" jdbcType="INTEGER" />
@@ -31,7 +31,7 @@
 	  	<result column="create_by" property="createBy" jdbcType="INTEGER" />
 	  	<result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
     </resultMap>
-    <resultMap id="BaseResultMap_MakeSheet" type="com.kunlong.dongxw.dongxw.domain.MakeSheet" >
+    <resultMap id="BaseResultMap_MakeSheet" type="com.kunlong.dongxw.data.domain.MakeSheet" >
 	    <id column="ms_id" property="id" jdbcType="INTEGER" />	
 	  	<result column="ms_order_id" property="orderId" jdbcType="INTEGER" />
 	  	<result column="ms_order_line_id" property="orderLineId" jdbcType="INTEGER" />
@@ -70,7 +70,7 @@
 	
 	<!-- 系统自定义 -->
 	<!-- 实体参数查询结果[START] -->
-	<resultMap id="ResultMap_FindByQueryParam" type="com.kunlong.dongxw.dongxw.domain.MakeSheet" extends="BaseResultMap_MakeSheet">
+	<resultMap id="ResultMap_FindByQueryParam" type="com.kunlong.dongxw.data.domain.MakeSheet" extends="BaseResultMap_MakeSheet">
 		
 	</resultMap>
 

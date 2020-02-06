@@ -19,6 +19,7 @@ public class AppCorsFilter extends OncePerRequestFilter {
 
 	protected final Log logger = LogFactory.getLog(getClass());
 
+	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 		logger.debug("entering page");  
 		// CORS "pre-flight" request
@@ -26,9 +27,9 @@ public class AppCorsFilter extends OncePerRequestFilter {
 		response.addHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
 		response.setHeader("Access-Control-Allow-Headers", "*");
 		response.addHeader("Access-Control-Max-Age", "1800");// 30 min
-		if(request.getMethod().toUpperCase().equals("OPTIONS")){
-			
-			return ;
+		if ("OPTIONS".equals(request.getMethod().toUpperCase())) {
+
+			return;
 		}
 		filterChain.doFilter(request, response);
 	}

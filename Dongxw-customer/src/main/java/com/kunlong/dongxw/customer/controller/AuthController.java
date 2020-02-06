@@ -1,15 +1,11 @@
 package com.kunlong.dongxw.customer.controller;
 
-import app.support.session.ISessionHolder;
-import cn.kunlong.center.api.model.SysUserDTO;
 import com.alibaba.fastjson.JSON;
 import com.kunlong.api.service.AuthApiService;
 import com.kunlong.dongxw.customer.consts.ApiConstants;
 import com.kunlong.dongxw.customer.consts.SessionKeyEnum;
-import com.kunlong.dongxw.customer.context.CurrentRequestContext;
-import com.kunlong.dongxw.dongxw.domain.Customer;
-import com.kunlong.dongxw.dongxw.service.CustomerService;
-import com.kunlong.platform.consts.RequestContextConst;
+import com.kunlong.dongxw.data.domain.Customer;
+import com.kunlong.dongxw.data.service.CustomerService;
 import com.kunlong.platform.model.KunlongModel;
 import com.kunlong.platform.support.service.AuthService;
 import com.kunlong.platform.utils.JsonResult;

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.kunlong.dongxw.dongxw.dao.ProductMapper" >
-	<resultMap id="BaseResultMap" type="com.kunlong.dongxw.dongxw.domain.Product" >
+<mapper namespace="com.kunlong.dongxw.data.dao.ProductMapper" >
+	<resultMap id="BaseResultMap" type="com.kunlong.dongxw.data.domain.Product" >
 	    <id column="id" property="id" jdbcType="INTEGER" />	
 	  	<result column="ep_code" property="epCode" jdbcType="VARCHAR" />
 	  	<result column="code" property="code" jdbcType="VARCHAR" />
@@ -39,7 +39,7 @@
 	  	<result column="pkg_front_img_remark" property="pkgFrontImgRemark" jdbcType="VARCHAR" />
 	  	<result column="prd_flag" property="prdFlag" jdbcType="SMALLINT" />
     </resultMap>
-    <resultMap id="BaseResultMap_Product" type="com.kunlong.dongxw.dongxw.domain.Product" >
+    <resultMap id="BaseResultMap_Product" type="com.kunlong.dongxw.data.domain.Product" >
 	    <id column="p_id" property="id" jdbcType="INTEGER" />	
 	  	<result column="p_ep_code" property="epCode" jdbcType="VARCHAR" />
 	  	<result column="p_code" property="code" jdbcType="VARCHAR" />
@@ -86,7 +86,7 @@
 	
 	<!-- 系统自定义 -->
 	<!-- 实体参数查询结果[START] -->
-	<resultMap id="ResultMap_FindByQueryParam" type="com.kunlong.dongxw.dongxw.domain.Product" extends="BaseResultMap_Product">
+	<resultMap id="ResultMap_FindByQueryParam" type="com.kunlong.dongxw.data.domain.Product" extends="BaseResultMap_Product">
 		
 	</resultMap>
 

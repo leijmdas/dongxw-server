@@ -10,7 +10,7 @@ import com.jtest.annotation.JTest;
 import com.jtest.annotation.JTestClass;
 import com.jtest.testframe.ITestImpl;
 import com.kunlong.dongxw.consts.ApiConstants;
-import com.kunlong.dongxw.dongxw.domain.Customer;
+import com.kunlong.dongxw.data.domain.Customer;
 import com.kunlong.platform.support.service.AuthService;
 import com.kunlong.platform.utils.JsonResult;
 import com.kunlong.platform.utils.KunlongUtils;
@@ -27,9 +27,9 @@ public class TestCustomerAliyun extends ITestImpl {
     String url_login ="http://120.78.136.63:10080/auth/login?username=admin&password=111111";
     String url_auth = "http://120.78.136.63:10080/sys/user/authorization";
 
-    String url_dongxw  = "http://120.78.136.63:8098/api/dongxw/customer";
-    String url_cust = "http://120.78.136.63:10081/dongxw/customer";
-    String url_manager = "http://120.78.136.63:10081/dongxw/manager";
+    String url_dongxw  = "http://120.78.136.63:8098/api/data/customer";
+    String url_cust = "http://120.78.136.63:10081/data/customer";
+    String url_manager = "http://120.78.136.63:10081/data/manager";
 
     @Inject(filename = "node.xml", value = "httpclient")
     HttpClientNode httpclient;

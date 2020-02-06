@@ -22,8 +22,8 @@ public class TestQRcode extends ITestImpl {
     private static final Logger logger = LoggerFactory.getLogger(TestQRcode.class);
 
     String url_sysuser = "http://127.0.0.1:10080/rest/sysuser";
-    String url_export = "http://127.0.0.1:10081/dongxw/export";
-    String url_dongxw  = "http://127.0.0.1:8098/api/dongxw/customer";
+    String url_export = "http://127.0.0.1:10081/data/export";
+    String url_dongxw  = "http://127.0.0.1:8098/api/data/customer";
 
     @Inject(filename = "node.xml", value = "httpclient")
     HttpClientNode httpclient;

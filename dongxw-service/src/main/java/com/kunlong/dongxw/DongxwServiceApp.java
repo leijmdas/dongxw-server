@@ -11,7 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 //
 //@EnableAutoConfiguration
 //@Configuration
-@SpringBootApplication(scanBasePackages = {"com.kunlong.dongxw"})
+@SpringBootApplication(scanBasePackages = {"com.kunlong.data","com.kunlong.dongxw"})
 //@EnableDubbo
 //@EnableDubboConfig
 //@ImportResource({"classpath:appcontext.xml"})

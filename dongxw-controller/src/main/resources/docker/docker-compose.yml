@@ -61,10 +61,10 @@ services:
             context: .
             dockerfile: DockerfileDongxwCtrl
 
-        image: kl-dongxw-ctl
-        container_name: kl-dongxw-ctl
+        image: kl-data-ctl
+        container_name: kl-data-ctl
 
-        hostname: kl-dongxw-ctl
+        hostname: kl-data-ctl
         user: root
         restart: always
         ports:
@@ -76,7 +76,7 @@ services:
         volumes:
             - /etc/localtime:/etc/localtime:ro
             #- /etc/hosts:/etc/hosts:ro
-            - /opt/logs/dongxw:/opt/logs/dongxw
+            - /opt/logs/data:/opt/logs/data
             - /tmp:/tmp
         extra_hosts:
             - "mysql.kunlong.com:172.17.0.1"

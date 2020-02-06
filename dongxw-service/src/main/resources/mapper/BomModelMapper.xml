@@ -1,0 +1,496 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kunlong.data.dao.BomModelMapper">
+  <resultMap id="BaseResultMap" type="com.kunlong.data.entity.BomModel">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="product_id" jdbcType="INTEGER" property="productId" />
+    <result column="parent_id" jdbcType="INTEGER" property="parentId" />
+    <result column="big_type" jdbcType="INTEGER" property="bigType" />
+    <result column="small_type" jdbcType="INTEGER" property="smallType" />
+    <result column="child_id" jdbcType="INTEGER" property="childId" />
+    <result column="unit" jdbcType="VARCHAR" property="unit" />
+    <result column="qty" jdbcType="DECIMAL" property="qty" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="money" jdbcType="DECIMAL" property="money" />
+    <result column="loss_type" jdbcType="INTEGER" property="lossType" />
+    <result column="loss_qty" jdbcType="SMALLINT" property="lossQty" />
+    <result column="size_l" jdbcType="DECIMAL" property="sizeL" />
+    <result column="size_x" jdbcType="VARCHAR" property="sizeX" />
+    <result column="size_w" jdbcType="DECIMAL" property="sizeW" />
+    <result column="length" jdbcType="INTEGER" property="length" />
+    <result column="width" jdbcType="INTEGER" property="width" />
+    <result column="knife_qty" jdbcType="SMALLINT" property="knifeQty" />
+    <result column="depth" jdbcType="SMALLINT" property="depth" />
+    <result column="source" jdbcType="TINYINT" property="source" />
+    <result column="create_by" jdbcType="INTEGER" property="createBy" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, product_id, parent_id, big_type, small_type, child_id, unit, qty, price, money, 
+    loss_type, loss_qty, size_l, size_x, size_w, length, width, knife_qty, depth, source, 
+    create_by, create_date
+  </sql>
+  <select id="selectByExample" parameterType="com.kunlong.data.entity.BomModelExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from bom
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from bom
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from bom
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.kunlong.data.entity.BomModelExample">
+    delete from bom
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.kunlong.data.entity.BomModel">
+    insert into bom (id, product_id, parent_id, 
+      big_type, small_type, child_id, 
+      unit, qty, price, money, 
+      loss_type, loss_qty, size_l, 
+      size_x, size_w, length, 
+      width, knife_qty, depth, 
+      source, create_by, create_date
+      )
+    values (#{id,jdbcType=INTEGER}, #{productId,jdbcType=INTEGER}, #{parentId,jdbcType=INTEGER}, 
+      #{bigType,jdbcType=INTEGER}, #{smallType,jdbcType=INTEGER}, #{childId,jdbcType=INTEGER}, 
+      #{unit,jdbcType=VARCHAR}, #{qty,jdbcType=DECIMAL}, #{price,jdbcType=DECIMAL}, #{money,jdbcType=DECIMAL}, 
+      #{lossType,jdbcType=INTEGER}, #{lossQty,jdbcType=SMALLINT}, #{sizeL,jdbcType=DECIMAL}, 
+      #{sizeX,jdbcType=VARCHAR}, #{sizeW,jdbcType=DECIMAL}, #{length,jdbcType=INTEGER}, 
+      #{width,jdbcType=INTEGER}, #{knifeQty,jdbcType=SMALLINT}, #{depth,jdbcType=SMALLINT}, 
+      #{source,jdbcType=TINYINT}, #{createBy,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.kunlong.data.entity.BomModel">
+    insert into bom
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="productId != null">
+        product_id,
+      </if>
+      <if test="parentId != null">
+        parent_id,
+      </if>
+      <if test="bigType != null">
+        big_type,
+      </if>
+      <if test="smallType != null">
+        small_type,
+      </if>
+      <if test="childId != null">
+        child_id,
+      </if>
+      <if test="unit != null">
+        unit,
+      </if>
+      <if test="qty != null">
+        qty,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="money != null">
+        money,
+      </if>
+      <if test="lossType != null">
+        loss_type,
+      </if>
+      <if test="lossQty != null">
+        loss_qty,
+      </if>
+      <if test="sizeL != null">
+        size_l,
+      </if>
+      <if test="sizeX != null">
+        size_x,
+      </if>
+      <if test="sizeW != null">
+        size_w,
+      </if>
+      <if test="length != null">
+        length,
+      </if>
+      <if test="width != null">
+        width,
+      </if>
+      <if test="knifeQty != null">
+        knife_qty,
+      </if>
+      <if test="depth != null">
+        depth,
+      </if>
+      <if test="source != null">
+        source,
+      </if>
+      <if test="createBy != null">
+        create_by,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="productId != null">
+        #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="parentId != null">
+        #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="bigType != null">
+        #{bigType,jdbcType=INTEGER},
+      </if>
+      <if test="smallType != null">
+        #{smallType,jdbcType=INTEGER},
+      </if>
+      <if test="childId != null">
+        #{childId,jdbcType=INTEGER},
+      </if>
+      <if test="unit != null">
+        #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="qty != null">
+        #{qty,jdbcType=DECIMAL},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="money != null">
+        #{money,jdbcType=DECIMAL},
+      </if>
+      <if test="lossType != null">
+        #{lossType,jdbcType=INTEGER},
+      </if>
+      <if test="lossQty != null">
+        #{lossQty,jdbcType=SMALLINT},
+      </if>
+      <if test="sizeL != null">
+        #{sizeL,jdbcType=DECIMAL},
+      </if>
+      <if test="sizeX != null">
+        #{sizeX,jdbcType=VARCHAR},
+      </if>
+      <if test="sizeW != null">
+        #{sizeW,jdbcType=DECIMAL},
+      </if>
+      <if test="length != null">
+        #{length,jdbcType=INTEGER},
+      </if>
+      <if test="width != null">
+        #{width,jdbcType=INTEGER},
+      </if>
+      <if test="knifeQty != null">
+        #{knifeQty,jdbcType=SMALLINT},
+      </if>
+      <if test="depth != null">
+        #{depth,jdbcType=SMALLINT},
+      </if>
+      <if test="source != null">
+        #{source,jdbcType=TINYINT},
+      </if>
+      <if test="createBy != null">
+        #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.kunlong.data.entity.BomModelExample" resultType="java.lang.Long">
+    select count(*) from bom
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update bom
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.productId != null">
+        product_id = #{record.productId,jdbcType=INTEGER},
+      </if>
+      <if test="record.parentId != null">
+        parent_id = #{record.parentId,jdbcType=INTEGER},
+      </if>
+      <if test="record.bigType != null">
+        big_type = #{record.bigType,jdbcType=INTEGER},
+      </if>
+      <if test="record.smallType != null">
+        small_type = #{record.smallType,jdbcType=INTEGER},
+      </if>
+      <if test="record.childId != null">
+        child_id = #{record.childId,jdbcType=INTEGER},
+      </if>
+      <if test="record.unit != null">
+        unit = #{record.unit,jdbcType=VARCHAR},
+      </if>
+      <if test="record.qty != null">
+        qty = #{record.qty,jdbcType=DECIMAL},
+      </if>
+      <if test="record.price != null">
+        price = #{record.price,jdbcType=DECIMAL},
+      </if>
+      <if test="record.money != null">
+        money = #{record.money,jdbcType=DECIMAL},
+      </if>
+      <if test="record.lossType != null">
+        loss_type = #{record.lossType,jdbcType=INTEGER},
+      </if>
+      <if test="record.lossQty != null">
+        loss_qty = #{record.lossQty,jdbcType=SMALLINT},
+      </if>
+      <if test="record.sizeL != null">
+        size_l = #{record.sizeL,jdbcType=DECIMAL},
+      </if>
+      <if test="record.sizeX != null">
+        size_x = #{record.sizeX,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sizeW != null">
+        size_w = #{record.sizeW,jdbcType=DECIMAL},
+      </if>
+      <if test="record.length != null">
+        length = #{record.length,jdbcType=INTEGER},
+      </if>
+      <if test="record.width != null">
+        width = #{record.width,jdbcType=INTEGER},
+      </if>
+      <if test="record.knifeQty != null">
+        knife_qty = #{record.knifeQty,jdbcType=SMALLINT},
+      </if>
+      <if test="record.depth != null">
+        depth = #{record.depth,jdbcType=SMALLINT},
+      </if>
+      <if test="record.source != null">
+        source = #{record.source,jdbcType=TINYINT},
+      </if>
+      <if test="record.createBy != null">
+        create_by = #{record.createBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.createDate != null">
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update bom
+    set id = #{record.id,jdbcType=INTEGER},
+      product_id = #{record.productId,jdbcType=INTEGER},
+      parent_id = #{record.parentId,jdbcType=INTEGER},
+      big_type = #{record.bigType,jdbcType=INTEGER},
+      small_type = #{record.smallType,jdbcType=INTEGER},
+      child_id = #{record.childId,jdbcType=INTEGER},
+      unit = #{record.unit,jdbcType=VARCHAR},
+      qty = #{record.qty,jdbcType=DECIMAL},
+      price = #{record.price,jdbcType=DECIMAL},
+      money = #{record.money,jdbcType=DECIMAL},
+      loss_type = #{record.lossType,jdbcType=INTEGER},
+      loss_qty = #{record.lossQty,jdbcType=SMALLINT},
+      size_l = #{record.sizeL,jdbcType=DECIMAL},
+      size_x = #{record.sizeX,jdbcType=VARCHAR},
+      size_w = #{record.sizeW,jdbcType=DECIMAL},
+      length = #{record.length,jdbcType=INTEGER},
+      width = #{record.width,jdbcType=INTEGER},
+      knife_qty = #{record.knifeQty,jdbcType=SMALLINT},
+      depth = #{record.depth,jdbcType=SMALLINT},
+      source = #{record.source,jdbcType=TINYINT},
+      create_by = #{record.createBy,jdbcType=INTEGER},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.kunlong.data.entity.BomModel">
+    update bom
+    <set>
+      <if test="productId != null">
+        product_id = #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="parentId != null">
+        parent_id = #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="bigType != null">
+        big_type = #{bigType,jdbcType=INTEGER},
+      </if>
+      <if test="smallType != null">
+        small_type = #{smallType,jdbcType=INTEGER},
+      </if>
+      <if test="childId != null">
+        child_id = #{childId,jdbcType=INTEGER},
+      </if>
+      <if test="unit != null">
+        unit = #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="qty != null">
+        qty = #{qty,jdbcType=DECIMAL},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="money != null">
+        money = #{money,jdbcType=DECIMAL},
+      </if>
+      <if test="lossType != null">
+        loss_type = #{lossType,jdbcType=INTEGER},
+      </if>
+      <if test="lossQty != null">
+        loss_qty = #{lossQty,jdbcType=SMALLINT},
+      </if>
+      <if test="sizeL != null">
+        size_l = #{sizeL,jdbcType=DECIMAL},
+      </if>
+      <if test="sizeX != null">
+        size_x = #{sizeX,jdbcType=VARCHAR},
+      </if>
+      <if test="sizeW != null">
+        size_w = #{sizeW,jdbcType=DECIMAL},
+      </if>
+      <if test="length != null">
+        length = #{length,jdbcType=INTEGER},
+      </if>
+      <if test="width != null">
+        width = #{width,jdbcType=INTEGER},
+      </if>
+      <if test="knifeQty != null">
+        knife_qty = #{knifeQty,jdbcType=SMALLINT},
+      </if>
+      <if test="depth != null">
+        depth = #{depth,jdbcType=SMALLINT},
+      </if>
+      <if test="source != null">
+        source = #{source,jdbcType=TINYINT},
+      </if>
+      <if test="createBy != null">
+        create_by = #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.kunlong.data.entity.BomModel">
+    update bom
+    set product_id = #{productId,jdbcType=INTEGER},
+      parent_id = #{parentId,jdbcType=INTEGER},
+      big_type = #{bigType,jdbcType=INTEGER},
+      small_type = #{smallType,jdbcType=INTEGER},
+      child_id = #{childId,jdbcType=INTEGER},
+      unit = #{unit,jdbcType=VARCHAR},
+      qty = #{qty,jdbcType=DECIMAL},
+      price = #{price,jdbcType=DECIMAL},
+      money = #{money,jdbcType=DECIMAL},
+      loss_type = #{lossType,jdbcType=INTEGER},
+      loss_qty = #{lossQty,jdbcType=SMALLINT},
+      size_l = #{sizeL,jdbcType=DECIMAL},
+      size_x = #{sizeX,jdbcType=VARCHAR},
+      size_w = #{sizeW,jdbcType=DECIMAL},
+      length = #{length,jdbcType=INTEGER},
+      width = #{width,jdbcType=INTEGER},
+      knife_qty = #{knifeQty,jdbcType=SMALLINT},
+      depth = #{depth,jdbcType=SMALLINT},
+      source = #{source,jdbcType=TINYINT},
+      create_by = #{createBy,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByExampleWithRowbounds" parameterType="com.kunlong.data.entity.BomModelExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from bom
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+</mapper>

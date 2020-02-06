@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.kunlong.dongxw.dongxw.dao.OrderLineMapper" >
-	<resultMap id="BaseResultMap" type="com.kunlong.dongxw.dongxw.domain.OrderLine" >
+<mapper namespace="com.kunlong.dongxw.data.dao.OrderLineMapper" >
+	<resultMap id="BaseResultMap" type="com.kunlong.dongxw.data.domain.OrderLine" >
 	    <id column="id" property="id" jdbcType="INTEGER" />	
 	  	<result column="customer_id" property="customerId" jdbcType="INTEGER" />
 	  	<result column="order_id" property="orderId" jdbcType="INTEGER" />
@@ -17,7 +17,7 @@
 	  	<result column="status" property="status" jdbcType="BIT" />
 	  	<result column="currency" property="currency" jdbcType="VARCHAR" />
     </resultMap>
-    <resultMap id="BaseResultMap_OrderLine" type="com.kunlong.dongxw.dongxw.domain.OrderLine" >
+    <resultMap id="BaseResultMap_OrderLine" type="com.kunlong.dongxw.data.domain.OrderLine" >
 	    <id column="ol_id" property="id" jdbcType="INTEGER" />	
 	  	<result column="ol_customer_id" property="customerId" jdbcType="INTEGER" />
 	  	<result column="ol_order_id" property="orderId" jdbcType="INTEGER" />
@@ -42,7 +42,7 @@
 	
 	<!-- 系统自定义 -->
 	<!-- 实体参数查询结果[START] -->
-	<resultMap id="ResultMap_FindByQueryParam" type="com.kunlong.dongxw.dongxw.domain.OrderLine" extends="BaseResultMap_OrderLine">
+	<resultMap id="ResultMap_FindByQueryParam" type="com.kunlong.dongxw.data.domain.OrderLine" extends="BaseResultMap_OrderLine">
 		
 	</resultMap>
 
