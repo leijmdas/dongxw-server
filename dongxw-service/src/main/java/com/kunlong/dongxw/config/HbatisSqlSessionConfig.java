@@ -12,7 +12,7 @@ public class HbatisSqlSessionConfig {
 	
 	@Bean(name = "daoSupport")
 	@Lazy(value=false)
-	public HbatisSqlSessionDaoSupport daoSupport(@Qualifier("dongxwSqlSessionFactory")SqlSessionFactory sqlSessionFactory) {
+	public HbatisSqlSessionDaoSupport daoSupport(@Qualifier("dongxwSqlSessionFactory") SqlSessionFactory sqlSessionFactory) {
 		HbatisSqlSessionDaoSupport s = new HbatisSqlSessionDaoSupport(sqlSessionFactory);
 		s.setSqlSessionFactory(sqlSessionFactory);
 		

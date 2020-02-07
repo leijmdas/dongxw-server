@@ -1,6 +1,7 @@
 package com.kunlong.dongxw.data.domain;
 
 import java.io.Serializable;
+import javax.persistence.Id;
 import javax.validation.constraints.*;
 import org.mybatis.hbatis.core.type.JdbcType;
 import org.mybatis.hbatis.core.annotation.*;
@@ -18,6 +19,7 @@ import org.mybatis.hbatis.orm.criteria.support.query.SortOrders;
  * @date 2020年02月05日
  */
 @Table(OrderLine.EntityNode.class)
+@javax.persistence.Table(name="order_line")
 public class OrderLine extends OrderLineBase implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
@@ -25,6 +27,7 @@ public class OrderLine extends OrderLineBase implements Serializable {
 	  * 订单产品标识 
 	  * nullable:true,length:11
 	  */
+	@Id
 	@Column(primaryKey = true,autoIncrement = true,comment = "订单产品标识 ")	
 	private Integer id;
 	/**

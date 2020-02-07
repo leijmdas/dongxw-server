@@ -2,6 +2,7 @@ package com.kunlong.dongxw.data.domain;
 
 import com.kunlong.platform.model.KunlongModel;
 
+import javax.persistence.Transient;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
@@ -15,7 +16,9 @@ public class BomBase extends KunlongModel implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	// ==== 自定义属性 ====
+	@Transient
 	BigDecimal lossMoney;
+	@Transient
 	BigDecimal totalMoney;
 
 	ProductType productType;
@@ -48,7 +51,7 @@ public class BomBase extends KunlongModel implements Serializable {
 	Product product;
 
 	Customer customer;
-
+	@Transient
 	String createByName;
 
 	public Product getChildRm() {

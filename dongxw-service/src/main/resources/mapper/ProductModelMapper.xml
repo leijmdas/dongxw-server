@@ -1,0 +1,716 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kunlong.data.dao.ProductModelMapper">
+  <resultMap id="BaseResultMap" type="com.kunlong.data.entity.ProductModel">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="ep_code" jdbcType="VARCHAR" property="epCode" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="parent_id" jdbcType="INTEGER" property="parentId" />
+    <result column="product_type_id" jdbcType="INTEGER" property="productTypeId" />
+    <result column="pic_url" jdbcType="VARCHAR" property="picUrl" />
+    <result column="bar_code" jdbcType="VARCHAR" property="barCode" />
+    <result column="color" jdbcType="VARCHAR" property="color" />
+    <result column="unit" jdbcType="VARCHAR" property="unit" />
+    <result column="size" jdbcType="VARCHAR" property="size" />
+    <result column="upc_a" jdbcType="VARCHAR" property="upcA" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="memo" jdbcType="VARCHAR" property="memo" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="create_by" jdbcType="INTEGER" property="createBy" />
+    <result column="customer_id" jdbcType="INTEGER" property="customerId" />
+    <result column="img_urls" jdbcType="VARCHAR" property="imgUrls" />
+    <result column="ib_qty" jdbcType="INTEGER" property="ibQty" />
+    <result column="ib_gw" jdbcType="DECIMAL" property="ibGw" />
+    <result column="ib_nw" jdbcType="DECIMAL" property="ibNw" />
+    <result column="ib_size" jdbcType="VARCHAR" property="ibSize" />
+    <result column="ob_qty" jdbcType="INTEGER" property="obQty" />
+    <result column="ob_gw" jdbcType="DECIMAL" property="obGw" />
+    <result column="ob_nw" jdbcType="DECIMAL" property="obNw" />
+    <result column="ob_size" jdbcType="VARCHAR" property="obSize" />
+    <result column="pkg_front" jdbcType="VARCHAR" property="pkgFront" />
+    <result column="pkg_side" jdbcType="VARCHAR" property="pkgSide" />
+    <result column="pkg_remark" jdbcType="VARCHAR" property="pkgRemark" />
+    <result column="img_remark" jdbcType="VARCHAR" property="imgRemark" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="pkg_side_img_remark" jdbcType="VARCHAR" property="pkgSideImgRemark" />
+    <result column="pkg_front_img_urls" jdbcType="VARCHAR" property="pkgFrontImgUrls" />
+    <result column="pkg_side_img_urls" jdbcType="VARCHAR" property="pkgSideImgUrls" />
+    <result column="pkg_front_img_remark" jdbcType="VARCHAR" property="pkgFrontImgRemark" />
+    <result column="prd_flag" jdbcType="SMALLINT" property="prdFlag" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, ep_code, code, remark, parent_id, product_type_id, pic_url, bar_code, color, 
+    unit, size, upc_a, status, memo, create_date, create_by, customer_id, img_urls, ib_qty, 
+    ib_gw, ib_nw, ib_size, ob_qty, ob_gw, ob_nw, ob_size, pkg_front, pkg_side, pkg_remark, 
+    img_remark, name, pkg_side_img_remark, pkg_front_img_urls, pkg_side_img_urls, pkg_front_img_remark, 
+    prd_flag
+  </sql>
+  <select id="selectByExample" parameterType="com.kunlong.data.entity.ProductModelExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from product
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from product
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from product
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.kunlong.data.entity.ProductModelExample">
+    delete from product
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.kunlong.data.entity.ProductModel">
+    insert into product (id, ep_code, code, 
+      remark, parent_id, product_type_id, 
+      pic_url, bar_code, color, 
+      unit, size, upc_a, status, 
+      memo, create_date, create_by, 
+      customer_id, img_urls, ib_qty, 
+      ib_gw, ib_nw, ib_size, 
+      ob_qty, ob_gw, ob_nw, 
+      ob_size, pkg_front, pkg_side, 
+      pkg_remark, img_remark, name, 
+      pkg_side_img_remark, pkg_front_img_urls, pkg_side_img_urls, 
+      pkg_front_img_remark, prd_flag)
+    values (#{id,jdbcType=INTEGER}, #{epCode,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR}, #{parentId,jdbcType=INTEGER}, #{productTypeId,jdbcType=INTEGER}, 
+      #{picUrl,jdbcType=VARCHAR}, #{barCode,jdbcType=VARCHAR}, #{color,jdbcType=VARCHAR}, 
+      #{unit,jdbcType=VARCHAR}, #{size,jdbcType=VARCHAR}, #{upcA,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+      #{memo,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER}, 
+      #{customerId,jdbcType=INTEGER}, #{imgUrls,jdbcType=VARCHAR}, #{ibQty,jdbcType=INTEGER}, 
+      #{ibGw,jdbcType=DECIMAL}, #{ibNw,jdbcType=DECIMAL}, #{ibSize,jdbcType=VARCHAR}, 
+      #{obQty,jdbcType=INTEGER}, #{obGw,jdbcType=DECIMAL}, #{obNw,jdbcType=DECIMAL}, 
+      #{obSize,jdbcType=VARCHAR}, #{pkgFront,jdbcType=VARCHAR}, #{pkgSide,jdbcType=VARCHAR}, 
+      #{pkgRemark,jdbcType=VARCHAR}, #{imgRemark,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{pkgSideImgRemark,jdbcType=VARCHAR}, #{pkgFrontImgUrls,jdbcType=VARCHAR}, #{pkgSideImgUrls,jdbcType=VARCHAR}, 
+      #{pkgFrontImgRemark,jdbcType=VARCHAR}, #{prdFlag,jdbcType=SMALLINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.kunlong.data.entity.ProductModel">
+    insert into product
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="epCode != null">
+        ep_code,
+      </if>
+      <if test="code != null">
+        code,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="parentId != null">
+        parent_id,
+      </if>
+      <if test="productTypeId != null">
+        product_type_id,
+      </if>
+      <if test="picUrl != null">
+        pic_url,
+      </if>
+      <if test="barCode != null">
+        bar_code,
+      </if>
+      <if test="color != null">
+        color,
+      </if>
+      <if test="unit != null">
+        unit,
+      </if>
+      <if test="size != null">
+        size,
+      </if>
+      <if test="upcA != null">
+        upc_a,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="memo != null">
+        memo,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="createBy != null">
+        create_by,
+      </if>
+      <if test="customerId != null">
+        customer_id,
+      </if>
+      <if test="imgUrls != null">
+        img_urls,
+      </if>
+      <if test="ibQty != null">
+        ib_qty,
+      </if>
+      <if test="ibGw != null">
+        ib_gw,
+      </if>
+      <if test="ibNw != null">
+        ib_nw,
+      </if>
+      <if test="ibSize != null">
+        ib_size,
+      </if>
+      <if test="obQty != null">
+        ob_qty,
+      </if>
+      <if test="obGw != null">
+        ob_gw,
+      </if>
+      <if test="obNw != null">
+        ob_nw,
+      </if>
+      <if test="obSize != null">
+        ob_size,
+      </if>
+      <if test="pkgFront != null">
+        pkg_front,
+      </if>
+      <if test="pkgSide != null">
+        pkg_side,
+      </if>
+      <if test="pkgRemark != null">
+        pkg_remark,
+      </if>
+      <if test="imgRemark != null">
+        img_remark,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="pkgSideImgRemark != null">
+        pkg_side_img_remark,
+      </if>
+      <if test="pkgFrontImgUrls != null">
+        pkg_front_img_urls,
+      </if>
+      <if test="pkgSideImgUrls != null">
+        pkg_side_img_urls,
+      </if>
+      <if test="pkgFrontImgRemark != null">
+        pkg_front_img_remark,
+      </if>
+      <if test="prdFlag != null">
+        prd_flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="epCode != null">
+        #{epCode,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null">
+        #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="productTypeId != null">
+        #{productTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="picUrl != null">
+        #{picUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="barCode != null">
+        #{barCode,jdbcType=VARCHAR},
+      </if>
+      <if test="color != null">
+        #{color,jdbcType=VARCHAR},
+      </if>
+      <if test="unit != null">
+        #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="size != null">
+        #{size,jdbcType=VARCHAR},
+      </if>
+      <if test="upcA != null">
+        #{upcA,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="memo != null">
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null">
+        #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="customerId != null">
+        #{customerId,jdbcType=INTEGER},
+      </if>
+      <if test="imgUrls != null">
+        #{imgUrls,jdbcType=VARCHAR},
+      </if>
+      <if test="ibQty != null">
+        #{ibQty,jdbcType=INTEGER},
+      </if>
+      <if test="ibGw != null">
+        #{ibGw,jdbcType=DECIMAL},
+      </if>
+      <if test="ibNw != null">
+        #{ibNw,jdbcType=DECIMAL},
+      </if>
+      <if test="ibSize != null">
+        #{ibSize,jdbcType=VARCHAR},
+      </if>
+      <if test="obQty != null">
+        #{obQty,jdbcType=INTEGER},
+      </if>
+      <if test="obGw != null">
+        #{obGw,jdbcType=DECIMAL},
+      </if>
+      <if test="obNw != null">
+        #{obNw,jdbcType=DECIMAL},
+      </if>
+      <if test="obSize != null">
+        #{obSize,jdbcType=VARCHAR},
+      </if>
+      <if test="pkgFront != null">
+        #{pkgFront,jdbcType=VARCHAR},
+      </if>
+      <if test="pkgSide != null">
+        #{pkgSide,jdbcType=VARCHAR},
+      </if>
+      <if test="pkgRemark != null">
+        #{pkgRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="imgRemark != null">
+        #{imgRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="pkgSideImgRemark != null">
+        #{pkgSideImgRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="pkgFrontImgUrls != null">
+        #{pkgFrontImgUrls,jdbcType=VARCHAR},
+      </if>
+      <if test="pkgSideImgUrls != null">
+        #{pkgSideImgUrls,jdbcType=VARCHAR},
+      </if>
+      <if test="pkgFrontImgRemark != null">
+        #{pkgFrontImgRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="prdFlag != null">
+        #{prdFlag,jdbcType=SMALLINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.kunlong.data.entity.ProductModelExample" resultType="java.lang.Long">
+    select count(*) from product
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update product
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.epCode != null">
+        ep_code = #{record.epCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.code != null">
+        code = #{record.code,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark != null">
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.parentId != null">
+        parent_id = #{record.parentId,jdbcType=INTEGER},
+      </if>
+      <if test="record.productTypeId != null">
+        product_type_id = #{record.productTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="record.picUrl != null">
+        pic_url = #{record.picUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.barCode != null">
+        bar_code = #{record.barCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.color != null">
+        color = #{record.color,jdbcType=VARCHAR},
+      </if>
+      <if test="record.unit != null">
+        unit = #{record.unit,jdbcType=VARCHAR},
+      </if>
+      <if test="record.size != null">
+        size = #{record.size,jdbcType=VARCHAR},
+      </if>
+      <if test="record.upcA != null">
+        upc_a = #{record.upcA,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=INTEGER},
+      </if>
+      <if test="record.memo != null">
+        memo = #{record.memo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createDate != null">
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createBy != null">
+        create_by = #{record.createBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.customerId != null">
+        customer_id = #{record.customerId,jdbcType=INTEGER},
+      </if>
+      <if test="record.imgUrls != null">
+        img_urls = #{record.imgUrls,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ibQty != null">
+        ib_qty = #{record.ibQty,jdbcType=INTEGER},
+      </if>
+      <if test="record.ibGw != null">
+        ib_gw = #{record.ibGw,jdbcType=DECIMAL},
+      </if>
+      <if test="record.ibNw != null">
+        ib_nw = #{record.ibNw,jdbcType=DECIMAL},
+      </if>
+      <if test="record.ibSize != null">
+        ib_size = #{record.ibSize,jdbcType=VARCHAR},
+      </if>
+      <if test="record.obQty != null">
+        ob_qty = #{record.obQty,jdbcType=INTEGER},
+      </if>
+      <if test="record.obGw != null">
+        ob_gw = #{record.obGw,jdbcType=DECIMAL},
+      </if>
+      <if test="record.obNw != null">
+        ob_nw = #{record.obNw,jdbcType=DECIMAL},
+      </if>
+      <if test="record.obSize != null">
+        ob_size = #{record.obSize,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pkgFront != null">
+        pkg_front = #{record.pkgFront,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pkgSide != null">
+        pkg_side = #{record.pkgSide,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pkgRemark != null">
+        pkg_remark = #{record.pkgRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.imgRemark != null">
+        img_remark = #{record.imgRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null">
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pkgSideImgRemark != null">
+        pkg_side_img_remark = #{record.pkgSideImgRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pkgFrontImgUrls != null">
+        pkg_front_img_urls = #{record.pkgFrontImgUrls,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pkgSideImgUrls != null">
+        pkg_side_img_urls = #{record.pkgSideImgUrls,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pkgFrontImgRemark != null">
+        pkg_front_img_remark = #{record.pkgFrontImgRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.prdFlag != null">
+        prd_flag = #{record.prdFlag,jdbcType=SMALLINT},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update product
+    set id = #{record.id,jdbcType=INTEGER},
+      ep_code = #{record.epCode,jdbcType=VARCHAR},
+      code = #{record.code,jdbcType=VARCHAR},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      parent_id = #{record.parentId,jdbcType=INTEGER},
+      product_type_id = #{record.productTypeId,jdbcType=INTEGER},
+      pic_url = #{record.picUrl,jdbcType=VARCHAR},
+      bar_code = #{record.barCode,jdbcType=VARCHAR},
+      color = #{record.color,jdbcType=VARCHAR},
+      unit = #{record.unit,jdbcType=VARCHAR},
+      size = #{record.size,jdbcType=VARCHAR},
+      upc_a = #{record.upcA,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=INTEGER},
+      memo = #{record.memo,jdbcType=VARCHAR},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      create_by = #{record.createBy,jdbcType=INTEGER},
+      customer_id = #{record.customerId,jdbcType=INTEGER},
+      img_urls = #{record.imgUrls,jdbcType=VARCHAR},
+      ib_qty = #{record.ibQty,jdbcType=INTEGER},
+      ib_gw = #{record.ibGw,jdbcType=DECIMAL},
+      ib_nw = #{record.ibNw,jdbcType=DECIMAL},
+      ib_size = #{record.ibSize,jdbcType=VARCHAR},
+      ob_qty = #{record.obQty,jdbcType=INTEGER},
+      ob_gw = #{record.obGw,jdbcType=DECIMAL},
+      ob_nw = #{record.obNw,jdbcType=DECIMAL},
+      ob_size = #{record.obSize,jdbcType=VARCHAR},
+      pkg_front = #{record.pkgFront,jdbcType=VARCHAR},
+      pkg_side = #{record.pkgSide,jdbcType=VARCHAR},
+      pkg_remark = #{record.pkgRemark,jdbcType=VARCHAR},
+      img_remark = #{record.imgRemark,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      pkg_side_img_remark = #{record.pkgSideImgRemark,jdbcType=VARCHAR},
+      pkg_front_img_urls = #{record.pkgFrontImgUrls,jdbcType=VARCHAR},
+      pkg_side_img_urls = #{record.pkgSideImgUrls,jdbcType=VARCHAR},
+      pkg_front_img_remark = #{record.pkgFrontImgRemark,jdbcType=VARCHAR},
+      prd_flag = #{record.prdFlag,jdbcType=SMALLINT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.kunlong.data.entity.ProductModel">
+    update product
+    <set>
+      <if test="epCode != null">
+        ep_code = #{epCode,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null">
+        parent_id = #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="productTypeId != null">
+        product_type_id = #{productTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="picUrl != null">
+        pic_url = #{picUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="barCode != null">
+        bar_code = #{barCode,jdbcType=VARCHAR},
+      </if>
+      <if test="color != null">
+        color = #{color,jdbcType=VARCHAR},
+      </if>
+      <if test="unit != null">
+        unit = #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="size != null">
+        size = #{size,jdbcType=VARCHAR},
+      </if>
+      <if test="upcA != null">
+        upc_a = #{upcA,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="memo != null">
+        memo = #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null">
+        create_by = #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="customerId != null">
+        customer_id = #{customerId,jdbcType=INTEGER},
+      </if>
+      <if test="imgUrls != null">
+        img_urls = #{imgUrls,jdbcType=VARCHAR},
+      </if>
+      <if test="ibQty != null">
+        ib_qty = #{ibQty,jdbcType=INTEGER},
+      </if>
+      <if test="ibGw != null">
+        ib_gw = #{ibGw,jdbcType=DECIMAL},
+      </if>
+      <if test="ibNw != null">
+        ib_nw = #{ibNw,jdbcType=DECIMAL},
+      </if>
+      <if test="ibSize != null">
+        ib_size = #{ibSize,jdbcType=VARCHAR},
+      </if>
+      <if test="obQty != null">
+        ob_qty = #{obQty,jdbcType=INTEGER},
+      </if>
+      <if test="obGw != null">
+        ob_gw = #{obGw,jdbcType=DECIMAL},
+      </if>
+      <if test="obNw != null">
+        ob_nw = #{obNw,jdbcType=DECIMAL},
+      </if>
+      <if test="obSize != null">
+        ob_size = #{obSize,jdbcType=VARCHAR},
+      </if>
+      <if test="pkgFront != null">
+        pkg_front = #{pkgFront,jdbcType=VARCHAR},
+      </if>
+      <if test="pkgSide != null">
+        pkg_side = #{pkgSide,jdbcType=VARCHAR},
+      </if>
+      <if test="pkgRemark != null">
+        pkg_remark = #{pkgRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="imgRemark != null">
+        img_remark = #{imgRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="pkgSideImgRemark != null">
+        pkg_side_img_remark = #{pkgSideImgRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="pkgFrontImgUrls != null">
+        pkg_front_img_urls = #{pkgFrontImgUrls,jdbcType=VARCHAR},
+      </if>
+      <if test="pkgSideImgUrls != null">
+        pkg_side_img_urls = #{pkgSideImgUrls,jdbcType=VARCHAR},
+      </if>
+      <if test="pkgFrontImgRemark != null">
+        pkg_front_img_remark = #{pkgFrontImgRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="prdFlag != null">
+        prd_flag = #{prdFlag,jdbcType=SMALLINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.kunlong.data.entity.ProductModel">
+    update product
+    set ep_code = #{epCode,jdbcType=VARCHAR},
+      code = #{code,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      parent_id = #{parentId,jdbcType=INTEGER},
+      product_type_id = #{productTypeId,jdbcType=INTEGER},
+      pic_url = #{picUrl,jdbcType=VARCHAR},
+      bar_code = #{barCode,jdbcType=VARCHAR},
+      color = #{color,jdbcType=VARCHAR},
+      unit = #{unit,jdbcType=VARCHAR},
+      size = #{size,jdbcType=VARCHAR},
+      upc_a = #{upcA,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      memo = #{memo,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      create_by = #{createBy,jdbcType=INTEGER},
+      customer_id = #{customerId,jdbcType=INTEGER},
+      img_urls = #{imgUrls,jdbcType=VARCHAR},
+      ib_qty = #{ibQty,jdbcType=INTEGER},
+      ib_gw = #{ibGw,jdbcType=DECIMAL},
+      ib_nw = #{ibNw,jdbcType=DECIMAL},
+      ib_size = #{ibSize,jdbcType=VARCHAR},
+      ob_qty = #{obQty,jdbcType=INTEGER},
+      ob_gw = #{obGw,jdbcType=DECIMAL},
+      ob_nw = #{obNw,jdbcType=DECIMAL},
+      ob_size = #{obSize,jdbcType=VARCHAR},
+      pkg_front = #{pkgFront,jdbcType=VARCHAR},
+      pkg_side = #{pkgSide,jdbcType=VARCHAR},
+      pkg_remark = #{pkgRemark,jdbcType=VARCHAR},
+      img_remark = #{imgRemark,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      pkg_side_img_remark = #{pkgSideImgRemark,jdbcType=VARCHAR},
+      pkg_front_img_urls = #{pkgFrontImgUrls,jdbcType=VARCHAR},
+      pkg_side_img_urls = #{pkgSideImgUrls,jdbcType=VARCHAR},
+      pkg_front_img_remark = #{pkgFrontImgRemark,jdbcType=VARCHAR},
+      prd_flag = #{prdFlag,jdbcType=SMALLINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByExampleWithRowbounds" parameterType="com.kunlong.data.entity.ProductModelExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from product
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+</mapper>

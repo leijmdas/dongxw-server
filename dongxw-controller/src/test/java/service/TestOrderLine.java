@@ -1,15 +1,25 @@
 package service;
 
 import com.kunlong.api.service.MailApiService;
+import com.kunlong.data.dao.BomModelMapper;
+import com.kunlong.data.entity.BomModel;
+import com.kunlong.data.entity.BomModelExample;
 import com.kunlong.dongxw.DongxwApp;
 import com.kunlong.dongxw.data.dao.OrderLineMapper;
+import com.kunlong.dongxw.data.dao.TkCustomerMapper;
+import com.kunlong.dongxw.data.domain.Customer;
 import org.apache.dubbo.config.annotation.Reference;
+import org.apache.ibatis.session.RowBounds;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import tk.mybatis.mapper.entity.Example;
+
+import java.io.IOException;
+import java.util.List;
 
 
 /**
@@ -56,7 +66,7 @@ public class TestOrderLine {
 
     }
 
-//
+
 //    @Autowired
 //    BomModelMapper bomModelMapper;
 //
@@ -75,5 +85,26 @@ public class TestOrderLine {
 //            System.out.println(bomModel);
 //        }
 //    }
+
+    @Autowired
+    TkCustomerMapper tkCustomerMapper;
+
+    @Test
+    public void test0005_tkCustomerMapper() {
+        Example example = new Example(Customer.class);
+        example.createCriteria().andNotEqualTo("custName","MW");
+        int count = tkCustomerMapper.selectCountByExample(example);
+        RowBounds rowBounds = new RowBounds(0, 2);
+        example.setOrderByClause("id desc,addr asc");
+        List<Customer> list = tkCustomerMapper.selectByExampleAndRowBounds(example, rowBounds);
+        System.out.println(list);
+        count=  tkCustomerMapper.selectCountByExample(example);
+        System.out.println(count);
+        //Weekend<Customer> weekend = new Weekend<>(Customer.class);
+//        list = tkCustomerMapper.selectByExample(example);
+//        System.out.println(list);
+
+
+    }
 }
 

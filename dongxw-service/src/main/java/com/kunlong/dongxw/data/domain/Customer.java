@@ -1,6 +1,7 @@
 package com.kunlong.dongxw.data.domain;
 
 import java.io.Serializable;
+import javax.persistence.Id;
 import javax.validation.constraints.*;
 import org.mybatis.hbatis.core.type.JdbcType;
 import org.mybatis.hbatis.core.annotation.*;
@@ -23,6 +24,7 @@ public class Customer extends  CustomerBase implements Serializable {
 	  * 客户主键
 	  * nullable:true,length:11
 	  */
+	@Id
 	@Column(primaryKey = true,autoIncrement = true,comment = "客户主键")	
 	private Integer id;
 	/**

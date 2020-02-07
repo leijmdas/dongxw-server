@@ -1,6 +1,7 @@
 package com.kunlong.dongxw.data.domain;
 
 import java.io.Serializable;
+import javax.persistence.Id;
 import javax.validation.constraints.*;
 import org.mybatis.hbatis.core.type.JdbcType;
 import org.mybatis.hbatis.core.annotation.*;
@@ -13,6 +14,8 @@ import java.lang.Byte;
 import java.util.Date;
 import org.mybatis.hbatis.orm.criteria.support.query.AbstractQueryParam;
 import org.mybatis.hbatis.orm.criteria.support.query.SortOrders;
+import org.springframework.stereotype.Repository;
+
 /**
  * Bom BOM表
  * @author generator
@@ -26,6 +29,7 @@ public class Bom extends BomBase implements Serializable {
 	 * BOM成本标识
 	 * nullable:true,length:11
 	 */
+	@Id
 	@Column(primaryKey = true, autoIncrement = true,comment = "BOM成本标识 ")
 	private Integer id;
 	/**

@@ -39,7 +39,7 @@ public class DongxwDatasourceConfig extends DongxwConsts {
 
 	@Bean(name = "dongxwSqlSessionFactory")
 	@Primary
-	public SqlSessionFactory primarySqlSessionFactory(@Qualifier("dongxwDataSource") DataSource dataSource)
+	public SqlSessionFactory dongxwSqlSessionFactory(@Qualifier("dongxwDataSource") DataSource dataSource)
 			throws Exception {
 		SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
 		bean.setDataSource(dataSource);
@@ -74,4 +74,8 @@ public class DongxwDatasourceConfig extends DongxwConsts {
 			@Qualifier("dongxwDataSource") DataSource dataSource) {
 		return new DataSourceTransactionManager(dataSource);
 	}
+
+
+
+
 }

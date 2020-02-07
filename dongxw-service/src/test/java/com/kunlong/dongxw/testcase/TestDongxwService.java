@@ -2,8 +2,14 @@ package com.kunlong.dongxw.testcase;
 
 import com.jtest.utility.testlog.TestLog;
 import com.kunlong.data.dao.BomModelMapper;
+import com.kunlong.data.dao.ProductModelMapper;
 import com.kunlong.data.entity.BomModel;
 import com.kunlong.data.entity.BomModelExample;
+import com.kunlong.data.entity.ProductModel;
+import com.kunlong.data.entity.ProductModelExample;
+import com.kunlong.dongxw.data.dao.TkCustomerMapper;
+import com.kunlong.dongxw.data.dao.TkMapper;
+import com.kunlong.dongxw.data.domain.Bom;
 import com.kunlong.dongxw.data.service.MakePlanJoinService;
 import com.kunlong.dongxw.pub.TestBaseApp;
 import com.kunlong.dongxw.data.domain.Customer;
@@ -11,6 +17,9 @@ import com.kunlong.dongxw.data.service.CustomerService;
 import org.apache.ibatis.session.RowBounds;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.testng.collections.Lists;
+import tk.mybatis.mapper.entity.Example;
+import tk.mybatis.mapper.weekend.Weekend;
 
 import java.io.IOException;
 import java.util.List;
@@ -71,14 +80,12 @@ public class TestDongxwService extends TestBaseApp {
 
     @Autowired
     BomModelMapper bomModelMapper;
-
     @Test
     public void test006_bomModelMapper() throws IOException {
         BomModelExample example = new BomModelExample();
-        example.createCriteria().andBigTypeIsNotNull();
-
+        example.createCriteria().andBigTypeIsNotNull().andIdEqualTo(14);
         long count = bomModelMapper.countByExample(example);
-        RowBounds rowBounds = new RowBounds(0, 3);
+        RowBounds rowBounds = RowBounds.DEFAULT;
 
         List<BomModel> bomModels = bomModelMapper.selectByExampleWithRowbounds(example, rowBounds);
 
@@ -86,7 +93,59 @@ public class TestDongxwService extends TestBaseApp {
         for (BomModel bomModel : bomModels) {
             System.out.println(bomModel);
         }
+
+        List<BomModelExample.Criteria> criteriaList = Lists.newArrayList();
+    }
+
+    @Autowired
+    TkMapper tkMapper;
+
+    @Test
+    public void test0007_tkMapper() {
+        Example example = new Example(Bom.class);
+
+        int count = tkMapper.selectCountByExample(example);
+        RowBounds rowBounds = new RowBounds(0, 3);
+
+        List<Bom> list = tkMapper.selectByExampleAndRowBounds(example, rowBounds);
+        System.out.println(list);
+    }
+    @Autowired
+    TkCustomerMapper tkCustomerMapper;
+
+    @Test
+    public void test0008_tkCustomerMapper() {
+        Example example = new Example(Customer.class);
+        example.createCriteria().andNotEqualTo("custName","MW");
+        int count = tkCustomerMapper.selectCountByExample(example);
+        RowBounds rowBounds = new RowBounds(0, 2);
+        example.setOrderByClause("id desc,addr asc");
+        List<Customer> list = tkCustomerMapper.selectByExampleAndRowBounds(example, rowBounds);
+        System.out.println(list);
+        count=  tkCustomerMapper.selectCountByExample(example);
+        System.out.println(count);
+        //Weekend<Customer> weekend = new Weekend<>(Customer.class);
+//        list = tkCustomerMapper.selectByExample(example);
+//        System.out.println(list);
+
+
+    }
+
+    @Autowired
+    ProductModelMapper productModelMapper;
+    @Test
+    public void test009_productModelMapper() throws IOException {
+        ProductModelExample example = new ProductModelExample();
+        long count = productModelMapper.countByExample(example);
+        RowBounds rowBounds = new RowBounds(0,2);
+
+        List<ProductModel> productModels = productModelMapper.selectByExampleWithRowbounds(example, rowBounds);
+
+        System.out.println(count);
+        for (ProductModel model : productModels) {
+            System.out.println(model);
+        }
+
     }
 
 }
-

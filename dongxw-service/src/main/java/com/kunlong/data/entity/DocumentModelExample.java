@@ -864,26 +864,6 @@ public class DocumentModelExample {
             addCriterion("is_deleted not between", value1, value2, "isDeleted");
             return (Criteria) this;
         }
-
-        public Criteria andNameLikeInsensitive(String value) {
-            addCriterion("upper(name) like", value.toUpperCase(), "name");
-            return (Criteria) this;
-        }
-
-        public Criteria andPicTypeLikeInsensitive(String value) {
-            addCriterion("upper(pic_type) like", value.toUpperCase(), "picType");
-            return (Criteria) this;
-        }
-
-        public Criteria andUrlLikeInsensitive(String value) {
-            addCriterion("upper(url) like", value.toUpperCase(), "url");
-            return (Criteria) this;
-        }
-
-        public Criteria andQrcodeLikeInsensitive(String value) {
-            addCriterion("upper(qrcode) like", value.toUpperCase(), "qrcode");
-            return (Criteria) this;
-        }
     }
 
     public static class Criteria extends GeneratedCriteria {

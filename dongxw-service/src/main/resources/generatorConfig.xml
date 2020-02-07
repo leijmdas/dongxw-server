@@ -18,7 +18,7 @@
         <!-- generate entity时，生成serialVersionUID -->
         <plugin type="org.mybatis.generator.plugins.SerializablePlugin" />
         <!-- 这个插件只会增加字符串字段映射到一个JDBC字符的方法 -->
-        <plugin type="org.mybatis.generator.plugins.CaseInsensitiveLikePlugin" />
+        <!--<plugin type="org.mybatis.generator.plugins.CaseInsensitiveLikePlugin" />-->
         <!-- genenat entity时,生成toString -->
         <plugin type="org.mybatis.generator.plugins.ToStringPlugin" />
         <!--<plugin type="org.mybatis.generator.plugins.SqlMapConfigPlugin"/>-->
@@ -53,21 +53,21 @@
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
         <!-- 要生成的表 tableName是数据库中的表名或视图名 domainObjectName是实体类名-->
-        <table tableName="bom"
-               domainObjectName="BomModel"
-               enableCountByExample="true"
-               enableUpdateByExample="true"
-               enableDeleteByExample="true"
-               enableSelectByExample="true"
-               selectByExampleQueryId="true">
+        <table tableName="bom" domainObjectName="BomModel"
+               enableCountByExample="true" enableUpdateByExample="true" enableDeleteByExample="true"
+               enableSelectByExample="true" selectByExampleQueryId="true">
         </table>
-        <table tableName="document"
-               domainObjectName="DocumentModel"
+        <table tableName="document" domainObjectName="DocumentModel"
                enableCountByExample="true"
                enableUpdateByExample="true"
                enableDeleteByExample="true"
-               enableSelectByExample="true"
-               selectByExampleQueryId="true">
+               enableSelectByExample="true" selectByExampleQueryId="true">
+        </table>
+        <table tableName="product" domainObjectName="ProductModel"
+               enableCountByExample="true"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true" selectByExampleQueryId="true">
         </table>
     </context>
 

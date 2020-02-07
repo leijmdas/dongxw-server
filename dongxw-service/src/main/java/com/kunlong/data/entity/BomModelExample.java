@@ -1445,16 +1445,6 @@ public class BomModelExample {
             addCriterion("create_date not between", value1, value2, "createDate");
             return (Criteria) this;
         }
-
-        public Criteria andUnitLikeInsensitive(String value) {
-            addCriterion("upper(unit) like", value.toUpperCase(), "unit");
-            return (Criteria) this;
-        }
-
-        public Criteria andSizeXLikeInsensitive(String value) {
-            addCriterion("upper(size_x) like", value.toUpperCase(), "sizeX");
-            return (Criteria) this;
-        }
     }
 
     public static class Criteria extends GeneratedCriteria {

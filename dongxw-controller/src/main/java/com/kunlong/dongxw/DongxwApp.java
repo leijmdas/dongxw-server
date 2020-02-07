@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
+import tk.mybatis.spring.annotation.MapperScan;
 
 
 // mvn deploy:deploy-file -DgroupId=app -DartifactId=app-support -Dversion=1.1 -Dpackaging=jar -Dfile=app-support-1.1.jar -Durl=http://localhost:8081/repository/maven-releases/ -DrepositoryId=nexus
@@ -18,6 +19,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 //@EnableDubboConfig
 //@ImportResource({"classpath:appcontext.xml"})
 @EnableSwagger2
+
+@MapperScan(basePackages={"com.kunlong.dongxw.data.dao"})
 public class DongxwApp {
     private static final Logger logger = LoggerFactory.getLogger(DongxwApp.class);
 
