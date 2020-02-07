@@ -24,8 +24,8 @@ public class TestCustomer extends ITestImpl {
 
     private static final Logger logger = LoggerFactory.getLogger(TestCustomer.class);
 
-    String url_login ="http://127.0.0.1:10080/auth/login?username=admin&password=123456&verifyCode=";
-    String url_auth = "http://127.0.0.1:10080/sys/user/authorization";
+    String url_login ="http://127.0.0.1:10081/auth/login?username=admin&password=123456&verifyCode=";
+    String url_auth = "http://127.0.0.1:10081/sys/user/authorization";
 
     String url_dongxw  = "http://127.0.0.1:8098/api/data/customer";
     String url_cust = "http://127.0.0.1:10081/data/customer";
@@ -71,7 +71,7 @@ public class TestCustomer extends ITestImpl {
     public void test_0001_custFindById() {
 
 
-        String ret = httpclient.post(url_cust + "/findById/1", "{}", "application/json");
+        String ret = httpclient.post(url_cust + "/findById/22", "{}", "application/json");
         httpclient.checkStatusCode(200);
 
         JsonResult<Customer> result = JSON.parseObject(ret, JsonResult.class);
@@ -205,7 +205,7 @@ public class TestCustomer extends ITestImpl {
     }
     public static void main(String[] args) {
 
-        run(TestCustomer.class, 7);
+        run(TestCustomer.class, 1);
 
     }
 

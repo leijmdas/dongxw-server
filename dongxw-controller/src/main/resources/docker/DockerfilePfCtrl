@@ -3,7 +3,7 @@ FROM anapsix/alpine-java
 
  ARG JAR_FILE
 
- ADD ./kl-pf-ctrl.jar /root/kl-pf-ctrl.jar
+ ADD ./kl-pf-ctl.jar /root/kl-pf-ctl.jar
 
  EXPOSE 10080
  EXPOSE 12341
@@ -13,4 +13,4 @@ FROM anapsix/alpine-java
 
  
 
- ENTRYPOINT ["java", "-server", "-Duser.timezone=GMT+08","-jar", "/root/kl-pf-ctrl.jar"]
+ ENTRYPOINT ["java", "-server", "-Duser.timezone=GMT+08","-jar", "/root/kl-pf-ctl.jar"]

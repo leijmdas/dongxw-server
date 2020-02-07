@@ -1,5 +1,6 @@
 package service;
 
+import cn.kunlong.center.api.service.FileApiService;
 import com.kunlong.api.service.MailApiService;
 import com.kunlong.data.dao.BomModelMapper;
 import com.kunlong.data.entity.BomModel;
@@ -34,8 +35,9 @@ import java.util.List;
 public class TestOrderLine {
     @Autowired
     OrderLineMapper orderLineMapper;
-    //    @Autowired
-    //    private FileApiService fileApiService;
+
+    @Reference(lazy = true)
+    private FileApiService fileApiService;
 
     @Reference(lazy = true, version = "${dubbo.service.version}")
     MailApiService mailApiService;
