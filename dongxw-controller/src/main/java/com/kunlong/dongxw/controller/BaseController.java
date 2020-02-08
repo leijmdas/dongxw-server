@@ -1,9 +1,9 @@
 package com.kunlong.dongxw.controller;
 
-import cn.kunlong.center.api.model.SysUserDTO;
-import cn.kunlong.center.api.service.SysUserApiService;
-import com.kunlong.api.service.AuthApiService;
-import com.kunlong.api.service.MailApiService;
+import com.kunlong.dubbo.sys.model.SysUserDTO;
+import com.kunlong.dubbo.sys.service.SysUserApiService;
+import com.kunlong.dubbo.api.service.AuthApiService;
+import com.kunlong.dubbo.api.service.MailApiService;
 import com.kunlong.dongxw.context.CurrentRequestContext;
 import com.kunlong.platform.consts.RequestContextConst;
 import org.apache.dubbo.config.annotation.Reference;

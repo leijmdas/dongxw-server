@@ -1,7 +1,7 @@
 package service;
 
-import cn.kunlong.center.api.service.FileApiService;
-import com.kunlong.api.service.MailApiService;
+import com.kunlong.dubbo.api.service.FileApiService;
+import com.kunlong.dubbo.api.service.MailApiService;
 import com.kunlong.data.dao.BomModelMapper;
 import com.kunlong.data.entity.BomModel;
 import com.kunlong.data.entity.BomModelExample;
@@ -9,6 +9,7 @@ import com.kunlong.dongxw.DongxwApp;
 import com.kunlong.dongxw.data.dao.OrderLineMapper;
 import com.kunlong.dongxw.data.dao.TkCustomerMapper;
 import com.kunlong.dongxw.data.domain.Customer;
+import com.kunlong.dongxw.data.domain.OrderLine;
 import org.apache.dubbo.config.annotation.Reference;
 import org.apache.ibatis.session.RowBounds;
 import org.junit.Before;
@@ -50,7 +51,8 @@ public class TestOrderLine {
 
     @Test
     public void test0001_service() {
-        orderLineMapper.selectByPK(1);
+        OrderLine orderLine = orderLineMapper.selectByPK(23);
+        System.out.println(orderLine);
         //String ret = KunlongUtils.toJSONStringPretty(metadataField);
         //System.out.println(metadataField);
     }

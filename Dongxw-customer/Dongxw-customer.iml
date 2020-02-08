@@ -28,8 +28,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Maven: kunlong:plat:2.0" level="project" />
     <orderEntry type="library" name="Maven: kunlong:DubboApi:2.0" level="project" />
-    <orderEntry type="library" name="Maven: cn.kunlong:center-api:2.0" level="project" />
-    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.10.1" level="project" />
     <orderEntry type="library" name="Maven: app:app-support:1.1" level="project" />
     <orderEntry type="module" module-name="dongxw-service" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-cache:2.2.2.RELEASE" level="project" />
@@ -106,6 +104,7 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-beans:5.2.2.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-aspects:5.2.2.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: com.h2database:h2:1.4.196" level="project" />
+    <orderEntry type="library" name="Maven: org.projectlombok:lombok:1.18.10" level="project" />
     <orderEntry type="library" name="Maven: tk.mybatis:mapper-spring-boot-starter:2.1.5" level="project" />
     <orderEntry type="library" name="Maven: tk.mybatis:mapper-core:1.1.5" level="project" />
     <orderEntry type="library" name="Maven: javax.persistence:persistence-api:1.0" level="project" />
@@ -125,6 +124,7 @@
     <orderEntry type="library" name="Maven: io.springfox:springfox-swagger2:2.9.2" level="project" />
     <orderEntry type="library" name="Maven: io.swagger:swagger-annotations:1.5.20" level="project" />
     <orderEntry type="library" name="Maven: io.swagger:swagger-models:1.5.20" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.10.1" level="project" />
     <orderEntry type="library" name="Maven: io.springfox:springfox-spi:2.9.2" level="project" />
     <orderEntry type="library" name="Maven: io.springfox:springfox-core:2.9.2" level="project" />
     <orderEntry type="library" name="Maven: io.springfox:springfox-schema:2.9.2" level="project" />
@@ -229,8 +229,8 @@
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-jdbc:2.2.2.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: com.zaxxer:HikariCP:3.4.1" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-jdbc:5.2.2.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: com.alibaba:druid-spring-boot-starter:1.1.21" level="project" />
-    <orderEntry type="library" name="Maven: com.alibaba:druid:1.1.21" level="project" />
+    <orderEntry type="library" name="Maven: com.alibaba:druid-spring-boot-starter:1.1.20" level="project" />
+    <orderEntry type="library" name="Maven: com.alibaba:druid:1.1.20" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: JTest:JTest:4.0-SNAPSHOT" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.apache.httpcomponents:httpclient:4.5.10" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.apache.httpcomponents:httpcore:4.4.12" level="project" />

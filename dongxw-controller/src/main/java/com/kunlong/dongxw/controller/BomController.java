@@ -2,7 +2,7 @@ package com.kunlong.dongxw.controller;
 
 
 import app.support.query.PageResult;
-import cn.kunlong.center.api.model.SysUserDTO;
+import com.kunlong.dubbo.sys.model.SysUserDTO;
 import com.kunlong.dongxw.annotation.DateRewritable;
 import com.kunlong.dongxw.consts.ApiConstants;
 import com.kunlong.dongxw.consts.BomConsts;

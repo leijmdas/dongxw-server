@@ -1,7 +1,7 @@
 package com.kunlong.dongxw.customer.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.kunlong.api.service.AuthApiService;
+import com.kunlong.dubbo.api.service.AuthApiService;
 import com.kunlong.dongxw.customer.consts.SessionKeyEnum;
 import com.kunlong.dongxw.customer.context.CurrentRequestContext;
 import com.kunlong.dongxw.data.domain.Customer;

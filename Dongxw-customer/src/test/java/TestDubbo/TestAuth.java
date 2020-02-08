@@ -1,8 +1,8 @@
 package TestDubbo;
 
-import com.kunlong.api.model.KunlongApiModel;
-import com.kunlong.api.service.AuthApiService;
-import com.kunlong.api.service.MailApiService;
+import com.kunlong.dubbo.api.model.KunlongApiModel;
+import com.kunlong.dubbo.api.service.AuthApiService;
+import com.kunlong.dubbo.api.service.MailApiService;
 import com.kunlong.dongxw.CustomerApp;
 import com.kunlong.platform.model.KunlongModel;
 import com.kunlong.platform.support.service.AuthService;

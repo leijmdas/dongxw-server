@@ -2,7 +2,7 @@ package com.kunlong.dongxw.customer.web;
 
 
 import app.support.query.PageResult;
-import com.kunlong.api.service.MailApiService;
+import com.kunlong.dubbo.api.service.MailApiService;
 import com.kunlong.dongxw.customer.annotation.DateRewritable;
 import com.kunlong.dongxw.customer.consts.ApiConstants;
 import com.kunlong.dongxw.customer.consts.MoneyTypeConsts;

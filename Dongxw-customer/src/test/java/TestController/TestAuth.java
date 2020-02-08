@@ -1,6 +1,7 @@
 package TestController;
 
 
+import com.alibaba.fastjson.JSON;
 import com.jtest.NodesFactroy.Inject.Inject;
 import com.jtest.NodesFactroy.Node.HttpClientNode;
 import com.jtest.annotation.JTest;
@@ -8,8 +9,10 @@ import com.jtest.annotation.JTestClass;
 import com.jtest.testframe.ITestImpl;
 import com.kunlong.dongxw.customer.consts.ApiConstants;
 import com.kunlong.dongxw.customer.context.CurrentRequestContext;
+import com.kunlong.dongxw.data.domain.Customer;
 import com.kunlong.platform.consts.RequestContextConst;
 import com.kunlong.platform.support.service.AuthService;
+import com.kunlong.platform.utils.JsonResult;
 import com.kunlong.platform.utils.KunlongUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -88,20 +91,21 @@ public class TestAuth extends ITestImpl {
     @JTestClass.step("test_0001_login")
     @JTestClass.exp("ok")
     public void test_0002_login() {
-//        String ret = httpclient.post(url_login, "{}", "application/json");
-//        httpclient.checkStatusCode(200);
-//
-//        JsonResult<Customer> result = JSON.parseObject(ret, JsonResult.class);
-//        System.out.println(ret);
-//        System.out.println(result);
+        String ret = httpclient.post(url_login, "{}", "application/json");
+        httpclient.checkStatusCode(200);
+
+        JsonResult<Customer> result = JSON.parseObject(ret, JsonResult.class);
+        System.out.println(ret);
+        System.out.println(result);
 
 
     }
+
     public static void main(String[] args) {
 
-        //run(TestAuth.class, 1);
-       //CurrentRequestContext.getContext().setAttribute(RequestContextConst.KEY_SESSIONKEY,"11");
-        System.out.print( CurrentRequestContext.getContext());
+        run(TestAuth.class, 2);
+        //CurrentRequestContext.getContext().setAttribute(RequestContextConst.KEY_SESSIONKEY,"11");
+        //System.out.print( CurrentRequestContext.getContext());
     }
 
 

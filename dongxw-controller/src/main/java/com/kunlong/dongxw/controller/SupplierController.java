@@ -2,7 +2,7 @@ package com.kunlong.dongxw.controller;
 
 
 import app.support.query.PageResult;
-import com.kunlong.api.service.AuthApiService;
+import com.kunlong.dubbo.api.service.AuthApiService;
 import com.kunlong.dongxw.annotation.DateRewritable;
 import com.kunlong.dongxw.consts.ApiConstants;
 import com.kunlong.dongxw.consts.MoneyTypeConsts;

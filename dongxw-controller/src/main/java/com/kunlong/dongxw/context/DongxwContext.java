@@ -1,6 +1,6 @@
 package com.kunlong.dongxw.context;
 
-import com.kunlong.api.service.AuthApiService;
+import com.kunlong.dubbo.api.service.AuthApiService;
 import org.apache.dubbo.config.annotation.Reference;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
