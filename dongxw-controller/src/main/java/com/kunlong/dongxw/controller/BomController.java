@@ -78,7 +78,12 @@ public  class BomController extends BaseController {
 
     @RequestMapping("/save")
     public JsonResult<Integer> save(@RequestBody Bom bom) {
-
+        if(bom.getLossType().equals(BomConsts.TYPE_LOSS_QTY)){
+            bom.setLossQty(bom.getEachQty().add(bom.getLossQty()));
+        }else {
+            bom.setLossQty(bom.newBigDecimal(4,bom.getEachQty().doubleValue()*bom.getLossRate()/100));
+        }
+        bom.setQty(bom.getEachQty().add(bom.getLossQty()));
         bom.setMoney(bom.getPrice().multiply(bom.getQty()));
         if (bom.getChildId() != null && bom.getChildId() > 0) {
             Product product = productService.findById(bom.getChildId());
@@ -113,12 +118,7 @@ public  class BomController extends BaseController {
             if(bom.getChildRm()!=null){
                 bom.getChildRm().setProductSubType(productTypeService.findById(bom.getChildRm().getProductTypeId()));
                 bom.getChildRm().setProductType(productTypeService.findById(bom.getChildRm().getParentId()));
-                if(bom.getLossType().equals(BomConsts.TYPE_LOSS_QTY)){
-                    bom.setLossMoney(bom.getPrice().multiply(BigDecimal.valueOf(bom.getLossQty())));
-                 }else {
-                    bom.setLossMoney(bom.getMoney().divide(BigDecimal.valueOf(100)).multiply(BigDecimal.valueOf(bom.getLossQty())));
-                 }
-                bom.setTotalMoney(bom.getMoney().add(bom.getLossMoney()));
+
             }
             SysUserDTO sysUserDTO = sysUserApiService.findById(bom.getCreateBy());
             bom.setCreateByName(sysUserDTO == null ? "-" : sysUserDTO.getUsername());

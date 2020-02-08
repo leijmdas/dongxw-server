@@ -14,7 +14,7 @@ import tk.mybatis.spring.annotation.MapperScan;
 //https://github.com/macrozheng/mall
 @EnableAutoConfiguration
 @Configuration
-@SpringBootApplication(scanBasePackages = {"com.kunlong.data","com.kunlong.dongxw","com.kunlong.api"})
+@SpringBootApplication(scanBasePackages = {"com.kunlong.data","com.kunlong.dongxw","com.kunlong.dubbo"})
 //@EnableDubbo
 //@EnableDubboConfig
 //@ImportResource({"classpath:appcontext.xml"})

@@ -8,18 +8,22 @@
 	  	<result column="big_type" property="bigType" jdbcType="INTEGER" />
 	  	<result column="small_type" property="smallType" jdbcType="INTEGER" />
 	  	<result column="child_id" property="childId" jdbcType="INTEGER" />
-	  	<result column="unit" property="unit" jdbcType="VARCHAR" />
-	  	<result column="qty" property="qty" jdbcType="DECIMAL" />
-	  	<result column="price" property="price" jdbcType="DECIMAL" />
-	  	<result column="money" property="money" jdbcType="DECIMAL" />
-	  	<result column="loss_type" property="lossType" jdbcType="INTEGER" />
-	  	<result column="loss_qty" property="lossQty" jdbcType="SMALLINT" />
+	  	<result column="width" property="width" jdbcType="INTEGER" />
+	  	<result column="cut_part_name" property="cutPartName" jdbcType="VARCHAR" />
 	  	<result column="size_l" property="sizeL" jdbcType="DECIMAL" />
 	  	<result column="size_x" property="sizeX" jdbcType="VARCHAR" />
 	  	<result column="size_w" property="sizeW" jdbcType="DECIMAL" />
-	  	<result column="length" property="length" jdbcType="INTEGER" />
-	  	<result column="width" property="width" jdbcType="INTEGER" />
+	  	<result column="pieces" property="pieces" jdbcType="SMALLINT" />
 	  	<result column="knife_qty" property="knifeQty" jdbcType="SMALLINT" />
+	  	<result column="length" property="length" jdbcType="INTEGER" />
+	  	<result column="loss_type" property="lossType" jdbcType="INTEGER" />
+	  	<result column="loss_rate" property="lossRate" jdbcType="SMALLINT" />
+	  	<result column="each_qty" property="eachQty" jdbcType="DECIMAL" />
+	  	<result column="loss_qty" property="lossQty" jdbcType="DECIMAL" />
+	  	<result column="qty" property="qty" jdbcType="DECIMAL" />
+	  	<result column="unit" property="unit" jdbcType="VARCHAR" />
+	  	<result column="price" property="price" jdbcType="DECIMAL" />
+	  	<result column="money" property="money" jdbcType="DECIMAL" />
 	  	<result column="depth" property="depth" jdbcType="SMALLINT" />
 	  	<result column="source" property="source" jdbcType="TINYINT" />
 	  	<result column="create_by" property="createBy" jdbcType="INTEGER" />
@@ -32,28 +36,32 @@
 	  	<result column="b_big_type" property="bigType" jdbcType="INTEGER" />
 	  	<result column="b_small_type" property="smallType" jdbcType="INTEGER" />
 	  	<result column="b_child_id" property="childId" jdbcType="INTEGER" />
-	  	<result column="b_unit" property="unit" jdbcType="VARCHAR" />
-	  	<result column="b_qty" property="qty" jdbcType="DECIMAL" />
-	  	<result column="b_price" property="price" jdbcType="DECIMAL" />
-	  	<result column="b_money" property="money" jdbcType="DECIMAL" />
-	  	<result column="b_loss_type" property="lossType" jdbcType="INTEGER" />
-	  	<result column="b_loss_qty" property="lossQty" jdbcType="SMALLINT" />
+	  	<result column="b_width" property="width" jdbcType="INTEGER" />
+	  	<result column="b_cut_part_name" property="cutPartName" jdbcType="VARCHAR" />
 	  	<result column="b_size_l" property="sizeL" jdbcType="DECIMAL" />
 	  	<result column="b_size_x" property="sizeX" jdbcType="VARCHAR" />
 	  	<result column="b_size_w" property="sizeW" jdbcType="DECIMAL" />
-	  	<result column="b_length" property="length" jdbcType="INTEGER" />
-	  	<result column="b_width" property="width" jdbcType="INTEGER" />
+	  	<result column="b_pieces" property="pieces" jdbcType="SMALLINT" />
 	  	<result column="b_knife_qty" property="knifeQty" jdbcType="SMALLINT" />
+	  	<result column="b_length" property="length" jdbcType="INTEGER" />
+	  	<result column="b_loss_type" property="lossType" jdbcType="INTEGER" />
+	  	<result column="b_loss_rate" property="lossRate" jdbcType="SMALLINT" />
+	  	<result column="b_each_qty" property="eachQty" jdbcType="DECIMAL" />
+	  	<result column="b_loss_qty" property="lossQty" jdbcType="DECIMAL" />
+	  	<result column="b_qty" property="qty" jdbcType="DECIMAL" />
+	  	<result column="b_unit" property="unit" jdbcType="VARCHAR" />
+	  	<result column="b_price" property="price" jdbcType="DECIMAL" />
+	  	<result column="b_money" property="money" jdbcType="DECIMAL" />
 	  	<result column="b_depth" property="depth" jdbcType="SMALLINT" />
 	  	<result column="b_source" property="source" jdbcType="TINYINT" />
 	  	<result column="b_create_by" property="createBy" jdbcType="INTEGER" />
 	  	<result column="b_create_date" property="createDate" jdbcType="TIMESTAMP" />
     </resultMap>
     <sql id="Base_Column_List" >
-  		id,product_id,parent_id,big_type,small_type,child_id,unit,qty,price,money,loss_type,loss_qty,size_l,size_x,size_w,length,width,knife_qty,depth,source,create_by,create_date
+  		id,product_id,parent_id,big_type,small_type,child_id,width,cut_part_name,size_l,size_x,size_w,pieces,knife_qty,length,loss_type,loss_rate,each_qty,loss_qty,qty,unit,price,money,depth,source,create_by,create_date
 	</sql>
   	<sql id="Base_Column_List_Bom" >
-  		b.id b_id,b.product_id b_product_id,b.parent_id b_parent_id,b.big_type b_big_type,b.small_type b_small_type,b.child_id b_child_id,b.unit b_unit,b.qty b_qty,b.price b_price,b.money b_money,b.loss_type b_loss_type,b.loss_qty b_loss_qty,b.size_l b_size_l,b.size_x b_size_x,b.size_w b_size_w,b.length b_length,b.width b_width,b.knife_qty b_knife_qty,b.depth b_depth,b.source b_source,b.create_by b_create_by,b.create_date b_create_date
+  		b.id b_id,b.product_id b_product_id,b.parent_id b_parent_id,b.big_type b_big_type,b.small_type b_small_type,b.child_id b_child_id,b.width b_width,b.cut_part_name b_cut_part_name,b.size_l b_size_l,b.size_x b_size_x,b.size_w b_size_w,b.pieces b_pieces,b.knife_qty b_knife_qty,b.length b_length,b.loss_type b_loss_type,b.loss_rate b_loss_rate,b.each_qty b_each_qty,b.loss_qty b_loss_qty,b.qty b_qty,b.unit b_unit,b.price b_price,b.money b_money,b.depth b_depth,b.source b_source,b.create_by b_create_by,b.create_date b_create_date
 	</sql>
 	
 	<!-- 系统自定义 -->
@@ -83,23 +91,11 @@
 			<if test="p.childId!=null ">
 		    	and b.child_id=#{p.childId}
 		    </if>
-			<if test="p.unit!=null and p.unit!=''">
-		    	and b.unit like #{p.unit}
+			<if test="p.width!=null ">
+		    	and b.width=#{p.width}
 		    </if>
-			<if test="p.qty!=null ">
-		    	and b.qty=#{p.qty}
-		    </if>
-			<if test="p.price!=null ">
-		    	and b.price=#{p.price}
-		    </if>
-			<if test="p.money!=null ">
-		    	and b.money=#{p.money}
-		    </if>
-			<if test="p.lossType!=null ">
-		    	and b.loss_type=#{p.lossType}
-		    </if>
-			<if test="p.lossQty!=null ">
-		    	and b.loss_qty=#{p.lossQty}
+			<if test="p.cutPartName!=null and p.cutPartName!=''">
+		    	and b.cut_part_name like #{p.cutPartName}
 		    </if>
 			<if test="p.sizeL!=null ">
 		    	and b.size_l=#{p.sizeL}
@@ -110,14 +106,38 @@
 			<if test="p.sizeW!=null ">
 		    	and b.size_w=#{p.sizeW}
 		    </if>
-			<if test="p.length!=null ">
-		    	and b.length=#{p.length}
-		    </if>
-			<if test="p.width!=null ">
-		    	and b.width=#{p.width}
+			<if test="p.pieces!=null ">
+		    	and b.pieces=#{p.pieces}
 		    </if>
 			<if test="p.knifeQty!=null ">
 		    	and b.knife_qty=#{p.knifeQty}
+		    </if>
+			<if test="p.length!=null ">
+		    	and b.length=#{p.length}
+		    </if>
+			<if test="p.lossType!=null ">
+		    	and b.loss_type=#{p.lossType}
+		    </if>
+			<if test="p.lossRate!=null ">
+		    	and b.loss_rate=#{p.lossRate}
+		    </if>
+			<if test="p.eachQty!=null ">
+		    	and b.each_qty=#{p.eachQty}
+		    </if>
+			<if test="p.lossQty!=null ">
+		    	and b.loss_qty=#{p.lossQty}
+		    </if>
+			<if test="p.qty!=null ">
+		    	and b.qty=#{p.qty}
+		    </if>
+			<if test="p.unit!=null and p.unit!=''">
+		    	and b.unit like #{p.unit}
+		    </if>
+			<if test="p.price!=null ">
+		    	and b.price=#{p.price}
+		    </if>
+			<if test="p.money!=null ">
+		    	and b.money=#{p.money}
 		    </if>
 			<if test="p.depth!=null ">
 		    	and b.depth=#{p.depth}
