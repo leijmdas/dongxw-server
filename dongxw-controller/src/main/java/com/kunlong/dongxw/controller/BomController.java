@@ -71,6 +71,8 @@ public  class BomController extends BaseController {
     @RequestMapping("/findById/{id}")
     public JsonResult<Bom> findById(@PathVariable("id") Integer id, HttpServletResponse response) throws IOException {
         Bom bom = bomService.findById(id);
+        SysUserDTO sysUserDTO = sysUserApiService.findById(bom.getCreateBy());
+        bom.setCreateByName(sysUserDTO == null ? "-" : sysUserDTO.getUsername());
 
         return JsonResult.success(bom);
 
