@@ -12,7 +12,7 @@ public interface MakePlanJoinService {
 
     List<MakePlan> findByOrderLine(Integer orderLineId) throws IOException;
 
-    boolean checkExistsSheetByPlan(Integer planId, Integer productId) throws IOException;
+    boolean checkExistsSheetByPlan(Integer planId, Integer productId,String cutPartName) throws IOException;
 
     List<MakeSheet> findSheetByPlan(Integer id) throws IOException;
 

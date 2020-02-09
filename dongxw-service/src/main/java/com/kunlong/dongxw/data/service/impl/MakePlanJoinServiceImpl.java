@@ -57,11 +57,12 @@ public class MakePlanJoinServiceImpl implements MakePlanJoinService {
         return makeSheetService.findByQueryParam(queryParam);
     }
 
-    public List<MakeSheet> chkFindSheetByPlan(Integer planId,Integer rmId) throws IOException {
+    public List<MakeSheet> chkFindSheetByPlan(Integer planId,Integer childId,String cutPartName) throws IOException {
         MakeSheet.QueryParam queryParam = new MakeSheet.QueryParam();
         queryParam.setParam(new MakeSheet());
         queryParam.getParam().setPlanId(planId);
-        queryParam.getParam().setRmId(rmId);
+        queryParam.getParam().setChildId(childId);
+        queryParam.getParam().setCutPartName(cutPartName);
         queryParam.setLimit(1);
 
         return makeSheetService.findByQueryParam(queryParam);
@@ -69,9 +70,9 @@ public class MakePlanJoinServiceImpl implements MakePlanJoinService {
 
     /**productId
      * */
-    public boolean checkExistsSheetByPlan(Integer planId,Integer rmId) throws IOException {
+    public boolean checkExistsSheetByPlan(Integer planId,Integer childId,String cutPartName) throws IOException {
 
-        List<MakeSheet> sheets = chkFindSheetByPlan(planId,rmId);
+        List<MakeSheet> sheets = chkFindSheetByPlan(planId,childId,cutPartName);
         return sheets != null && sheets.size() > 0;
     }
     //采购计划
@@ -99,7 +100,7 @@ public class MakePlanJoinServiceImpl implements MakePlanJoinService {
                 List<Bom> boms = bomJoinService.queryBomByProduct(orderLine.getProductId());
                 for (Bom bom : boms) {
                     logger.info(bom.toString());
-                    if (!checkExistsSheetByPlan(makePlan.getId(), bom.getChildId())) {
+                    if (!checkExistsSheetByPlan(makePlan.getId(), bom.getChildId(),bom.getCutPartName())) {
                         logger.info(makePlan.toString());
                         MakeSheet makeSheet = copy2MakeSheet(makePlan, bom, sysUserId, orderLine);
                         makeSheetService.save(makeSheet);
@@ -134,17 +135,16 @@ public class MakePlanJoinServiceImpl implements MakePlanJoinService {
 
     MakeSheet copy2MakeSheet(MakePlan makePlan,Bom bom,Integer sysUserId,OrderLine orderLine){
         MakeSheet makeSheet = JSON.parseObject(bom.toString(), MakeSheet.class);
+
+        makeSheet.setTotalQty(makeSheet.getQty().multiply(bom.newBigDecimal(4,orderLine.getQty())));
+
         makeSheet.setId(null);
-        makeSheet.setRmId(bom.getChildId());
         makeSheet.setOrderLineId(makePlan.getOrderLineId());
         makeSheet.setOrderId(makePlan.getOrderId());
         makeSheet.setPlanId(makePlan.getId());
         makeSheet.setCreateDate(new Date());
         makeSheet.setCreateBy(sysUserId);
-        makeSheet.setLossQty(bom.getQty().multiply(bom.newBigDecimal(bom.getLossQty())).divide(bom.newBigDecimal(100)));
-        makeSheet.setpQty(bom.getQty());
-        makeSheet.setQty(makeSheet.getpQty().add(makeSheet.getLossQty()));
-        makeSheet.setTotalQty(makeSheet.getQty().multiply(bom.newBigDecimal(orderLine.getQty())));
+
         return makeSheet;
     }
 
@@ -163,7 +163,7 @@ public class MakePlanJoinServiceImpl implements MakePlanJoinService {
                     List<Bom> boms = bomJoinService.queryBomByProduct(orderLine.getProductId());
                     for (Bom bom : boms) {
                         logger.info("makeSheetByPlanOrder bom:{}",bom.toString());
-                        if (!checkExistsSheetByPlan(makePlan.getId(), bom.getChildId())) {
+                        if (!checkExistsSheetByPlan(makePlan.getId(), bom.getChildId(),bom.getCutPartName())) {
                             logger.info("makeSheetByPlanOrder makePlan:{}",makePlan);
                             MakeSheet makeSheet=copy2MakeSheet(makePlan,bom,sysUserId,orderLine);
                             makeSheetService.save(makeSheet);

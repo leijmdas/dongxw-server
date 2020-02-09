@@ -18,8 +18,8 @@ public class BomBase extends KunlongModel implements Serializable {
 	// ==== 自定义属性 ====
 	@Transient
 	BigDecimal lossMoney;
-	@Transient
-	BigDecimal totalMoney;
+	//@Transient
+	//BigDecimal totalMoney=money;
 
 	ProductType productType;
 	ProductType productSubType;
@@ -33,13 +33,7 @@ public class BomBase extends KunlongModel implements Serializable {
 		this.lossMoney = lossMoney;
 	}
 
-	public BigDecimal getTotalMoney() {
-		return totalMoney;
-	}
 
-	public void setTotalMoney(BigDecimal totalMoney) {
-		this.totalMoney = totalMoney;
-	}
 	public Product getProduct() {
 		return product;
 	}

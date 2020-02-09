@@ -1,6 +1,5 @@
 package com.kunlong.dongxw.data.service.impl;
 
-import com.kunlong.dongxw.consts.BomConsts;
 import com.kunlong.dongxw.data.domain.Bom;
 import com.kunlong.dongxw.data.domain.BomCost;
 import com.kunlong.dongxw.data.service.BomCostService;
@@ -42,16 +41,13 @@ public class BomJoinServiceImpl implements BomJoinService {
 		Bom sum = new Bom();
 		sum.setMoney(sum.newBigDecimal(BigDecimal.ZERO));
 		sum.setLossMoney(BigDecimal.ZERO);
-		sum.setTotalMoney(BigDecimal.ZERO);
+
 		for (Bom bom : boms) {
 			sum.setMoney(sum.getMoney().add(bom.getMoney()));
-			BigDecimal lossMoney = bom.getLossType().equals(BomConsts.TYPE_LOSS_QTY) ?
-					bom.getPrice().multiply(bom.newBigDecimal(bom.getLossQty())) :
-					bom.getMoney().divide(BigDecimal.valueOf(100)).multiply(bom.newBigDecimal(bom.getLossQty()));
+			BigDecimal lossMoney = bom.getLossQty().multiply(bom.getPrice());
 			sum.setLossMoney(sum.getLossMoney().add(lossMoney));
 		}
-		sum.setTotalMoney(sum.newBigDecimal(sum.getMoney().add(sum.getLossMoney())));
-		sum.setLossMoney(sum.newBigDecimal(sum.getLossMoney()));
+
 		return sum;
 	}
 
@@ -69,22 +65,20 @@ public class BomJoinServiceImpl implements BomJoinService {
 
 
 
-	public Integer save( BomCost bom ) {
+	public Integer save( BomCost bomCost ) {
 
-		Bom sum = sumBomByProduct(bom.getProductId());
-		bom.setRmFee(sum.getMoney());
-		bom.setLossRm(sum.getLossMoney());
-		bom.setTotalFee(bom.getRmFee().add(bom.getLossRm()).add(bom.getShippingFee())
-				.add(bom.getKnifeModel()).add(bom.getCutRm()).add(bom.getWorkFee()));
-		bom.setTotalFee(sum.newBigDecimal(bom.getTotalFee()));
-		if (bom.getId() == null) {
-			bom.setCreateDate(new Date());
-			bomCostService.save(bom);
+		Bom sum = sumBomByProduct(bomCost.getProductId());
+		bomCost.setRmFee(sum.getMoney().subtract(sum.getLossMoney()));
+		bomCost.setLossRm(sum.getLossMoney());
+		bomCost.setTotalFee(sum.getMoney());
+		if (bomCost.getId() == null) {
+			bomCost.setCreateDate(new Date());
+			bomCostService.save(bomCost);
 		} else {
-			bomCostService.update(bom);
+			bomCostService.update(bomCost);
 		}
 
-		return  bom.getId() ;
+		return  bomCost.getId() ;
 	}
 
 	public Integer reSaveBomCostByProduct(Integer productId) {
@@ -93,7 +87,7 @@ public class BomJoinServiceImpl implements BomJoinService {
 			return save(result.getData());
 		}
 
-		return save(BomCost.defaultBomCosrt(productId));
+		return save(BomCost.defaultBomCost(productId));
 
 
 	}

@@ -7,25 +7,26 @@
 	  	<result column="order_line_id" property="orderLineId" jdbcType="INTEGER" />
 	  	<result column="plan_id" property="planId" jdbcType="INTEGER" />
 	  	<result column="product_id" property="productId" jdbcType="INTEGER" />
-	  	<result column="rm_id" property="rmId" jdbcType="INTEGER" />
 	  	<result column="parent_id" property="parentId" jdbcType="INTEGER" />
 	  	<result column="big_type" property="bigType" jdbcType="INTEGER" />
 	  	<result column="small_type" property="smallType" jdbcType="INTEGER" />
 	  	<result column="child_id" property="childId" jdbcType="INTEGER" />
-	  	<result column="unit" property="unit" jdbcType="VARCHAR" />
-	  	<result column="p_qty" property="pQty" jdbcType="DECIMAL" />
-	  	<result column="qty" property="qty" jdbcType="DECIMAL" />
-	  	<result column="total_qty" property="totalQty" jdbcType="DECIMAL" />
 	  	<result column="price" property="price" jdbcType="DECIMAL" />
 	  	<result column="money" property="money" jdbcType="DECIMAL" />
-	  	<result column="loss_type" property="lossType" jdbcType="INTEGER" />
-	  	<result column="loss_qty" property="lossQty" jdbcType="DECIMAL" />
+	  	<result column="width" property="width" jdbcType="INTEGER" />
+	  	<result column="cut_part_name" property="cutPartName" jdbcType="VARCHAR" />
 	  	<result column="size_l" property="sizeL" jdbcType="DECIMAL" />
 	  	<result column="size_x" property="sizeX" jdbcType="VARCHAR" />
 	  	<result column="size_w" property="sizeW" jdbcType="DECIMAL" />
-	  	<result column="length" property="length" jdbcType="INTEGER" />
-	  	<result column="width" property="width" jdbcType="INTEGER" />
+	  	<result column="pieces" property="pieces" jdbcType="SMALLINT" />
 	  	<result column="knife_qty" property="knifeQty" jdbcType="SMALLINT" />
+	  	<result column="length" property="length" jdbcType="INTEGER" />
+	  	<result column="loss_type" property="lossType" jdbcType="SMALLINT" />
+	  	<result column="loss_rate" property="lossRate" jdbcType="DECIMAL" />
+	  	<result column="each_qty" property="eachQty" jdbcType="DECIMAL" />
+	  	<result column="qty" property="qty" jdbcType="DECIMAL" />
+	  	<result column="unit" property="unit" jdbcType="VARCHAR" />
+	  	<result column="total_qty" property="totalQty" jdbcType="DECIMAL" />
 	  	<result column="depth" property="depth" jdbcType="SMALLINT" />
 	  	<result column="source" property="source" jdbcType="TINYINT" />
 	  	<result column="create_by" property="createBy" jdbcType="INTEGER" />
@@ -37,35 +38,36 @@
 	  	<result column="ms_order_line_id" property="orderLineId" jdbcType="INTEGER" />
 	  	<result column="ms_plan_id" property="planId" jdbcType="INTEGER" />
 	  	<result column="ms_product_id" property="productId" jdbcType="INTEGER" />
-	  	<result column="ms_rm_id" property="rmId" jdbcType="INTEGER" />
 	  	<result column="ms_parent_id" property="parentId" jdbcType="INTEGER" />
 	  	<result column="ms_big_type" property="bigType" jdbcType="INTEGER" />
 	  	<result column="ms_small_type" property="smallType" jdbcType="INTEGER" />
 	  	<result column="ms_child_id" property="childId" jdbcType="INTEGER" />
-	  	<result column="ms_unit" property="unit" jdbcType="VARCHAR" />
-	  	<result column="ms_p_qty" property="pQty" jdbcType="DECIMAL" />
-	  	<result column="ms_qty" property="qty" jdbcType="DECIMAL" />
-	  	<result column="ms_total_qty" property="totalQty" jdbcType="DECIMAL" />
 	  	<result column="ms_price" property="price" jdbcType="DECIMAL" />
 	  	<result column="ms_money" property="money" jdbcType="DECIMAL" />
-	  	<result column="ms_loss_type" property="lossType" jdbcType="INTEGER" />
-	  	<result column="ms_loss_qty" property="lossQty" jdbcType="DECIMAL" />
+	  	<result column="ms_width" property="width" jdbcType="INTEGER" />
+	  	<result column="ms_cut_part_name" property="cutPartName" jdbcType="VARCHAR" />
 	  	<result column="ms_size_l" property="sizeL" jdbcType="DECIMAL" />
 	  	<result column="ms_size_x" property="sizeX" jdbcType="VARCHAR" />
 	  	<result column="ms_size_w" property="sizeW" jdbcType="DECIMAL" />
-	  	<result column="ms_length" property="length" jdbcType="INTEGER" />
-	  	<result column="ms_width" property="width" jdbcType="INTEGER" />
+	  	<result column="ms_pieces" property="pieces" jdbcType="SMALLINT" />
 	  	<result column="ms_knife_qty" property="knifeQty" jdbcType="SMALLINT" />
+	  	<result column="ms_length" property="length" jdbcType="INTEGER" />
+	  	<result column="ms_loss_type" property="lossType" jdbcType="SMALLINT" />
+	  	<result column="ms_loss_rate" property="lossRate" jdbcType="DECIMAL" />
+	  	<result column="ms_each_qty" property="eachQty" jdbcType="DECIMAL" />
+	  	<result column="ms_qty" property="qty" jdbcType="DECIMAL" />
+	  	<result column="ms_unit" property="unit" jdbcType="VARCHAR" />
+	  	<result column="ms_total_qty" property="totalQty" jdbcType="DECIMAL" />
 	  	<result column="ms_depth" property="depth" jdbcType="SMALLINT" />
 	  	<result column="ms_source" property="source" jdbcType="TINYINT" />
 	  	<result column="ms_create_by" property="createBy" jdbcType="INTEGER" />
 	  	<result column="ms_create_date" property="createDate" jdbcType="TIMESTAMP" />
     </resultMap>
     <sql id="Base_Column_List" >
-  		id,order_id,order_line_id,plan_id,product_id,rm_id,parent_id,big_type,small_type,child_id,unit,p_qty,qty,total_qty,price,money,loss_type,loss_qty,size_l,size_x,size_w,length,width,knife_qty,depth,source,create_by,create_date
+  		id,order_id,order_line_id,plan_id,product_id,parent_id,big_type,small_type,child_id,price,money,width,cut_part_name,size_l,size_x,size_w,pieces,knife_qty,length,loss_type,loss_rate,each_qty,qty,unit,total_qty,depth,source,create_by,create_date
 	</sql>
   	<sql id="Base_Column_List_MakeSheet" >
-  		ms.id ms_id,ms.order_id ms_order_id,ms.order_line_id ms_order_line_id,ms.plan_id ms_plan_id,ms.product_id ms_product_id,ms.rm_id ms_rm_id,ms.parent_id ms_parent_id,ms.big_type ms_big_type,ms.small_type ms_small_type,ms.child_id ms_child_id,ms.unit ms_unit,ms.p_qty ms_p_qty,ms.qty ms_qty,ms.total_qty ms_total_qty,ms.price ms_price,ms.money ms_money,ms.loss_type ms_loss_type,ms.loss_qty ms_loss_qty,ms.size_l ms_size_l,ms.size_x ms_size_x,ms.size_w ms_size_w,ms.length ms_length,ms.width ms_width,ms.knife_qty ms_knife_qty,ms.depth ms_depth,ms.source ms_source,ms.create_by ms_create_by,ms.create_date ms_create_date
+  		ms.id ms_id,ms.order_id ms_order_id,ms.order_line_id ms_order_line_id,ms.plan_id ms_plan_id,ms.product_id ms_product_id,ms.parent_id ms_parent_id,ms.big_type ms_big_type,ms.small_type ms_small_type,ms.child_id ms_child_id,ms.price ms_price,ms.money ms_money,ms.width ms_width,ms.cut_part_name ms_cut_part_name,ms.size_l ms_size_l,ms.size_x ms_size_x,ms.size_w ms_size_w,ms.pieces ms_pieces,ms.knife_qty ms_knife_qty,ms.length ms_length,ms.loss_type ms_loss_type,ms.loss_rate ms_loss_rate,ms.each_qty ms_each_qty,ms.qty ms_qty,ms.unit ms_unit,ms.total_qty ms_total_qty,ms.depth ms_depth,ms.source ms_source,ms.create_by ms_create_by,ms.create_date ms_create_date
 	</sql>
 	
 	<!-- 系统自定义 -->
@@ -92,9 +94,6 @@
 			<if test="p.productId!=null ">
 		    	and ms.product_id=#{p.productId}
 		    </if>
-			<if test="p.rmId!=null ">
-		    	and ms.rm_id=#{p.rmId}
-		    </if>
 			<if test="p.parentId!=null ">
 		    	and ms.parent_id=#{p.parentId}
 		    </if>
@@ -107,29 +106,17 @@
 			<if test="p.childId!=null ">
 		    	and ms.child_id=#{p.childId}
 		    </if>
-			<if test="p.unit!=null and p.unit!=''">
-		    	and ms.unit like #{p.unit}
-		    </if>
-			<if test="p.pQty!=null ">
-		    	and ms.p_qty=#{p.pQty}
-		    </if>
-			<if test="p.qty!=null ">
-		    	and ms.qty=#{p.qty}
-		    </if>
-			<if test="p.totalQty!=null ">
-		    	and ms.total_qty=#{p.totalQty}
-		    </if>
 			<if test="p.price!=null ">
 		    	and ms.price=#{p.price}
 		    </if>
 			<if test="p.money!=null ">
 		    	and ms.money=#{p.money}
 		    </if>
-			<if test="p.lossType!=null ">
-		    	and ms.loss_type=#{p.lossType}
+			<if test="p.width!=null ">
+		    	and ms.width=#{p.width}
 		    </if>
-			<if test="p.lossQty!=null ">
-		    	and ms.loss_qty=#{p.lossQty}
+			<if test="p.cutPartName!=null and p.cutPartName!=''">
+		    	and ms.cut_part_name like #{p.cutPartName}
 		    </if>
 			<if test="p.sizeL!=null ">
 		    	and ms.size_l=#{p.sizeL}
@@ -140,14 +127,32 @@
 			<if test="p.sizeW!=null ">
 		    	and ms.size_w=#{p.sizeW}
 		    </if>
-			<if test="p.length!=null ">
-		    	and ms.length=#{p.length}
-		    </if>
-			<if test="p.width!=null ">
-		    	and ms.width=#{p.width}
+			<if test="p.pieces!=null ">
+		    	and ms.pieces=#{p.pieces}
 		    </if>
 			<if test="p.knifeQty!=null ">
 		    	and ms.knife_qty=#{p.knifeQty}
+		    </if>
+			<if test="p.length!=null ">
+		    	and ms.length=#{p.length}
+		    </if>
+			<if test="p.lossType!=null ">
+		    	and ms.loss_type=#{p.lossType}
+		    </if>
+			<if test="p.lossRate!=null ">
+		    	and ms.loss_rate=#{p.lossRate}
+		    </if>
+			<if test="p.eachQty!=null ">
+		    	and ms.each_qty=#{p.eachQty}
+		    </if>
+			<if test="p.qty!=null ">
+		    	and ms.qty=#{p.qty}
+		    </if>
+			<if test="p.unit!=null and p.unit!=''">
+		    	and ms.unit like #{p.unit}
+		    </if>
+			<if test="p.totalQty!=null ">
+		    	and ms.total_qty=#{p.totalQty}
 		    </if>
 			<if test="p.depth!=null ">
 		    	and ms.depth=#{p.depth}

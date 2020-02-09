@@ -13,7 +13,7 @@ import java.util.Date;
  * @date 2020年01月04日
  */
 public class BomCostBase extends KunlongModel implements Serializable {
-	 public static BomCost defaultBomCosrt (Integer productId){
+	 public static BomCost defaultBomCost (Integer productId){
 		 BomCost bomCost = new BomCost();
 		 bomCost.setProductId(productId);
 		 bomCost.setCreateDate(new Date());
