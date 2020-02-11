@@ -29,8 +29,7 @@ import java.util.List;
 public class DongxwDatasourceConfig extends DongxwConsts {
 
 	@Qualifier("dongxwDataSource")
-	@Bean(name = "dongxwDataSource")
-	//@Bean(name = "primaryDataSource", destroyMethod = "close", initMethod = "init")
+	@Bean(name = "dongxwDataSource", destroyMethod = "close", initMethod = "init")
 	@ConfigurationProperties(prefix = "spring.datasource.dongxw")
 	public DataSource primaryDataSource() {
 		DruidDataSource druidDataSource = new DruidDataSource();

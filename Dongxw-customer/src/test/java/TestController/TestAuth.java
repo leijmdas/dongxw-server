@@ -66,7 +66,7 @@ public class TestAuth extends ITestImpl {
     @Override
     public void setUp() {
         loginsys();
-        //auth();
+        auth();
 
     }
 
@@ -103,7 +103,7 @@ public class TestAuth extends ITestImpl {
 
     public static void main(String[] args) {
 
-        run(TestAuth.class, 2);
+        run(TestAuth.class, 1);
         //CurrentRequestContext.getContext().setAttribute(RequestContextConst.KEY_SESSIONKEY,"11");
         //System.out.print( CurrentRequestContext.getContext());
     }
