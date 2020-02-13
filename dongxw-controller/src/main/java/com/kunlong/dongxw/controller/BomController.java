@@ -76,6 +76,17 @@ public  class BomController extends BaseController {
 
     }
 
+    @RequestMapping("/saveByIds")
+    @Transactional
+    public JsonResult<List<Integer>> saveByIds(@RequestBody Bom bom) {
+//        bom =new Bom();
+//        bom.setProductId(189);
+//        bom.setRmIds("268,229,228");
+        bom.setCreateBy(getCurrentUserId());
+        List<Integer> list = bomJoinService.saveByIds(bom);
+        return JsonResult.success(list);
+    }
+
     @RequestMapping("/save")
     @Transactional
     public JsonResult<Integer> save(@RequestBody Bom bom) {

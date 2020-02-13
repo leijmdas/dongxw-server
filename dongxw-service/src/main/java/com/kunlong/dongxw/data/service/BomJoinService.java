@@ -13,10 +13,13 @@ public interface BomJoinService {
     JsonResult<BomCost> findBomCostByProduct(Integer productId);
 
     Integer save(BomCost bom);
+
     Integer saveBomCostByProduct(Integer productId);
 
     Bom sumParentBomByCom(Integer productId);
+
     Bom saveParentBomByCom(Integer productId);
 
+    List<Integer> saveByIds(Bom bom);
 
 }

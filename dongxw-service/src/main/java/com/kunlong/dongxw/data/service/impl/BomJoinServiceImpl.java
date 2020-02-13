@@ -1,16 +1,25 @@
 package com.kunlong.dongxw.data.service.impl;
 
 import com.kunlong.dongxw.data.domain.Bom;
+import com.kunlong.dongxw.data.domain.BomBase;
 import com.kunlong.dongxw.data.domain.BomCost;
+import com.kunlong.dongxw.data.domain.Product;
 import com.kunlong.dongxw.data.service.BomCostService;
 import com.kunlong.dongxw.data.service.BomJoinService;
 import com.kunlong.dongxw.data.service.BomService;
+import com.kunlong.dongxw.data.service.ProductService;
 import com.kunlong.platform.model.KunlongModel;
 import com.kunlong.platform.utils.JsonResult;
 import com.kunlong.platform.utils.KunlongUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -21,6 +30,9 @@ import java.util.List;
  */
 @Service
 public class BomJoinServiceImpl implements BomJoinService {
+	@Autowired
+	ProductService productService;
+
 	@Autowired
 	BomCostService bomCostService;
 
@@ -128,8 +140,59 @@ public class BomJoinServiceImpl implements BomJoinService {
 			bom.setMoney(bom.getPrice().multiply(bom.getQty()));
 		}
 		bomService.update(bom);
-		//saveBomCostByProduct(bom.getProductId());
 
 		return bom;
+	}
+
+	  List<Bom> findBomByProductRm(Integer productId, Integer childId) {
+		Bom.QueryParam queryParam = new Bom.QueryParam();
+		queryParam.setParam(new Bom());
+		queryParam.getParam().setProductId(productId);
+		queryParam.getParam().setChildId(childId);
+
+		  return bomService.findByQueryParam(queryParam);
+
+	  }
+
+	Boolean checkExistsBomByProductRm(Integer productId, Integer childId) {
+		List<Bom> boms = findBomByProductRm(productId, childId);
+		return boms != null && boms.size() > 0;
+	}
+
+	/*
+	 * bom: getProductId
+	 * bom: getRmIds
+	 * bom: getCreateBy
+	 * */
+	@Transactional
+	public List<Integer> saveByIds(Bom bom) {
+
+
+		Assert.notNull(bom.getRmIds(), "rmIds不存在");
+		List<Integer> integers = new ArrayList<>();
+		if (!bom.getRmIds().isEmpty()) {
+
+			String[] ids = bom.getRmIds().split(",");
+			Integer productId = bom.getProductId();
+			for (String childId : ids) {
+				Integer rmId=Integer.valueOf(childId);
+				if(checkExistsBomByProductRm(productId,rmId)){
+					continue;
+				}
+				Bom saveBom = BomBase.defaultBom();
+
+				saveBom.setCreateBy(bom.getCreateBy());
+				saveBom.setProductId(productId);
+				saveBom.setChildId(Integer.valueOf(childId));
+				Product product = productService.findById(rmId);
+				if (product != null) {
+					saveBom.setBigType(product.getParentId());
+					saveBom.setSmallType(product.getProductTypeId());
+				}
+				bomService.save(saveBom);
+				integers.add(saveBom.getId());
+			}
+		}
+		return  integers ;
 	}
 }
