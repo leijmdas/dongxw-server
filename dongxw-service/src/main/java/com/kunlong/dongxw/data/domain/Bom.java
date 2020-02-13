@@ -20,8 +20,7 @@ import org.mybatis.hbatis.orm.criteria.support.query.SortOrders;
  * @date 2020年02月09日
  */
 @Table(Bom.EntityNode.class)
-public class Bom extends
-		BomBase implements Serializable {
+public class Bom extends BomBase implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	/**

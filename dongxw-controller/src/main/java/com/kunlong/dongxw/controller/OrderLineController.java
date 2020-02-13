@@ -53,6 +53,8 @@ public final class OrderLineController extends BaseController {
     public JsonResult<OrderLine> findById(@PathVariable("id") Integer id, HttpServletResponse response) throws IOException {
         OrderLine orderLine = orderLineService.findById(id);
         orderLine.setProduct(productService.findById(orderLine.getProductId()));
+        SysUserDTO sysUserDTO=sysUserApiService.findById(orderLine.getCreateBy());
+        orderLine.setCreateByName(sysUserDTO==null?"-":sysUserDTO.getUsername());
 
         return JsonResult.success(orderLine);
     }

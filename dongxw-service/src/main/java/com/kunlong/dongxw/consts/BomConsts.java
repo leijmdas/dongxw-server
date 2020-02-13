@@ -4,9 +4,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class BomConsts {
-    public static Integer TYPE_LOSS_QTY = 0;
+    public static Integer HAS_COM = 1;
+    public static Integer NO_COM = 0;
 
+    public static Integer TYPE_LOSS_QTY = 0;
     public static Integer TYPE_LOSS_RATE = 1;
+
     static Map<Integer, String> mapType = new HashMap<Integer, String>() {
         {
             put(TYPE_LOSS_QTY, "损耗数");

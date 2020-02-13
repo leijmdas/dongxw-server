@@ -5,7 +5,9 @@ import com.kunlong.dongxw.data.domain.BomCost;
 import com.kunlong.dongxw.data.service.BomCostService;
 import com.kunlong.dongxw.data.service.BomJoinService;
 import com.kunlong.dongxw.data.service.BomService;
+import com.kunlong.platform.model.KunlongModel;
 import com.kunlong.platform.utils.JsonResult;
+import com.kunlong.platform.utils.KunlongUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
@@ -51,7 +53,7 @@ public class BomJoinServiceImpl implements BomJoinService {
 		return sum;
 	}
 
-	public JsonResult<BomCost> findBomCostByByProduct(Integer productId) {
+	public JsonResult<BomCost> findBomCostByProduct(Integer productId) {
 		BomCost.QueryParam queryParam = new BomCost.QueryParam();
 		queryParam.setParam(new BomCost());
 		queryParam.getParam().setProductId(productId);
@@ -81,8 +83,8 @@ public class BomJoinServiceImpl implements BomJoinService {
 		return  bomCost.getId() ;
 	}
 
-	public Integer reSaveBomCostByProduct(Integer productId) {
-		JsonResult<BomCost> result = findBomCostByByProduct(productId);
+	public Integer saveBomCostByProduct(Integer productId) {
+		JsonResult<BomCost> result = findBomCostByProduct(productId);
 		if (result.getData() != null) {
 			return save(result.getData());
 		}
@@ -92,4 +94,42 @@ public class BomJoinServiceImpl implements BomJoinService {
 
 	}
 
+	public Bom sumParentBomByCom(Integer parentId) {
+		Bom.QueryParam queryParam = new Bom.QueryParam();
+		queryParam.setParam(new Bom());
+		queryParam.getParam().setParentId(parentId);
+		queryParam.setLimit(-1);
+		List<Bom> boms = bomService.findByQueryParam(queryParam);
+		Bom sumBom = new Bom();
+		sumBom.setQty(BigDecimal.ZERO);
+		sumBom.setEachQty(BigDecimal.ZERO);
+		sumBom.setLossQty(BigDecimal.ZERO);
+
+		//eachQty, qty ,  lossQty
+		for (Bom bom : boms) {
+			sumBom.setLossQty(sumBom.getLossQty().add(bom.getLossQty()));
+			sumBom.setEachQty(sumBom.getEachQty().add(bom.getEachQty()));
+			sumBom.setQty(sumBom.getQty().add(bom.getQty()));
+		}
+		return sumBom;
+	}
+
+	public Bom saveParentBomByCom(Integer parentId) {
+		Bom bom = bomService.findById(parentId);
+		if (bom != null) {
+			Bom sumBom = sumParentBomByCom(parentId);
+			bom.setLossQty(sumBom.getLossQty());
+			bom.setEachQty(sumBom.getEachQty());
+			bom.setQty(sumBom.getQty());
+			BigDecimal lossRate = bom.getLossQty().multiply(KunlongUtils.newBigDecimal(4, 100));
+			lossRate = lossRate.divide(bom.getEachQty(),BigDecimal.ROUND_FLOOR);
+
+			bom.setLossRate(lossRate.toBigInteger().shortValue());
+			bom.setMoney(bom.getPrice().multiply(bom.getQty()));
+		}
+		bomService.update(bom);
+		//saveBomCostByProduct(bom.getProductId());
+
+		return bom;
+	}
 }

@@ -8,6 +8,7 @@ import com.jtest.NodesFactroy.Node.HttpClientNode;
 import com.jtest.annotation.JTest;
 import com.jtest.annotation.JTestClass;
 import com.jtest.testframe.ITestImpl;
+import com.kunlong.platform.utils.KunlongUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,6 +18,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
 
 @JTestClass.author("leijm")
 public class TestPdf extends ITestImpl {
@@ -127,7 +129,10 @@ public class TestPdf extends ITestImpl {
 //    }
     public static void main(String[] args) {
 
-        run(TestPdf.class, 2);
+        //run(TestPdf.class, 2);
+        BigDecimal b=new BigDecimal(100);
+        BigDecimal c=KunlongUtils.newBigDecimal(4,112);
+        System.out.println(b.multiply(c));
 
     }
 

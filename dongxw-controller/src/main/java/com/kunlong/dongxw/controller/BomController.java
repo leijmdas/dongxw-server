@@ -13,9 +13,11 @@ import com.kunlong.dongxw.data.domain.Product;
 import com.kunlong.dongxw.data.service.*;
 import com.kunlong.dongxw.util.WebFileUtil;
 import com.kunlong.platform.utils.JsonResult;
+import com.kunlong.platform.utils.KunlongUtils;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -50,12 +52,8 @@ public  class BomController extends BaseController {
     @Autowired
     ProductTypeService productTypeService;
 
-
-
     @Autowired
     BomJoinService bomJoinService;
-
-
 
     //检查有计划
     @PostMapping("/deleteById/{id}")
@@ -64,7 +62,7 @@ public  class BomController extends BaseController {
 
         bomService.deleteById(id);
 
-        bomJoinService.reSaveBomCostByProduct(bom.getProductId());
+        bomJoinService.saveBomCostByProduct(bom.getProductId());
         return JsonResult.success();
     }
 
@@ -79,13 +77,15 @@ public  class BomController extends BaseController {
     }
 
     @RequestMapping("/save")
+    @Transactional
     public JsonResult<Integer> save(@RequestBody Bom bom) {
         if(bom.getLossType().equals(BomConsts.TYPE_LOSS_QTY)){
             bom.setLossQty(bom.getEachQty().add(bom.getLossQty()));
         }else {
-            bom.setLossQty(bom.newBigDecimal(4,bom.getEachQty().doubleValue()*bom.getLossRate()/100));
+            bom.setLossQty(bom.getEachQty().multiply(KunlongUtils.newBigDecimal(bom.getLossRate())
+                    .divide(KunlongUtils.newBigDecimal(100 ) ,BigDecimal.ROUND_FLOOR)));
         }
-        bom.setQty(bom.getEachQty().add(bom.getLossQty()));
+        bom.setQty((bom.getEachQty().add(bom.getLossQty()).multiply(new BigDecimal(bom.getPieces()))));
         bom.setMoney(bom.getPrice().multiply(bom.getQty()));
         if (bom.getChildId() != null && bom.getChildId() > 0) {
             Product product = productService.findById(bom.getChildId());
@@ -101,8 +101,13 @@ public  class BomController extends BaseController {
         } else {
             bomService.update(bom);
         }
-
-        bomJoinService.reSaveBomCostByProduct(bom.getProductId());
+        //更新父物料
+        if (bom.getParentId() > 0) {
+            Bom parentBom = bomJoinService.saveParentBomByCom(bom.getParentId());
+            bomJoinService.saveBomCostByProduct(parentBom.getProductId());
+        }else {
+            bomJoinService.saveBomCostByProduct(bom.getProductId());
+        }
         return JsonResult.success(bom.getId());
     }
 
