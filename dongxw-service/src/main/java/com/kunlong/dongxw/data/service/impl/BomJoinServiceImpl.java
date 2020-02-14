@@ -184,14 +184,25 @@ public class BomJoinServiceImpl implements BomJoinService {
 	}
 
 	List<Bom> findBomByProductRm(Integer productId, Integer childId) {
-			Bom.QueryParam queryParam = new Bom.QueryParam();
-			queryParam.setParam(new Bom());
-			queryParam.getParam().setChildId(childId);
+		Bom.QueryParam queryParam = new Bom.QueryParam();
+		queryParam.setParam(new Bom());
+		queryParam.getParam().setChildId(childId);
 
-			queryParam.getParam().setProductId(productId);
-			return bomService.findByQueryParam(queryParam);
+		queryParam.getParam().setProductId(productId);
+		return bomService.findByQueryParam(queryParam);
 
-	  }
+	}
+
+	public Boolean checkExistsBomChild(Integer parentId) {
+		Bom.QueryParam queryParam = new Bom.QueryParam();
+		queryParam.setParam(new Bom());
+		queryParam.getParam().setParentId(parentId);
+		queryParam.setLimit(1);
+
+		List<Bom> boms = bomService.findByQueryParam(queryParam);
+		return boms != null && boms.size() > 0;
+
+	}
 
 	Boolean checkExistsBomByProductRm(Integer productId, Integer childId) {
 		List<Bom> boms = findBomByProductRm(productId, childId);

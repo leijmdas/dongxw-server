@@ -23,5 +23,6 @@ public interface BomJoinService {
     Bom saveParentBomByCom(Integer productId);
 
     List<Integer> saveByIds(Bom bom);
+    Boolean checkExistsBomChild(Integer parentId) ;
 
 }

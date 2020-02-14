@@ -56,7 +56,12 @@ public  class BomController extends BaseController {
 
     //检查有计划
     @PostMapping("/deleteById/{id}")
+    @Transactional
     public JsonResult<Integer> deleteById(@PathVariable("id") Integer id) throws IOException {
+        if (bomJoinService.checkExistsBomChild(id)) {
+
+            return JsonResult.failure(-1, "物料存在组件，无法删除！");
+        }
         Bom bom = bomService.findById(id);
         bomService.deleteById(id);
         if (bom.getParentId() > 0) {
@@ -69,6 +74,7 @@ public  class BomController extends BaseController {
     @RequestMapping("/findById/{id}")
     public JsonResult<Bom> findById(@PathVariable("id") Integer id, HttpServletResponse response) throws IOException {
         Bom bom = bomService.findById(id);
+
         SysUserDTO sysUserDTO = sysUserApiService.findById(bom.getCreateBy());
         bom.setCreateByName(sysUserDTO == null ? "-" : sysUserDTO.getUsername());
 
