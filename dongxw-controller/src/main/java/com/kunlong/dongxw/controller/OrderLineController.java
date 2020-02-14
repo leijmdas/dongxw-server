@@ -22,9 +22,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * cust类
@@ -99,8 +97,7 @@ public final class OrderLineController extends BaseController {
     @PostMapping("/query")
     public PageResult<OrderLine> query(@RequestBody OrderLine.QueryParam queryParam) throws IOException {
         PageResult<OrderLine> pageResult = new PageResult<>();
-
-        queryParam.setSortBys("id|desc");
+        queryParam.setSortBys(queryParam.getOrderBys());
 
         pageResult.setTotal(orderLineService.countByQueryParam(queryParam));
         pageResult.setData(orderLineService.findByQueryParam(queryParam));
@@ -115,6 +112,16 @@ public final class OrderLineController extends BaseController {
             SysUserDTO sysUserDTO=sysUserApiService.findById(orderLine.getCreateBy());
             orderLine.setCreateByName(sysUserDTO==null?"-":sysUserDTO.getUsername());
         }
+        Collections.sort(pageResult.getData(), new Comparator<OrderLine>() {
+
+            @Override
+            public int compare(OrderLine orderLine1, OrderLine orderLine2) {
+                String c1 = orderLine1.getProduct()==null?"-":orderLine1.getProduct().getCode();
+                String c2 = orderLine2.getProduct()==null?"-":orderLine2.getProduct().getCode();
+                return c1.compareTo(c2) ;
+            }
+        });
+
         return pageResult;
     }
 

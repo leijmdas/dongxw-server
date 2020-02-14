@@ -103,7 +103,7 @@ public final class ProductController extends BaseController{
     @PostMapping("/query")
     public PageResult<Product> query(@RequestBody Product.QueryParam queryParam) throws IOException {
         PageResult<Product> pageResult = new PageResult<>();
-        queryParam.setSortBys("id|desc");
+        queryParam.setSortBys(queryParam.getOrderBys());
 
         pageResult.setTotal(productService.countByQueryParam(queryParam));
         pageResult.setData(productService.findByQueryParam(queryParam));

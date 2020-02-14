@@ -12,6 +12,8 @@ public interface BomJoinService {
 
     JsonResult<BomCost> findBomCostByProduct(Integer productId);
 
+    Integer save(Bom bom, Integer sysUserId);
+
     Integer save(BomCost bom);
 
     Integer saveBomCostByProduct(Integer productId);

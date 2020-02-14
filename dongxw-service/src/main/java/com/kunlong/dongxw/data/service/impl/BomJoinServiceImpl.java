@@ -1,5 +1,6 @@
 package com.kunlong.dongxw.data.service.impl;
 
+import com.kunlong.dongxw.consts.BomConsts;
 import com.kunlong.dongxw.data.domain.Bom;
 import com.kunlong.dongxw.data.domain.BomBase;
 import com.kunlong.dongxw.data.domain.BomCost;
@@ -77,7 +78,41 @@ public class BomJoinServiceImpl implements BomJoinService {
 
 	}
 
+	@Transactional
+	public Integer save(Bom bom, Integer sysUserId) {
+		//组件不判断
+		if (bom.getParentId()==0 && checkExistsBomByProductRm(bom.getId(), bom.getProductId(), bom.getChildId())) {
+			return -1;
+		}
 
+		bom.setLossQty(bom.getEachQty().multiply(KunlongUtils.newBigDecimal(bom.getLossRate())
+				.divide(KunlongUtils.newBigDecimal(100 ) ,BigDecimal.ROUND_FLOOR)));
+
+		bom.setQty((bom.getEachQty().add(bom.getLossQty()).multiply(new BigDecimal(bom.getPieces()))));
+		bom.setMoney(bom.getPrice().multiply(bom.getQty()));
+		if (bom.getChildId() != null && bom.getChildId() > 0) {
+			Product product = productService.findById(bom.getChildId());
+			if (product != null) {
+				bom.setBigType(product.getParentId());
+				bom.setSmallType(product.getProductTypeId());
+			}
+		}
+		if (bom.getId() == null) {
+			bom.setCreateBy(sysUserId);
+			bom.setCreateDate(new Date());
+			bomService.save(bom);
+		} else {
+			bomService.update(bom);
+		}
+		//更新父物料
+		if (bom.getParentId() > 0) {
+			Bom parentBom = saveParentBomByCom(bom.getParentId());
+			saveBomCostByProduct(parentBom.getProductId());
+		}else {
+			saveBomCostByProduct(bom.getProductId());
+		}
+		return  bom.getId();
+	}
 
 	public Integer save( BomCost bomCost ) {
 
@@ -134,7 +169,11 @@ public class BomJoinServiceImpl implements BomJoinService {
 			bom.setEachQty(sumBom.getEachQty());
 			bom.setQty(sumBom.getQty());
 			BigDecimal lossRate = bom.getLossQty().multiply(KunlongUtils.newBigDecimal(4, 100));
-			lossRate = lossRate.divide(bom.getEachQty(),BigDecimal.ROUND_FLOOR);
+			if (bom.getLossQty().compareTo(BigDecimal.ZERO) == 0) {
+				lossRate = BigDecimal.ZERO;
+			} else {
+				lossRate = lossRate.divide(bom.getEachQty(), BigDecimal.ROUND_FLOOR);
+			}
 
 			bom.setLossRate(lossRate.toBigInteger().shortValue());
 			bom.setMoney(bom.getPrice().multiply(bom.getQty()));
@@ -144,19 +183,36 @@ public class BomJoinServiceImpl implements BomJoinService {
 		return bom;
 	}
 
-	  List<Bom> findBomByProductRm(Integer productId, Integer childId) {
-		Bom.QueryParam queryParam = new Bom.QueryParam();
-		queryParam.setParam(new Bom());
-		queryParam.getParam().setProductId(productId);
-		queryParam.getParam().setChildId(childId);
+	List<Bom> findBomByProductRm(Integer productId, Integer childId) {
+			Bom.QueryParam queryParam = new Bom.QueryParam();
+			queryParam.setParam(new Bom());
+			queryParam.getParam().setChildId(childId);
 
-		  return bomService.findByQueryParam(queryParam);
+			queryParam.getParam().setProductId(productId);
+			return bomService.findByQueryParam(queryParam);
 
 	  }
 
 	Boolean checkExistsBomByProductRm(Integer productId, Integer childId) {
 		List<Bom> boms = findBomByProductRm(productId, childId);
 		return boms != null && boms.size() > 0;
+	}
+
+	Boolean checkExistsBomByProductRm(Integer bomId, Integer productId, Integer childId) {
+		if (bomId == null && checkExistsBomByProductRm(productId, childId)) {
+			return true;
+		}
+
+		List<Bom> boms = findBomByProductRm(productId, childId);
+		if (boms == null) {
+			return false;
+		}
+		for (Bom bom : boms) {
+			if (!bom.getId().equals(bomId)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/*

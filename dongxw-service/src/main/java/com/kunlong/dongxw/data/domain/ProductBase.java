@@ -1,6 +1,8 @@
 package com.kunlong.dongxw.data.domain;
 
 import com.kunlong.platform.model.KunlongModel;
+import org.mybatis.hbatis.orm.criteria.support.query.AbstractQueryParam;
+import org.mybatis.hbatis.orm.criteria.support.query.SortOrders;
 
 import java.io.Serializable;
 
@@ -29,6 +31,7 @@ public class ProductBase extends KunlongModel implements Serializable {
 	String createByName;
 
 	private static final long serialVersionUID = 1L;
+
 	public ProductType getProductType() {
 		return productType;
 	}
@@ -61,5 +64,7 @@ public class ProductBase extends KunlongModel implements Serializable {
 	public void setCreateByName(String createByName) {
 		this.createByName = createByName;
 	}
+
+
 
 }

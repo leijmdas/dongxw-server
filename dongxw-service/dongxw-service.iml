@@ -31,6 +31,9 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-beans:5.2.2.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-context:5.2.2.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: kunlong:plat:2.0" level="project" />
+    <orderEntry type="library" name="Maven: org.mybatis.hbatis:hbatis-core:3.0.0" level="project" />
+    <orderEntry type="library" name="Maven: org.mybatis.hbatis:hbatis-orm:3.0.0" level="project" />
+    <orderEntry type="library" name="Maven: org.mybatis.hbatis:hbatis-spring:3.0.0" level="project" />
     <orderEntry type="library" name="Maven: com.google.zxing:core:3.4.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:3.9" level="project" />
     <orderEntry type="library" name="Maven: com.alibaba:easyexcel:1.1.2-beat1" level="project" />
@@ -206,6 +209,7 @@
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-jdbc:2.2.2.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: com.zaxxer:HikariCP:3.4.1" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-jdbc:5.2.2.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-tx:5.2.2.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: com.alibaba:druid-spring-boot-starter:1.1.20" level="project" />
     <orderEntry type="library" name="Maven: com.alibaba:druid:1.1.20" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: JTest:JTest:4.0-SNAPSHOT" level="project" />
@@ -244,10 +248,6 @@
     <orderEntry type="library" scope="TEST" name="Maven: com.beust:jcommander:1.72" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.codehaus.groovy:groovy-xml:2.5.8" level="project" />
     <orderEntry type="library" name="Maven: mysql:mysql-connector-java:8.0.17" level="project" />
-    <orderEntry type="library" name="Maven: org.mybatis.hbatis:hbatis-core:2.3.1" level="project" />
-    <orderEntry type="library" name="Maven: org.mybatis.hbatis:hbatis-orm:2.3.1" level="project" />
-    <orderEntry type="library" name="Maven: org.mybatis.hbatis:hbatis-spring:2.3.1" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-tx:5.2.2.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.apache.zookeeper:zookeeper:3.4.7" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-log4j12:1.7.29" level="project" />
     <orderEntry type="library" name="Maven: log4j:log4j:1.2.16" level="project" />

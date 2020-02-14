@@ -2,6 +2,7 @@ package com.kunlong.dongxw.controller;
 
 
 import app.support.query.PageResult;
+import com.kunlong.dongxw.data.domain.OrderLine;
 import com.kunlong.dubbo.sys.model.SysUserDTO;
 import com.kunlong.dongxw.annotation.DateRewritable;
 import com.kunlong.dongxw.consts.ApiConstants;
@@ -27,9 +28,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * cust类
@@ -59,9 +58,10 @@ public  class BomController extends BaseController {
     @PostMapping("/deleteById/{id}")
     public JsonResult<Integer> deleteById(@PathVariable("id") Integer id) throws IOException {
         Bom bom = bomService.findById(id);
-
         bomService.deleteById(id);
-
+        if (bom.getParentId() > 0) {
+            bomJoinService.saveParentBomByCom(bom.getParentId());
+        }
         bomJoinService.saveBomCostByProduct(bom.getProductId());
         return JsonResult.success();
     }
@@ -88,46 +88,22 @@ public  class BomController extends BaseController {
     }
 
     @RequestMapping("/save")
-    @Transactional
     public JsonResult<Integer> save(@RequestBody Bom bom) {
-        if(bom.getLossType().equals(BomConsts.TYPE_LOSS_QTY)){
-            bom.setLossQty(bom.getEachQty().add(bom.getLossQty()));
-        }else {
-            bom.setLossQty(bom.getEachQty().multiply(KunlongUtils.newBigDecimal(bom.getLossRate())
-                    .divide(KunlongUtils.newBigDecimal(100 ) ,BigDecimal.ROUND_FLOOR)));
+        Integer id = bomJoinService.save(bom, getCurrentUserId());
+        if (id < 0) {
+            return JsonResult.failure(id, "物料代码已经存在");
         }
-        bom.setQty((bom.getEachQty().add(bom.getLossQty()).multiply(new BigDecimal(bom.getPieces()))));
-        bom.setMoney(bom.getPrice().multiply(bom.getQty()));
-        if (bom.getChildId() != null && bom.getChildId() > 0) {
-            Product product = productService.findById(bom.getChildId());
-            if (product != null) {
-                bom.setBigType(product.getParentId());
-                bom.setSmallType(product.getProductTypeId());
-            }
-        }
-        if (bom.getId() == null) {
-            bom.setCreateBy(getCurrentUserId());
-            bom.setCreateDate(new Date());
-            bomService.save(bom);
-        } else {
-            bomService.update(bom);
-        }
-        //更新父物料
-        if (bom.getParentId() > 0) {
-            Bom parentBom = bomJoinService.saveParentBomByCom(bom.getParentId());
-            bomJoinService.saveBomCostByProduct(parentBom.getProductId());
-        }else {
-            bomJoinService.saveBomCostByProduct(bom.getProductId());
-        }
-        return JsonResult.success(bom.getId());
+        return JsonResult.success(id);
+
     }
 
 
     @PostMapping("/query")
     public PageResult<Bom> query(@RequestBody Bom.QueryParam queryParam) throws IOException {
         PageResult<Bom> pageResult = new PageResult<Bom>();
+        queryParam.setSortBys(queryParam.getOrderBys());
 
-        queryParam.setSortBys("id|desc");
+        //queryParam.setSortBys("id|desc");
         pageResult.setTotal(bomService.countByQueryParam(queryParam));
         pageResult.setData(bomService.findByQueryParam(queryParam));
         for(Bom bom:pageResult.getData()){
@@ -140,6 +116,20 @@ public  class BomController extends BaseController {
             }
             SysUserDTO sysUserDTO = sysUserApiService.findById(bom.getCreateBy());
             bom.setCreateByName(sysUserDTO == null ? "-" : sysUserDTO.getUsername());
+        }
+        if(queryParam.getOrderBys().startsWith("code|")){
+            Collections.sort(pageResult.getData());
+        }else if (queryParam.getOrderBys().startsWith("name|")){
+            Collections.sort(pageResult.getData(), new Comparator<Bom>() {
+
+                @Override
+                public int compare(Bom b1, Bom b2) {
+                    String name1 = b1.getProduct()==null?"-":b1.getProduct().getName();
+                    String name2 = b2.getProduct()==null?"-":b2.getProduct().getName();
+                    return name1.compareTo(name2) ;
+                }
+            });
+
         }
         return pageResult;
     }

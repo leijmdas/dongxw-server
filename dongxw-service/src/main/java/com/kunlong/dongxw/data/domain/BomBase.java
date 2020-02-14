@@ -5,6 +5,7 @@ import com.kunlong.platform.model.KunlongModel;
 import javax.persistence.Transient;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Comparator;
 import java.util.Date;
 
 
@@ -13,7 +14,7 @@ import java.util.Date;
  * @author generator
  * @date 2020年01月04日
  */
-public class BomBase extends KunlongModel implements Serializable {
+public class BomBase extends KunlongModel implements Serializable ,Comparable<Bom> {
 	private static final long serialVersionUID = 1L;
 
     public static Bom defaultBom() {
@@ -134,4 +135,12 @@ public class BomBase extends KunlongModel implements Serializable {
 		this.createByName = createByName;
 	}
 
+	String getCode() {
+		return childRm == null ? "" : childRm.getCode();
+	}
+
+	@Override
+	public int compareTo(Bom o) {
+		return this.getCode().compareTo(o.getCode());
+	}
 }
