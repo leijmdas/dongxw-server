@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.spring.annotation.MapperScan;
 
 
@@ -30,4 +31,5 @@ public class DongxwServiceApp {
         };
         SpringApplication.run(classes, args);
     }
+    Transactional l;
 }

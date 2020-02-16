@@ -350,15 +350,15 @@ public class OrderMaster extends OrderMasterBase implements Serializable {
 			this.setSortOrders(new SortOrders<OrderMaster>(EntityNode.INSTANCE));
 		}
 
-		private Map<String, DateRange> dateRanges = new HashMap<String, DateRange>();
-
-		public Map<String, DateRange> getDateRanges() {
-			return dateRanges;
-		}
-
-		public void setDateRanges(Map<String, DateRange> dateRanges) {
-			this.dateRanges = dateRanges;
-		}
+//		private Map<String, DateRange> dateRanges = new HashMap<String, DateRange>();
+//
+//		public Map<String, DateRange> getDateRanges() {
+//			return dateRanges;
+//		}
+//
+//		public void setDateRanges(Map<String, DateRange> dateRanges) {
+//			this.dateRanges = dateRanges;
+//		}
 	}
 	
 	public static enum ValueField {

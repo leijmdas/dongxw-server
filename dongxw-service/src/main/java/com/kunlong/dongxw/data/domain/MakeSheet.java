@@ -6,8 +6,8 @@ import org.mybatis.hbatis.core.type.JdbcType;
 import org.mybatis.hbatis.core.annotation.*;
 import org.mybatis.hbatis.core.*;
 import java.lang.Integer;
-import java.math.BigDecimal;
 import java.lang.String;
+import java.math.BigDecimal;
 import java.lang.Short;
 import java.lang.Byte;
 import java.util.Date;
@@ -16,18 +16,25 @@ import org.mybatis.hbatis.orm.criteria.support.query.SortOrders;
 /**
  * MakeSheet 生产制造单
  * @author generator
- * @date 2020年02月09日
+ * @date 2020年02月16日
  */
 @Table(MakeSheet.EntityNode.class)
 public class MakeSheet extends MakeSheetBase implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	/**
-	  * 生产标识 
+	  * 生产制造单标识 
 	  * nullable:true,length:11
 	  */
-	@Column(primaryKey = true,autoIncrement = true,comment = "生产标识 ")	
+	@Column(primaryKey = true,autoIncrement = true,comment = "生产制造单标识 ")	
 	private Integer id;
+	/**
+	  * 计划标识 
+	  * nullable:false,length:11
+	  */
+	@Column(comment = "计划标识 ")	
+	@NotNull
+	private Integer planId;
 	/**
 	  * 订单标识 
 	  * nullable:false,length:11
@@ -43,13 +50,6 @@ public class MakeSheet extends MakeSheetBase implements Serializable {
 	@NotNull
 	private Integer orderLineId;
 	/**
-	  * 计划标识 
-	  * nullable:false,length:11
-	  */
-	@Column(comment = "计划标识 ")	
-	@NotNull
-	private Integer planId;
-	/**
 	  * 产品标识 
 	  * nullable:false,length:11
 	  */
@@ -57,10 +57,17 @@ public class MakeSheet extends MakeSheetBase implements Serializable {
 	@NotNull
 	private Integer productId;
 	/**
-	  * 父件标识 
+	  * BOM标识 
 	  * nullable:false,length:11
 	  */
-	@Column(comment = "父件标识 ")	
+	@Column(comment = "BOM标识 ")	
+	@NotNull
+	private Integer bomId;
+	/**
+	  * BOM父件标识 
+	  * nullable:false,length:11
+	  */
+	@Column(comment = "BOM父件标识 ")	
 	@NotNull
 	private Integer parentId;
 	/**
@@ -76,26 +83,19 @@ public class MakeSheet extends MakeSheetBase implements Serializable {
 	@Column(comment = "小类 ")	
 	private Integer smallType;
 	/**
-	  * 子件物料标识 物料标识
+	  * 审核状态 
 	  * nullable:false,length:11
 	  */
-	@Column(comment = "子件物料标识 物料标识")	
+	@Column(comment = "审核状态 ")	
+	@NotNull
+	private Integer status;
+	/**
+	  * 物料标识 
+	  * nullable:false,length:11
+	  */
+	@Column(comment = "物料标识 ")	
 	@NotNull
 	private Integer childId;
-	/**
-	  * 单价 
-	  * nullable:false,length:12
-	  */
-	@Column(comment = "单价 ")	
-	@NotNull
-	private BigDecimal price;
-	/**
-	  * 金额 
-	  * nullable:false,length:12
-	  */
-	@Column(comment = "金额 ")	
-	@NotNull
-	private BigDecimal money;
 	/**
 	  * 宽封度 
 	  * nullable:false,length:11
@@ -105,10 +105,9 @@ public class MakeSheet extends MakeSheetBase implements Serializable {
 	private Integer width;
 	/**
 	  * 裁片名称 
-	  * nullable:false,length:32
+	  * nullable:true,length:32
 	  */
 	@Column(comment = "裁片名称 ")	
-	@NotNull
 	private String cutPartName;
 	/**
 	  * 尺寸(长） 
@@ -154,18 +153,18 @@ public class MakeSheet extends MakeSheetBase implements Serializable {
 	private Integer length;
 	/**
 	  * 损耗类型   1 损耗率(%) 0 损耗数 
-	  * nullable:false,length:6
+	  * nullable:false,length:11
 	  */
 	@Column(comment = "损耗类型   1 损耗率(%) 0 损耗数 ")	
 	@NotNull
-	private Short lossType;
+	private Integer lossType;
 	/**
-	  * 损耗值 
-	  * nullable:false,length:10
+	  * 损耗率 
+	  * nullable:false,length:6
 	  */
-	@Column(comment = "损耗值 ")	
+	@Column(comment = "损耗率 ")	
 	@NotNull
-	private BigDecimal lossRate;
+	private Short lossRate;
 	/**
 	  * 每个用量 
 	  * nullable:false,length:12
@@ -174,12 +173,26 @@ public class MakeSheet extends MakeSheetBase implements Serializable {
 	@NotNull
 	private BigDecimal eachQty;
 	/**
+	  * 损耗量 
+	  * nullable:false,length:10
+	  */
+	@Column(comment = "损耗量 ")	
+	@NotNull
+	private BigDecimal lossQty;
+	/**
 	  * 用量 
 	  * nullable:false,length:12
 	  */
 	@Column(comment = "用量 ")	
 	@NotNull
 	private BigDecimal qty;
+	/**
+	  * 总用量 
+	  * nullable:false,length:14
+	  */
+	@Column(comment = "总用量 ")	
+	@NotNull
+	private BigDecimal totalQty;
 	/**
 	  * 单位 
 	  * nullable:false,length:32
@@ -188,12 +201,19 @@ public class MakeSheet extends MakeSheetBase implements Serializable {
 	@NotNull
 	private String unit;
 	/**
-	  * 总用量 
+	  * 单价 
 	  * nullable:false,length:12
 	  */
-	@Column(comment = "总用量 ")	
+	@Column(comment = "单价 ")	
 	@NotNull
-	private BigDecimal totalQty;
+	private BigDecimal price;
+	/**
+	  * 金额 
+	  * nullable:false,length:12
+	  */
+	@Column(comment = "金额 ")	
+	@NotNull
+	private BigDecimal money;
 	/**
 	  * 层次 
 	  * nullable:false,length:6
@@ -202,10 +222,10 @@ public class MakeSheet extends MakeSheetBase implements Serializable {
 	@NotNull
 	private Short depth;
 	/**
-	  * 来源 0--采购1--生产
+	  * 有组件 1-组件0-物料
 	  * nullable:false,length:4
 	  */
-	@Column(comment = "来源 0--采购1--生产")	
+	@Column(comment = "有组件 1-组件0-物料")	
 	@NotNull
 	private Byte source;
 	/**
@@ -226,6 +246,12 @@ public class MakeSheet extends MakeSheetBase implements Serializable {
     public void setId(Integer id){
     	this.id = id;
     }
+    public Integer getPlanId(){
+    	return this.planId;
+    }
+    public void setPlanId(Integer planId){
+    	this.planId = planId;
+    }
     public Integer getOrderId(){
     	return this.orderId;
     }
@@ -238,17 +264,17 @@ public class MakeSheet extends MakeSheetBase implements Serializable {
     public void setOrderLineId(Integer orderLineId){
     	this.orderLineId = orderLineId;
     }
-    public Integer getPlanId(){
-    	return this.planId;
-    }
-    public void setPlanId(Integer planId){
-    	this.planId = planId;
-    }
     public Integer getProductId(){
     	return this.productId;
     }
     public void setProductId(Integer productId){
     	this.productId = productId;
+    }
+    public Integer getBomId(){
+    	return this.bomId;
+    }
+    public void setBomId(Integer bomId){
+    	this.bomId = bomId;
     }
     public Integer getParentId(){
     	return this.parentId;
@@ -268,23 +294,17 @@ public class MakeSheet extends MakeSheetBase implements Serializable {
     public void setSmallType(Integer smallType){
     	this.smallType = smallType;
     }
+    public Integer getStatus(){
+    	return this.status;
+    }
+    public void setStatus(Integer status){
+    	this.status = status;
+    }
     public Integer getChildId(){
     	return this.childId;
     }
     public void setChildId(Integer childId){
     	this.childId = childId;
-    }
-    public BigDecimal getPrice(){
-    	return this.price;
-    }
-    public void setPrice(BigDecimal price){
-    	this.price = price;
-    }
-    public BigDecimal getMoney(){
-    	return this.money;
-    }
-    public void setMoney(BigDecimal money){
-    	this.money = money;
     }
     public Integer getWidth(){
     	return this.width;
@@ -334,16 +354,16 @@ public class MakeSheet extends MakeSheetBase implements Serializable {
     public void setLength(Integer length){
     	this.length = length;
     }
-    public Short getLossType(){
+    public Integer getLossType(){
     	return this.lossType;
     }
-    public void setLossType(Short lossType){
+    public void setLossType(Integer lossType){
     	this.lossType = lossType;
     }
-    public BigDecimal getLossRate(){
+    public Short getLossRate(){
     	return this.lossRate;
     }
-    public void setLossRate(BigDecimal lossRate){
+    public void setLossRate(Short lossRate){
     	this.lossRate = lossRate;
     }
     public BigDecimal getEachQty(){
@@ -352,11 +372,23 @@ public class MakeSheet extends MakeSheetBase implements Serializable {
     public void setEachQty(BigDecimal eachQty){
     	this.eachQty = eachQty;
     }
+    public BigDecimal getLossQty(){
+    	return this.lossQty;
+    }
+    public void setLossQty(BigDecimal lossQty){
+    	this.lossQty = lossQty;
+    }
     public BigDecimal getQty(){
     	return this.qty;
     }
     public void setQty(BigDecimal qty){
     	this.qty = qty;
+    }
+    public BigDecimal getTotalQty(){
+    	return this.totalQty;
+    }
+    public void setTotalQty(BigDecimal totalQty){
+    	this.totalQty = totalQty;
     }
     public String getUnit(){
     	return this.unit;
@@ -364,11 +396,17 @@ public class MakeSheet extends MakeSheetBase implements Serializable {
     public void setUnit(String unit){
     	this.unit = unit;
     }
-    public BigDecimal getTotalQty(){
-    	return this.totalQty;
+    public BigDecimal getPrice(){
+    	return this.price;
     }
-    public void setTotalQty(BigDecimal totalQty){
-    	this.totalQty = totalQty;
+    public void setPrice(BigDecimal price){
+    	this.price = price;
+    }
+    public BigDecimal getMoney(){
+    	return this.money;
+    }
+    public void setMoney(BigDecimal money){
+    	this.money = money;
     }
     public Short getDepth(){
     	return this.depth;
@@ -397,28 +435,28 @@ public class MakeSheet extends MakeSheetBase implements Serializable {
 
     public static class EntityNode extends AbstractEntityNode<MakeSheet> {
         public static final EntityNode INSTANCE = new EntityNode("ms");;
-    	/** 生产标识  */
+    	/** 生产制造单标识  */
         public FieldNode<MakeSheet, Integer> id =  createFieldNode("id","id",Integer.class,JdbcType.INTEGER);
+    	/** 计划标识  */
+        public FieldNode<MakeSheet, Integer> planId =  createFieldNode("planId","plan_id",Integer.class,JdbcType.INTEGER);
     	/** 订单标识  */
         public FieldNode<MakeSheet, Integer> orderId =  createFieldNode("orderId","order_id",Integer.class,JdbcType.INTEGER);
     	/** 订单产品标识  */
         public FieldNode<MakeSheet, Integer> orderLineId =  createFieldNode("orderLineId","order_line_id",Integer.class,JdbcType.INTEGER);
-    	/** 计划标识  */
-        public FieldNode<MakeSheet, Integer> planId =  createFieldNode("planId","plan_id",Integer.class,JdbcType.INTEGER);
     	/** 产品标识  */
         public FieldNode<MakeSheet, Integer> productId =  createFieldNode("productId","product_id",Integer.class,JdbcType.INTEGER);
-    	/** 父件标识  */
+    	/** BOM标识  */
+        public FieldNode<MakeSheet, Integer> bomId =  createFieldNode("bomId","bom_id",Integer.class,JdbcType.INTEGER);
+    	/** BOM父件标识  */
         public FieldNode<MakeSheet, Integer> parentId =  createFieldNode("parentId","parent_id",Integer.class,JdbcType.INTEGER);
     	/** 大类  */
         public FieldNode<MakeSheet, Integer> bigType =  createFieldNode("bigType","big_type",Integer.class,JdbcType.INTEGER);
     	/** 小类  */
         public FieldNode<MakeSheet, Integer> smallType =  createFieldNode("smallType","small_type",Integer.class,JdbcType.INTEGER);
-    	/** 子件物料标识 物料标识 */
+    	/** 审核状态  */
+        public FieldNode<MakeSheet, Integer> status =  createFieldNode("status","status",Integer.class,JdbcType.INTEGER);
+    	/** 物料标识  */
         public FieldNode<MakeSheet, Integer> childId =  createFieldNode("childId","child_id",Integer.class,JdbcType.INTEGER);
-    	/** 单价  */
-        public FieldNode<MakeSheet, BigDecimal> price =  createFieldNode("price","price",BigDecimal.class,JdbcType.DECIMAL);
-    	/** 金额  */
-        public FieldNode<MakeSheet, BigDecimal> money =  createFieldNode("money","money",BigDecimal.class,JdbcType.DECIMAL);
     	/** 宽封度  */
         public FieldNode<MakeSheet, Integer> width =  createFieldNode("width","width",Integer.class,JdbcType.INTEGER);
     	/** 裁片名称  */
@@ -436,20 +474,26 @@ public class MakeSheet extends MakeSheetBase implements Serializable {
     	/** 长封度  */
         public FieldNode<MakeSheet, Integer> length =  createFieldNode("length","length",Integer.class,JdbcType.INTEGER);
     	/** 损耗类型   1 损耗率(%) 0 损耗数  */
-        public FieldNode<MakeSheet, Short> lossType =  createFieldNode("lossType","loss_type",Short.class,JdbcType.SMALLINT);
-    	/** 损耗值  */
-        public FieldNode<MakeSheet, BigDecimal> lossRate =  createFieldNode("lossRate","loss_rate",BigDecimal.class,JdbcType.DECIMAL);
+        public FieldNode<MakeSheet, Integer> lossType =  createFieldNode("lossType","loss_type",Integer.class,JdbcType.INTEGER);
+    	/** 损耗率  */
+        public FieldNode<MakeSheet, Short> lossRate =  createFieldNode("lossRate","loss_rate",Short.class,JdbcType.SMALLINT);
     	/** 每个用量  */
         public FieldNode<MakeSheet, BigDecimal> eachQty =  createFieldNode("eachQty","each_qty",BigDecimal.class,JdbcType.DECIMAL);
+    	/** 损耗量  */
+        public FieldNode<MakeSheet, BigDecimal> lossQty =  createFieldNode("lossQty","loss_qty",BigDecimal.class,JdbcType.DECIMAL);
     	/** 用量  */
         public FieldNode<MakeSheet, BigDecimal> qty =  createFieldNode("qty","qty",BigDecimal.class,JdbcType.DECIMAL);
-    	/** 单位  */
-        public FieldNode<MakeSheet, String> unit =  createFieldNode("unit","unit",String.class,JdbcType.VARCHAR);
     	/** 总用量  */
         public FieldNode<MakeSheet, BigDecimal> totalQty =  createFieldNode("totalQty","total_qty",BigDecimal.class,JdbcType.DECIMAL);
+    	/** 单位  */
+        public FieldNode<MakeSheet, String> unit =  createFieldNode("unit","unit",String.class,JdbcType.VARCHAR);
+    	/** 单价  */
+        public FieldNode<MakeSheet, BigDecimal> price =  createFieldNode("price","price",BigDecimal.class,JdbcType.DECIMAL);
+    	/** 金额  */
+        public FieldNode<MakeSheet, BigDecimal> money =  createFieldNode("money","money",BigDecimal.class,JdbcType.DECIMAL);
     	/** 层次  */
         public FieldNode<MakeSheet, Short> depth =  createFieldNode("depth","depth",Short.class,JdbcType.SMALLINT);
-    	/** 来源 0--采购1--生产 */
+    	/** 有组件 1-组件0-物料 */
         public FieldNode<MakeSheet, Byte> source =  createFieldNode("source","source",Byte.class,JdbcType.TINYINT);
     	/** 建档人  */
         public FieldNode<MakeSheet, Integer> createBy =  createFieldNode("createBy","create_by",Integer.class,JdbcType.INTEGER);

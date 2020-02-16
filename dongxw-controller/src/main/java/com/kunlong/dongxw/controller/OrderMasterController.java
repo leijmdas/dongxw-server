@@ -100,7 +100,7 @@ public final class OrderMasterController extends BaseController {
     public PageResult<OrderMaster> query(@RequestBody OrderMaster.QueryParam queryParam) throws IOException {
         PageResult<OrderMaster> pageResult = new PageResult<>();
         // Customer.QueryParam qp = BeanMapper.getInstance().map(pageResult, Customer.QueryParam.class);
-        queryParam.setSortBys("id|desc");
+        queryParam.setSortBys(queryParam.getOrderBys());
 
         pageResult.setTotal(orderMasterService.countByQueryParam(queryParam));
         pageResult.setData(orderMasterService.findByQueryParam(queryParam));

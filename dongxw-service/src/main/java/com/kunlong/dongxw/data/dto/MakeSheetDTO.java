@@ -2,8 +2,8 @@ package com.kunlong.dongxw.data.dto;
 
 import java.io.Serializable;
 import java.lang.Integer;
-import java.math.BigDecimal;
 import java.lang.String;
+import java.math.BigDecimal;
 import java.lang.Short;
 import java.lang.Byte;
 import java.util.Date;
@@ -12,18 +12,24 @@ import io.swagger.annotations.ApiModelProperty;
 /**
  * MakeSheet
  * @author generator
- * @date 2020年02月09日
+ * @date 2020年02月16日
  */
 @ApiModel(value="MakeSheetDTO",description="生产制造单")
 public class MakeSheetDTO implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	/**
-	  * 生产标识 
+	  * 生产制造单标识 
 	  * nullable:true,length:11
 	  */
-	@ApiModelProperty(value = "生产标识 ",required = false,notes = "生产标识  [自增]")
+	@ApiModelProperty(value = "生产制造单标识 ",required = false,notes = "生产制造单标识  [自增]")
 	private Integer id;
+	/**
+	  * 计划标识 
+	  * nullable:false,length:11
+	  */
+	@ApiModelProperty(value = "计划标识 ",required = true,notes = "计划标识  ")
+	private Integer planId;
 	/**
 	  * 订单标识 
 	  * nullable:false,length:11
@@ -37,22 +43,22 @@ public class MakeSheetDTO implements Serializable {
 	@ApiModelProperty(value = "订单产品标识 ",required = true,notes = "订单产品标识  ")
 	private Integer orderLineId;
 	/**
-	  * 计划标识 
-	  * nullable:false,length:11
-	  */
-	@ApiModelProperty(value = "计划标识 ",required = true,notes = "计划标识  ")
-	private Integer planId;
-	/**
 	  * 产品标识 
 	  * nullable:false,length:11
 	  */
 	@ApiModelProperty(value = "产品标识 ",required = true,notes = "产品标识  ")
 	private Integer productId;
 	/**
-	  * 父件标识 
+	  * BOM标识 
 	  * nullable:false,length:11
 	  */
-	@ApiModelProperty(value = "父件标识 ",required = true,notes = "父件标识  ")
+	@ApiModelProperty(value = "BOM标识 ",required = true,notes = "BOM标识  ")
+	private Integer bomId;
+	/**
+	  * BOM父件标识 
+	  * nullable:false,length:11
+	  */
+	@ApiModelProperty(value = "BOM父件标识 ",required = true,notes = "BOM父件标识  ")
 	private Integer parentId;
 	/**
 	  * 大类 
@@ -67,23 +73,17 @@ public class MakeSheetDTO implements Serializable {
 	@ApiModelProperty(value = "小类 ",required = false,notes = "小类  ")
 	private Integer smallType;
 	/**
-	  * 子件物料标识 物料标识
+	  * 审核状态 
 	  * nullable:false,length:11
 	  */
-	@ApiModelProperty(value = "子件物料标识 物料标识",required = true,notes = "子件物料标识 物料标识 ")
+	@ApiModelProperty(value = "审核状态 ",required = true,notes = "审核状态  ")
+	private Integer status;
+	/**
+	  * 物料标识 
+	  * nullable:false,length:11
+	  */
+	@ApiModelProperty(value = "物料标识 ",required = true,notes = "物料标识  ")
 	private Integer childId;
-	/**
-	  * 单价 
-	  * nullable:false,length:12
-	  */
-	@ApiModelProperty(value = "单价 ",required = true,notes = "单价  ")
-	private BigDecimal price;
-	/**
-	  * 金额 
-	  * nullable:false,length:12
-	  */
-	@ApiModelProperty(value = "金额 ",required = true,notes = "金额  ")
-	private BigDecimal money;
 	/**
 	  * 宽封度 
 	  * nullable:false,length:11
@@ -92,9 +92,9 @@ public class MakeSheetDTO implements Serializable {
 	private Integer width;
 	/**
 	  * 裁片名称 
-	  * nullable:false,length:32
+	  * nullable:true,length:32
 	  */
-	@ApiModelProperty(value = "裁片名称 ",required = true,notes = "裁片名称  ")
+	@ApiModelProperty(value = "裁片名称 ",required = false,notes = "裁片名称  ")
 	private String cutPartName;
 	/**
 	  * 尺寸(长） 
@@ -134,16 +134,16 @@ public class MakeSheetDTO implements Serializable {
 	private Integer length;
 	/**
 	  * 损耗类型   1 损耗率(%) 0 损耗数 
-	  * nullable:false,length:6
+	  * nullable:false,length:11
 	  */
 	@ApiModelProperty(value = "损耗类型   1 损耗率(%) 0 损耗数 ",required = true,notes = "损耗类型   1 损耗率(%) 0 损耗数  ")
-	private Short lossType;
+	private Integer lossType;
 	/**
-	  * 损耗值 
-	  * nullable:false,length:10
+	  * 损耗率 
+	  * nullable:false,length:6
 	  */
-	@ApiModelProperty(value = "损耗值 ",required = true,notes = "损耗值  ")
-	private BigDecimal lossRate;
+	@ApiModelProperty(value = "损耗率 ",required = true,notes = "损耗率  ")
+	private Short lossRate;
 	/**
 	  * 每个用量 
 	  * nullable:false,length:12
@@ -151,11 +151,23 @@ public class MakeSheetDTO implements Serializable {
 	@ApiModelProperty(value = "每个用量 ",required = true,notes = "每个用量  ")
 	private BigDecimal eachQty;
 	/**
+	  * 损耗量 
+	  * nullable:false,length:10
+	  */
+	@ApiModelProperty(value = "损耗量 ",required = true,notes = "损耗量  ")
+	private BigDecimal lossQty;
+	/**
 	  * 用量 
 	  * nullable:false,length:12
 	  */
 	@ApiModelProperty(value = "用量 ",required = true,notes = "用量  ")
 	private BigDecimal qty;
+	/**
+	  * 总用量 
+	  * nullable:false,length:14
+	  */
+	@ApiModelProperty(value = "总用量 ",required = true,notes = "总用量  ")
+	private BigDecimal totalQty;
 	/**
 	  * 单位 
 	  * nullable:false,length:32
@@ -163,11 +175,17 @@ public class MakeSheetDTO implements Serializable {
 	@ApiModelProperty(value = "单位 ",required = true,notes = "单位  ")
 	private String unit;
 	/**
-	  * 总用量 
+	  * 单价 
 	  * nullable:false,length:12
 	  */
-	@ApiModelProperty(value = "总用量 ",required = true,notes = "总用量  ")
-	private BigDecimal totalQty;
+	@ApiModelProperty(value = "单价 ",required = true,notes = "单价  ")
+	private BigDecimal price;
+	/**
+	  * 金额 
+	  * nullable:false,length:12
+	  */
+	@ApiModelProperty(value = "金额 ",required = true,notes = "金额  ")
+	private BigDecimal money;
 	/**
 	  * 层次 
 	  * nullable:false,length:6
@@ -175,10 +193,10 @@ public class MakeSheetDTO implements Serializable {
 	@ApiModelProperty(value = "层次 ",required = true,notes = "层次  ")
 	private Short depth;
 	/**
-	  * 来源 0--采购1--生产
+	  * 有组件 1-组件0-物料
 	  * nullable:false,length:4
 	  */
-	@ApiModelProperty(value = "来源 0--采购1--生产",required = true,notes = "来源 0--采购1--生产 ")
+	@ApiModelProperty(value = "有组件 1-组件0-物料",required = true,notes = "有组件 1-组件0-物料 ")
 	private Byte source;
 	/**
 	  * 建档人 
@@ -198,6 +216,12 @@ public class MakeSheetDTO implements Serializable {
     public void setId(Integer id){
     	this.id = id;
     }
+    public Integer getPlanId(){
+    	return this.planId;
+    }
+    public void setPlanId(Integer planId){
+    	this.planId = planId;
+    }
     public Integer getOrderId(){
     	return this.orderId;
     }
@@ -210,17 +234,17 @@ public class MakeSheetDTO implements Serializable {
     public void setOrderLineId(Integer orderLineId){
     	this.orderLineId = orderLineId;
     }
-    public Integer getPlanId(){
-    	return this.planId;
-    }
-    public void setPlanId(Integer planId){
-    	this.planId = planId;
-    }
     public Integer getProductId(){
     	return this.productId;
     }
     public void setProductId(Integer productId){
     	this.productId = productId;
+    }
+    public Integer getBomId(){
+    	return this.bomId;
+    }
+    public void setBomId(Integer bomId){
+    	this.bomId = bomId;
     }
     public Integer getParentId(){
     	return this.parentId;
@@ -240,23 +264,17 @@ public class MakeSheetDTO implements Serializable {
     public void setSmallType(Integer smallType){
     	this.smallType = smallType;
     }
+    public Integer getStatus(){
+    	return this.status;
+    }
+    public void setStatus(Integer status){
+    	this.status = status;
+    }
     public Integer getChildId(){
     	return this.childId;
     }
     public void setChildId(Integer childId){
     	this.childId = childId;
-    }
-    public BigDecimal getPrice(){
-    	return this.price;
-    }
-    public void setPrice(BigDecimal price){
-    	this.price = price;
-    }
-    public BigDecimal getMoney(){
-    	return this.money;
-    }
-    public void setMoney(BigDecimal money){
-    	this.money = money;
     }
     public Integer getWidth(){
     	return this.width;
@@ -306,16 +324,16 @@ public class MakeSheetDTO implements Serializable {
     public void setLength(Integer length){
     	this.length = length;
     }
-    public Short getLossType(){
+    public Integer getLossType(){
     	return this.lossType;
     }
-    public void setLossType(Short lossType){
+    public void setLossType(Integer lossType){
     	this.lossType = lossType;
     }
-    public BigDecimal getLossRate(){
+    public Short getLossRate(){
     	return this.lossRate;
     }
-    public void setLossRate(BigDecimal lossRate){
+    public void setLossRate(Short lossRate){
     	this.lossRate = lossRate;
     }
     public BigDecimal getEachQty(){
@@ -324,11 +342,23 @@ public class MakeSheetDTO implements Serializable {
     public void setEachQty(BigDecimal eachQty){
     	this.eachQty = eachQty;
     }
+    public BigDecimal getLossQty(){
+    	return this.lossQty;
+    }
+    public void setLossQty(BigDecimal lossQty){
+    	this.lossQty = lossQty;
+    }
     public BigDecimal getQty(){
     	return this.qty;
     }
     public void setQty(BigDecimal qty){
     	this.qty = qty;
+    }
+    public BigDecimal getTotalQty(){
+    	return this.totalQty;
+    }
+    public void setTotalQty(BigDecimal totalQty){
+    	this.totalQty = totalQty;
     }
     public String getUnit(){
     	return this.unit;
@@ -336,11 +366,17 @@ public class MakeSheetDTO implements Serializable {
     public void setUnit(String unit){
     	this.unit = unit;
     }
-    public BigDecimal getTotalQty(){
-    	return this.totalQty;
+    public BigDecimal getPrice(){
+    	return this.price;
     }
-    public void setTotalQty(BigDecimal totalQty){
-    	this.totalQty = totalQty;
+    public void setPrice(BigDecimal price){
+    	this.price = price;
+    }
+    public BigDecimal getMoney(){
+    	return this.money;
+    }
+    public void setMoney(BigDecimal money){
+    	this.money = money;
     }
     public Short getDepth(){
     	return this.depth;

@@ -126,25 +126,29 @@ public class MakePlanJoinServiceImpl implements MakePlanJoinService {
         }else {
             purchasePlan.setRmDate(makePlan.getRmDate());
         }
-        purchasePlan.setLossQty(bom.getQty().multiply(bom.newBigDecimal(bom.getLossQty())).divide(bom.newBigDecimal(100)));
+        purchasePlan.setLossQty(bom.getQty().multiply(Bom.newBigDecimal(bom.getLossQty())).divide(bom.newBigDecimal(100)));
         purchasePlan.setpQty(bom.getQty());
         purchasePlan.setQty(purchasePlan.getpQty().add(purchasePlan.getLossQty()));
-        purchasePlan.setTotalQty(purchasePlan.getQty().multiply(bom.newBigDecimal(orderLine.getQty())));
+        purchasePlan.setTotalQty(purchasePlan.getQty().multiply(Bom.newBigDecimal(orderLine.getQty())));
         return purchasePlan;
     }
 
     MakeSheet copy2MakeSheet(MakePlan makePlan,Bom bom,Integer sysUserId,OrderLine orderLine){
         MakeSheet makeSheet = JSON.parseObject(bom.toString(), MakeSheet.class);
 
-        makeSheet.setTotalQty(makeSheet.getQty().multiply(bom.newBigDecimal(4,orderLine.getQty())));
+        makeSheet.setTotalQty(makeSheet.getQty().multiply(Bom.newBigDecimal(4,orderLine.getQty())));
 
         makeSheet.setId(null);
         makeSheet.setOrderLineId(makePlan.getOrderLineId());
         makeSheet.setOrderId(makePlan.getOrderId());
         makeSheet.setPlanId(makePlan.getId());
+        makeSheet.setBomId(bom.getId());
         makeSheet.setCreateDate(new Date());
         makeSheet.setCreateBy(sysUserId);
-
+        if(makeSheet.getStatus()==null)
+        {
+            makeSheet.setStatus(0);
+        }
         return makeSheet;
     }
 
