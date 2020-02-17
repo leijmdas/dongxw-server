@@ -14,6 +14,7 @@ import com.kunlong.dongxw.util.WebFileUtil;
 import com.kunlong.platform.utils.JsonResult;
 import com.kunlong.dongxw.data.domain.Customer;
 import com.kunlong.dongxw.data.service.CustomerService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
 import org.apache.dubbo.config.annotation.Reference;
@@ -36,6 +37,9 @@ import java.util.List;
  * Author: cch/leijiming
  * Date: Created in 2018/8/23 16:50
  */
+
+@Api(value = "Customer", description = "Customer")
+
 @RestController
 @RequestMapping(ApiConstants.AUTH_API_WEB_DONGXW + "/customer")
 public final class CustomerController extends BaseController {
@@ -48,6 +52,7 @@ public final class CustomerController extends BaseController {
     @Reference(lazy = true, version = "${dubbo.service.version}")
     AuthApiService authApiService;
 
+    @ApiOperation(value = "findById", notes = "findById", authorizations = {@Authorization(value = ApiConstants.AUTH_API_WEB)})
     @RequestMapping("/findById/{id}")
     public JsonResult<Customer> findById(@PathVariable("id") Integer id, HttpServletResponse response) throws IOException {
         return JsonResult.success(customerService.findById(id));

@@ -19,7 +19,6 @@ import tk.mybatis.spring.annotation.MapperScan;
 //@EnableDubboConfig
 //@ImportResource({"classpath:appcontext.xml"})
 @EnableSwagger2
-
 @MapperScan(basePackages={"com.kunlong.dongxw.data.dao"})
 public class DongxwApp {
     private static final Logger logger = LoggerFactory.getLogger(DongxwApp.class);
