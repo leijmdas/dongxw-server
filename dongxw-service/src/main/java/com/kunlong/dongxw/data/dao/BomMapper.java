@@ -7,7 +7,7 @@ import com.kunlong.dongxw.data.domain.Bom;
 /**
  * BomMapper
  * @author generator
- * @date 2020年02月09日
+ * @date 2020年02月19日
  */
 public interface BomMapper extends HbatisMapper<Bom, Integer> {
 	

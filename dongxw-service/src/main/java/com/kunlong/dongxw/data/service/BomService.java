@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * BomService
  * @author generator
- * @date 2020年02月09日
+ * @date 2020年02月19日
  */
 public interface BomService {
 	

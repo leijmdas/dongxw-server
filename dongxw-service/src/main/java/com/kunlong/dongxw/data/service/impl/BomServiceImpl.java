@@ -12,7 +12,7 @@ import org.mybatis.hbatis.orm.criteria.support.StatementBuilder;
 /**
  * BomServiceImpl
  * @author generator
- * @date 2020年02月09日
+ * @date 2020年02月19日
  */
 @Service
 public class BomServiceImpl implements BomService {

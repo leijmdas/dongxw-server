@@ -5,14 +5,14 @@ import java.lang.Integer;
 import java.lang.String;
 import java.math.BigDecimal;
 import java.lang.Short;
-import java.lang.Byte;
+import java.lang.Boolean;
 import java.util.Date;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 /**
  * Bom
  * @author generator
- * @date 2020年02月09日
+ * @date 2020年02月19日
  */
 @ApiModel(value="BomDTO",description="BOM表")
 public class BomDTO implements Serializable {
@@ -158,10 +158,16 @@ public class BomDTO implements Serializable {
 	private Short depth;
 	/**
 	  * 来源 0--采购1--生产
-	  * nullable:false,length:4
+	  * nullable:false,length:1
 	  */
 	@ApiModelProperty(value = "来源 0--采购1--生产",required = true,notes = "来源 0--采购1--生产 ")
-	private Byte source;
+	private Boolean source;
+	/**
+	  * 
+	  * nullable:true,length:4
+	  */
+	@ApiModelProperty(value = "",required = false,notes = " ")
+	private Integer status;
 	/**
 	  * 建档人 
 	  * nullable:true,length:11
@@ -312,11 +318,17 @@ public class BomDTO implements Serializable {
     public void setDepth(Short depth){
     	this.depth = depth;
     }
-    public Byte getSource(){
+    public Boolean getSource(){
     	return this.source;
     }
-    public void setSource(Byte source){
+    public void setSource(Boolean source){
     	this.source = source;
+    }
+    public Integer getStatus(){
+    	return this.status;
+    }
+    public void setStatus(Integer status){
+    	this.status = status;
     }
     public Integer getCreateBy(){
     	return this.createBy;

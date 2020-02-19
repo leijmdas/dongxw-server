@@ -10,14 +10,14 @@ import java.lang.Integer;
 import java.lang.String;
 import java.math.BigDecimal;
 import java.lang.Short;
-import java.lang.Byte;
+import java.lang.Boolean;
 import java.util.Date;
 import org.mybatis.hbatis.orm.criteria.support.query.AbstractQueryParam;
 import org.mybatis.hbatis.orm.criteria.support.query.SortOrders;
 /**
  * Bom BOM表
  * @author generator
- * @date 2020年02月09日
+ * @date 2020年02月19日
  */
 @Table(Bom.EntityNode.class)
 public class Bom extends BomBase implements Serializable {
@@ -183,11 +183,17 @@ public class Bom extends BomBase implements Serializable {
 	private Short depth;
 	/**
 	  * 来源 0--采购1--生产
-	  * nullable:false,length:4
+	  * nullable:false,length:1
 	  */
 	@Column(comment = "来源 0--采购1--生产")	
 	@NotNull
-	private Byte source;
+	private Boolean source;
+	/**
+	  * 
+	  * nullable:true,length:4
+	  */
+	@Column(comment = "")	
+	private Integer status;
 	/**
 	  * 建档人 
 	  * nullable:true,length:11
@@ -338,11 +344,17 @@ public class Bom extends BomBase implements Serializable {
     public void setDepth(Short depth){
     	this.depth = depth;
     }
-    public Byte getSource(){
+    public Boolean getSource(){
     	return this.source;
     }
-    public void setSource(Byte source){
+    public void setSource(Boolean source){
     	this.source = source;
+    }
+    public Integer getStatus(){
+    	return this.status;
+    }
+    public void setStatus(Integer status){
+    	this.status = status;
     }
     public Integer getCreateBy(){
     	return this.createBy;
@@ -406,7 +418,9 @@ public class Bom extends BomBase implements Serializable {
     	/** 层次  */
         public FieldNode<Bom, Short> depth =  createFieldNode("depth","depth",Short.class,JdbcType.SMALLINT);
     	/** 来源 0--采购1--生产 */
-        public FieldNode<Bom, Byte> source =  createFieldNode("source","source",Byte.class,JdbcType.TINYINT);
+        public FieldNode<Bom, Boolean> source =  createFieldNode("source","source",Boolean.class,JdbcType.BIT);
+    	/**  */
+        public FieldNode<Bom, Integer> status =  createFieldNode("status","status",Integer.class,JdbcType.INTEGER);
     	/** 建档人  */
         public FieldNode<Bom, Integer> createBy =  createFieldNode("createBy","create_by",Integer.class,JdbcType.INTEGER);
     	/** 建档时间  */

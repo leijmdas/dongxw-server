@@ -37,7 +37,7 @@ public class BomBase extends KunlongModel implements Serializable ,Comparable<Bo
         bom.setCreateBy(-1);
         bom.setCreateDate(new Date());
 
-        bom.setSource((byte)0);
+        bom.setSource(false);
         bom.setDepth(Short.valueOf("0"));
 
         bom.setKnifeQty(Short.valueOf("0"));

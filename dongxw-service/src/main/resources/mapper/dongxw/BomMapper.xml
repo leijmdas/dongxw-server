@@ -25,7 +25,8 @@
 	  	<result column="price" property="price" jdbcType="DECIMAL" />
 	  	<result column="money" property="money" jdbcType="DECIMAL" />
 	  	<result column="depth" property="depth" jdbcType="SMALLINT" />
-	  	<result column="source" property="source" jdbcType="TINYINT" />
+	  	<result column="source" property="source" jdbcType="BIT" />
+	  	<result column="status" property="status" jdbcType="INTEGER" />
 	  	<result column="create_by" property="createBy" jdbcType="INTEGER" />
 	  	<result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
     </resultMap>
@@ -53,15 +54,16 @@
 	  	<result column="b_price" property="price" jdbcType="DECIMAL" />
 	  	<result column="b_money" property="money" jdbcType="DECIMAL" />
 	  	<result column="b_depth" property="depth" jdbcType="SMALLINT" />
-	  	<result column="b_source" property="source" jdbcType="TINYINT" />
+	  	<result column="b_source" property="source" jdbcType="BIT" />
+	  	<result column="b_status" property="status" jdbcType="INTEGER" />
 	  	<result column="b_create_by" property="createBy" jdbcType="INTEGER" />
 	  	<result column="b_create_date" property="createDate" jdbcType="TIMESTAMP" />
     </resultMap>
     <sql id="Base_Column_List" >
-  		id,product_id,parent_id,big_type,small_type,child_id,width,cut_part_name,size_l,size_x,size_w,pieces,knife_qty,length,loss_type,loss_rate,each_qty,loss_qty,qty,unit,price,money,depth,source,create_by,create_date
+  		id,product_id,parent_id,big_type,small_type,child_id,width,cut_part_name,size_l,size_x,size_w,pieces,knife_qty,length,loss_type,loss_rate,each_qty,loss_qty,qty,unit,price,money,depth,source,status,create_by,create_date
 	</sql>
   	<sql id="Base_Column_List_Bom" >
-  		b.id b_id,b.product_id b_product_id,b.parent_id b_parent_id,b.big_type b_big_type,b.small_type b_small_type,b.child_id b_child_id,b.width b_width,b.cut_part_name b_cut_part_name,b.size_l b_size_l,b.size_x b_size_x,b.size_w b_size_w,b.pieces b_pieces,b.knife_qty b_knife_qty,b.length b_length,b.loss_type b_loss_type,b.loss_rate b_loss_rate,b.each_qty b_each_qty,b.loss_qty b_loss_qty,b.qty b_qty,b.unit b_unit,b.price b_price,b.money b_money,b.depth b_depth,b.source b_source,b.create_by b_create_by,b.create_date b_create_date
+  		b.id b_id,b.product_id b_product_id,b.parent_id b_parent_id,b.big_type b_big_type,b.small_type b_small_type,b.child_id b_child_id,b.width b_width,b.cut_part_name b_cut_part_name,b.size_l b_size_l,b.size_x b_size_x,b.size_w b_size_w,b.pieces b_pieces,b.knife_qty b_knife_qty,b.length b_length,b.loss_type b_loss_type,b.loss_rate b_loss_rate,b.each_qty b_each_qty,b.loss_qty b_loss_qty,b.qty b_qty,b.unit b_unit,b.price b_price,b.money b_money,b.depth b_depth,b.source b_source,b.status b_status,b.create_by b_create_by,b.create_date b_create_date
 	</sql>
 	
 	<!-- 系统自定义 -->
@@ -144,6 +146,9 @@
 		    </if>
 			<if test="p.source!=null ">
 		    	and b.source=#{p.source}
+		    </if>
+			<if test="p.status!=null ">
+		    	and b.status=#{p.status}
 		    </if>
 			<if test="p.createBy!=null ">
 		    	and b.create_by=#{p.createBy}

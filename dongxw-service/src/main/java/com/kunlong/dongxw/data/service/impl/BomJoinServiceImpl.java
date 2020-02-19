@@ -1,14 +1,8 @@
 package com.kunlong.dongxw.data.service.impl;
 
 import com.kunlong.dongxw.consts.BomConsts;
-import com.kunlong.dongxw.data.domain.Bom;
-import com.kunlong.dongxw.data.domain.BomBase;
-import com.kunlong.dongxw.data.domain.BomCost;
-import com.kunlong.dongxw.data.domain.Product;
-import com.kunlong.dongxw.data.service.BomCostService;
-import com.kunlong.dongxw.data.service.BomJoinService;
-import com.kunlong.dongxw.data.service.BomService;
-import com.kunlong.dongxw.data.service.ProductService;
+import com.kunlong.dongxw.data.domain.*;
+import com.kunlong.dongxw.data.service.*;
 import com.kunlong.platform.model.KunlongModel;
 import com.kunlong.platform.utils.JsonResult;
 import com.kunlong.platform.utils.KunlongUtils;
@@ -33,6 +27,8 @@ import java.util.List;
 public class BomJoinServiceImpl implements BomJoinService {
 	@Autowired
 	ProductService productService;
+	@Autowired
+	ProductTypeService productTypeService;
 
 	@Autowired
 	BomCostService bomCostService;
@@ -242,8 +238,8 @@ public class BomJoinServiceImpl implements BomJoinService {
 			String[] ids = bom.getRmIds().split(",");
 			Integer productId = bom.getProductId();
 			for (String childId : ids) {
-				Integer rmId=Integer.valueOf(childId);
-				if(checkExistsBomByProductRm(productId,rmId)){
+				Integer rmId = Integer.valueOf(childId);
+				if (checkExistsBomByProductRm(productId, rmId)) {
 					continue;
 				}
 				Bom saveBom = BomBase.defaultBom();
@@ -256,10 +252,23 @@ public class BomJoinServiceImpl implements BomJoinService {
 					saveBom.setBigType(product.getParentId());
 					saveBom.setSmallType(product.getProductTypeId());
 				}
+				checkSource(saveBom);
 				bomService.save(saveBom);
 				integers.add(saveBom.getId());
 			}
 		}
-		return  integers ;
+		return integers;
+	}
+
+	void checkSource(Bom saveBom){
+		Product rm = productService.findById(saveBom.getChildId());
+		ProductType rmType = productTypeService.findById(rm.getParentId());
+		String rmBigTypeCode = rmType.getCode().trim();
+		//10 11 20 有组件
+		if ("10".equals(rmBigTypeCode) || "11".equals(rmBigTypeCode) || "20".equals(rmBigTypeCode)) {
+			saveBom.setSource(true);
+		} else {
+			saveBom.setSource(false);
+		}
 	}
 }
