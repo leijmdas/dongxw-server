@@ -136,6 +136,28 @@ public  class BomController extends BaseController {
                 }
             });
 
+        }else if (queryParam.getOrderBys().startsWith("remark|")){
+            Collections.sort(pageResult.getData(), new Comparator<Bom>() {
+
+                @Override
+                public int compare(Bom b1, Bom b2) {
+                    String name1 = b1.getProduct()==null?"-":b1.getProduct().getRemark();
+                    String name2 = b2.getProduct()==null?"-":b2.getProduct().getRemark();
+                    return name1.compareTo(name2) ;
+                }
+            });
+
+        }else if (queryParam.getOrderBys().startsWith("color|")){
+            Collections.sort(pageResult.getData(), new Comparator<Bom>() {
+
+                @Override
+                public int compare(Bom b1, Bom b2) {
+                    String name1 = b1.getProduct()==null?"-":b1.getProduct().getColor();
+                    String name2 = b2.getProduct()==null?"-":b2.getProduct().getColor();
+                    return name1.compareTo(name2) ;
+                }
+            });
+
         }
         return pageResult;
     }
