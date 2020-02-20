@@ -1,5 +1,6 @@
 package com.kunlong.dongxw.data.service.impl;
 
+import com.kunlong.dongxw.config.DongxwTransactional;
 import com.kunlong.dongxw.consts.BomConsts;
 import com.kunlong.dongxw.data.domain.*;
 import com.kunlong.dongxw.data.service.*;
@@ -74,7 +75,7 @@ public class BomJoinServiceImpl implements BomJoinService {
 
 	}
 
-	@Transactional
+	@DongxwTransactional
 	public Integer save(Bom bom, Integer sysUserId) {
 		//组件不判断
 		if (bom.getParentId()==0 && checkExistsBomByProductRm(bom.getId(), bom.getProductId(), bom.getChildId())) {
@@ -227,7 +228,7 @@ public class BomJoinServiceImpl implements BomJoinService {
 	 * bom: getRmIds
 	 * bom: getCreateBy
 	 * */
-	@Transactional
+	@DongxwTransactional
 	public List<Integer> saveByIds(Bom bom) {
 
 

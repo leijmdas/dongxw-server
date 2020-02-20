@@ -2,6 +2,7 @@ package com.kunlong.dongxw.controller;
 
 
 import app.support.query.PageResult;
+import com.kunlong.dongxw.config.DongxwTransactional;
 import com.kunlong.dubbo.sys.model.SysUserDTO;
 import com.kunlong.dongxw.annotation.DateRewritable;
 import com.kunlong.dongxw.consts.ApiConstants;
@@ -83,7 +84,7 @@ public  class MakePlanController extends BaseController {
         return JsonResult.failure(-2,"订单产品数与计划产品数不等");
     }
 
-    @Transactional
+    @DongxwTransactional
     @RequestMapping("/makeSheetByPlan/{orderId}")
     public JsonResult<String> makeSheetByPlan(@PathVariable("orderId") Integer orderId) throws IOException {
 
@@ -91,7 +92,7 @@ public  class MakePlanController extends BaseController {
         return JsonResult.success("成功！");
     }
 
-    @Transactional
+    @DongxwTransactional
     @RequestMapping("/makePlanByOrder/{orderId}")
     public JsonResult<String> makePlanByOrder(@PathVariable("orderId") Integer orderId) throws IOException {
         OrderMaster orderMaster = orderMasterService.findById(orderId);
@@ -105,7 +106,7 @@ public  class MakePlanController extends BaseController {
         return JsonResult.success("成功！");
     }
     /*删除多余计费产品*/
-    @Transactional
+    @DongxwTransactional
     @RequestMapping("/rmPlanByOrder/{orderId}")
     public JsonResult<String> rmPlanByOrder(@PathVariable("orderId") Integer orderId) throws IOException {
         makePlanJoinService.rmPlanByOrder(orderId);

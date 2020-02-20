@@ -2,6 +2,7 @@ package com.kunlong.dongxw.controller;
 
 
 import app.support.query.PageResult;
+import com.kunlong.dongxw.config.DongxwTransactional;
 import com.kunlong.dubbo.sys.model.SysUserDTO;
 import com.kunlong.dongxw.annotation.DateRewritable;
 import com.kunlong.dongxw.consts.ApiConstants;
@@ -58,7 +59,7 @@ public  class MakeSheetController extends BaseController {
 
     @Autowired
     ProductTypeService productTypeService;
-    @Transactional(rollbackFor = Exception.class)
+    @DongxwTransactional(rollbackFor = Exception.class)
     @RequestMapping("/makeSheetByPlan/{planId}")
     public JsonResult<String> makeSheetByPlan(@PathVariable("planId") Integer planId) throws IOException {
 
@@ -66,7 +67,7 @@ public  class MakeSheetController extends BaseController {
         return JsonResult.success("成功！");
     }
 
-    @Transactional(rollbackFor = Exception.class)
+    @DongxwTransactional(rollbackFor = Exception.class)
     @RequestMapping("/makeSheetByPlanOrder/{orderId}")
     public JsonResult<String> makeSheetByPlanOrder(@PathVariable("orderId") Integer orderId) throws IOException {
 

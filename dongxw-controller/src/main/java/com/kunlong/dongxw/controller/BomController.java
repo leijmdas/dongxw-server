@@ -2,6 +2,7 @@ package com.kunlong.dongxw.controller;
 
 
 import app.support.query.PageResult;
+import com.kunlong.dongxw.config.DongxwTransactional;
 import com.kunlong.dongxw.data.domain.OrderLine;
 import com.kunlong.dubbo.sys.model.SysUserDTO;
 import com.kunlong.dongxw.annotation.DateRewritable;
@@ -56,7 +57,7 @@ public  class BomController extends BaseController {
 
     //检查有计划
     @PostMapping("/deleteById/{id}")
-    @Transactional
+    @DongxwTransactional
     public JsonResult<Integer> deleteById(@PathVariable("id") Integer id) throws IOException {
         if (bomJoinService.checkExistsBomChild(id)) {
 
@@ -83,7 +84,7 @@ public  class BomController extends BaseController {
     }
 
     @RequestMapping("/saveByIds")
-    @Transactional
+    @DongxwTransactional
     public JsonResult<List<Integer>> saveByIds(@RequestBody Bom bom) {
 //        bom =new Bom();
 //        bom.setProductId(189);
