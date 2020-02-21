@@ -20,15 +20,17 @@ public class Login extends ITestImpl {
 
 
     AuthService.AuthToken authToken;
-    public JsonResult<AuthService.AuthToken>  parsePageResult(String text ) {
-        JsonResult<AuthService.AuthToken>         result = JSON.parseObject(text, new
+
+    public JsonResult<AuthService.AuthToken> parsePageResult(String text) {
+        JsonResult<AuthService.AuthToken> result = JSON.parseObject(text, new
 
                 TypeReference<JsonResult<AuthService.AuthToken>>() {
 
                 });
         return result;
     }
-    public AuthService.AuthToken loginsys( HttpClientNode httpclient) {
+
+    public AuthService.AuthToken loginsys(HttpClientNode httpclient) {
 
 
         String ret = httpclient.post(url_login, "{}", "application/json");

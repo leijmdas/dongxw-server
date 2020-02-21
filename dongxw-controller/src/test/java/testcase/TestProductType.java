@@ -148,7 +148,7 @@ public class TestProductType extends ITestImpl {
         String ret = httpclient.post(url_producttype + "/findById/12", "{}", "application/json");
         httpclient.checkStatusCode(200);
 
-        JsonResult<Customer> result  = JSON.parseObject(ret, new
+        JsonResult<Customer> result = JSON.parseObject(ret, new
 
                 TypeReference<JsonResult<Customer>>() {
 
