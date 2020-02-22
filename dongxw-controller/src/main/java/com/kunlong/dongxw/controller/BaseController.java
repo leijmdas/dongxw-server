@@ -10,6 +10,9 @@ import org.apache.dubbo.config.annotation.Reference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class BaseController {
 	protected final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -39,11 +42,22 @@ public class BaseController {
 		return authApiService.getCurrentSysUser(token);
 	}
 
+	String transDatetime(Date d) {
+		if(d==null){
+			return "";
+		}
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		return sdf.format(d);
+	}
 
-	
-//	public Integer getCurrentCorpId() {
-//		return getCurrentSysUser().getCorpId();
-//	}
-	
-	
+	String transDate(Date d) {
+		if(d==null){
+			return "";
+		}
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		return sdf.format(d);
+	}
+
+
+
 }

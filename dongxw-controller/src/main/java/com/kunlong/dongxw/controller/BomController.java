@@ -2,33 +2,26 @@ package com.kunlong.dongxw.controller;
 
 
 import app.support.query.PageResult;
+import com.alibaba.fastjson.JSON;
 import com.kunlong.dongxw.config.DongxwTransactional;
-import com.kunlong.dongxw.data.domain.OrderLine;
+import com.kunlong.dongxw.data.domain.*;
+import com.kunlong.dongxw.util.ExcelUtil;
 import com.kunlong.dubbo.sys.model.SysUserDTO;
 import com.kunlong.dongxw.annotation.DateRewritable;
 import com.kunlong.dongxw.consts.ApiConstants;
-import com.kunlong.dongxw.consts.BomConsts;
-import com.kunlong.dongxw.consts.MakePlanConst;
-import com.kunlong.dongxw.data.domain.Bom;
-import com.kunlong.dongxw.data.domain.MakePlan;
-import com.kunlong.dongxw.data.domain.Product;
 import com.kunlong.dongxw.data.service.*;
 import com.kunlong.dongxw.util.WebFileUtil;
 import com.kunlong.platform.utils.JsonResult;
-import com.kunlong.platform.utils.KunlongUtils;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -42,6 +35,8 @@ import java.util.*;
 public  class BomController extends BaseController {
     @Autowired
     BomService bomService;
+    //@Autowired
+    //BomCostService bomCostService;
 
     @Autowired
     CustomerService customerService;
@@ -104,16 +99,8 @@ public  class BomController extends BaseController {
 
     }
 
-
-    @PostMapping("/query")
-    public PageResult<Bom> query(@RequestBody Bom.QueryParam queryParam) throws IOException {
-        PageResult<Bom> pageResult = new PageResult<Bom>();
-        queryParam.setSortBys(queryParam.getOrderBys());
-
-        //queryParam.setSortBys("id|desc");
-        pageResult.setTotal(bomService.countByQueryParam(queryParam));
-        pageResult.setData(bomService.findByQueryParam(queryParam));
-        for(Bom bom:pageResult.getData()){
+    void fillBoms(List<Bom> boms){
+        for(Bom bom:boms){
             bom.setChildRm(productService.findById(bom.getChildId()));
             bom.setProduct(productService.findById(bom.getProductId()));
             if(bom.getChildRm()!=null){
@@ -124,6 +111,17 @@ public  class BomController extends BaseController {
             SysUserDTO sysUserDTO = sysUserApiService.findById(bom.getCreateBy());
             bom.setCreateByName(sysUserDTO == null ? "-" : sysUserDTO.getUsername());
         }
+    }
+
+    @PostMapping("/query")
+    public PageResult<Bom> query(@RequestBody Bom.QueryParam queryParam) throws IOException {
+        PageResult<Bom> pageResult = new PageResult<Bom>();
+        queryParam.setSortBys(queryParam.getOrderBys());
+
+        //queryParam.setSortBys("id|desc");
+        pageResult.setTotal(bomService.countByQueryParam(queryParam));
+        pageResult.setData(bomService.findByQueryParam(queryParam));
+        fillBoms(pageResult.getData());
         if(queryParam.getOrderBys().startsWith("code|")){
             Collections.sort(pageResult.getData());
         }else if (queryParam.getOrderBys().startsWith("name|")){
@@ -163,108 +161,131 @@ public  class BomController extends BaseController {
         return pageResult;
     }
 
-
+ // JSON.parseObject(KunlongUtils.toJSONString(boms),
+//                new TypeReference<List<BomExcelModel>>() {
+//                });
     @RequestMapping(value="export",method = RequestMethod.POST)
     @ApiOperation(value = "export", notes = "export", authorizations = {@Authorization(value = ApiConstants.AUTH_API_WEB)})
-    public void export(@RequestBody @DateRewritable MakePlan.QueryParam queryParam, HttpServletRequest req, HttpServletResponse rsp) throws FileNotFoundException, IOException {
+    public void export(@RequestBody @DateRewritable Bom.QueryParam queryParam, HttpServletRequest req, HttpServletResponse rsp) throws Exception {
 
-        if(queryParam.getParam() == null) {
-            queryParam.setParam(new MakePlan());
+        WebFileUtil web = new WebFileUtil(req, rsp);
+        web.setExcelHeader("成本估价单.xlsx");
+        if (queryParam.getParam() == null || queryParam.getParam().getProductId() == null) {
+
+            rsp.getWriter().write(JsonResult.failure(-1, "没有选择产品").toString());
+            rsp.setStatus(500);
+            return;
         }
-        queryParam.setLimit(3000);
+        //有组件
+        queryParam.getParam().setParentId(0);
+        queryParam.setLimit(-1);
         queryParam.setStart(0);
-        queryParam.setSortBys("customerId|asc,orderId|asc");
+        queryParam.setSortBys("parentId|asc,source|desc");
 
-        WebFileUtil web = new WebFileUtil(req,rsp);
-        //List<MakePlan> makePlans = this.makePlanService.findByQueryParam(queryParam);
-        //fillMakePlans(makePlans);
-        rsp.setHeader("file",URLEncoder.encode(  "生产计划表.xlsx","UTF-8"));
+        List<Bom> boms = this.bomService.findByQueryParam(queryParam);
+        fillBoms(boms);
+        Product product = productService.findById(queryParam.getParam().getProductId());
+        rsp.setHeader("file", URLEncoder.encode(product.getEpCode(), "UTF-8"));
+        Collections.sort( boms, new Comparator<Bom>() {
+            @Override
+            public int compare(Bom a, Bom b) {
+                if (a.getChildRm() != null && b.getChildRm() != null) {
+                    return a.getChildRm().getCode().compareTo(b.getChildRm().getCode());
+                }
 
-        //web.export2EasyExcelObject("生产计划表.xlsx", buildTitles(),buildRecords(makePlans));
+                return a.getId().compareTo(b.getId());
+            }
+        });
+        List<Bom> fullBoms = new ArrayList<>();
+        int i=1;
+        for (Bom bom : boms) {
+            fullBoms.add(bom);
+            bom.setSeqNo(String.valueOf(i++));
 
-    }
-
-    List<String> buildTitles(){
-        List<String> strings=new ArrayList<>();
-
-        strings.add("发外标志");
-        strings.add("客户名称");
-        strings.add("客户订单号");
-        strings.add("客款号");
-        strings.add("产品描述");
-        strings.add("颜色");
-        strings.add("数量");
-
-        strings.add("接单日期");
-        strings.add("要求交期");
-        strings.add("物料到位日期");
-        strings.add("包材到位日期");
-        strings.add("计划上线日期");
-        strings.add("计划完成日期");
-        strings.add("是否完成");
-        strings.add("实际完成日期");
-        strings.add("备注");
-        return strings;
-    }
-    List<List<Object>> buildRecords(List<MakePlan> makePlans) {
-        List<List<Object>> records = new ArrayList<>();
-        for (MakePlan makePlan : makePlans) {
-            List<Object> r = new ArrayList<>();
-             //strings.add("发外标志");
-            r.add(MakePlanConst.getOutFlag(makePlan.getOutFlag()));
-            // strings.add("客户名称");
-            r.add(makePlan.getCustomer()==null?"-":makePlan.getCustomer().getCustName());
-            //strings.add("客户订单号");
-            r.add(makePlan.getOrderMaster()==null?"-":makePlan.getOrderMaster().getCustomerOrderCode());
-            //strings.add("客款号");
-            r.add(makePlan.getProduct()==null?"-":makePlan.getProduct().getCode());
-            //strings.add("产品描述");
-            r.add(makePlan.getProduct()==null?"-":makePlan.getProduct().getRemark());
-            //strings.add("颜色");
-            r.add(makePlan.getProduct()==null?"-":makePlan.getProduct().getColor());
-            //strings.add("数量");
-            r.add(makePlan.getOrderLine()==null?"-":makePlan.getOrderLine().getQty());
-
-            //strings.add("接单日期");
-            r.add(transDate(makePlan.getOrderDate()));
-            //strings.add("要求交期");
-            r.add(transDate(makePlan.getIssueDate()));
-            //strings.add("物料到位日期");
-            r.add(transDate(makePlan.getRmDate()));
-            //strings.add("包材到位日期");
-            r.add(transDate(makePlan.getPkgDate()));
-            //strings.add("计划上线日期");
-            r.add(transDate(makePlan.getPlanStart()));
-            //strings.add("计划完成日期");
-            r.add(transDate(makePlan.getPlanEnd()));
-            //strings.add("是否完成");
-            r.add(MakePlanConst.getFinishFlag(makePlan.getFinishFlag()));
-
-            //strings.add("实际完成日期");
-            r.add(transDate(makePlan.getRealEnd()));
-            //strings.add("备注");
-            r.add(makePlan.getRemark());
-
-            records.add(r);
+            if (bom.getSource()) {
+                queryParam.getParam().setSource(false);
+                queryParam.getParam().setParentId(bom.getId());
+                queryParam.setLimit(-1);
+                queryParam.setStart(0);
+                List<Bom> subs = this.bomService.findByQueryParam(queryParam);
+                fullBoms.addAll(subs);
+            }
         }
-        return records;
+
+        List<BomExcelModel> models = new ArrayList<>();
+        for (Bom bom : fullBoms) {
+            BomExcelModel model = JSON.parseObject(bom.toString(), BomExcelModel.class);
+            if(bom.getSizeL()!=null&&BigDecimal.ZERO.compareTo(bom.getSizeL())!=0){
+                model.setSizeX("X");
+            }
+            if (bom.getChildRm() == null) {
+                model.setSeqNo(" " );
+                model.setPrice(null);
+                model.setMoney(null);
+                model.setQty(" ");
+            }
+            model.setCode(bom.getChildRm() == null ? null : bom.getChildRm().getCode());
+            model.setName(bom.getChildRm() == null ? null : bom.getChildRm().getName());
+            model.setColor(bom.getChildRm() == null ? null : bom.getChildRm().getColor());
+            model.setUnit(bom.getChildRm() == null ? " " : bom.getChildRm().getUnit());
+
+            model.setLossRate(model.getLossRate()==null?"0%":model.getLossRate()+"%");
+            if (bom.getSource() || bom.getParentId()==0) {
+                model.setSizeL(null );
+                model.setSizeW(null);
+                model.setSizeX(" ");
+                model.setCutPartName(" ");
+                model.setLength(null);
+                model.setWidth(" ");
+                //model.setKnifeQty(null);
+                // model.setPieces(null);
+                model.setKnifeQty(" ");
+
+                model.setLossRate(null);
+                model.setEachQty(null);
+            }
+            models.add(model);
+        }
+
+
+        String productCode = product.getEpCode();
+        String fileName = String.format("成本估价单_%s.xlsx", productCode);
+        //ExcelUtil.writeExcel(rsp, fileName, productCode, models);
+        List<BomCostExcelModel> costExcelModels = buildCost(queryParam.getParam().getProductId());
+        Map<String, List> map = new LinkedHashMap<>();
+        map.put(productCode, models);
+        map.put(productCode + "_cost", costExcelModels);
+        ExcelUtil.writeExcels(rsp, fileName,productCode, map);
+        //fileName = String.format("成本估价单汇总_%s.xlsx", productCode+"_cost");
+        //ExcelUtil.writeExcel(rsp, fileName, productCode, costExcelModels);
+
     }
 
-    String transDatetime(Date d) {
-        if(d==null){
-            return "";
-        }
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        return sdf.format(d);
+    void addCost(List<BomCostExcelModel> models,String item,BigDecimal value)
+    {
+        BomCostExcelModel model = new BomCostExcelModel();
+        model.setItem(item);
+        model.setValue(value);
+        models.add(model);
+
     }
 
-    String transDate(Date d) {
-        if(d==null){
-            return "";
-        }
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        return sdf.format(d);
+    List<BomCostExcelModel> buildCost(Integer productId) {
+        JsonResult<BomCost> bomCostJsonResult = bomJoinService.findBomCostByProduct(productId);
+        BomCost bomCost = bomCostJsonResult.getData();
+
+        List<BomCostExcelModel> models = new ArrayList<>();
+        addCost(models, "总材料费用", bomCost.getRmFee());
+        addCost(models, "损耗", bomCost.getLossRm());
+        addCost(models, "开料", bomCost.getCutRm());
+        addCost(models, "刀模", bomCost.getKnifeModel());
+        addCost(models, "人工", bomCost.getWorkFee());
+        addCost(models, "运输", bomCost.getShippingFee());
+        addCost(models, "总费用", bomCost.getTotalFee());
+        return  models;
     }
+
+
 
 
 

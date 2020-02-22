@@ -1,11 +1,11 @@
 package com.kunlong.dongxw.data.domain;
 
+import com.kunlong.platform.model.BaseRowKlModel;
 import com.kunlong.platform.model.KunlongModel;
 
 import javax.persistence.Transient;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Comparator;
 import java.util.Date;
 
 
@@ -50,6 +50,15 @@ public class BomBase extends KunlongModel implements Serializable ,Comparable<Bo
 
     }
 
+	public String getSeqNo() {
+		return seqNo;
+	}
+
+	public void setSeqNo(String seqNo) {
+		this.seqNo = seqNo;
+	}
+
+	private String seqNo;
 
 	// ==== 自定义属性 ====
 	@Transient

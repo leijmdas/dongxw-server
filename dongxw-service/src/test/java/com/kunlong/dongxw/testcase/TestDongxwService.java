@@ -1,5 +1,8 @@
 package com.kunlong.dongxw.testcase;
 
+import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.ExcelWriter;
+import com.alibaba.excel.write.metadata.WriteSheet;
 import com.jtest.utility.testlog.TestLog;
 import com.kunlong.data.dao.BomModelMapper;
 import com.kunlong.data.dao.ProductModelMapper;
@@ -135,16 +138,16 @@ public class TestDongxwService extends TestBaseApp {
     ProductModelMapper productModelMapper;
     @Test
     public void test009_productModelMapper() throws IOException {
-        ProductModelExample example = new ProductModelExample();
-        long count = productModelMapper.countByExample(example);
-        RowBounds rowBounds = new RowBounds(0,2);
-
-        List<ProductModel> productModels = productModelMapper.selectByExampleWithRowbounds(example, rowBounds);
-
-        System.out.println(count);
-        for (ProductModel model : productModels) {
-            System.out.println(model);
-        }
+//        ProductModelExample example = new ProductModelExample();
+//        long count = productModelMapper.countByExample(example);
+//        RowBounds rowBounds = new RowBounds(0,2);
+//
+//        List<ProductModel> productModels = productModelMapper.selectByExampleWithRowbounds(example, rowBounds);
+//
+//        System.out.println(count);
+//        for (ProductModel model : productModels) {
+//            System.out.println(model);
+//        }
 
     }
 

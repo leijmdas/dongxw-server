@@ -39,7 +39,7 @@ public  class BomCostController extends BaseController {
     }
 
     @RequestMapping("/findByByProduct/{id}")
-    public JsonResult<BomCost> findByByProduct(@PathVariable("id") Integer productId) throws IOException {
+    public JsonResult<BomCost> findByProduct(@PathVariable("id") Integer productId) throws IOException {
 
         return bomJoinService.findBomCostByProduct(productId);
 

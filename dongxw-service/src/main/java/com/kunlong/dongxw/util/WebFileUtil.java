@@ -1,8 +1,16 @@
 package com.kunlong.dongxw.util;
 
+import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.metadata.*;
 import com.alibaba.excel.support.ExcelTypeEnum;
+import com.alibaba.excel.write.builder.ExcelWriterBuilder;
+import com.alibaba.excel.write.metadata.WriteSheet;
+import com.alibaba.excel.write.metadata.WriteTable;
+import com.alibaba.excel.write.metadata.style.WriteCellStyle;
+import com.alibaba.excel.write.metadata.style.WriteFont;
+import com.alibaba.excel.write.style.HorizontalCellStyleStrategy;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.springframework.util.StringUtils;
 
@@ -87,20 +95,6 @@ public class WebFileUtil {
 	}
 
 
-  //easyExcel
-	public void export2EasyExcel(String fileName, Class<? extends BaseRowModel> clazz, List<? extends BaseRowModel> data) throws IOException {
-		setExcelHeader(fileName);
-		OutputStream out = response.getOutputStream();
-
-		ExcelWriter writer = new ExcelWriter(out, ExcelTypeEnum.XLSX);
-		Sheet sheet = new Sheet(1, 0, clazz);
-		sheet.setSheetName(fileName);
-		writer.write(data, sheet);
-		writer.finish();
-
-
-	}
-
 	public File export2EasyExcelFile(String fileName, List<String> titleNames, List<List<Object>> records) throws IOException {
 
 		File file = File.createTempFile(fileName, ".xlsx");
@@ -162,18 +156,71 @@ public class WebFileUtil {
 		return file;
 	}
 
-	public void export2EasyExcelObject(String fileName, List<String> titleNames, List<List<Object>> records) throws IOException {
-		setExcelHeader(fileName);
-		OutputStream out = response.getOutputStream();
-		export2EasyExcelOut(out,fileName,titleNames,records);
-//		ExcelWriter writer = new ExcelWriter(out, ExcelTypeEnum.XLSX);
+    //easyExcel
+    public void export2EasyExcel(String fileName, Class<? extends BaseRowModel> clazz, List<? extends BaseRowModel> data) throws IOException {
+        setExcelHeader(fileName);
+        OutputStream out = response.getOutputStream();
+
+        ExcelWriter writer = new ExcelWriter(out, ExcelTypeEnum.XLSX);
+        Sheet sheet = new Sheet(1, 0, clazz);
+        sheet.setSheetName(fileName);
+        writer.write(data, sheet);
+        writer.finish();
+
+
+    }
+
+    public void export2EasyExcel(String fileName, String sheetName, Class<? extends BaseRowModel> clazz, List<? extends BaseRowModel> records) throws IOException {
+        setExcelHeader(fileName);
+        OutputStream out = response.getOutputStream();
+
+        ExcelWriterBuilder excelWriterBuilder = EasyExcel.write(out, clazz);
+        ExcelWriter excelWriter = excelWriterBuilder.build();
+        WriteSheet writeSheet = EasyExcel.writerSheet(sheetName).build();
+//        //表头样式
+//        WriteCellStyle headWriteCellStyle = new WriteCellStyle();
+//        //设置表头居中对齐
+//        headWriteCellStyle.setHorizontalAlignment(HorizontalAlignment.CENTER);
+//        //内容样式
+//        WriteCellStyle contentWriteCellStyle = new WriteCellStyle();
+//        //设置内容靠左对齐
+//        contentWriteCellStyle.setHorizontalAlignment(HorizontalAlignment.LEFT);
+//        HorizontalCellStyleStrategy horizontalCellStyleStrategy = new HorizontalCellStyleStrategy(headWriteCellStyle, contentWriteCellStyle);
 //
-//		// 设置SHEET
-//		Sheet sheet = new Sheet(1, 0);
-//		sheet.setSheetName(fileName);
+        //定义Excel正文背景颜色
+		TableStyle tableStyle = new TableStyle();
+		tableStyle.setTableContentBackGroundColor(IndexedColors.WHITE);
+
+		//定义Excel正文字体大小
+		Font fontContent = new Font();
+		fontContent.setFontHeightInPoints((short) 10);
+		fontContent.setBold(false);
+
+		tableStyle.setTableContentFont(fontContent);
+		Font font = new Font();
+		font.setFontHeightInPoints((short) 12);
+		font.setBold(false);
+
+		tableStyle.setTableHeadFont(font);
+        //writeSheet.setTableStyle(tableStyle);
+
+        try {
+            excelWriter.write(records, writeSheet);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            excelWriter.finish();
+        }
+
+
+//        ExcelWriter writer = new ExcelWriter(out, ExcelTypeEnum.XLSX);
 //
-//		// 设置标题
-//		Table table = new Table(1);
+//        // 设置SHEET
+//        Sheet sheet = new Sheet(1, 0, clazz);
+//        sheet.setSheetName(sheetName);
+//
+//        // 设置标题
+ 	//Table table = new Table(1);
 //		//定义Excel正文背景颜色
 //		TableStyle tableStyle = new TableStyle();
 //		tableStyle.setTableContentBackGroundColor(IndexedColors.WHITE);
@@ -191,14 +238,14 @@ public class WebFileUtil {
 //		tableStyle.setTableHeadFont(font);
 //		table.setTableStyle(tableStyle);
 //
-//		List<List<String>> titles = new ArrayList<List<String>>();
-//		for (String name : titleNames) {
-//			titles.add(Arrays.asList(name));
-//		}
-//		table.setHead(titles);
-//
-//		writer.write1(records, sheet, table);
+//		writer.write(records, sheet, table);
 //		writer.finish();
+	}
+
+	public void export2EasyExcelObject(String fileName, List<String> titleNames, List<List<Object>> records) throws IOException {
+		setExcelHeader(fileName);
+		OutputStream out = response.getOutputStream();
+		export2EasyExcelOut(out,fileName,titleNames,records);
 
 	}
 
@@ -301,7 +348,7 @@ public class WebFileUtil {
 	}
 
 
-  private void setExcelHeader(String fileName) throws UnsupportedEncodingException {
+  public void setExcelHeader(String fileName) throws UnsupportedEncodingException {
 		//fileName = URLEncoder.encode(fileName, "UTF-8");
 		response.setHeader("content-disposition", "attachment;  filename=" + new String(fileName.getBytes("utf-8"), "ISO8859-1"));
 		response.setHeader("attachment-name", URLEncoder.encode(fileName,"utf-8"));

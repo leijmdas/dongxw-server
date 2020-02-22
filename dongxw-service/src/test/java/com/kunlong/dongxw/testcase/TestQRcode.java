@@ -1,6 +1,10 @@
 package com.kunlong.dongxw.testcase;
 
 
+import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.ExcelWriter;
+import com.alibaba.excel.annotation.ExcelProperty;
+import com.alibaba.excel.write.metadata.WriteSheet;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.jtest.NodesFactroy.Inject.Inject;
@@ -9,13 +13,15 @@ import com.jtest.annotation.JTest;
 import com.jtest.annotation.JTestClass;
 import com.jtest.testframe.ITestImpl;
 import com.kunlong.dongxw.util.QRCodeGenerator;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.util.ArrayList;
 
 @JTestClass.author("leijm")
 public class TestQRcode extends ITestImpl {
@@ -113,10 +119,32 @@ public class TestQRcode extends ITestImpl {
 
 
     }
+    @Data
+    @AllArgsConstructor
+    public static class Student {
+        @ExcelProperty({"学号"})
+        private String no;
+        @ExcelProperty({"姓名"})
+        private String name;
+        @ExcelProperty({"生日"})
+        private String birthday;
+
+    }
     public static void main(String[] args) {
 
-        run(TestQRcode.class, 2);
-
+        //  run(TestQRcode.class, 2);
+        String fileName = "l:/报表.xlsx";
+        ExcelWriter excelWriter = EasyExcel.write(fileName).build();
+        java.util.List<Student> students = new ArrayList<>();
+        Student student = new Student("1", "张三", "2000-01-01");
+        students.add(student);
+        //这里 需要指定写用哪个class去写
+        WriteSheet writeSheet = EasyExcel.writerSheet(0, "学生信息1").head(Student.class).build();
+        excelWriter.write(students, writeSheet);
+        writeSheet = EasyExcel.writerSheet(1, "学生信息2").head(Student.class).build();
+        excelWriter.write(students, writeSheet);
+        //千万别忘记finish 会帮忙关闭流
+        excelWriter.finish();
     }
 
 

@@ -84,8 +84,11 @@ public class BomJoinServiceImpl implements BomJoinService {
 
 		bom.setLossQty(bom.getEachQty().multiply(KunlongUtils.newBigDecimal(bom.getLossRate())
 				.divide(KunlongUtils.newBigDecimal(100 ) ,BigDecimal.ROUND_FLOOR)));
-
-		bom.setQty((bom.getEachQty().add(bom.getLossQty()).multiply(new BigDecimal(bom.getPieces()))));
+		if(bom.getSource()) {
+		} else {
+			//bom.setParentId(0);
+			bom.setQty((bom.getEachQty().add(bom.getLossQty()).multiply(new BigDecimal(bom.getPieces()))));
+		}
 		bom.setMoney(bom.getPrice().multiply(bom.getQty()));
 		if (bom.getChildId() != null && bom.getChildId() > 0) {
 			Product product = productService.findById(bom.getChildId());
@@ -114,9 +117,13 @@ public class BomJoinServiceImpl implements BomJoinService {
 	public Integer save( BomCost bomCost ) {
 
 		Bom sum = sumBomByProduct(bomCost.getProductId());
-		bomCost.setRmFee(sum.getMoney().subtract(sum.getLossMoney()));
 		bomCost.setLossRm(sum.getLossMoney());
-		bomCost.setTotalFee(sum.getMoney());
+		bomCost.setRmFee(sum.getMoney().subtract(bomCost.getLossRm()));
+		bomCost.setTotalFee(
+				KunlongModel.newBigDecimal(4,sum.getMoney())
+				.add(bomCost.getCutRm()).add(bomCost.getKnifeModel())
+				.add(bomCost.getWorkFee()).add(bomCost.getShippingFee())
+		);
 		if (bomCost.getId() == null) {
 			bomCost.setCreateDate(new Date());
 			bomCostService.save(bomCost);
