@@ -8,17 +8,16 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.List;
 
 @Data
 @ContentRowHeight(22)
-@HeadRowHeight(25)
-@ColumnWidth(10)
+@HeadRowHeight(12)
+@ColumnWidth(12)
 public class BomExcelModel implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @ExcelProperty(value = { "序号"})
-    @ColumnWidth(5)
+    @ColumnWidth(4)
     private String seqNo;
 
     @ExcelProperty(value = { "物料代码"})
@@ -36,23 +35,18 @@ public class BomExcelModel implements Serializable {
     private String width;
 
     @ExcelProperty(value = { "裁片名称"})
-    @ColumnWidth(10)
+    @ColumnWidth(12)
     private String cutPartName;
-
-
 
     @ExcelProperty(value = { "尺寸（英寸）","长度"})
     @ColumnWidth(8)
     private BigDecimal sizeL;
-
-
     @ExcelProperty(value = { "尺寸（英寸）"," "})
     @ColumnWidth(2)
     private String sizeX;
     @ExcelProperty(value = { "尺寸（英寸）","宽度"})
     @ColumnWidth(8)
     private BigDecimal sizeW;
-
 
     @ExcelProperty(value = { "件数"})
     @ColumnWidth(6)
@@ -88,11 +82,8 @@ public class BomExcelModel implements Serializable {
     @ColumnWidth(8)
     private BigDecimal price;
 
-    @ColumnWidth(12)
+    @ColumnWidth(8)
     @ExcelProperty(value = { "金额"})
     private BigDecimal money;
 
-//    @ExcelProperty(value = { "费用合计"})
-//    @ColumnWidth(120)
-//    private List<BomCostExcelModel> bomCostExcelModels;
 }

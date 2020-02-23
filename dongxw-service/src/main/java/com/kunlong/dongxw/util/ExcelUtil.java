@@ -2,9 +2,11 @@ package com.kunlong.dongxw.util;
 
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelWriter;
+import com.alibaba.excel.metadata.TableStyle;
 import com.alibaba.excel.support.ExcelTypeEnum;
 import com.alibaba.excel.write.builder.ExcelWriterBuilder;
 import com.alibaba.excel.write.metadata.WriteSheet;
+import com.alibaba.excel.write.metadata.WriteTable;
 import com.alibaba.excel.write.metadata.style.WriteCellStyle;
 import com.alibaba.excel.write.metadata.style.WriteFont;
 import com.alibaba.excel.write.style.HorizontalCellStyleStrategy;
@@ -14,9 +16,12 @@ import org.apache.poi.ss.usermodel.IndexedColors;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -31,10 +36,14 @@ public class ExcelUtil {
     public static void writeExcels(HttpServletResponse response,
                                    String fileName, String sheetName,
                                    Map<String, List> mapSheetData) throws Exception {
+        if(mapSheetData.keySet().size()==0){
+            error(response,"无数据");
+            return;
+        }
         WriteCellStyle headWriteCellStyle = new WriteCellStyle();
         WriteFont writeFont = new WriteFont();
         writeFont.setBold(true);
-        writeFont.setFontHeightInPoints(Short.valueOf("11"));
+        writeFont.setFontHeightInPoints(Short.valueOf("10"));
         writeFont.setFontName("宋体");
         headWriteCellStyle.setWriteFont(writeFont);
         headWriteCellStyle.setBorderTop(BorderStyle.THIN);
@@ -50,13 +59,13 @@ public class ExcelUtil {
         WriteCellStyle contentWriteCellStyle = new WriteCellStyle();
         //设置内容靠左对齐
         contentWriteCellStyle.setHorizontalAlignment(HorizontalAlignment.CENTER_SELECTION);
-        contentWriteCellStyle.setBorderTop(BorderStyle.THIN);
-        contentWriteCellStyle.setBorderBottom(BorderStyle.THIN);
-        contentWriteCellStyle.setBorderLeft(BorderStyle.THIN);
-        contentWriteCellStyle.setBorderRight(BorderStyle.THIN);
+        contentWriteCellStyle.setBorderTop(BorderStyle.HAIR);
+        contentWriteCellStyle.setBorderBottom(BorderStyle.HAIR);
+        contentWriteCellStyle.setBorderLeft(BorderStyle.HAIR);
+        contentWriteCellStyle.setBorderRight(BorderStyle.HAIR);
         WriteFont cWriteFont = new WriteFont();
         cWriteFont.setBold(false);
-        cWriteFont.setFontHeightInPoints(Short.valueOf("10"));
+        cWriteFont.setFontHeightInPoints(Short.valueOf("8"));
         cWriteFont.setFontName("宋体");
         contentWriteCellStyle.setWrapped(true);
         contentWriteCellStyle.setWriteFont(cWriteFont);
@@ -66,13 +75,36 @@ public class ExcelUtil {
         ExcelWriter excelWriter = EasyExcel.write(getOutputStream(fileName, response))
                 .excelType(ExcelTypeEnum.XLSX).registerWriteHandler(horizontalCellStyleStrategy).build();
         int i = 0;
-        Class cls = null;
-        for (String key : mapSheetData.keySet()) {
-            if (cls == null) {
-                cls = mapSheetData.get(key).get(0).getClass();
+        WriteSheet writeSheet = EasyExcel.writerSheet(sheetName).build();
+        for (List value: mapSheetData.values()) {
+            //writeSheet = EasyExcel.writerSheet(sheetName).head(cls).build();
+            WriteTable writeTable = new WriteTable();
+            writeTable.setTableNo(i++);
+            Class cls = value.get(0).getClass();
+            writeTable.setClazz(cls);
+            writeTable.setNeedHead(i==1);
+            WriteFont tableFont = new WriteFont();
+            tableFont.setBold(true);
+            tableFont.setFontHeightInPoints(Short.valueOf("10"));
+            tableFont.setFontName("宋体");
+            TableStyle tableStyle=new TableStyle() ;
+            //tableStyle.setTableContentFont(tableFont);
+            if(i==1){
+                //writeTable.setRelativeHeadRowIndex(7);
+                //writeSheet.setRelativeHeadRowIndex(7);
+            }else {
+                //writeTable.setRelativeHeadRowIndex(0);
+                writeSheet.setRelativeHeadRowIndex(0);
+                //writeTable.setTableStyle(tableStyle);
+                Collection<Integer> collection=new ArrayList<>();
+                ((ArrayList<Integer>) collection).add(14);
+                ((ArrayList<Integer>) collection).add(15);
+                ((ArrayList<Integer>) collection).add(16);
+                ((ArrayList<Integer>) collection).add(17);
+                writeTable.setIncludeColumnIndexes(collection);
             }
-            WriteSheet writeSheet = EasyExcel.writerSheet(sheetName).head(cls).build();
-            excelWriter.write(mapSheetData.get(key), writeSheet);
+
+            excelWriter.write(value, writeSheet, writeTable);
         }
         excelWriter.finish();
     }
@@ -134,12 +166,18 @@ public class ExcelUtil {
 
     }
 
+    public static void error(HttpServletResponse resp,String errInfo) throws IOException {
+        setExcelHeader(resp,"nofile.txt");
+        resp.getWriter().write(errInfo);
+    }
+
     static void setExcelHeader(HttpServletResponse response, String fileName) throws UnsupportedEncodingException {
         //fileName = URLEncoder.encode(fileName, "UTF-8");
         response.setHeader("content-disposition", "attachment;  filename=" + new String(fileName.getBytes("utf-8"), "ISO8859-1"));
-        response.setHeader("attachment-name", URLEncoder.encode(fileName, "utf-8"));
+        response.setHeader("attachment-name", URLEncoder.encode(fileName, "UTF-8"));
         response.setHeader("content-Type", "application/vnd.ms-excel");
         response.setContentType("application/msexcel");
+        response.setCharacterEncoding("UTF-8");
     }
 
 

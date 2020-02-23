@@ -251,13 +251,17 @@ public  class BomController extends BaseController {
         String productCode = product.getEpCode();
         String fileName = String.format("成本估价单_%s.xlsx", productCode);
         //ExcelUtil.writeExcel(rsp, fileName, productCode, models);
-        List<BomCostExcelModel> costExcelModels = buildCost(queryParam.getParam().getProductId());
+        List<BomCostExcelModel> costModels = buildCost(queryParam.getParam().getProductId());
         Map<String, List> map = new LinkedHashMap<>();
-        map.put(productCode, models);
-        map.put(productCode + "_cost", costExcelModels);
-        ExcelUtil.writeExcels(rsp, fileName,productCode, map);
+        if(models.size()>0) {
+            map.put(productCode, models);
+        }
+        if(costModels.size()>0) {
+            map.put(productCode + "_cost", costModels);
+        }
+        ExcelUtil.writeExcels(rsp, fileName, productCode, map);
         //fileName = String.format("成本估价单汇总_%s.xlsx", productCode+"_cost");
-        //ExcelUtil.writeExcel(rsp, fileName, productCode, costExcelModels);
+        //ExcelUtil.writeExcel(rsp, fileName, productCode, costModels);
 
     }
 
@@ -271,10 +275,13 @@ public  class BomController extends BaseController {
     }
 
     List<BomCostExcelModel> buildCost(Integer productId) {
+        List<BomCostExcelModel> models = new ArrayList<>();
         JsonResult<BomCost> bomCostJsonResult = bomJoinService.findBomCostByProduct(productId);
         BomCost bomCost = bomCostJsonResult.getData();
+        if (bomCost == null) {
+            return models;
+        }
 
-        List<BomCostExcelModel> models = new ArrayList<>();
         addCost(models, "总材料费用", bomCost.getRmFee());
         addCost(models, "损耗", bomCost.getLossRm());
         addCost(models, "开料", bomCost.getCutRm());
@@ -282,7 +289,7 @@ public  class BomController extends BaseController {
         addCost(models, "人工", bomCost.getWorkFee());
         addCost(models, "运输", bomCost.getShippingFee());
         addCost(models, "总费用", bomCost.getTotalFee());
-        return  models;
+        return models;
     }
 
 
