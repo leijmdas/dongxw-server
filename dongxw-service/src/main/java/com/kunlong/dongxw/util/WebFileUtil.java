@@ -10,8 +10,8 @@ import com.alibaba.excel.write.metadata.WriteTable;
 import com.alibaba.excel.write.metadata.style.WriteCellStyle;
 import com.alibaba.excel.write.metadata.style.WriteFont;
 import com.alibaba.excel.write.style.HorizontalCellStyleStrategy;
-import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -357,7 +357,7 @@ public class WebFileUtil {
 	}
 
 
-  public void saveWorkbook(org.apache.poi.ss.usermodel.Workbook resultWorkbook, String fileName) throws IOException {
+  public void saveWorkbook(Workbook resultWorkbook, String fileName) throws IOException {
 		OutputStream os = response.getOutputStream();
 		try {
 			response.setHeader("content-disposition", "attachment;  filename=" + new String(fileName.getBytes("utf-8"), "ISO8859-1"));

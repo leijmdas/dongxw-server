@@ -9,7 +9,7 @@ import com.alibaba.excel.write.metadata.WriteSheet;
 import com.alibaba.excel.write.metadata.WriteTable;
 import com.alibaba.excel.write.metadata.style.WriteCellStyle;
 import com.alibaba.excel.write.metadata.style.WriteFont;
-import com.alibaba.excel.write.style.HorizontalCellStyleStrategy;
+import com.alibaba.excel.write.style.HorizontalCellStyleStrategy; ;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.IndexedColors;
@@ -76,6 +76,8 @@ public class ExcelUtil {
                 .excelType(ExcelTypeEnum.XLSX).registerWriteHandler(horizontalCellStyleStrategy).build();
         int i = 0;
         WriteSheet writeSheet = EasyExcel.writerSheet(sheetName).build();
+        writeSheet.setAutoTrim(true);
+
         for (List value: mapSheetData.values()) {
             //writeSheet = EasyExcel.writerSheet(sheetName).head(cls).build();
             WriteTable writeTable = new WriteTable();
@@ -103,7 +105,7 @@ public class ExcelUtil {
                 ((ArrayList<Integer>) collection).add(17);
                 writeTable.setIncludeColumnIndexes(collection);
             }
-
+            writeTable.setAutoTrim(true);
             excelWriter.write(value, writeSheet, writeTable);
         }
         excelWriter.finish();

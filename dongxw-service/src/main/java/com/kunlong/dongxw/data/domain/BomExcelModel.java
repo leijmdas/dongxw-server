@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 @Data
 @ContentRowHeight(22)
 @HeadRowHeight(12)
-@ColumnWidth(12)
+@ColumnWidth(11)
 public class BomExcelModel implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -49,16 +49,14 @@ public class BomExcelModel implements Serializable {
     private BigDecimal sizeW;
 
     @ExcelProperty(value = { "件数"})
-    @ColumnWidth(6)
+    @ColumnWidth(5)
     private Short pieces;
     @ExcelProperty(value = { "刀数"})
-    @ColumnWidth(6)
+    @ColumnWidth(5)
     private String knifeQty;
-
     @ExcelProperty(value = { "长封度"})
     @ColumnWidth(5)
     private Integer length;
-
 
 
     @ExcelProperty(value = { "损耗"})
@@ -75,11 +73,11 @@ public class BomExcelModel implements Serializable {
 
 
     @ExcelProperty(value = { "单位"})
-    @ColumnWidth(6)
+    @ColumnWidth(5)
     private String unit;
 
     @ExcelProperty(value = { "单价"})
-    @ColumnWidth(8)
+    @ColumnWidth(7)
     private BigDecimal price;
 
     @ColumnWidth(8)

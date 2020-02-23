@@ -2,6 +2,8 @@ package com.kunlong.dongxw.controller;
 
 
 import app.support.query.PageResult;
+import cn.afterturn.easypoi.excel.ExcelExportUtil;
+import cn.afterturn.easypoi.excel.entity.TemplateExportParams;
 import com.alibaba.fastjson.JSON;
 import com.kunlong.dongxw.config.DongxwTransactional;
 import com.kunlong.dongxw.data.domain.*;
@@ -14,11 +16,13 @@ import com.kunlong.dongxw.util.WebFileUtil;
 import com.kunlong.platform.utils.JsonResult;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
@@ -259,9 +263,33 @@ public  class BomController extends BaseController {
         if(costModels.size()>0) {
             map.put(productCode + "_cost", costModels);
         }
+        writeBomProduct(productCode,queryParam.getParam().getProductId(),rsp);
         ExcelUtil.writeExcels(rsp, fileName, productCode, map);
         //fileName = String.format("成本估价单汇总_%s.xlsx", productCode+"_cost");
         //ExcelUtil.writeExcel(rsp, fileName, productCode, costModels);
+
+    }
+
+    void writeBomProduct(String sheetName,Integer productId, HttpServletResponse rsp) throws IOException {
+        Product product = productService.findById(productId);
+        Customer customer = product==null?null:customerService.findById(product.getCustomerId());
+
+        TemplateExportParams exportParams = new TemplateExportParams("templates/bom_product.xlsx");
+        Map<String, Object> map = new HashMap<String, Object>();
+
+        map.put("customerName", customer == null ? "-" : customer.getCustName());
+        if (product == null) {
+            map.put("remark", " ");
+            map.put("size", " ");
+            map.put("code", " ");
+        } else {
+            map.put("remark", product.getRemark());
+            map.put("size", product.getSize());
+            map.put("code", product.getCode());
+        }
+        Workbook workbook = ExcelExportUtil.exportExcel(exportParams, map);
+        workbook.setSheetName(0,sheetName);
+        workbook.write(rsp.getOutputStream());
 
     }
 
