@@ -1,6 +1,5 @@
 package com.kunlong.dongxw.util;
 
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.text.SimpleDateFormat;
@@ -18,14 +17,14 @@ import java.util.zip.CRC32;
 public class SimpleSequenceGenerator {
 	
 	private SimpleSequenceGenerator() {}
-	
+
     public static String generate(String prefix) {
         SimpleDateFormat df = new SimpleDateFormat("MMdd");
         return prefix + df.format(new Date()) + getRandomSeq();
     }
 
     public static String getRandomSeq() {
-        long val = getcrc32Value(UUID.randomUUID().toString().replaceAll("-", ""));
+        long val = getCRC32Value(UUID.randomUUID().toString().replaceAll("-", ""));
         String tmp = Long.toString(val, 31).toUpperCase();
         if(tmp.length()<7) {
         	tmp = StringUtils.leftPad(tmp, 7, "0");
@@ -33,16 +32,11 @@ public class SimpleSequenceGenerator {
         return tmp.replaceAll("I", "X").replaceAll("O", "Y");
     }
 
-    public static long getcrc32Value(String str) {
+    public static long getCRC32Value(String str) {
         CRC32 crc32 = new CRC32();
         crc32.update(str.getBytes());
 
         return crc32.getValue();
-    }
-
-    public static String generateCode(String pre,int count){
-        return "C"+StringUtils.upperCase(RandomStringUtils.random(count, true, false));
-
     }
 
 }

@@ -8,6 +8,8 @@ import com.alibaba.fastjson.JSON;
 import com.kunlong.dongxw.config.DongxwTransactional;
 import com.kunlong.dongxw.data.domain.*;
 import com.kunlong.dongxw.util.ExcelUtil;
+import com.kunlong.dongxw.util.MergeExcelSheet;
+import com.kunlong.dongxw.util.SimpleSequenceGenerator;
 import com.kunlong.dubbo.sys.model.SysUserDTO;
 import com.kunlong.dongxw.annotation.DateRewritable;
 import com.kunlong.dongxw.consts.ApiConstants;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -251,7 +254,6 @@ public  class BomController extends BaseController {
             models.add(model);
         }
 
-
         String productCode = product.getEpCode();
         String fileName = String.format("成本估价单_%s.xlsx", productCode);
         //ExcelUtil.writeExcel(rsp, fileName, productCode, models);
@@ -263,11 +265,52 @@ public  class BomController extends BaseController {
         if(costModels.size()>0) {
             map.put(productCode + "_cost", costModels);
         }
-        writeBomProduct(productCode,queryParam.getParam().getProductId(),rsp);
-        ExcelUtil.writeExcels(rsp, fileName, productCode, map);
+        //writeBomProduct(productCode,queryParam.getParam().getProductId(),rsp);
+        String headFile = writeBomProduct2File(productCode + "_head", queryParam.getParam().getProductId(), fileName);
+        String bomFile = ExcelUtil.writeBomExcels2File(productCode + "_list", productCode, map);
+
+        String outFile = new MergeExcelSheet().mergeSheets(headFile, bomFile, fileName);
+        logger.info("writeExcel2Response bom filename:{}, outFile:{}",fileName,outFile);
+        ExcelUtil.writeExcel2Response( fileName, rsp, outFile);
+        // ExcelUtil.writeExcels(rsp, fileName, productCode, map);
         //fileName = String.format("成本估价单汇总_%s.xlsx", productCode+"_cost");
         //ExcelUtil.writeExcel(rsp, fileName, productCode, costModels);
 
+    }
+    String writeBomProduct2File(String sheetName, Integer productId, String fileName) throws IOException {
+        String fileNameNew = SimpleSequenceGenerator.generate("BOMHEAD") + fileName;
+
+        Product product = productService.findById(productId);
+        Customer customer = product == null ? null : customerService.findById(product.getCustomerId());
+
+        TemplateExportParams exportParams = new TemplateExportParams("templates/bom_template.xlsx");
+        Map<String, Object> map = new HashMap<String, Object>();
+
+        map.put("customerName", customer == null ? "-" : customer.getCustName());
+        if (product == null) {
+            map.put("remark", " ");
+            map.put("size", " ");
+            map.put("code", " ");
+        } else {
+            map.put("remark", product.getRemark());
+            map.put("size", product.getSize());
+            map.put("code", product.getCode());
+        }
+        Workbook workbook = ExcelExportUtil.exportExcel(exportParams, map);
+        workbook.setSheetName(0,sheetName);
+        File f=new File(fileNameNew);
+        if(!f.exists()){
+            f.createNewFile();;
+        }
+        FileOutputStream fos=new FileOutputStream(f);
+        try{
+            workbook.write(fos);
+        }finally {
+            fos.flush();
+            fos.close();
+        }
+
+        return fileNameNew;
     }
 
     void writeBomProduct(String sheetName,Integer productId, HttpServletResponse rsp) throws IOException {

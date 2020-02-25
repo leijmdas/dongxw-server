@@ -13,12 +13,13 @@ import com.alibaba.excel.write.style.HorizontalCellStyleStrategy; ;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.xmlbeans.impl.common.IOUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -32,6 +33,100 @@ import java.util.Map;
 
 @Service
 public class ExcelUtil {
+    protected final static Logger logger = LoggerFactory.getLogger(ExcelUtil.class);
+
+    public static void writeExcel2Response(String fileName, HttpServletResponse response, String outFile) throws Exception {
+        setExcelHeader(response, fileName);
+        IOUtil.copyCompletely(new FileInputStream(outFile), response.getOutputStream());
+
+    }
+
+    public static String  writeBomExcels2File(  String fileName, String sheetName,
+                         Map<String, List> mapSheetData) throws Exception {
+        if (mapSheetData.keySet().size() == 0) {
+            //error(response, "无数据");
+            return "nofile";
+        }
+        WriteCellStyle headWriteCellStyle = new WriteCellStyle();
+        WriteFont writeFont = new WriteFont();
+        writeFont.setBold(true);
+        writeFont.setFontHeightInPoints(Short.valueOf("10"));
+        writeFont.setFontName("宋体");
+        headWriteCellStyle.setWriteFont(writeFont);
+        headWriteCellStyle.setBorderTop(BorderStyle.THIN);
+        headWriteCellStyle.setBorderBottom(BorderStyle.THIN);
+        headWriteCellStyle.setBorderLeft(BorderStyle.THIN);
+        headWriteCellStyle.setBorderRight(BorderStyle.THIN);
+        headWriteCellStyle.setWrapped(true);
+        //设置表头居中对齐
+        headWriteCellStyle.setHorizontalAlignment(HorizontalAlignment.CENTER);
+        //headWriteCellStyle.setFillBackgroundColor(IndexedColors.WHITE.getIndex());
+        headWriteCellStyle.setFillForegroundColor(IndexedColors.LEMON_CHIFFON.getIndex());
+        //内容样式
+        WriteCellStyle contentWriteCellStyle = new WriteCellStyle();
+        //设置内容靠左对齐
+        contentWriteCellStyle.setHorizontalAlignment(HorizontalAlignment.CENTER_SELECTION);
+        contentWriteCellStyle.setBorderTop(BorderStyle.HAIR);
+        contentWriteCellStyle.setBorderBottom(BorderStyle.HAIR);
+        contentWriteCellStyle.setBorderLeft(BorderStyle.HAIR);
+        contentWriteCellStyle.setBorderRight(BorderStyle.HAIR);
+        WriteFont cWriteFont = new WriteFont();
+        cWriteFont.setBold(false);
+        cWriteFont.setFontHeightInPoints(Short.valueOf("9"));
+        cWriteFont.setFontName("宋体");
+        contentWriteCellStyle.setWrapped(true);
+        contentWriteCellStyle.setWriteFont(cWriteFont);
+        HorizontalCellStyleStrategy horizontalCellStyleStrategy = new HorizontalCellStyleStrategy(headWriteCellStyle, contentWriteCellStyle);
+//        ExcelWriterBuilder writerBuilder = EasyExcel.write(getOutputStream(fileName, response))
+//                .excelType(ExcelTypeEnum.XLSX).registerWriteHandler(horizontalCellStyleStrategy);
+
+        String fileNameNew = SimpleSequenceGenerator.generate("BOMLIST") + fileName;
+        File f = new File(fileNameNew);
+        if (!f.exists()) {
+            f.createNewFile();
+        }
+        FileOutputStream fos = new FileOutputStream(f);
+        ExcelWriter excelWriter = EasyExcel.write(fos)
+                .excelType(ExcelTypeEnum.XLSX).registerWriteHandler(horizontalCellStyleStrategy).build();
+        int i = 0;
+        WriteSheet writeSheet = EasyExcel.writerSheet(sheetName).build();
+        writeSheet.setAutoTrim(true);
+
+        for (List value : mapSheetData.values()) {
+            //writeSheet = EasyExcel.writerSheet(sheetName).head(cls).build();
+            WriteTable writeTable = new WriteTable();
+            writeTable.setTableNo(i++);
+            Class cls = value.get(0).getClass();
+            writeTable.setClazz(cls);
+            writeTable.setNeedHead(i == 1);
+            WriteFont tableFont = new WriteFont();
+            tableFont.setBold(true);
+            tableFont.setFontHeightInPoints(Short.valueOf("10"));
+            tableFont.setFontName("宋体");
+            TableStyle tableStyle = new TableStyle();
+            //tableStyle.setTableContentFont(tableFont);
+            if (i == 1) {
+                //writeTable.setRelativeHeadRowIndex(7);
+                //writeSheet.setRelativeHeadRowIndex(7);
+            } else {
+                //writeTable.setRelativeHeadRowIndex(0);
+                writeSheet.setRelativeHeadRowIndex(0);
+                //writeTable.setTableStyle(tableStyle);
+                Collection<Integer> collection = new ArrayList<>();
+                ((ArrayList<Integer>) collection).add(14);
+                ((ArrayList<Integer>) collection).add(15);
+                ((ArrayList<Integer>) collection).add(16);
+                ((ArrayList<Integer>) collection).add(17);
+                writeTable.setIncludeColumnIndexes(collection);
+            }
+            writeTable.setAutoTrim(true);
+            excelWriter.write(value, writeSheet, writeTable);
+        }
+        excelWriter.finish();
+        fos.flush();
+        fos.close();
+        return fileNameNew;
+    }
 
     public static void writeExcels(HttpServletResponse response,
                                    String fileName, String sheetName,

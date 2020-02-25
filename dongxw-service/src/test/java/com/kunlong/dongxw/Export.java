@@ -352,23 +352,46 @@ public class Export {
             }
         }
     }
+   static void exportCost1() throws Exception {
+        TemplateExportParams exportParams = new TemplateExportParams("l:/template/bom_product.xlsx");
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("customerName", "customerName");
+        map.put("code", "code");
+        map.put("size", "size");
+        map.put("remark", "remark");
 
-    public static void main(String[] args) throws IOException {
-        XSSFWorkbook[] workbooks = new XSSFWorkbook[2];
+        try (Workbook workbook = ExcelExportUtil.exportExcel(exportParams, map)) {
+            FileOutputStream fos = null;
+            try {
+                File f=new File("l:/template/bom_productnew.xlsx");
+                if(!f.exists()){
+                    f.createNewFile();
+                }
+                fos = new FileOutputStream(f);
 
-        workbooks[0] = readSheet("l:/a0.xlsx");
-        workbooks[1] = readSheet("l:/a1.xlsx");
-        FileOutputStream fos = new FileOutputStream("l:/a02.xlsx");
-        System.out.println(workbooks[0].getSheetAt(0).getFirstRowNum());
-        System.out.println(workbooks[0].getSheetAt(0).getLastRowNum());
-        System.out.println(workbooks[1].getSheetAt(0).getFirstRowNum());
-        System.out.println(workbooks[1].getSheetAt(0).getLastRowNum());
-        ///copyRows(workbooks[1].getSheetAt(0), workbooks[0].getSheetAt(0));
+                workbook.write(fos);
+            } finally {
+                fos.close();
+            }
+        }
+    }
 
-        XSSFWorkbook workbook = mergeHSSFWorkbooks(workbooks);
-        workbook.write(fos);
-        fos.close();
-        workbook.close();
-
+    public static void main(String[] args) throws Exception {
+//        XSSFWorkbook[] workbooks = new XSSFWorkbook[2];
+//
+//        workbooks[0] = readSheet("l:/a0.xlsx");
+//        workbooks[1] = readSheet("l:/a1.xlsx");
+//        FileOutputStream fos = new FileOutputStream("l:/a02.xlsx");
+//        System.out.println(workbooks[0].getSheetAt(0).getFirstRowNum());
+//        System.out.println(workbooks[0].getSheetAt(0).getLastRowNum());
+//        System.out.println(workbooks[1].getSheetAt(0).getFirstRowNum());
+//        System.out.println(workbooks[1].getSheetAt(0).getLastRowNum());
+//        ///copyRows(workbooks[1].getSheetAt(0), workbooks[0].getSheetAt(0));
+//
+//        XSSFWorkbook workbook = mergeHSSFWorkbooks(workbooks);
+//        workbook.write(fos);
+//        fos.close();
+//        workbook.close();
+        exportCost1();
     }
 }

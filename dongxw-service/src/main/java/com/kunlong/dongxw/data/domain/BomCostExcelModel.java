@@ -9,8 +9,8 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Data
-@ContentRowHeight(22)
-@ColumnWidth(11)
+@ContentRowHeight(11)
+@ColumnWidth(10)
 public class BomCostExcelModel implements Serializable {
     private static final long serialVersionUID = 1L;
     @ExcelProperty(value = {" "}, index = 0)

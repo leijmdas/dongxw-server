@@ -1,17 +1,19 @@
-package com.kunlong.dongxw;
+package com.kunlong.dongxw.util;
 
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
 
-public class MergeSheet {
+public class MergeExcelSheet {
+    protected final Logger logger = LoggerFactory.getLogger(getClass());
     /**
      * 传递 源workbook， 和 源文件名fileName
      *
@@ -283,28 +285,38 @@ public class MergeSheet {
         }
         return targetWorkBook;
     }
-    static void buildBomReport(String [] inFile,String outFile ) throws Exception{
-        //InputStream in = new FileInputStream("l:/bom_report.xlsx");
 
-        InputStream tin = new FileInputStream("l:/template/bom_template.xlsx");
+    public String mergeSheets(String inFileHead, String bomFile, String outFile) throws Exception {
+
+        //InputStream tin = new FileInputStream("l:/template/bom_template.xlsx");
+        InputStream tin = new FileInputStream(inFileHead);
         XSSFWorkbook fromExcel = new XSSFWorkbook(tin);
-        InputStream bomin = new FileInputStream("l:/template/bom_list.xlsx");
+        //InputStream bomin = new FileInputStream("l:/template/bom_list.xlsx");
+        InputStream bomin = new FileInputStream(bomFile);
         XSSFWorkbook fromExcel1 = new XSSFWorkbook(bomin);
         tin.close();
         bomin.close();
         //Workbook workbook = new MergeSheet().mergeExcelBySheetMessage(fromExcel);
         Workbook[] workbooks=new Workbook[]{fromExcel,fromExcel1};
-        Workbook workbook = new MergeSheet().mergeExcelBySheetMessage(workbooks);
+        Workbook workbook = mergeExcelBySheetMessage(workbooks);
 
 
-        FileOutputStream fileOut = new FileOutputStream("l:/template/bom_rpt.xlsx");
+        // FileOutputStream fileOut = new FileOutputStream("l:/template/bom_rpt.xlsx");
+        String fileNameNew = SimpleSequenceGenerator.generate("BOM_GEN") + outFile;
+        File f = new File(fileNameNew);
+        if (!f.exists()) {
+            f.createNewFile();
+        }
+        FileOutputStream fileOut = new FileOutputStream(f);
         workbook.write(fileOut);
         fileOut.flush();
         fileOut.close();
-        System.out.println("复制成功l:/templae/bom_rpt.xls");
+        System.out.println("复制成功 "+outFile);
+        logger.info("复制成功: genFile: {}",outFile);
+        return fileNameNew;
     }
 
     public static void main(String[] args) throws Exception {
-         buildBomReport(null,"复制成功l:/templae/bom_rpt.xls");
+        new MergeExcelSheet().mergeSheets("","","复制成功l:/templae/bom_rpt.xls");
     }
 }
