@@ -10,7 +10,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Data
-@ContentRowHeight(16)
+@ContentRowHeight(20)
 @HeadRowHeight(12)
 @ColumnWidth(11)
 public class BomExcelModel implements Serializable {

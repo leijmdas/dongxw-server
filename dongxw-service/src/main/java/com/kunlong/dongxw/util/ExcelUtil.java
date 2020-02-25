@@ -50,7 +50,7 @@ public class ExcelUtil {
         WriteCellStyle headWriteCellStyle = new WriteCellStyle();
         WriteFont writeFont = new WriteFont();
         writeFont.setBold(true);
-        writeFont.setFontHeightInPoints(Short.valueOf("10"));
+        writeFont.setFontHeightInPoints(Short.valueOf("9"));
         writeFont.setFontName("宋体");
         headWriteCellStyle.setWriteFont(writeFont);
         headWriteCellStyle.setBorderTop(BorderStyle.THIN);
@@ -72,7 +72,8 @@ public class ExcelUtil {
         contentWriteCellStyle.setBorderRight(BorderStyle.HAIR);
         WriteFont cWriteFont = new WriteFont();
         cWriteFont.setBold(false);
-        cWriteFont.setFontHeightInPoints(Short.valueOf("9"));
+        //cWriteFont.setColor(IndexedColors.DARK_RED.index);
+        cWriteFont.setFontHeightInPoints(Short.valueOf("8"));
         cWriteFont.setFontName("宋体");
         contentWriteCellStyle.setWrapped(true);
         contentWriteCellStyle.setWriteFont(cWriteFont);
