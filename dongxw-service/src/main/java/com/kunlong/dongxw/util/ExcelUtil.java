@@ -37,12 +37,15 @@ public class ExcelUtil {
 
     public static void writeExcel2Response(String fileName, HttpServletResponse response, String outFile) throws Exception {
         setExcelHeader(response, fileName);
-        IOUtil.copyCompletely(new FileInputStream(outFile), response.getOutputStream());
+        BufferedOutputStream bufferedOutPut = new BufferedOutputStream(response.getOutputStream());
 
+        IOUtil.copyCompletely(new FileInputStream(outFile), bufferedOutPut);
+        bufferedOutPut.flush();
+        bufferedOutPut.close();
     }
 
-    public static String  writeBomExcels2File(  String fileName, String sheetName,
-                         Map<String, List> mapSheetData) throws Exception {
+    public static String writeBomExcels2File(String fileName, String sheetName,
+                                             Map<String, List> mapSheetData) throws Exception {
         if (mapSheetData.keySet().size() == 0) {
             //error(response, "无数据");
             return "nofile";

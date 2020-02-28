@@ -13,6 +13,7 @@ import com.kunlong.data.entity.ProductModelExample;
 import com.kunlong.dongxw.data.dao.TkCustomerMapper;
 import com.kunlong.dongxw.data.dao.TkMapper;
 import com.kunlong.dongxw.data.domain.Bom;
+import com.kunlong.dongxw.data.domain.MakePlan;
 import com.kunlong.dongxw.data.service.MakePlanJoinService;
 import com.kunlong.dongxw.pub.TestBaseApp;
 import com.kunlong.dongxw.data.domain.Customer;
@@ -149,6 +150,15 @@ public class TestDongxwService extends TestBaseApp {
 //            System.out.println(model);
 //        }
 
+    }
+
+    @Test
+    public void test_0010() throws IOException {
+        List<MakePlan> makePlans = makePlanJoinService.findByOrder(4);
+        makePlanJoinService.fillMakePlans(makePlans);
+        System.out.print(makePlans.size());
+        String fnNew = makePlanJoinService.writePlan2File("Makeplan", makePlans, "Makeplan.xlsx");
+        System.out.println(fnNew);
     }
 
 }

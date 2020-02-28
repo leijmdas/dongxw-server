@@ -1,21 +1,36 @@
 package com.kunlong.dongxw.data.service.impl;
 
+import cn.afterturn.easypoi.excel.ExcelExportUtil;
+import cn.afterturn.easypoi.excel.entity.TemplateExportParams;
 import com.alibaba.fastjson.JSON;
+import com.kunlong.dongxw.config.DongxwTransactional;
 import com.kunlong.dongxw.consts.MakePlanConst;
 import com.kunlong.dongxw.data.domain.*;
 import com.kunlong.dongxw.data.service.*;
+import com.kunlong.dongxw.util.SimpleSequenceGenerator;
+import com.kunlong.dubbo.sys.model.SysUserDTO;
+import com.kunlong.dubbo.sys.service.SysUserApiService;
+import com.kunlong.platform.utils.KunlongUtils;
+import org.apache.dubbo.config.annotation.Reference;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
-public class MakePlanJoinServiceImpl implements MakePlanJoinService {
+public class MakePlanJoinServiceImpl    implements MakePlanJoinService {
     protected final Logger logger = LoggerFactory.getLogger(getClass());
+
+    @Reference(lazy = true, version = "${dubbo.service.version}")
+    SysUserApiService sysUserApiService;
+    @Autowired
+    ProductService productService;
 
     @Autowired
     BomJoinService bomJoinService;
@@ -28,6 +43,8 @@ public class MakePlanJoinServiceImpl implements MakePlanJoinService {
     MakePlanService makePlanService;
     @Autowired
     MakeSheetService makeSheetService;
+    @Autowired
+    CustomerService customerService;
 
     @Autowired
     PurchasePlanService purchasePlanService;
@@ -35,15 +52,24 @@ public class MakePlanJoinServiceImpl implements MakePlanJoinService {
 
     public boolean checkExistsByOrderLine(Integer orderLineId) throws IOException {
 
-        List<MakePlan> plans = findByOrderLine(orderLineId);
+        List<MakePlan> plans = findOneByOrderLine(orderLineId);
         return plans != null && plans.size() > 0;
     }
-
-    public List<MakePlan> findByOrderLine(Integer orderLineId) throws IOException {
+    public List<MakePlan> findOneByOrderLine(Integer orderLineId) throws IOException {
         MakePlan.QueryParam queryParam = new MakePlan.QueryParam();
         queryParam.setParam(new MakePlan());
         queryParam.getParam().setOrderLineId(orderLineId);
         queryParam.setLimit(1);
+
+        return makePlanService.findByQueryParam(queryParam);
+    }
+
+    @Override
+    public List<MakePlan> findByOrder (Integer orderId) throws IOException {
+        MakePlan.QueryParam queryParam = new MakePlan.QueryParam();
+        queryParam.setParam(new MakePlan());
+        queryParam.getParam().setOrderId(orderId);
+        queryParam.setLimit(-1);
 
         return makePlanService.findByQueryParam(queryParam);
     }
@@ -57,12 +83,11 @@ public class MakePlanJoinServiceImpl implements MakePlanJoinService {
         return makeSheetService.findByQueryParam(queryParam);
     }
 
-    public List<MakeSheet> chkFindSheetByPlan(Integer planId,Integer childId,String cutPartName) throws IOException {
+    public List<MakeSheet> chkFindSheetByPlan(Integer planId, Integer bomId) throws IOException {
         MakeSheet.QueryParam queryParam = new MakeSheet.QueryParam();
         queryParam.setParam(new MakeSheet());
         queryParam.getParam().setPlanId(planId);
-        queryParam.getParam().setChildId(childId);
-        queryParam.getParam().setCutPartName(cutPartName);
+        queryParam.getParam().setBomId(bomId);
         queryParam.setLimit(1);
 
         return makeSheetService.findByQueryParam(queryParam);
@@ -70,9 +95,9 @@ public class MakePlanJoinServiceImpl implements MakePlanJoinService {
 
     /**productId
      * */
-    public boolean checkExistsSheetByPlan(Integer planId,Integer childId,String cutPartName) throws IOException {
+    public boolean checkExistsSheetByPlan(Integer planId,Integer bomId ) throws IOException {
 
-        List<MakeSheet> sheets = chkFindSheetByPlan(planId,childId,cutPartName);
+        List<MakeSheet> sheets = chkFindSheetByPlan(planId,bomId);
         return sheets != null && sheets.size() > 0;
     }
     //采购计划
@@ -100,8 +125,9 @@ public class MakePlanJoinServiceImpl implements MakePlanJoinService {
                 List<Bom> boms = bomJoinService.queryBomByProduct(orderLine.getProductId());
                 for (Bom bom : boms) {
                     logger.info(bom.toString());
-                    if (!checkExistsSheetByPlan(makePlan.getId(), bom.getChildId(),bom.getCutPartName())) {
-                        logger.info(makePlan.toString());
+                    //if (!checkExistsSheetByPlan(makePlan.getId(), bom.getChildId(),bom.getCutPartName())) {
+                        if (!checkExistsSheetByPlan(makePlan.getId(), bom.getId() )) {
+                            logger.info(makePlan.toString());
                         MakeSheet makeSheet = copy2MakeSheet(makePlan, bom, sysUserId, orderLine);
                         makeSheetService.save(makeSheet);
 
@@ -152,13 +178,15 @@ public class MakePlanJoinServiceImpl implements MakePlanJoinService {
         return makeSheet;
     }
 
-    public void makeSheetByPlanOrder( Integer orderId,Integer sysUserId) throws IOException {
+    @DongxwTransactional
+    public int makeSheetByPlanOrder(Integer orderId, Integer sysUserId) throws IOException {
 
         MakePlan.QueryParam queryParam = new MakePlan.QueryParam();
         queryParam.setParam(new MakePlan());
         queryParam.getParam().setOrderId(orderId);
         queryParam.setLimit(-1);
 
+        int i=0;
         List<MakePlan> makePlans = makePlanService.findByQueryParam(queryParam);
         for (MakePlan makePlan : makePlans) {
             if (makePlan.getOutFlag().equals(MakePlanConst.OUT_FLAG_SELF)) {
@@ -166,17 +194,17 @@ public class MakePlanJoinServiceImpl implements MakePlanJoinService {
                 if (orderLine != null) {
                     List<Bom> boms = bomJoinService.queryBomByProduct(orderLine.getProductId());
                     for (Bom bom : boms) {
-                        logger.info("makeSheetByPlanOrder bom:{}",bom.toString());
-                        if (!checkExistsSheetByPlan(makePlan.getId(), bom.getChildId(),bom.getCutPartName())) {
-                            logger.info("makeSheetByPlanOrder makePlan:{}",makePlan);
-                            MakeSheet makeSheet=copy2MakeSheet(makePlan,bom,sysUserId,orderLine);
+                        System.out.print(boms.size());
+                        if (!checkExistsSheetByPlan(makePlan.getId(), bom.getId())) {
+                            MakeSheet makeSheet = copy2MakeSheet(makePlan, bom, sysUserId, orderLine);
                             makeSheetService.save(makeSheet);
-
+                            i++;
                         }
                     }
                 }
             }
         }
+        return i;
     }
 
     public void makePurchasePlanByOrder(Integer orderId, Integer sysUserId) throws IOException {
@@ -240,6 +268,73 @@ public class MakePlanJoinServiceImpl implements MakePlanJoinService {
     public void rmPlanByOrder(  Integer orderId) throws IOException {
 
 
+    }
+
+    @Override
+    public String writePlan2File(String sheetName, List<MakePlan> makePlans, String fileName) throws IOException {
+        String fileNameNew = SimpleSequenceGenerator.generate("MAKEPLAN_") + fileName;
+
+
+        TemplateExportParams exportParams = new TemplateExportParams("templates/workplan_template.xlsx");
+        Map<String, Object> map = new HashMap<String, Object>();
+
+        map.put("makeDate",KunlongUtils.transDate(new Date()));
+
+        List<Map<String, Object>> mapList = new ArrayList<>();
+        for (MakePlan makePlan : makePlans) {
+            Map<String, Object> row = new LinkedHashMap<>();
+            row.put("customerName", makePlan.getCustomer().getCustName());
+            row.put("orderCode", makePlan.getOrderMaster().getCustomerOrderCode());
+            row.put("epCode", makePlan.getOrderMaster().getEpOrderCode());
+            row.put("qty", makePlan.getOrderLine().getQty());
+            row.put("color", makePlan.getProduct().getColor());
+            row.put("orderDate", KunlongUtils.transDate(makePlan.getOrderDate()));
+            row.put("issueDate", KunlongUtils.transDate(makePlan.getIssueDate()));
+            row.put("rmDate", KunlongUtils.transDate(makePlan.getRmDate()));
+            row.put("pkgDate", KunlongUtils.transDate(makePlan.getPkgDate()));
+            row.put("planStart", KunlongUtils.transDate(makePlan.getPlanStart()));
+            row.put("planFinish", KunlongUtils.transDate(makePlan.getPlanEnd()));
+            row.put("realFinish", KunlongUtils.transDate(makePlan.getRealEnd()));
+            row.put("memo", makePlan.getRemark());
+
+            mapList.add(row);
+        }
+        map.put("list", mapList);
+        Workbook workbook = ExcelExportUtil.exportExcel(exportParams, map);
+
+        workbook.setSheetName(0, sheetName);
+        File f = new File(fileNameNew);
+        if (!f.exists()) {
+            f.createNewFile();
+        }
+        FileOutputStream fos = new FileOutputStream(f);
+        try {
+            workbook.write(fos);
+        } finally {
+            fos.flush();
+            fos.close();
+        }
+
+        return fileNameNew;
+    }
+    public void fillMakePlan(MakePlan makePlan) {
+        OrderLine orderLine = orderLineService.findById(makePlan.getOrderLineId());
+        if (orderLine != null) {
+            makePlan.setCustomer(customerService.findById(orderLine.getCustomerId()));
+            OrderMaster orderMaster = orderMasterService.findById(orderLine.getOrderId());
+            makePlan.setOrderMaster(orderMaster);
+            makePlan.setOrderLine(orderLine);
+            makePlan.setProduct(productService.findById(orderLine.getProductId()));
+        }
+        SysUserDTO sysUserDTO = sysUserApiService.findById(makePlan.getCreateBy());
+        makePlan.setCreateByName(sysUserDTO == null ? "-" : sysUserDTO.getUsername());
+    }
+
+    public void fillMakePlans(List<MakePlan> makePlans){
+
+        for (MakePlan makePlan : makePlans) {
+            fillMakePlan(makePlan);
+        }
     }
 }
 

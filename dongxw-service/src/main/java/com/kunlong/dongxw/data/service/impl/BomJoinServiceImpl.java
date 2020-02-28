@@ -41,6 +41,7 @@ public class BomJoinServiceImpl implements BomJoinService {
 		Bom.QueryParam queryParam=new Bom.QueryParam();
 		queryParam.setParam(new Bom());
 		queryParam.getParam().setProductId(productId);
+		queryParam.setLimit(-1);
 		List<Bom> boms = bomService.findByQueryParam(queryParam);
 		return boms;
 	}
@@ -49,6 +50,7 @@ public class BomJoinServiceImpl implements BomJoinService {
 		Bom.QueryParam queryParam = new Bom.QueryParam();
 		queryParam.setParam(new Bom());
 		queryParam.getParam().setProductId(productId);
+		queryParam.setLimit(-1);
 		List<Bom> boms = bomService.findByQueryParam(queryParam);
 		Bom sum = new Bom();
 		sum.setMoney(sum.newBigDecimal(BigDecimal.ZERO));
@@ -67,6 +69,7 @@ public class BomJoinServiceImpl implements BomJoinService {
 		BomCost.QueryParam queryParam = new BomCost.QueryParam();
 		queryParam.setParam(new BomCost());
 		queryParam.getParam().setProductId(productId);
+		queryParam.setLimit(-1);
 		List<BomCost> list = bomCostService.findByQueryParam(queryParam);
 		if (list.size() == 0) {
 			return JsonResult.success(null);

@@ -9,14 +9,14 @@ import java.lang.Integer;
 import java.lang.String;
 import java.math.BigDecimal;
 import java.lang.Short;
-import java.lang.Byte;
+import java.lang.Boolean;
 import java.util.Date;
 import org.mybatis.hbatis.orm.criteria.support.query.AbstractQueryParam;
 import org.mybatis.hbatis.orm.criteria.support.query.SortOrders;
 /**
  * MakeSheet 生产制造单
  * @author generator
- * @date 2020年02月16日
+ * @date 2020年02月28日
  */
 @Table(MakeSheet.EntityNode.class)
 public class MakeSheet extends MakeSheetBase implements Serializable {
@@ -209,7 +209,7 @@ public class MakeSheet extends MakeSheetBase implements Serializable {
 	private BigDecimal price;
 	/**
 	  * 金额 
-	  * nullable:false,length:12
+	  * nullable:false,length:14
 	  */
 	@Column(comment = "金额 ")	
 	@NotNull
@@ -223,23 +223,23 @@ public class MakeSheet extends MakeSheetBase implements Serializable {
 	private Short depth;
 	/**
 	  * 有组件 1-组件0-物料
-	  * nullable:false,length:4
+	  * nullable:false,length:1
 	  */
 	@Column(comment = "有组件 1-组件0-物料")	
 	@NotNull
-	private Byte source;
-	/**
-	  * 建档人 
-	  * nullable:true,length:11
-	  */
-	@Column(comment = "建档人 ")	
-	private Integer createBy;
+	private Boolean source;
 	/**
 	  * 建档时间 
 	  * nullable:true,length:19
 	  */
 	@Column(comment = "建档时间 ")	
 	private Date createDate;
+	/**
+	  * 建档人 
+	  * nullable:true,length:11
+	  */
+	@Column(comment = "建档人 ")	
+	private Integer createBy;
     public Integer getId(){
     	return this.id;
     }
@@ -414,23 +414,23 @@ public class MakeSheet extends MakeSheetBase implements Serializable {
     public void setDepth(Short depth){
     	this.depth = depth;
     }
-    public Byte getSource(){
+    public Boolean getSource(){
     	return this.source;
     }
-    public void setSource(Byte source){
+    public void setSource(Boolean source){
     	this.source = source;
-    }
-    public Integer getCreateBy(){
-    	return this.createBy;
-    }
-    public void setCreateBy(Integer createBy){
-    	this.createBy = createBy;
     }
     public Date getCreateDate(){
     	return this.createDate;
     }
     public void setCreateDate(Date createDate){
     	this.createDate = createDate;
+    }
+    public Integer getCreateBy(){
+    	return this.createBy;
+    }
+    public void setCreateBy(Integer createBy){
+    	this.createBy = createBy;
     }
 
     public static class EntityNode extends AbstractEntityNode<MakeSheet> {
@@ -494,11 +494,11 @@ public class MakeSheet extends MakeSheetBase implements Serializable {
     	/** 层次  */
         public FieldNode<MakeSheet, Short> depth =  createFieldNode("depth","depth",Short.class,JdbcType.SMALLINT);
     	/** 有组件 1-组件0-物料 */
-        public FieldNode<MakeSheet, Byte> source =  createFieldNode("source","source",Byte.class,JdbcType.TINYINT);
-    	/** 建档人  */
-        public FieldNode<MakeSheet, Integer> createBy =  createFieldNode("createBy","create_by",Integer.class,JdbcType.INTEGER);
+        public FieldNode<MakeSheet, Boolean> source =  createFieldNode("source","source",Boolean.class,JdbcType.BIT);
     	/** 建档时间  */
         public FieldNode<MakeSheet, Date> createDate =  createFieldNode("createDate","create_date",Date.class,JdbcType.TIMESTAMP);
+    	/** 建档人  */
+        public FieldNode<MakeSheet, Integer> createBy =  createFieldNode("createBy","create_by",Integer.class,JdbcType.INTEGER);
 	
         /**
          * @param alias 别名

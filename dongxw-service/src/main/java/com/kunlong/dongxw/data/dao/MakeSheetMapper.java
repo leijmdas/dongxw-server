@@ -7,7 +7,7 @@ import com.kunlong.dongxw.data.domain.MakeSheet;
 /**
  * MakeSheetMapper
  * @author generator
- * @date 2020年02月16日
+ * @date 2020年02月28日
  */
 public interface MakeSheetMapper extends HbatisMapper<MakeSheet, Integer> {
 	

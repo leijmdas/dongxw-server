@@ -5,14 +5,14 @@ import java.lang.Integer;
 import java.lang.String;
 import java.math.BigDecimal;
 import java.lang.Short;
-import java.lang.Byte;
+import java.lang.Boolean;
 import java.util.Date;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 /**
  * MakeSheet
  * @author generator
- * @date 2020年02月16日
+ * @date 2020年02月28日
  */
 @ApiModel(value="MakeSheetDTO",description="生产制造单")
 public class MakeSheetDTO implements Serializable {
@@ -182,7 +182,7 @@ public class MakeSheetDTO implements Serializable {
 	private BigDecimal price;
 	/**
 	  * 金额 
-	  * nullable:false,length:12
+	  * nullable:false,length:14
 	  */
 	@ApiModelProperty(value = "金额 ",required = true,notes = "金额  ")
 	private BigDecimal money;
@@ -194,22 +194,22 @@ public class MakeSheetDTO implements Serializable {
 	private Short depth;
 	/**
 	  * 有组件 1-组件0-物料
-	  * nullable:false,length:4
+	  * nullable:false,length:1
 	  */
 	@ApiModelProperty(value = "有组件 1-组件0-物料",required = true,notes = "有组件 1-组件0-物料 ")
-	private Byte source;
-	/**
-	  * 建档人 
-	  * nullable:true,length:11
-	  */
-	@ApiModelProperty(value = "建档人 ",required = false,notes = "建档人  ")
-	private Integer createBy;
+	private Boolean source;
 	/**
 	  * 建档时间 
 	  * nullable:true,length:19
 	  */
 	@ApiModelProperty(value = "建档时间 ",required = false,notes = "建档时间  ")
 	private Date createDate;
+	/**
+	  * 建档人 
+	  * nullable:true,length:11
+	  */
+	@ApiModelProperty(value = "建档人 ",required = false,notes = "建档人  ")
+	private Integer createBy;
     public Integer getId(){
     	return this.id;
     }
@@ -384,23 +384,23 @@ public class MakeSheetDTO implements Serializable {
     public void setDepth(Short depth){
     	this.depth = depth;
     }
-    public Byte getSource(){
+    public Boolean getSource(){
     	return this.source;
     }
-    public void setSource(Byte source){
+    public void setSource(Boolean source){
     	this.source = source;
-    }
-    public Integer getCreateBy(){
-    	return this.createBy;
-    }
-    public void setCreateBy(Integer createBy){
-    	this.createBy = createBy;
     }
     public Date getCreateDate(){
     	return this.createDate;
     }
     public void setCreateDate(Date createDate){
     	this.createDate = createDate;
+    }
+    public Integer getCreateBy(){
+    	return this.createBy;
+    }
+    public void setCreateBy(Integer createBy){
+    	this.createBy = createBy;
     }
     // ==== 自定义属性 ====
 }

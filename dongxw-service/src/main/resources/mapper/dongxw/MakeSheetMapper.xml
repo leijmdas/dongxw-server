@@ -31,9 +31,9 @@
 	  	<result column="price" property="price" jdbcType="DECIMAL" />
 	  	<result column="money" property="money" jdbcType="DECIMAL" />
 	  	<result column="depth" property="depth" jdbcType="SMALLINT" />
-	  	<result column="source" property="source" jdbcType="TINYINT" />
-	  	<result column="create_by" property="createBy" jdbcType="INTEGER" />
+	  	<result column="source" property="source" jdbcType="BIT" />
 	  	<result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+	  	<result column="create_by" property="createBy" jdbcType="INTEGER" />
     </resultMap>
     <resultMap id="BaseResultMap_MakeSheet" type="com.kunlong.dongxw.data.domain.MakeSheet" >
 	    <id column="ms_id" property="id" jdbcType="INTEGER" />	
@@ -65,15 +65,15 @@
 	  	<result column="ms_price" property="price" jdbcType="DECIMAL" />
 	  	<result column="ms_money" property="money" jdbcType="DECIMAL" />
 	  	<result column="ms_depth" property="depth" jdbcType="SMALLINT" />
-	  	<result column="ms_source" property="source" jdbcType="TINYINT" />
-	  	<result column="ms_create_by" property="createBy" jdbcType="INTEGER" />
+	  	<result column="ms_source" property="source" jdbcType="BIT" />
 	  	<result column="ms_create_date" property="createDate" jdbcType="TIMESTAMP" />
+	  	<result column="ms_create_by" property="createBy" jdbcType="INTEGER" />
     </resultMap>
     <sql id="Base_Column_List" >
-  		id,plan_id,order_id,order_line_id,product_id,bom_id,parent_id,big_type,small_type,status,child_id,width,cut_part_name,size_l,size_x,size_w,pieces,knife_qty,length,loss_type,loss_rate,each_qty,loss_qty,qty,total_qty,unit,price,money,depth,source,create_by,create_date
+  		id,plan_id,order_id,order_line_id,product_id,bom_id,parent_id,big_type,small_type,status,child_id,width,cut_part_name,size_l,size_x,size_w,pieces,knife_qty,length,loss_type,loss_rate,each_qty,loss_qty,qty,total_qty,unit,price,money,depth,source,create_date,create_by
 	</sql>
   	<sql id="Base_Column_List_MakeSheet" >
-  		ms.id ms_id,ms.plan_id ms_plan_id,ms.order_id ms_order_id,ms.order_line_id ms_order_line_id,ms.product_id ms_product_id,ms.bom_id ms_bom_id,ms.parent_id ms_parent_id,ms.big_type ms_big_type,ms.small_type ms_small_type,ms.status ms_status,ms.child_id ms_child_id,ms.width ms_width,ms.cut_part_name ms_cut_part_name,ms.size_l ms_size_l,ms.size_x ms_size_x,ms.size_w ms_size_w,ms.pieces ms_pieces,ms.knife_qty ms_knife_qty,ms.length ms_length,ms.loss_type ms_loss_type,ms.loss_rate ms_loss_rate,ms.each_qty ms_each_qty,ms.loss_qty ms_loss_qty,ms.qty ms_qty,ms.total_qty ms_total_qty,ms.unit ms_unit,ms.price ms_price,ms.money ms_money,ms.depth ms_depth,ms.source ms_source,ms.create_by ms_create_by,ms.create_date ms_create_date
+  		ms.id ms_id,ms.plan_id ms_plan_id,ms.order_id ms_order_id,ms.order_line_id ms_order_line_id,ms.product_id ms_product_id,ms.bom_id ms_bom_id,ms.parent_id ms_parent_id,ms.big_type ms_big_type,ms.small_type ms_small_type,ms.status ms_status,ms.child_id ms_child_id,ms.width ms_width,ms.cut_part_name ms_cut_part_name,ms.size_l ms_size_l,ms.size_x ms_size_x,ms.size_w ms_size_w,ms.pieces ms_pieces,ms.knife_qty ms_knife_qty,ms.length ms_length,ms.loss_type ms_loss_type,ms.loss_rate ms_loss_rate,ms.each_qty ms_each_qty,ms.loss_qty ms_loss_qty,ms.qty ms_qty,ms.total_qty ms_total_qty,ms.unit ms_unit,ms.price ms_price,ms.money ms_money,ms.depth ms_depth,ms.source ms_source,ms.create_date ms_create_date,ms.create_by ms_create_by
 	</sql>
 	
 	<!-- 系统自定义 -->
@@ -175,11 +175,11 @@
 			<if test="p.source!=null ">
 		    	and ms.source=#{p.source}
 		    </if>
-			<if test="p.createBy!=null ">
-		    	and ms.create_by=#{p.createBy}
-		    </if>
 			<if test="p.createDate!=null ">
 		    	and ms.create_date=#{p.createDate}
+		    </if>
+			<if test="p.createBy!=null ">
+		    	and ms.create_by=#{p.createBy}
 		    </if>
 		</if>
 		<!--
