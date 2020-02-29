@@ -32,8 +32,8 @@ import java.util.Map;
  */
 
 @Service
-public class ExcelUtil {
-    protected final static Logger logger = LoggerFactory.getLogger(ExcelUtil.class);
+public class EasyExcelUtil {
+    protected final static Logger logger = LoggerFactory.getLogger(EasyExcelUtil.class);
 
     public static void writeExcel2Response(String fileName, HttpServletResponse response, String outFile) throws Exception {
         setExcelHeader(response, fileName);
@@ -42,6 +42,8 @@ public class ExcelUtil {
         IOUtil.copyCompletely(new FileInputStream(outFile), bufferedOutPut);
         bufferedOutPut.flush();
         bufferedOutPut.close();
+        response.getOutputStream().flush();
+        response.getOutputStream().close();
     }
 
     public static String writeBomExcels2File(String fileName, String sheetName,
@@ -279,6 +281,11 @@ public class ExcelUtil {
         response.setHeader("content-Type", "application/vnd.ms-excel");
         response.setContentType("application/msexcel");
         response.setCharacterEncoding("UTF-8");
+        //response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+        response.setHeader("Pragma", "no-cache");
+        response.setHeader("Cache-Control", "no-cache");
+        response.setDateHeader("Expires", 0);
+
     }
 
 

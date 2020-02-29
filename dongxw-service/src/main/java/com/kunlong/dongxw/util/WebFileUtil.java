@@ -354,6 +354,9 @@ public class WebFileUtil {
 		response.setHeader("attachment-name", URLEncoder.encode(fileName,"utf-8"));
 		response.setHeader("content-Type", "application/vnd.ms-excel");
 	 	response.setContentType("application/msexcel");
+	  response.setHeader("Pragma", "no-cache");
+	  response.setHeader("Cache-Control", "no-cache");
+	  response.setDateHeader("Expires", 0);
 	}
 
 

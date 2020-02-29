@@ -5,8 +5,11 @@ import cn.afterturn.easypoi.excel.entity.TemplateExportParams;
 import com.alibaba.fastjson.JSON;
 import com.kunlong.dongxw.config.DongxwTransactional;
 import com.kunlong.dongxw.consts.MakePlanConst;
+import com.kunlong.dongxw.consts.PathConsts;
 import com.kunlong.dongxw.data.domain.*;
 import com.kunlong.dongxw.data.service.*;
+import com.kunlong.dongxw.util.EasyPOIUtil;
+import com.kunlong.dongxw.util.FileUtil;
 import com.kunlong.dongxw.util.SimpleSequenceGenerator;
 import com.kunlong.dubbo.sys.model.SysUserDTO;
 import com.kunlong.dubbo.sys.service.SysUserApiService;
@@ -265,23 +268,39 @@ public class MakePlanJoinServiceImpl    implements MakePlanJoinService {
         }
     }
 
+    @Override
     public void rmPlanByOrder(  Integer orderId) throws IOException {
 
 
     }
+//    protected String makeExcelSheet(String templateName, String fileName, String sheetName, Map<String, Object> map) throws IOException {
+//
+//        TemplateExportParams exportParams = new TemplateExportParams("templates/"+templateName);
+//        Workbook workbook = ExcelExportUtil.exportExcel(exportParams, map);
+//        exportParams.setSheetName( sheetName );
+//        File newFile= FileUtil.makeTmpFile(sheetName,fileName);
+//        FileOutputStream fos = new FileOutputStream(newFile);
+//        try {
+//            workbook.write(fos);
+//        } finally {
+//            fos.flush();
+//            fos.close();
+//        }
+//
+//        return newFile.getAbsolutePath();
+//    }
+
 
     @Override
     public String writePlan2File(String sheetName, List<MakePlan> makePlans, String fileName) throws IOException {
-        String fileNameNew = SimpleSequenceGenerator.generate("MAKEPLAN_") + fileName;
-
-
-        TemplateExportParams exportParams = new TemplateExportParams("templates/workplan_template.xlsx");
         Map<String, Object> map = new HashMap<String, Object>();
-
-        map.put("makeDate",KunlongUtils.transDate(new Date()));
-
+        Map <String, Object> info=new LinkedHashMap();
+        map.put("info",info);
+        info.put("makeDate",KunlongUtils.transDate(new Date()));
+        info.put("makeBy","石头");
         List<Map<String, Object>> mapList = new ArrayList<>();
         for (MakePlan makePlan : makePlans) {
+            sheetName = makePlan.getOrderMaster().getCustomerOrderCode();
             Map<String, Object> row = new LinkedHashMap<>();
             row.put("customerName", makePlan.getCustomer().getCustName());
             row.put("orderCode", makePlan.getOrderMaster().getCustomerOrderCode());
@@ -299,24 +318,11 @@ public class MakePlanJoinServiceImpl    implements MakePlanJoinService {
 
             mapList.add(row);
         }
-        map.put("list", mapList);
-        Workbook workbook = ExcelExportUtil.exportExcel(exportParams, map);
+        info.put("list", mapList);
 
-        workbook.setSheetName(0, sheetName);
-        File f = new File(fileNameNew);
-        if (!f.exists()) {
-            f.createNewFile();
-        }
-        FileOutputStream fos = new FileOutputStream(f);
-        try {
-            workbook.write(fos);
-        } finally {
-            fos.flush();
-            fos.close();
-        }
-
-        return fileNameNew;
+       return EasyPOIUtil.makeExcelSheet("workplan_template.xlsx",fileName,sheetName,map);
     }
+
     public void fillMakePlan(MakePlan makePlan) {
         OrderLine orderLine = orderLineService.findById(makePlan.getOrderLineId());
         if (orderLine != null) {

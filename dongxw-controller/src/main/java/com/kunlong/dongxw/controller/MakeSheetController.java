@@ -2,30 +2,30 @@ package com.kunlong.dongxw.controller;
 
 
 import app.support.query.PageResult;
+import cn.afterturn.easypoi.excel.ExcelExportUtil;
+import cn.afterturn.easypoi.excel.entity.TemplateExportParams;
+import com.alibaba.fastjson.JSON;
 import com.kunlong.dongxw.config.DongxwTransactional;
+import com.kunlong.dongxw.util.EasyExcelUtil;
+import com.kunlong.dongxw.util.MergeExcelSheet;
 import com.kunlong.dubbo.sys.model.SysUserDTO;
 import com.kunlong.dongxw.annotation.DateRewritable;
 import com.kunlong.dongxw.consts.ApiConstants;
-import com.kunlong.dongxw.consts.MakePlanConst;
 import com.kunlong.dongxw.data.domain.*;
 import com.kunlong.dongxw.data.service.*;
-import com.kunlong.dongxw.util.WebFileUtil;
 import com.kunlong.platform.utils.JsonResult;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.net.URLEncoder;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * cust类
@@ -69,10 +69,10 @@ public  class MakeSheetController extends BaseController {
 
     @DongxwTransactional(rollbackFor = Exception.class)
     @RequestMapping("/makeSheetByPlanOrder/{orderId}")
-    public JsonResult<String> makeSheetByPlanOrder(@PathVariable("orderId") Integer orderId) throws IOException {
+    public JsonResult<Integer> makeSheetByPlanOrder(@PathVariable("orderId") Integer orderId) throws IOException {
 
-        makePlanJoinService.makeSheetByPlanOrder(orderId,getCurrentUserId());
-        return JsonResult.success("成功！");
+        int cnt=makePlanJoinService.makeSheetByPlanOrder(orderId,getCurrentUserId());
+        return JsonResult.success(cnt,"成功！");
     }
 
     //检查有计划
@@ -80,15 +80,12 @@ public  class MakeSheetController extends BaseController {
     public JsonResult<Integer> deleteById(@PathVariable("id") Integer id) throws IOException {
 
         makeSheetService.deleteById(id);
-
-
         return JsonResult.success();
     }
 
     @RequestMapping("/findById/{id}")
     public JsonResult<MakeSheet> findById(@PathVariable("id") Integer id, HttpServletResponse response) throws IOException {
         MakeSheet makeSheet = makeSheetService.findById(id);
-        //fillMakePlan(makeSheet);
         return JsonResult.success(makeSheet);
 
     }
@@ -105,30 +102,13 @@ public  class MakeSheetController extends BaseController {
         return JsonResult.success(makeSheet.getId());
     }
 
-    void fillMakePlan(MakePlan makePlan) {
-        OrderLine orderLine = orderLineService.findById(makePlan.getOrderLineId());
-        if (orderLine != null) {
-            makePlan.setCustomer(customerService.findById(orderLine.getCustomerId()));
-            OrderMaster orderMaster = orderMasterService.findById(orderLine.getOrderId());
-            makePlan.setOrderMaster(orderMaster);
-            makePlan.setOrderLine(orderLine);
-            makePlan.setProduct(productService.findById(orderLine.getProductId()));
-        }
-        SysUserDTO sysUserDTO = sysUserApiService.findById(makePlan.getCreateBy());
-        makePlan.setCreateByName(sysUserDTO == null ? "-" : sysUserDTO.getUsername());
-    }
 
-    void fillMakePlans(List<MakePlan> makePlans){
-
-        for (MakePlan makePlan : makePlans) {
-            fillMakePlan(makePlan);
-        }
-    }
     @PostMapping("/query")
     public PageResult<MakeSheet> query(@RequestBody MakeSheet.QueryParam queryParam) throws IOException {
         PageResult<MakeSheet> pageResult = new PageResult<MakeSheet>();
 
         queryParam.setSortBys("id|desc");
+        queryParam.getParam().setParentId(0);
         pageResult.setTotal(makeSheetService.countByQueryParam(queryParam));
         pageResult.setData(makeSheetService.findByQueryParam(queryParam));
         for(MakeSheet sheet:pageResult.getData()){
@@ -142,111 +122,197 @@ public  class MakeSheetController extends BaseController {
             SysUserDTO sysUserDTO = sysUserApiService.findById(sheet.getCreateBy());
             sheet.setCreateByName(sysUserDTO == null ? "-" : sysUserDTO.getUsername());
         }
+        //pageResult.setData(pageResult.getData().stream().filter(item->item.getParentId()==0)
+        //        .sorted((x,y) -> x.getChildRm().getCode().compareTo(y.getChildRm().getCode())).collect(Collectors.toList()));
+        Collections.sort( pageResult.getData(), new Comparator<MakeSheet>() {
+            @Override
+            public int compare(MakeSheet a, MakeSheet b) {
+                if (a.getChildRm() != null && b.getChildRm() != null) {
+                    return a.getChildRm().getCode().compareTo(b.getChildRm().getCode());
+                }
+
+                return a.getId().compareTo(b.getId());
+            }
+        });
         return pageResult;
     }
+    void fillSheet(List<MakeSheet> boms){
+        for(MakeSheet bom:boms){
+            bom.setChildRm(productService.findById(bom.getChildId()));
+            bom.setProduct(productService.findById(bom.getProductId()));
+            if(bom.getChildRm()!=null){
+                bom.getChildRm().setProductSubType(productTypeService.findById(bom.getChildRm().getProductTypeId()));
+                bom.getChildRm().setProductType(productTypeService.findById(bom.getChildRm().getParentId()));
 
+            }
+            SysUserDTO sysUserDTO = sysUserApiService.findById(bom.getCreateBy());
+            bom.setCreateByName(sysUserDTO == null ? "-" : sysUserDTO.getUsername());
+        }
+    }
+    List<MakeSheetExcelModel> buildExcelModels(MakeSheet.QueryParam queryParam) {
+        queryParam.getParam().setParentId(0);
+        queryParam.setLimit(-1);
+        queryParam.setStart(0);
+        List<MakeSheet> boms = makeSheetService.findByQueryParam(queryParam);
+        fillSheet(boms);
+        Collections.sort( boms, new Comparator<MakeSheet>() {
+            @Override
+            public int compare(MakeSheet a, MakeSheet b) {
+                if (a.getChildRm() != null && b.getChildRm() != null) {
+                    return a.getChildRm().getCode().compareTo(b.getChildRm().getCode());
+                }
 
+                return a.getId().compareTo(b.getId());
+            }
+        });
+        List<MakeSheet> fullBoms = new ArrayList<>();
+        int i=1;
+        for (MakeSheet bom : boms) {
+            fullBoms.add(bom);
+
+            if (bom.getSource()) {
+
+                queryParam.getParam().setParentId(bom.getBomId());
+                queryParam.setLimit(-1);
+                queryParam.setStart(0);
+                List<MakeSheet> subs = makeSheetService.findByQueryParam(queryParam);
+                fullBoms.addAll(subs);
+            }
+        }
+
+        List<MakeSheetExcelModel> models = new ArrayList<>();
+        Integer ii=1;
+        for (MakeSheet bom : fullBoms) {
+            MakeSheetExcelModel model = JSON.parseObject(bom.toString(), MakeSheetExcelModel.class);
+            if(bom.getSizeL()!=null&&BigDecimal.ZERO.compareTo(bom.getSizeL())!=0){
+                model.setSizeX("X");
+            }
+            if (bom.getChildRm() == null) {
+                model.setSeqNo(" " );
+                model.setQty(" ");
+            }
+            model.setCode(bom.getChildRm() == null ? null : bom.getChildRm().getCode());
+            model.setName(bom.getChildRm() == null ? null : bom.getChildRm().getName());
+            model.setColor(bom.getChildRm() == null ? null : bom.getChildRm().getColor());
+            model.setUnit(bom.getChildRm() == null ? " " : bom.getChildRm().getUnit());
+
+            model.setLossRate(model.getLossRate()==null?"0%":model.getLossRate()+"%");
+            if (bom.getSource() || bom.getParentId()==0) {
+                model.setSizeL(null );
+                model.setSizeW(null);
+                model.setSizeX(" ");
+                model.setCutPartName(" ");
+                model.setLength(null);
+                model.setWidth(" ");
+                //model.setKnifeQty(null);
+                // model.setPieces(null);
+                model.setKnifeQty(" ");
+
+                model.setLossRate(null);
+                model.setEachQty(null);
+            }
+            if(model.getCode()!=null)
+            {
+                model.setSeqNo(ii.toString());
+                ii++;
+            }
+            models.add(model);
+        }
+        return models;
+    }
     @RequestMapping(value="export",method = RequestMethod.POST)
     @ApiOperation(value = "export", notes = "export", authorizations = {@Authorization(value = ApiConstants.AUTH_API_WEB)})
-    public void export(@RequestBody @DateRewritable MakePlan.QueryParam queryParam, HttpServletRequest req, HttpServletResponse rsp) throws FileNotFoundException, IOException {
+    public void export(@RequestBody @DateRewritable MakeSheet.QueryParam queryParam, HttpServletRequest req, HttpServletResponse rsp) throws Exception {
+        if (queryParam.getParam() == null || queryParam.getParam().getPlanId() == null) {
 
-        if(queryParam.getParam() == null) {
-            queryParam.setParam(new MakePlan());
+            rsp.getWriter().write(JsonResult.failure(-1, "没有选择计划!").toString());
+            rsp.setStatus(500);
+            return;
         }
-        queryParam.setLimit(3000);
-        queryParam.setStart(0);
-        queryParam.setSortBys("customerId|asc,orderId|asc");
 
-        WebFileUtil web = new WebFileUtil(req,rsp);
-        List<MakePlan> makePlans = this.makePlanService.findByQueryParam(queryParam);
-        fillMakePlans(makePlans);
-        rsp.setHeader("file",URLEncoder.encode(  "生产计划表.xlsx","UTF-8"));
-
-        web.export2EasyExcelObject("生产计划表.xlsx", buildTitles(),buildRecords(makePlans));
-
-    }
-
-    List<String> buildTitles(){
-        List<String> strings=new ArrayList<>();
-
-        strings.add("发外标志");
-        strings.add("客户名称");
-        strings.add("客户订单号");
-        strings.add("客款号");
-        strings.add("产品描述");
-        strings.add("颜色");
-        strings.add("数量");
-
-        strings.add("接单日期");
-        strings.add("要求交期");
-        strings.add("物料到位日期");
-        strings.add("包材到位日期");
-        strings.add("计划上线日期");
-        strings.add("计划完成日期");
-        strings.add("是否完成");
-        strings.add("实际完成日期");
-        strings.add("备注");
-        return strings;
-    }
-    List<List<Object>> buildRecords(List<MakePlan> makePlans) {
-        List<List<Object>> records = new ArrayList<>();
-        for (MakePlan makePlan : makePlans) {
-            List<Object> r = new ArrayList<>();
-             //strings.add("发外标志");
-            r.add(MakePlanConst.getOutFlag(makePlan.getOutFlag()));
-            // strings.add("客户名称");
-            r.add(makePlan.getCustomer()==null?"-":makePlan.getCustomer().getCustName());
-            //strings.add("客户订单号");
-            r.add(makePlan.getOrderMaster()==null?"-":makePlan.getOrderMaster().getCustomerOrderCode());
-            //strings.add("客款号");
-            r.add(makePlan.getProduct()==null?"-":makePlan.getProduct().getCode());
-            //strings.add("产品描述");
-            r.add(makePlan.getProduct()==null?"-":makePlan.getProduct().getRemark());
-            //strings.add("颜色");
-            r.add(makePlan.getProduct()==null?"-":makePlan.getProduct().getColor());
-            //strings.add("数量");
-            r.add(makePlan.getOrderLine()==null?"-":makePlan.getOrderLine().getQty());
-
-            //strings.add("接单日期");
-            r.add(transDate(makePlan.getOrderDate()));
-            //strings.add("要求交期");
-            r.add(transDate(makePlan.getIssueDate()));
-            //strings.add("物料到位日期");
-            r.add(transDate(makePlan.getRmDate()));
-            //strings.add("包材到位日期");
-            r.add(transDate(makePlan.getPkgDate()));
-            //strings.add("计划上线日期");
-            r.add(transDate(makePlan.getPlanStart()));
-            //strings.add("计划完成日期");
-            r.add(transDate(makePlan.getPlanEnd()));
-            //strings.add("是否完成");
-            r.add(MakePlanConst.getFinishFlag(makePlan.getFinishFlag()));
-
-            //strings.add("实际完成日期");
-            r.add(transDate(makePlan.getRealEnd()));
-            //strings.add("备注");
-            r.add(makePlan.getRemark());
-
-            records.add(r);
+        MakePlan makePlan = makePlanService.findById(queryParam.getParam().getPlanId());
+        if(makePlan==null)
+        {
+            rsp.getWriter().write(JsonResult.failure(- 2, "计划不存在！").toString());
+            rsp.setStatus(500);
+            return;
         }
-        return records;
+        OrderLine orderLine = orderLineService.findById(makePlan.getOrderLineId());
+        makePlan.setOrderLine(orderLine);
+
+        Product product = productService.findById( orderLine.getProductId());
+        makePlan.setProduct(product);
+
+        rsp.setHeader("file", URLEncoder.encode(product.getEpCode(), "UTF-8"));
+        String productCode = product.getCode();
+        String fileName = String.format("生产制造单-%s.xlsx",product.getCode());
+        String headFile = writeOrderProduct2File(product.getCode() , makePlan, fileName);
+        Map<String, List> map = new LinkedHashMap<>();
+        List<MakeSheetExcelModel> models = buildExcelModels(queryParam);
+
+        if (models.size() > 0) {
+            map.put(productCode, models);
+        }
+        String sheetFile = EasyExcelUtil.writeBomExcels2File(productCode + "_list", productCode, map);
+        String outFile = new MergeExcelSheet().mergeSheets(headFile, sheetFile, fileName);
+
+        EasyExcelUtil.writeExcel2Response(fileName, rsp, outFile);
+
     }
 
-    String transDatetime(Date d) {
-        if(d==null){
-            return "";
+    String writeOrderProduct2File(String sheetName, MakePlan makePlan, String fileName) throws IOException {
+        Map<String, Object> map = new HashMap<String, Object>();
+
+        Product product = makePlan.getProduct();
+        Customer customer = product == null ? null : customerService.findById(product.getCustomerId());
+
+        map.put("customerName", customer == null ? "-" : customer.getCustName());
+        map.put("orderDate", transDate(makePlan.getOrderDate()));
+        map.put("issueDate", transDate( makePlan.getIssueDate()));
+        map.put("qty", makePlan.getOrderLine().getQty());
+        if (product != null) {
+            map.put("code", product.getCode());
+            map.put("epCode", product.getEpCode());
+            map.put("size", product.getSize());
+            map.put("color", product.getColor());
+            map.put("remark", product.getRemark());
+          }
+
+        OrderMaster orderMaster = orderMasterService.findById(makePlan.getOrderId());
+        if (orderMaster != null) {
+            map.put("customerOrderCode",orderMaster.getCustomerOrderCode());
+            map.put("businessBy", orderMaster.getBusinessBy());
         }
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        return sdf.format(d);
+
+        return makeExcelSheet("makesheet_template.xlsx",fileName,sheetName,map);
     }
 
-    String transDate(Date d) {
-        if(d==null){
-            return "";
+
+
+    void writeBomProduct(String sheetName,Integer productId, HttpServletResponse rsp) throws IOException {
+        Product product = productService.findById(productId);
+        Customer customer = product==null?null:customerService.findById(product.getCustomerId());
+
+        TemplateExportParams exportParams = new TemplateExportParams("templates/bom_product.xlsx");
+        Map<String, Object> map = new HashMap<String, Object>();
+
+        map.put("customerName", customer == null ? "-" : customer.getCustName());
+        if (product == null) {
+            map.put("remark", " ");
+            map.put("size", " ");
+            map.put("code", " ");
+        } else {
+            map.put("remark", product.getRemark());
+            map.put("size", product.getSize());
+            map.put("code", product.getCode());
         }
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        return sdf.format(d);
+        Workbook workbook = ExcelExportUtil.exportExcel(exportParams, map);
+        workbook.setSheetName(0,sheetName);
+        workbook.write(rsp.getOutputStream());
+
     }
+
+
 
 
 

@@ -23,6 +23,7 @@
         <module>dongxw-service</module>
         <module>dongxw-controller</module>
         <module>Dongxw-customer</module>
+        <module>xls-report</module>
     </modules>
 
     <dependencies>
