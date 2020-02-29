@@ -105,6 +105,9 @@ public final class ProductController extends BaseController{
         PageResult<Product> pageResult = new PageResult<>();
         queryParam.setSortBys(queryParam.getOrderBys());
 
+        Product qryPrd =  buildQueryLikeValue(queryParam.getParam(), Product.class);
+        queryParam.setParam(qryPrd);
+
         pageResult.setTotal(productService.countByQueryParam(queryParam));
         pageResult.setData(productService.findByQueryParam(queryParam));
 

@@ -4,6 +4,7 @@ package com.kunlong.dongxw.controller;
 import app.support.query.PageResult;
 import com.kunlong.dongxw.annotation.DateRewritable;
 import com.kunlong.dongxw.consts.ApiConstants;
+import com.kunlong.dongxw.data.domain.OrderMaster;
 import com.kunlong.dongxw.data.domain.Product;
 import com.kunlong.dongxw.data.domain.ProductType;
 import com.kunlong.dongxw.data.service.ProductService;
@@ -32,7 +33,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/dongxw/producttype")
-public final class ProductTypeController {
+public final class ProductTypeController extends BaseController {
     @Autowired
     ProductTypeService productTypeService;
 
@@ -110,6 +111,9 @@ public final class ProductTypeController {
     public PageResult<ProductType> query(@RequestBody ProductType.QueryParam queryParam) throws IOException {
         PageResult<ProductType> pageResult = new PageResult<ProductType>();
         queryParam.setSortBys(queryParam.getOrderBys());
+        ProductType p =  buildQueryLikeValue(queryParam.getParam(), ProductType.class);
+        queryParam.setParam(p);
+
 
         pageResult.setTotal(productTypeService.countByQueryParam(queryParam));
         pageResult.setData(productTypeService.findByQueryParam(queryParam));

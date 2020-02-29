@@ -2,6 +2,7 @@ package com.kunlong.dongxw.controller;
 
 
 import app.support.query.PageResult;
+import com.kunlong.dongxw.data.domain.Product;
 import com.kunlong.dubbo.sys.model.SysUserDTO;
 import com.kunlong.dongxw.annotation.DateRewritable;
 import com.kunlong.dongxw.consts.*;
@@ -101,6 +102,8 @@ public final class OrderMasterController extends BaseController {
         PageResult<OrderMaster> pageResult = new PageResult<>();
         // Customer.QueryParam qp = BeanMapper.getInstance().map(pageResult, Customer.QueryParam.class);
         queryParam.setSortBys(queryParam.getOrderBys());
+        OrderMaster p =  buildQueryLikeValue(queryParam.getParam(), OrderMaster.class);
+        queryParam.setParam(p);
 
         pageResult.setTotal(orderMasterService.countByQueryParam(queryParam));
         pageResult.setData(orderMasterService.findByQueryParam(queryParam));

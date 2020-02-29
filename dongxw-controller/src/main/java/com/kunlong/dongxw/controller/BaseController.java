@@ -1,17 +1,16 @@
 package com.kunlong.dongxw.controller;
 
-import cn.afterturn.easypoi.excel.ExcelExportUtil;
-import cn.afterturn.easypoi.excel.entity.TemplateExportParams;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.kunlong.dongxw.util.EasyPOIUtil;
-import com.kunlong.dongxw.util.SimpleSequenceGenerator;
 import com.kunlong.dubbo.sys.model.SysUserDTO;
 import com.kunlong.dubbo.sys.service.SysUserApiService;
 import com.kunlong.dubbo.api.service.AuthApiService;
 import com.kunlong.dubbo.api.service.MailApiService;
 import com.kunlong.dongxw.context.CurrentRequestContext;
 import com.kunlong.platform.consts.RequestContextConst;
+import com.kunlong.platform.utils.KunlongUtils;
 import org.apache.dubbo.config.annotation.Reference;
-import org.apache.poi.ss.usermodel.Workbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,7 +50,7 @@ public class BaseController {
 		return authApiService.getCurrentSysUser(token);
 	}
 
-	String transDatetime(Date d) {
+	private String transDatetime(Date d) {
 		if(d==null){
 			return "";
 		}
@@ -59,12 +58,24 @@ public class BaseController {
 		return sdf.format(d);
 	}
 
-	String transDate(Date d) {
+
+	 String transDate(Date d) {
 		if(d==null){
 			return "";
 		}
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		return sdf.format(d);
+		 return sdf.format(d);
+	 }
+
+	public <T> T buildQueryLikeValue(T obj, Class<T> cls) {
+		JSONObject jsonObject = JSONObject.parseObject(KunlongUtils.toJSONString(obj));
+		for (String key : jsonObject.keySet()) {
+			if (jsonObject.get(key) instanceof String) {
+				jsonObject.put(key, "%" + jsonObject.get(key).toString() + "%");
+			}
+		}
+		return JSON.toJavaObject(jsonObject, cls);
+
 	}
 
 	protected String makeExcelSheet(String templateName,String fileName, String sheetName, Map<String, Object> map)
