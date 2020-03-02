@@ -2,6 +2,7 @@ package com.kunlong.dongxw.controller;
 
 
 import app.support.query.PageResult;
+import com.kunlong.dongxw.data.domain.ProductType;
 import com.kunlong.dubbo.api.service.AuthApiService;
 import com.kunlong.dongxw.annotation.DateRewritable;
 import com.kunlong.dongxw.consts.ApiConstants;
@@ -33,7 +34,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(ApiConstants.AUTH_API_WEB_DONGXW+"/supplier")
-public final class SupplierController {
+public final class SupplierController extends BaseController{
     @Autowired
     SupplierService supplierService;
 
@@ -62,6 +63,8 @@ public final class SupplierController {
     public PageResult<Supplier> query(@RequestBody Supplier.QueryParam queryParam) throws IOException {
         PageResult<Supplier> pageResult = new PageResult<Supplier>();
         // Customer.QueryParam qp = BeanMapper.getInstance().map(pageResult, Customer.QueryParam.class);
+        Supplier s =  buildQueryLikeValue(queryParam.getParam(), Supplier.class);
+        queryParam.setParam(s);
 
         pageResult.setTotal(supplierService.countByQueryParam(queryParam));
         pageResult.setData(supplierService.findByQueryParam(queryParam));

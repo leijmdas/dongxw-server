@@ -13,7 +13,7 @@ import org.mybatis.hbatis.orm.criteria.support.query.SortOrders;
 /**
  * Supplier 供应商
  * @author generator
- * @date 2020年01月03日
+ * @date 2020年03月02日
  */
 @Table(Supplier.EntityNode.class)
 public class Supplier implements Serializable {
@@ -91,6 +91,13 @@ public class Supplier implements Serializable {
 	@Column(comment = "状态 ")	
 	@NotNull
 	private Integer status;
+	/**
+	  * 
+	  * nullable:false,length:4
+	  */
+	@Column(comment = "")	
+	@NotNull
+	private Integer type;
 	/**
 	  * 建档时间 
 	  * nullable:false,length:10
@@ -202,6 +209,12 @@ public class Supplier implements Serializable {
     public void setStatus(Integer status){
     	this.status = status;
     }
+    public Integer getType(){
+    	return this.type;
+    }
+    public void setType(Integer type){
+    	this.type = type;
+    }
     public Date getCreateDate(){
     	return this.createDate;
     }
@@ -269,6 +282,8 @@ public class Supplier implements Serializable {
         public FieldNode<Supplier, String> email =  createFieldNode("email","email",String.class,JdbcType.VARCHAR);
     	/** 状态  */
         public FieldNode<Supplier, Integer> status =  createFieldNode("status","status",Integer.class,JdbcType.INTEGER);
+    	/**  */
+        public FieldNode<Supplier, Integer> type =  createFieldNode("type","type",Integer.class,JdbcType.INTEGER);
     	/** 建档时间  */
         public FieldNode<Supplier, Date> createDate =  createFieldNode("createDate","create_date",Date.class,JdbcType.DATE);
     	/** 建档人  */

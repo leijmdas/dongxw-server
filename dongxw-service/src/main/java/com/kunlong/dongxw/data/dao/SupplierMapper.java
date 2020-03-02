@@ -7,7 +7,7 @@ import com.kunlong.dongxw.data.domain.Supplier;
 /**
  * SupplierMapper
  * @author generator
- * @date 2020年01月03日
+ * @date 2020年03月02日
  */
 public interface SupplierMapper extends HbatisMapper<Supplier, Integer> {
 	

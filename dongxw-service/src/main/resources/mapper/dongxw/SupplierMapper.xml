@@ -13,6 +13,7 @@
 	  	<result column="tel" property="tel" jdbcType="VARCHAR" />
 	  	<result column="email" property="email" jdbcType="VARCHAR" />
 	  	<result column="status" property="status" jdbcType="INTEGER" />
+	  	<result column="type" property="type" jdbcType="INTEGER" />
 	  	<result column="create_date" property="createDate" jdbcType="DATE" />
 	  	<result column="create_by" property="createBy" jdbcType="INTEGER" />
 	  	<result column="remark" property="remark" jdbcType="VARCHAR" />
@@ -33,6 +34,7 @@
 	  	<result column="s_tel" property="tel" jdbcType="VARCHAR" />
 	  	<result column="s_email" property="email" jdbcType="VARCHAR" />
 	  	<result column="s_status" property="status" jdbcType="INTEGER" />
+	  	<result column="s_type" property="type" jdbcType="INTEGER" />
 	  	<result column="s_create_date" property="createDate" jdbcType="DATE" />
 	  	<result column="s_create_by" property="createBy" jdbcType="INTEGER" />
 	  	<result column="s_remark" property="remark" jdbcType="VARCHAR" />
@@ -42,10 +44,10 @@
 	  	<result column="s_fax" property="fax" jdbcType="VARCHAR" />
     </resultMap>
     <sql id="Base_Column_List" >
-  		id,code,name,sname,country,addr,money_type,contact,tel,email,status,create_date,create_by,remark,business_license,env,intelligence,fax
+  		id,code,name,sname,country,addr,money_type,contact,tel,email,status,type,create_date,create_by,remark,business_license,env,intelligence,fax
 	</sql>
   	<sql id="Base_Column_List_Supplier" >
-  		s.id s_id,s.code s_code,s.name s_name,s.sname s_sname,s.country s_country,s.addr s_addr,s.money_type s_money_type,s.contact s_contact,s.tel s_tel,s.email s_email,s.status s_status,s.create_date s_create_date,s.create_by s_create_by,s.remark s_remark,s.business_license s_business_license,s.env s_env,s.intelligence s_intelligence,s.fax s_fax
+  		s.id s_id,s.code s_code,s.name s_name,s.sname s_sname,s.country s_country,s.addr s_addr,s.money_type s_money_type,s.contact s_contact,s.tel s_tel,s.email s_email,s.status s_status,s.type s_type,s.create_date s_create_date,s.create_by s_create_by,s.remark s_remark,s.business_license s_business_license,s.env s_env,s.intelligence s_intelligence,s.fax s_fax
 	</sql>
 	
 	<!-- 系统自定义 -->
@@ -90,6 +92,9 @@
 			<if test="p.status!=null ">
 		    	and s.status=#{p.status}
 		    </if>
+			<if test="p.type!=null ">
+		    	and s.type=#{p.type}
+		    </if>
 			<if test="p.createDate!=null ">
 		    	and s.create_date=#{p.createDate}
 		    </if>
@@ -122,13 +127,12 @@
 		<include refid="Base_Column_List_Supplier"></include>
 		from supplier s where 1=1
 		<include refid="Condition_FindByQueryParam"></include>
-		<!--<if test="queryParam.sortOrders!=null and queryParam.sortOrders.size() gt 0">-->
-			<!--order by -->
-			<!--<foreach collection="queryParam.sortOrders" item="item" separator=",">-->
-				<!--${item.sortField.sqlColumn} ${item.sortType}-->
-			<!--</foreach>-->
-		<!--</if>-->
-		order by id desc
+		<if test="queryParam.sortOrders!=null and queryParam.sortOrders.size() gt 0">
+			order by 
+			<foreach collection="queryParam.sortOrders" item="item" separator=",">
+				${item.sortField.sqlColumn} ${item.sortType}
+			</foreach>
+		</if>
 		<if test="queryParam.limit gt 0">
 	  		limit ${queryParam.start},${queryParam.limit}
 	  	</if>

@@ -9,7 +9,7 @@ import io.swagger.annotations.ApiModelProperty;
 /**
  * Supplier
  * @author generator
- * @date 2020年01月03日
+ * @date 2020年03月02日
  */
 @ApiModel(value="SupplierDTO",description="供应商")
 public class SupplierDTO implements Serializable {
@@ -81,6 +81,12 @@ public class SupplierDTO implements Serializable {
 	  */
 	@ApiModelProperty(value = "状态 ",required = true,notes = "状态  ")
 	private Integer status;
+	/**
+	  * 
+	  * nullable:false,length:4
+	  */
+	@ApiModelProperty(value = "",required = true,notes = " ")
+	private Integer type;
 	/**
 	  * 建档时间 
 	  * nullable:false,length:10
@@ -188,6 +194,12 @@ public class SupplierDTO implements Serializable {
     }
     public void setStatus(Integer status){
     	this.status = status;
+    }
+    public Integer getType(){
+    	return this.type;
+    }
+    public void setType(Integer type){
+    	this.type = type;
     }
     public Date getCreateDate(){
     	return this.createDate;
