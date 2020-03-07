@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kunlong.dongxw.data.dao.PurchaseOrderMapper" >
+	<resultMap id="BaseResultMap" type="com.kunlong.dongxw.data.domain.PurchaseOrder" >
+	    <id column="id" property="id" jdbcType="INTEGER" />	
+	  	<result column="order_id" property="orderId" jdbcType="INTEGER" />
+	  	<result column="supply_id" property="supplyId" jdbcType="INTEGER" />
+	  	<result column="contact" property="contact" jdbcType="VARCHAR" />
+	  	<result column="tel" property="tel" jdbcType="VARCHAR" />
+	  	<result column="money_type" property="moneyType" jdbcType="INTEGER" />
+	  	<result column="open_date" property="openDate" jdbcType="DATE" />
+	  	<result column="issue_date" property="issueDate" jdbcType="DATE" />
+	  	<result column="prd_flg" property="prdFlg" jdbcType="INTEGER" />
+	  	<result column="remark" property="remark" jdbcType="VARCHAR" />
+	  	<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	  	<result column="create_by" property="createBy" jdbcType="INTEGER" />
+    </resultMap>
+    <resultMap id="BaseResultMap_PurchaseOrder" type="com.kunlong.dongxw.data.domain.PurchaseOrder" >
+	    <id column="po_id" property="id" jdbcType="INTEGER" />	
+	  	<result column="po_order_id" property="orderId" jdbcType="INTEGER" />
+	  	<result column="po_supply_id" property="supplyId" jdbcType="INTEGER" />
+	  	<result column="po_contact" property="contact" jdbcType="VARCHAR" />
+	  	<result column="po_tel" property="tel" jdbcType="VARCHAR" />
+	  	<result column="po_money_type" property="moneyType" jdbcType="INTEGER" />
+	  	<result column="po_open_date" property="openDate" jdbcType="DATE" />
+	  	<result column="po_issue_date" property="issueDate" jdbcType="DATE" />
+	  	<result column="po_prd_flg" property="prdFlg" jdbcType="INTEGER" />
+	  	<result column="po_remark" property="remark" jdbcType="VARCHAR" />
+	  	<result column="po_create_time" property="createTime" jdbcType="TIMESTAMP" />
+	  	<result column="po_create_by" property="createBy" jdbcType="INTEGER" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+  		id,order_id,supply_id,contact,tel,money_type,open_date,issue_date,prd_flg,remark,create_time,create_by
+	</sql>
+  	<sql id="Base_Column_List_PurchaseOrder" >
+  		po.id po_id,po.order_id po_order_id,po.supply_id po_supply_id,po.contact po_contact,po.tel po_tel,po.money_type po_money_type,po.open_date po_open_date,po.issue_date po_issue_date,po.prd_flg po_prd_flg,po.remark po_remark,po.create_time po_create_time,po.create_by po_create_by
+	</sql>
+	
+	<!-- 系统自定义 -->
+	<!-- 实体参数查询结果[START] -->
+	<resultMap id="ResultMap_FindByQueryParam" type="com.kunlong.dongxw.data.domain.PurchaseOrder" extends="BaseResultMap_PurchaseOrder">
+		
+	</resultMap>
+
+	<sql id="Condition_FindByQueryParam">
+		<if test="queryParam.param!=null">
+			<bind name="p" value="queryParam.param"/>
+			<if test="p.id!=null ">
+		    	and po.id=#{p.id}
+		    </if>
+			<if test="p.orderId!=null ">
+		    	and po.order_id=#{p.orderId}
+		    </if>
+			<if test="p.supplyId!=null ">
+		    	and po.supply_id=#{p.supplyId}
+		    </if>
+			<if test="p.contact!=null and p.contact!=''">
+		    	and po.contact like #{p.contact}
+		    </if>
+			<if test="p.tel!=null and p.tel!=''">
+		    	and po.tel like #{p.tel}
+		    </if>
+			<if test="p.moneyType!=null ">
+		    	and po.money_type=#{p.moneyType}
+		    </if>
+			<if test="p.openDate!=null ">
+		    	and po.open_date=#{p.openDate}
+		    </if>
+			<if test="p.issueDate!=null ">
+		    	and po.issue_date=#{p.issueDate}
+		    </if>
+			<if test="p.prdFlg!=null ">
+		    	and po.prd_flg=#{p.prdFlg}
+		    </if>
+			<if test="p.remark!=null and p.remark!=''">
+		    	and po.remark like #{p.remark}
+		    </if>
+			<if test="p.createTime!=null ">
+		    	and po.create_time=#{p.createTime}
+		    </if>
+			<if test="p.createBy!=null ">
+		    	and po.create_by=#{p.createBy}
+		    </if>
+		</if>
+		<!--
+		<bind name="rp" value="queryParam.ruleParam" />
+		<include refid="org.mybatis.hbatis.orm.mapper.HbatisMapper.RuleParam"/>
+		-->
+	</sql>
+	<select id="findByQueryParam" resultMap="ResultMap_FindByQueryParam">
+		select
+		<include refid="Base_Column_List_PurchaseOrder"></include>
+		from purchase_order po where 1=1
+		<include refid="Condition_FindByQueryParam"></include>
+		<if test="queryParam.sortOrders!=null and queryParam.sortOrders.size() gt 0">
+			order by 
+			<foreach collection="queryParam.sortOrders" item="item" separator=",">
+				${item.sortField.sqlColumn} ${item.sortType}
+			</foreach>
+		</if>
+		<if test="queryParam.limit gt 0">
+	  		limit ${queryParam.start},${queryParam.limit}
+	  	</if>
+	</select>
+	<select id="countByQueryParam" resultType="long">
+		select count(1) from purchase_order po where 1=1
+		<include refid="Condition_FindByQueryParam"></include>
+	</select>
+	
+	<!-- 实体参数查询结果[END] -->
+	<!-- 用户自定义 -->
+	
+</mapper>

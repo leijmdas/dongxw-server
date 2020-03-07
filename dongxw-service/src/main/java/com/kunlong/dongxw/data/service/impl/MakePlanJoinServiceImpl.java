@@ -314,6 +314,8 @@ public class MakePlanJoinServiceImpl    implements MakePlanJoinService {
             row.put("planStart", KunlongUtils.transDate(makePlan.getPlanStart()));
             row.put("planFinish", KunlongUtils.transDate(makePlan.getPlanEnd()));
             row.put("realFinish", KunlongUtils.transDate(makePlan.getRealEnd()));
+            row.put("outFlag",MakePlanConst.getOutFlag(makePlan.getOutFlag()));
+
             row.put("memo", makePlan.getRemark());
 
             mapList.add(row);

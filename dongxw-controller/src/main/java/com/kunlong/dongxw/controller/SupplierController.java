@@ -2,7 +2,6 @@ package com.kunlong.dongxw.controller;
 
 
 import app.support.query.PageResult;
-import com.kunlong.dongxw.data.domain.ProductType;
 import com.kunlong.dubbo.api.service.AuthApiService;
 import com.kunlong.dongxw.annotation.DateRewritable;
 import com.kunlong.dongxw.consts.ApiConstants;
@@ -62,13 +61,12 @@ public final class SupplierController extends BaseController{
     @RequestMapping("/query")
     public PageResult<Supplier> query(@RequestBody Supplier.QueryParam queryParam) throws IOException {
         PageResult<Supplier> pageResult = new PageResult<Supplier>();
-        // Customer.QueryParam qp = BeanMapper.getInstance().map(pageResult, Customer.QueryParam.class);
-        Supplier s =  buildQueryLikeValue(queryParam.getParam(), Supplier.class);
-        queryParam.setParam(s);
-
+        if (queryParam.getParam() != null) {
+            Supplier s = buildQueryLikeValue(queryParam.getParam(), Supplier.class);
+            queryParam.setParam(s);
+        }
         pageResult.setTotal(supplierService.countByQueryParam(queryParam));
         pageResult.setData(supplierService.findByQueryParam(queryParam));
-        //System.err.println(authApiService.checkExists("1111"));
         return pageResult;
     }
 

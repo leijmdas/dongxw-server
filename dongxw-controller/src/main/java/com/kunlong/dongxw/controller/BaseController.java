@@ -70,8 +70,10 @@ public class BaseController {
 	public <T> T buildQueryLikeValue(T obj, Class<T> cls) {
 		JSONObject jsonObject = JSONObject.parseObject(KunlongUtils.toJSONString(obj));
 		for (String key : jsonObject.keySet()) {
-			if (jsonObject.get(key) instanceof String) {
-				jsonObject.put(key, "%" + jsonObject.get(key).toString() + "%");
+			if (jsonObject.get(key) != null) {
+				if (jsonObject.get(key) instanceof String) {
+					jsonObject.put(key, "%" + jsonObject.get(key).toString() + "%");
+				}
 			}
 		}
 		return JSON.toJavaObject(jsonObject, cls);
