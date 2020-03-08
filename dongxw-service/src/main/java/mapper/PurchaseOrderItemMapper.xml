@@ -4,6 +4,7 @@
 	<resultMap id="BaseResultMap" type="com.kunlong.dongxw.data.domain.PurchaseOrderItem" >
 	    <id column="id" property="id" jdbcType="INTEGER" />	
 	  	<result column="purchase_order_id" property="purchaseOrderId" jdbcType="INTEGER" />
+	  	<result column="make_plan_id" property="makePlanId" jdbcType="INTEGER" />
 	  	<result column="order_line_id" property="orderLineId" jdbcType="INTEGER" />
 	  	<result column="product_id" property="productId" jdbcType="INTEGER" />
 	  	<result column="qty" property="qty" jdbcType="DECIMAL" />
@@ -16,6 +17,7 @@
     <resultMap id="BaseResultMap_PurchaseOrderItem" type="com.kunlong.dongxw.data.domain.PurchaseOrderItem" >
 	    <id column="poi_id" property="id" jdbcType="INTEGER" />	
 	  	<result column="poi_purchase_order_id" property="purchaseOrderId" jdbcType="INTEGER" />
+	  	<result column="poi_make_plan_id" property="makePlanId" jdbcType="INTEGER" />
 	  	<result column="poi_order_line_id" property="orderLineId" jdbcType="INTEGER" />
 	  	<result column="poi_product_id" property="productId" jdbcType="INTEGER" />
 	  	<result column="poi_qty" property="qty" jdbcType="DECIMAL" />
@@ -26,10 +28,10 @@
 	  	<result column="poi_create_by" property="createBy" jdbcType="INTEGER" />
     </resultMap>
     <sql id="Base_Column_List" >
-  		id,purchase_order_id,order_line_id,product_id,qty,price,money,remark,create_date,create_by
+  		id,purchase_order_id,make_plan_id,order_line_id,product_id,qty,price,money,remark,create_date,create_by
 	</sql>
   	<sql id="Base_Column_List_PurchaseOrderItem" >
-  		poi.id poi_id,poi.purchase_order_id poi_purchase_order_id,poi.order_line_id poi_order_line_id,poi.product_id poi_product_id,poi.qty poi_qty,poi.price poi_price,poi.money poi_money,poi.remark poi_remark,poi.create_date poi_create_date,poi.create_by poi_create_by
+  		poi.id poi_id,poi.purchase_order_id poi_purchase_order_id,poi.make_plan_id poi_make_plan_id,poi.order_line_id poi_order_line_id,poi.product_id poi_product_id,poi.qty poi_qty,poi.price poi_price,poi.money poi_money,poi.remark poi_remark,poi.create_date poi_create_date,poi.create_by poi_create_by
 	</sql>
 	
 	<!-- 系统自定义 -->
@@ -46,6 +48,9 @@
 		    </if>
 			<if test="p.purchaseOrderId!=null ">
 		    	and poi.purchase_order_id=#{p.purchaseOrderId}
+		    </if>
+			<if test="p.makePlanId!=null ">
+		    	and poi.make_plan_id=#{p.makePlanId}
 		    </if>
 			<if test="p.orderLineId!=null ">
 		    	and poi.order_line_id=#{p.orderLineId}

@@ -14,10 +14,10 @@ import org.mybatis.hbatis.orm.criteria.support.query.SortOrders;
 /**
  * PurchaseOrderItem 采购清单
  * @author generator
- * @date 2020年03月07日
+ * @date 2020年03月08日
  */
 @Table(PurchaseOrderItem.EntityNode.class)
-public class PurchaseOrderItem implements Serializable {
+public class PurchaseOrderItem extends  PurchaseOrderItemBase implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	/**
@@ -34,6 +34,13 @@ public class PurchaseOrderItem implements Serializable {
 	@NotNull
 	private Integer purchaseOrderId;
 	/**
+	  *   生产计划产品标识 r
+	  * nullable:false,length:11
+	  */
+	@Column(comment = "  生产计划产品标识 r")	
+	@NotNull
+	private Integer makePlanId;
+	/**
 	  * 客户订单产品标识 r
 	  * nullable:false,length:11
 	  */
@@ -41,10 +48,10 @@ public class PurchaseOrderItem implements Serializable {
 	@NotNull
 	private Integer orderLineId;
 	/**
-	  * 客户产品 0成品100 200
+	  * 产品 0成品100 200
 	  * nullable:false,length:11
 	  */
-	@Column(comment = "客户产品 0成品100 200")	
+	@Column(comment = "产品 0成品100 200")	
 	@NotNull
 	private Integer productId;
 	/**
@@ -101,6 +108,12 @@ public class PurchaseOrderItem implements Serializable {
     public void setPurchaseOrderId(Integer purchaseOrderId){
     	this.purchaseOrderId = purchaseOrderId;
     }
+    public Integer getMakePlanId(){
+    	return this.makePlanId;
+    }
+    public void setMakePlanId(Integer makePlanId){
+    	this.makePlanId = makePlanId;
+    }
     public Integer getOrderLineId(){
     	return this.orderLineId;
     }
@@ -156,9 +169,11 @@ public class PurchaseOrderItem implements Serializable {
         public FieldNode<PurchaseOrderItem, Integer> id =  createFieldNode("id","id",Integer.class,JdbcType.INTEGER);
     	/** 采购订单主表 客户订单 */
         public FieldNode<PurchaseOrderItem, Integer> purchaseOrderId =  createFieldNode("purchaseOrderId","purchase_order_id",Integer.class,JdbcType.INTEGER);
+    	/**   生产计划产品标识 r */
+        public FieldNode<PurchaseOrderItem, Integer> makePlanId =  createFieldNode("makePlanId","make_plan_id",Integer.class,JdbcType.INTEGER);
     	/** 客户订单产品标识 r */
         public FieldNode<PurchaseOrderItem, Integer> orderLineId =  createFieldNode("orderLineId","order_line_id",Integer.class,JdbcType.INTEGER);
-    	/** 客户产品 0成品100 200 */
+    	/** 产品 0成品100 200 */
         public FieldNode<PurchaseOrderItem, Integer> productId =  createFieldNode("productId","product_id",Integer.class,JdbcType.INTEGER);
     	/** 数量  */
         public FieldNode<PurchaseOrderItem, BigDecimal> qty =  createFieldNode("qty","qty",BigDecimal.class,JdbcType.DECIMAL);

@@ -2,15 +2,17 @@ package com.kunlong.dongxw.controller;
 
 
 import app.support.query.PageResult;
+import cn.afterturn.easypoi.entity.ImageEntity;
 import com.kunlong.dongxw.annotation.DateRewritable;
-import com.kunlong.dongxw.config.DongxwTransactional;
 import com.kunlong.dongxw.consts.ApiConstants;
-import com.kunlong.dongxw.consts.MakePlanConst;
+import com.kunlong.dongxw.consts.MoneyTypeConsts;
 import com.kunlong.dongxw.data.domain.*;
 import com.kunlong.dongxw.data.service.*;
-import com.kunlong.dongxw.util.WebFileUtil;
+import com.kunlong.dongxw.util.EasyExcelUtil;
+import com.kunlong.dongxw.util.EasyPOIUtil;
 import com.kunlong.dubbo.sys.model.SysUserDTO;
 import com.kunlong.platform.utils.JsonResult;
+import com.kunlong.platform.utils.KunlongUtils;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +20,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.URLEncoder;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * cust类
@@ -54,15 +51,21 @@ public  class PurchaseOrderController extends BaseController {
     @Autowired
     PurchaseOrderService purchaseOrderService;
 
+    @Autowired
+    PurchaseOrderItemService purchaseOrderItemService;
 
 
     /**检查有计划*/
     @PostMapping("/deleteById/{id}")
     public JsonResult<Integer> deleteById(@PathVariable("id") Integer id) throws IOException {
+        PurchaseOrderItem.QueryParam queryParam=new PurchaseOrderItem.QueryParam();
+        queryParam.setParam(new PurchaseOrderItem());
+        queryParam.getParam().setPurchaseOrderId(id);
+        if(purchaseOrderItemService.countByQueryParam(queryParam)>0){
+            return JsonResult.failure(-1,"采购单有产品清单，不能直接删除！先删除产品清单！");
+        }
 
         purchaseOrderService.deleteById(id);
-
-
         return JsonResult.success();
     }
 
@@ -107,25 +110,84 @@ public  class PurchaseOrderController extends BaseController {
         return pageResult;
     }
 
+    String writePlan2File(String sheetName, PurchaseOrder purchaseOrder, String fileName) throws IOException {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("contact",purchaseOrder.getContact());
+        map.put("tel",purchaseOrder.getTel());
+        map.put("moneyType", MoneyTypeConsts.getMoneyType(purchaseOrder.getMoneyType()));
+        map.put("openDate",KunlongUtils.transDate(purchaseOrder.getOpenDate()));
+        map.put("issueDate",KunlongUtils.transDate(purchaseOrder.getIssueDate()));
+        map.put("pkgRemark",purchaseOrder.getRemark());
+
+        OrderMaster orderMaster=orderMasterService.findById(purchaseOrder.getOrderId());
+        if(orderMaster!=null){
+            sheetName = sheetName + orderMaster.getCustomerOrderCode();
+            map.put("orderCode",orderMaster.getEpOrderCode()+"("+orderMaster.getCustomerOrderCode()+")");
+        }
+        Supplier supplier=supplierService.findById(purchaseOrder.getSupplyId());
+        if(supplier!=null){
+            map.put("supplyName",supplier.getName());
+            map.put("supplyAddress",supplier.getAddr());
+            map.put("supplyContact",supplier.getContact());
+            map.put("supplyTel",supplier.getTel());
+
+        }
+
+
+        List<Map<String, Object>> mapList = new ArrayList<>();
+
+        for (PurchaseOrderItem orderItem : purchaseOrder.getOrderItems()) {
+            Map<String, Object> row = new LinkedHashMap<>();
+            Product product=productService.findById(orderItem.getProductId());
+            if(product!=null) {
+                row.put("epCode", product.getEpCode());
+                row.put("barCode", product.getBarCode());
+                row.put("productRemark", product.getRemark());
+                row.put("unit", product.getUnit());
+
+                if (product.getPicUrl() != null && !product.getPicUrl().trim().isEmpty()) {
+                    //ImageEntity image = new ImageEntity();
+                    //image.setHeight(100);
+                    //image.setWidth(120);
+                    //image.setUrl("l:/3.png");
+                    byte[] img = download(product.getPicUrl().trim());
+                    ImageEntity image = new ImageEntity(img, 120, 100);
+                    row.put("pic", image);
+                }
+            }
+            row.put("qty", orderItem.getQty());
+            row.put("price", orderItem.getPrice());
+            row.put("money", orderItem.getMoney());
+            row.put("remark", orderItem.getRemark());
+
+            mapList.add(row);
+        }
+        map.put("list", mapList);
+
+        return EasyPOIUtil.makeExcelSheet("pp_order_template.xlsx",fileName,sheetName,map);
+    }
 
     @RequestMapping(value="export",method = RequestMethod.POST)
     @ApiOperation(value = "export", notes = "export", authorizations = {@Authorization(value = ApiConstants.AUTH_API_WEB)})
-    public void export(@RequestBody @DateRewritable MakePlan.QueryParam queryParam, HttpServletRequest req, HttpServletResponse rsp) throws FileNotFoundException, IOException {
+    public JsonResult<Integer> export(@RequestBody @DateRewritable PurchaseOrder.QueryParam queryParam, HttpServletRequest req, HttpServletResponse rsp) throws Exception {
 
-        if(queryParam.getParam() == null) {
-            queryParam.setParam(new MakePlan());
+
+        PurchaseOrder purchaseOrder = purchaseOrderService.findById(queryParam.getParam().getId());
+        if(purchaseOrder==null){
+            return JsonResult.failure(-1,"无采购订单！");
         }
-        queryParam.setLimit(3000);
-        queryParam.setStart(0);
-        queryParam.setSortBys("customerId|asc,orderId|asc");
+        PurchaseOrderItem.QueryParam param = new PurchaseOrderItem.QueryParam();
+        param.setParam(new PurchaseOrderItem());
+        param.getParam().setPurchaseOrderId(queryParam.getParam().getId());
+        param.setLimit(-1);
+        List<PurchaseOrderItem> orderItems = purchaseOrderItemService.findByQueryParam(param);
+        purchaseOrder.setOrderItems(orderItems);
 
-        WebFileUtil web = new WebFileUtil(req,rsp);
-//        List<MakePlan> makePlans = this.makePlanService.findByQueryParam(queryParam);
-//        fillMakePlans(makePlans);
-//        rsp.setHeader("file",URLEncoder.encode(  "生产计划表.xlsx","UTF-8"));
-//
-//        web.export2EasyExcelObject("生产计划表.xlsx", buildTitles(),buildRecords(makePlans));
+        String fnNew = writePlan2File("采购订单", purchaseOrder, "采购订单.xlsx");
+        OrderMaster orderMaster=orderMasterService.findById(purchaseOrder.getOrderId());
 
+        EasyExcelUtil.writeExcel2Response("采购订单"+orderMaster.getEpOrderCode()+".xlsx", rsp, fnNew);
+        return JsonResult.success();
     }
 
 

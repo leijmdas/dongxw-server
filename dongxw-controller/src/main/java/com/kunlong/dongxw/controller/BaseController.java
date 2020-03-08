@@ -3,6 +3,7 @@ package com.kunlong.dongxw.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.kunlong.dongxw.util.EasyPOIUtil;
+import com.kunlong.dubbo.api.service.FileApiService;
 import com.kunlong.dubbo.sys.model.SysUserDTO;
 import com.kunlong.dubbo.sys.service.SysUserApiService;
 import com.kunlong.dubbo.api.service.AuthApiService;
@@ -22,7 +23,27 @@ import java.util.Date;
 import java.util.Map;
 
 public class BaseController {
+	public static String group_NAME1="group1";
+	byte[] download(String path){
+		String[] paths = getFastDfsFileNames( path );
+		String group = paths[0];
+		String remoteFileName = paths[1];
+		//String specFileName = remoteFileName.substring(remoteFileName.lastIndexOf("/") + 1);
+
+		byte[] img = fileApiService.download(group, remoteFileName);
+		return img;
+	}
+
+	String[] getFastDfsFileNames(String path) {
+		String substr = path.substring(path.indexOf("group"));
+		String group = substr.split("/")[0];
+		String remoteFileName = substr.substring(substr.indexOf("/") + 1);
+		return new String[] {group,remoteFileName};
+	}
+
 	protected final Logger logger = LoggerFactory.getLogger(getClass());
+	@Reference(lazy = true, version = "${dubbo.service.version}")
+	protected FileApiService fileApiService;
 
 	@Reference(lazy = true, version = "${dubbo.service.version}")
 	MailApiService mailApiService;

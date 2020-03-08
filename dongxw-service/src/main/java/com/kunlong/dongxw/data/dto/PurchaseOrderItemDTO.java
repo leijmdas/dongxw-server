@@ -10,7 +10,7 @@ import io.swagger.annotations.ApiModelProperty;
 /**
  * PurchaseOrderItem
  * @author generator
- * @date 2020年03月07日
+ * @date 2020年03月08日
  */
 @ApiModel(value="PurchaseOrderItemDTO",description="采购清单")
 public class PurchaseOrderItemDTO implements Serializable {
@@ -29,16 +29,22 @@ public class PurchaseOrderItemDTO implements Serializable {
 	@ApiModelProperty(value = "采购订单主表 客户订单",required = true,notes = "采购订单主表 客户订单 ")
 	private Integer purchaseOrderId;
 	/**
+	  *   生产计划产品标识 r
+	  * nullable:false,length:11
+	  */
+	@ApiModelProperty(value = "  生产计划产品标识 r",required = true,notes = "  生产计划产品标识 r ")
+	private Integer makePlanId;
+	/**
 	  * 客户订单产品标识 r
 	  * nullable:false,length:11
 	  */
 	@ApiModelProperty(value = "客户订单产品标识 r",required = true,notes = "客户订单产品标识 r ")
 	private Integer orderLineId;
 	/**
-	  * 客户产品 0成品100 200
+	  * 产品 0成品100 200
 	  * nullable:false,length:11
 	  */
-	@ApiModelProperty(value = "客户产品 0成品100 200",required = true,notes = "客户产品 0成品100 200 ")
+	@ApiModelProperty(value = "产品 0成品100 200",required = true,notes = "产品 0成品100 200 ")
 	private Integer productId;
 	/**
 	  * 数量 
@@ -87,6 +93,12 @@ public class PurchaseOrderItemDTO implements Serializable {
     }
     public void setPurchaseOrderId(Integer purchaseOrderId){
     	this.purchaseOrderId = purchaseOrderId;
+    }
+    public Integer getMakePlanId(){
+    	return this.makePlanId;
+    }
+    public void setMakePlanId(Integer makePlanId){
+    	this.makePlanId = makePlanId;
     }
     public Integer getOrderLineId(){
     	return this.orderLineId;
