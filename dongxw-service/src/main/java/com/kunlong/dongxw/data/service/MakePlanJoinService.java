@@ -1,9 +1,6 @@
 package com.kunlong.dongxw.data.service;
 
-import com.kunlong.dongxw.data.domain.MakePlan;
-import com.kunlong.dongxw.data.domain.MakeSheet;
-import com.kunlong.dongxw.data.domain.OrderLine;
-import com.kunlong.dongxw.data.domain.OrderMaster;
+import com.kunlong.dongxw.data.domain.*;
 import com.kunlong.dubbo.sys.model.SysUserDTO;
 
 import java.io.IOException;
@@ -33,5 +30,6 @@ public interface MakePlanJoinService {
     void fillMakePlan(MakePlan makePlan);
 
     void fillMakePlans(List<MakePlan> makePlans);
+    void fillVMakePlans(List<VOrderPlan> makePlans);
 
 }

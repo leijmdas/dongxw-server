@@ -30,6 +30,9 @@ import java.util.*;
 @RequestMapping("/dongxw/makeplan")
 public  class MakePlanController extends BaseController {
     @Autowired
+    VOrderPlanService vOrderPlanService;
+
+    @Autowired
     MakePlanJoinService makePlanJoinService;
     @Autowired
     MakePlanService makePlanService;
@@ -137,6 +140,16 @@ public  class MakePlanController extends BaseController {
         return JsonResult.success(makePlan.getId());
     }
 
+    @PostMapping("/queryOrderPlan")
+    public PageResult<VOrderPlan> queryOrderPlan(@RequestBody VOrderPlan.QueryParam queryParam) throws IOException {
+        PageResult<VOrderPlan> pageResult = new PageResult<VOrderPlan>();
+
+        queryParam.setSortBys("id|desc");
+        pageResult.setTotal(vOrderPlanService.countByQueryParam(queryParam));
+        pageResult.setData(vOrderPlanService.findByQueryParam(queryParam));
+        makePlanJoinService.fillVMakePlans(pageResult.getData());
+        return pageResult;
+    }
 
     @PostMapping("/query")
     public PageResult<MakePlan> query(@RequestBody MakePlan.QueryParam queryParam) throws IOException {

@@ -3,27 +3,27 @@ package com.kunlong.dongxw.data.service.impl;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.kunlong.dongxw.data.domain.PurchaseOrderItem;
-import com.kunlong.dongxw.data.dao.PurchaseOrderItemMapper;
-import com.kunlong.dongxw.data.service.PurchaseOrderItemService;
+import com.kunlong.dongxw.data.domain.VOrderPlan;
+import com.kunlong.dongxw.data.dao.VOrderPlanMapper;
+import com.kunlong.dongxw.data.service.VOrderPlanService;
 import org.mybatis.hbatis.orm.criteria.statement.SelectStatement;
 import org.mybatis.hbatis.orm.criteria.statement.UpdateStatement;
 import org.mybatis.hbatis.orm.criteria.support.StatementBuilder;
 /**
- * PurchaseOrderItemServiceImpl
+ * VOrderPlanServiceImpl
  * @author generator
  * @date 2020年03月21日
  */
 @Service
-public class PurchaseOrderItemServiceImpl implements PurchaseOrderItemService {
+public class VOrderPlanServiceImpl implements VOrderPlanService {
 	
 	@Autowired
-	private PurchaseOrderItemMapper repo;
+	private VOrderPlanMapper repo;
 	/**
 	 * 保存
 	 * @param entity
 	 */
-	public void save(PurchaseOrderItem entity){
+	public void save(VOrderPlan entity){
 		this.checkEntity(entity);
 		repo.insert(entity);
 	}
@@ -32,7 +32,7 @@ public class PurchaseOrderItemServiceImpl implements PurchaseOrderItemService {
 	 * 修改
 	 * @param entity
 	 */
-	public void update(PurchaseOrderItem entity){
+	public void update(VOrderPlan entity){
 		this.checkEntity(entity);
 		repo.update(entity);
 	}
@@ -40,7 +40,7 @@ public class PurchaseOrderItemServiceImpl implements PurchaseOrderItemService {
 	 * 较验实体
 	 * @param entity
 	 */
-	public void checkEntity(PurchaseOrderItem entity){
+	public void checkEntity(VOrderPlan entity){
 	
 	}
 	/**
@@ -56,44 +56,44 @@ public class PurchaseOrderItemServiceImpl implements PurchaseOrderItemService {
 	 * @param id
 	 * @return
 	 */
-	public PurchaseOrderItem findById(Integer pk){
+	public VOrderPlan findById(Integer pk){
 		return repo.selectByPK(pk);
 	}
 	/**
 	 * 通过非空属性查询
-	 * @param PurchaseOrderItem
+	 * @param VOrderPlan
 	 * @return
 	 */
-	public List<PurchaseOrderItem> findByNotNullProps(PurchaseOrderItem entity){
+	public List<VOrderPlan> findByNotNullProps(VOrderPlan entity){
 		
-		SelectStatement<PurchaseOrderItem> st = StatementBuilder.buildSelectSelective(entity);
+		SelectStatement<VOrderPlan> st = StatementBuilder.buildSelectSelective(entity);
 		return repo.selectByStatement(st);
 	}
 	/**
 	 * 通过主键更新非空属性
-	 * @param PurchaseOrderItem
+	 * @param VOrderPlan
 	 * @return
 	 */
-	public void updateNotNullPropsById(PurchaseOrderItem entity){
+	public void updateNotNullPropsById(VOrderPlan entity){
 		
-		UpdateStatement<PurchaseOrderItem> st = StatementBuilder.buildUpdateSelective(entity);
+		UpdateStatement<VOrderPlan> st = StatementBuilder.buildUpdateSelective(entity);
 		repo.updateByStatement(st);
 	}
 	
 	/**
 	 * 通过实体参数分页查询
-	 * @param PurchaseOrderItem.QueryParam
+	 * @param VOrderPlan.QueryParam
 	 * @return
 	 */
-	public List<PurchaseOrderItem> findByQueryParam(PurchaseOrderItem.QueryParam queryParam){
+	public List<VOrderPlan> findByQueryParam(VOrderPlan.QueryParam queryParam){
 		return repo.findByQueryParam(queryParam);
 	}
 	/**
 	 * 通过实体参数统计
-	 * @param PurchaseOrderItem.QueryParam
+	 * @param VOrderPlan.QueryParam
 	 * @return
 	 */
-	public long countByQueryParam(PurchaseOrderItem.QueryParam queryParam) {
+	public long countByQueryParam(VOrderPlan.QueryParam queryParam) {
 		return repo.countByQueryParam(queryParam);
 	}
 	/**
@@ -101,13 +101,13 @@ public class PurchaseOrderItemServiceImpl implements PurchaseOrderItemService {
 	 * @param List<Integer> pks
 	 * @return
 	 */
-	public List<PurchaseOrderItem> findByIds(List<Integer> pks) {
+	public List<VOrderPlan> findByIds(List<Integer> pks) {
 		return repo.selectByPKS(pks);
 	}
 	/**
 	 * 值填充
 	 */
-	public void fillValues(List<PurchaseOrderItem> items, PurchaseOrderItem.ValueField... field) {
+	public void fillValues(List<VOrderPlan> items, VOrderPlan.ValueField... field) {
 		if (items == null || items.isEmpty() || field.length < 1) {
 			return;
 		}

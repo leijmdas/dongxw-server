@@ -7,7 +7,7 @@ import com.kunlong.dongxw.data.domain.PurchaseOrderItem;
 /**
  * PurchaseOrderItemMapper
  * @author generator
- * @date 2020年03月08日
+ * @date 2020年03月21日
  */
 public interface PurchaseOrderItemMapper extends HbatisMapper<PurchaseOrderItem, Integer> {
 	

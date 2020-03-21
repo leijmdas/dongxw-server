@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kunlong.dongxw.data.dao.VOrderPlanMapper" >
+	<resultMap id="BaseResultMap" type="com.kunlong.dongxw.data.domain.VOrderPlan" >
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="customer_order_code" property="customerOrderCode" jdbcType="VARCHAR" />
+	  	<result column="ep_order_code" property="epOrderCode" jdbcType="VARCHAR" />
+	  	<result column="order_status" property="orderStatus" jdbcType="INTEGER" />
+	  	<result column="customer_id" property="customerId" jdbcType="INTEGER" />
+	  	<result column="order_id" property="orderId" jdbcType="INTEGER" />
+	  	<result column="order_line_id" property="orderLineId" jdbcType="INTEGER" />
+	  	<result column="out_flag" property="outFlag" jdbcType="INTEGER" />
+	  	<result column="order_date" property="orderDate" jdbcType="DATE" />
+	  	<result column="out_prepare_rm" property="outPrepareRm" jdbcType="SMALLINT" />
+	  	<result column="issue_date" property="issueDate" jdbcType="DATE" />
+	  	<result column="rm_date" property="rmDate" jdbcType="DATE" />
+	  	<result column="pkg_date" property="pkgDate" jdbcType="DATE" />
+	  	<result column="plan_start" property="planStart" jdbcType="DATE" />
+	  	<result column="plan_end" property="planEnd" jdbcType="DATE" />
+	  	<result column="real_end" property="realEnd" jdbcType="DATE" />
+	  	<result column="finish_flag" property="finishFlag" jdbcType="INTEGER" />
+	  	<result column="status" property="status" jdbcType="INTEGER" />
+	  	<result column="remark" property="remark" jdbcType="VARCHAR" />
+	  	<result column="create_date" property="createDate" jdbcType="DATE" />
+	  	<result column="create_by" property="createBy" jdbcType="INTEGER" />
+    </resultMap>
+
+    <resultMap id="BaseResultMap_VOrderPlan" type="com.kunlong.dongxw.data.domain.VOrderPlan" >
+		<id column="vop_id" property="id" jdbcType="INTEGER" />
+
+		<result column="vop_customer_order_code" property="customerOrderCode" jdbcType="VARCHAR" />
+	  	<result column="vop_ep_order_code" property="epOrderCode" jdbcType="VARCHAR" />
+	  	<result column="vop_order_status" property="orderStatus" jdbcType="INTEGER" />
+	  	<result column="vop_customer_id" property="customerId" jdbcType="INTEGER" />
+	  	<result column="vop_order_id" property="orderId" jdbcType="INTEGER" />
+	  	<result column="vop_order_line_id" property="orderLineId" jdbcType="INTEGER" />
+	  	<result column="vop_out_flag" property="outFlag" jdbcType="INTEGER" />
+	  	<result column="vop_order_date" property="orderDate" jdbcType="DATE" />
+	  	<result column="vop_out_prepare_rm" property="outPrepareRm" jdbcType="SMALLINT" />
+	  	<result column="vop_issue_date" property="issueDate" jdbcType="DATE" />
+	  	<result column="vop_rm_date" property="rmDate" jdbcType="DATE" />
+	  	<result column="vop_pkg_date" property="pkgDate" jdbcType="DATE" />
+	  	<result column="vop_plan_start" property="planStart" jdbcType="DATE" />
+	  	<result column="vop_plan_end" property="planEnd" jdbcType="DATE" />
+	  	<result column="vop_real_end" property="realEnd" jdbcType="DATE" />
+	  	<result column="vop_finish_flag" property="finishFlag" jdbcType="INTEGER" />
+	  	<result column="vop_status" property="status" jdbcType="INTEGER" />
+	  	<result column="vop_remark" property="remark" jdbcType="VARCHAR" />
+	  	<result column="vop_create_date" property="createDate" jdbcType="DATE" />
+	  	<result column="vop_create_by" property="createBy" jdbcType="INTEGER" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+  		customer_order_code,ep_order_code,order_status,id,customer_id,order_id,order_line_id,out_flag,order_date,out_prepare_rm,issue_date,rm_date,pkg_date,plan_start,plan_end,real_end,finish_flag,status,remark,create_date,create_by
+	</sql>
+  	<sql id="Base_Column_List_VOrderPlan" >
+  		vop.customer_order_code vop_customer_order_code,vop.ep_order_code vop_ep_order_code,vop.order_status vop_order_status,vop.id vop_id,vop.customer_id vop_customer_id,vop.order_id vop_order_id,vop.order_line_id vop_order_line_id,vop.out_flag vop_out_flag,vop.order_date vop_order_date,vop.out_prepare_rm vop_out_prepare_rm,vop.issue_date vop_issue_date,vop.rm_date vop_rm_date,vop.pkg_date vop_pkg_date,vop.plan_start vop_plan_start,vop.plan_end vop_plan_end,vop.real_end vop_real_end,vop.finish_flag vop_finish_flag,vop.status vop_status,vop.remark vop_remark,vop.create_date vop_create_date,vop.create_by vop_create_by
+	</sql>
+	
+	<!-- 系统自定义 -->
+	<!-- 实体参数查询结果[START] -->
+	<resultMap id="ResultMap_FindByQueryParam" type="com.kunlong.dongxw.data.domain.VOrderPlan" extends="BaseResultMap_VOrderPlan">
+		
+	</resultMap>
+
+	<sql id="Condition_FindByQueryParam">
+		<if test="queryParam.param!=null">
+			<bind name="p" value="queryParam.param"/>
+			<if test="p.customerOrderCode!=null and p.customerOrderCode!=''">
+		    	and vop.customer_order_code like #{p.customerOrderCode}
+		    </if>
+			<if test="p.epOrderCode!=null and p.epOrderCode!=''">
+		    	and vop.ep_order_code like #{p.epOrderCode}
+		    </if>
+			<if test="p.orderStatus!=null ">
+		    	and vop.order_status=#{p.orderStatus}
+		    </if>
+			<if test="p.id!=null ">
+		    	and vop.id=#{p.id}
+		    </if>
+			<if test="p.customerId!=null ">
+		    	and vop.customer_id=#{p.customerId}
+		    </if>
+			<if test="p.orderId!=null ">
+		    	and vop.order_id=#{p.orderId}
+		    </if>
+			<if test="p.orderLineId!=null ">
+		    	and vop.order_line_id=#{p.orderLineId}
+		    </if>
+			<if test="p.outFlag!=null ">
+		    	and vop.out_flag=#{p.outFlag}
+		    </if>
+			<if test="p.orderDate!=null ">
+		    	and vop.order_date=#{p.orderDate}
+		    </if>
+			<if test="p.outPrepareRm!=null ">
+		    	and vop.out_prepare_rm=#{p.outPrepareRm}
+		    </if>
+			<if test="p.issueDate!=null ">
+		    	and vop.issue_date=#{p.issueDate}
+		    </if>
+			<if test="p.rmDate!=null ">
+		    	and vop.rm_date=#{p.rmDate}
+		    </if>
+			<if test="p.pkgDate!=null ">
+		    	and vop.pkg_date=#{p.pkgDate}
+		    </if>
+			<if test="p.planStart!=null ">
+		    	and vop.plan_start=#{p.planStart}
+		    </if>
+			<if test="p.planEnd!=null ">
+		    	and vop.plan_end=#{p.planEnd}
+		    </if>
+			<if test="p.realEnd!=null ">
+		    	and vop.real_end=#{p.realEnd}
+		    </if>
+			<if test="p.finishFlag!=null ">
+		    	and vop.finish_flag=#{p.finishFlag}
+		    </if>
+			<if test="p.status!=null ">
+		    	and vop.status=#{p.status}
+		    </if>
+			<if test="p.remark!=null and p.remark!=''">
+		    	and vop.remark like #{p.remark}
+		    </if>
+			<if test="p.createDate!=null ">
+		    	and vop.create_date=#{p.createDate}
+		    </if>
+			<if test="p.createBy!=null ">
+		    	and vop.create_by=#{p.createBy}
+		    </if>
+		</if>
+		<!--
+		<bind name="rp" value="queryParam.ruleParam" />
+		<include refid="org.mybatis.hbatis.orm.mapper.HbatisMapper.RuleParam"/>
+		-->
+		<if test="queryParam.dateRanges!=null">
+			<bind name="dr" value="queryParam.dateRanges"/>
+			<bind name="orderDate" value="dr['orderDate']"/>
+			<bind name="issueDate" value="dr['issueDate']"/>
+			<bind name="rmDate" value="dr['rmDate']"/>
+			<bind name="pkgDate" value="dr['pkgDate']"/>
+			<if test="orderDate!=null"> <!-- 按创建时间 -->
+				<if test="orderDate.startDate!=null">
+					and vop.order_date <![CDATA[>=]]> #{orderDate.startDate}
+				</if>
+				<if test="dr['orderDate'].endDate!=null">
+					and vop.order_date <![CDATA[<=]]> #{orderDate.endDate}
+				</if>
+			</if>
+
+			<if test="issueDate!=null"> <!-- 按创建时间 -->
+				<if test="issueDate.startDate!=null">
+					and vop.issue_date <![CDATA[>=]]> #{issueDate.startDate}
+				</if>
+				<if test="dr['issueDate'].endDate!=null">
+					and vop.issue_date <![CDATA[<=]]> #{issueDate.endDate}
+				</if>
+			</if>
+			<if test="rmDate!=null"> <!-- 按创建时间 -->
+				<if test="rmDate.startDate!=null">
+					and vop.rm_date <![CDATA[>=]]> #{rmDate.startDate}
+				</if>
+				<if test="dr['rmDate'].endDate!=null">
+					and vop.rm_date <![CDATA[<=]]> #{rmDate.endDate}
+				</if>
+			</if>
+			<if test="pkgDate!=null"> <!-- 按创建时间 -->
+				<if test="pkgDate.startDate!=null">
+					and vop.pkg_date <![CDATA[>=]]> #{pkgDate.startDate}
+				</if>
+				<if test="dr['pkgDate'].endDate!=null">
+					and vop.pkg_date <![CDATA[<=]]> #{pkgDate.endDate}
+				</if>
+			</if>
+
+
+		</if>
+	</sql>
+	<select id="findByQueryParam" resultMap="ResultMap_FindByQueryParam">
+		select
+		<include refid="Base_Column_List_VOrderPlan"></include>
+		from v_order_plan vop where 1=1
+		<include refid="Condition_FindByQueryParam"></include>
+		<if test="queryParam.sortOrders!=null and queryParam.sortOrders.size() gt 0">
+			order by 
+			<foreach collection="queryParam.sortOrders" item="item" separator=",">
+				${item.sortField.sqlColumn} ${item.sortType}
+			</foreach>
+		</if>
+		<if test="queryParam.limit gt 0">
+	  		limit ${queryParam.start},${queryParam.limit}
+	  	</if>
+	</select>
+	<select id="countByQueryParam" resultType="long">
+		select count(1) from v_order_plan vop where 1=1
+		<include refid="Condition_FindByQueryParam"></include>
+	</select>
+	
+	<!-- 实体参数查询结果[END] -->
+	<!-- 用户自定义 -->
+	
+</mapper>

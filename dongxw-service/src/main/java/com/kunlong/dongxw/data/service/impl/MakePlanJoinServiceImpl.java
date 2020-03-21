@@ -225,11 +225,13 @@ public class MakePlanJoinServiceImpl    implements MakePlanJoinService {
                     List<Bom> boms = bomJoinService.queryBomByProduct(orderLine.getProductId());
                     for (Bom bom : boms) {
                         logger.debug("makePurchasePlanByOrder bom:{}", bom.toString());
-                        if (!checkExistsPpByPlan(makePlan.getId(), bom.getChildId())) {
-                            logger.debug("makePurchasePlanByOrder makePlan:{}", makePlan);
-                            PurchasePlan purchasePlan = copy2PurchasePlan(makePlan, bom, sysUserId, orderLine);
-                            purchasePlanService.save(purchasePlan);
+                        if(bom.getChildId()>0) {
+                            if (!checkExistsPpByPlan(makePlan.getId(), bom.getChildId())) {
+                                logger.debug("makePurchasePlanByOrder makePlan:{}", makePlan);
+                                PurchasePlan purchasePlan = copy2PurchasePlan(makePlan, bom, sysUserId, orderLine);
+                                purchasePlanService.save(purchasePlan);
 
+                            }
                         }
                     }
                 }
@@ -343,6 +345,24 @@ public class MakePlanJoinServiceImpl    implements MakePlanJoinService {
         for (MakePlan makePlan : makePlans) {
             fillMakePlan(makePlan);
         }
+    }
+
+    public void fillVMakePlans(List<VOrderPlan> makePlans){
+        for (VOrderPlan makePlan : makePlans) {
+            fillMakePlan(makePlan);
+        }
+    }
+    public void fillMakePlan(VOrderPlan makePlan) {
+        OrderLine orderLine = orderLineService.findById(makePlan.getOrderLineId());
+        if (orderLine != null) {
+            makePlan.setCustomer(customerService.findById(orderLine.getCustomerId()));
+            OrderMaster orderMaster = orderMasterService.findById(orderLine.getOrderId());
+            makePlan.setOrderMaster(orderMaster);
+            makePlan.setOrderLine(orderLine);
+            makePlan.setProduct(productService.findById(orderLine.getProductId()));
+        }
+        SysUserDTO sysUserDTO = sysUserApiService.findById(makePlan.getCreateBy());
+        makePlan.setCreateByName(sysUserDTO == null ? "-" : sysUserDTO.getUsername());
     }
 }
 

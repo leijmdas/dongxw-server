@@ -200,7 +200,7 @@ public class PurchasePlan extends PurchasePlanBase implements Serializable {
 	  */
 	@Column(comment = "来源 0--采购1--生产")	
 	@NotNull
-	private Byte source;
+	private Boolean source;
 	/**
 	  * 物料到位日期 
 	  * nullable:true,length:10
@@ -369,10 +369,10 @@ public class PurchasePlan extends PurchasePlanBase implements Serializable {
     public void setDepth(Short depth){
     	this.depth = depth;
     }
-    public Byte getSource(){
+    public Boolean getSource(){
     	return this.source;
     }
-    public void setSource(Byte source){
+    public void setSource(Boolean source){
     	this.source = source;
     }
     public Date getRmDate(){

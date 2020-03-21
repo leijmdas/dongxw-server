@@ -14,10 +14,10 @@ import org.mybatis.hbatis.orm.criteria.support.query.SortOrders;
 /**
  * PurchaseOrderItem 采购清单
  * @author generator
- * @date 2020年03月08日
+ * @date 2020年03月21日
  */
 @Table(PurchaseOrderItem.EntityNode.class)
-public class PurchaseOrderItem extends  PurchaseOrderItemBase implements Serializable {
+public class PurchaseOrderItem extends PurchaseOrderItemBase implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	/**

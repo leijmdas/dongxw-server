@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kunlong.dongxw.data.dao.VRmTypeMapper" >
+	<resultMap id="BaseResultMap" type="com.kunlong.dongxw.data.domain.VRmType" >
+	    <id column="id" property="id" jdbcType="INTEGER" />	
+	  	<result column="active" property="active" jdbcType="TINYINT" />
+	  	<result column="code" property="code" jdbcType="VARCHAR" />
+	  	<result column="name" property="name" jdbcType="VARCHAR" />
+	  	<result column="parent_id" property="parentId" jdbcType="INTEGER" />
+	  	<result column="prd_flag" property="prdFlag" jdbcType="INTEGER" />
+	  	<result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+    <resultMap id="BaseResultMap_VRmType" type="com.kunlong.dongxw.data.domain.VRmType" >
+	    <id column="vrt_id" property="id" jdbcType="INTEGER" />	
+	  	<result column="vrt_active" property="active" jdbcType="TINYINT" />
+	  	<result column="vrt_code" property="code" jdbcType="VARCHAR" />
+	  	<result column="vrt_name" property="name" jdbcType="VARCHAR" />
+	  	<result column="vrt_parent_id" property="parentId" jdbcType="INTEGER" />
+	  	<result column="vrt_prd_flag" property="prdFlag" jdbcType="INTEGER" />
+	  	<result column="vrt_remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+  		id,active,code,name,parent_id,prd_flag,remark
+	</sql>
+  	<sql id="Base_Column_List_VRmType" >
+  		vrt.id vrt_id,vrt.active vrt_active,vrt.code vrt_code,vrt.name vrt_name,vrt.parent_id vrt_parent_id,vrt.prd_flag vrt_prd_flag,vrt.remark vrt_remark
+	</sql>
+	
+	<!-- 系统自定义 -->
+	<!-- 实体参数查询结果[START] -->
+	<resultMap id="ResultMap_FindByQueryParam" type="com.kunlong.dongxw.data.domain.VRmType" extends="BaseResultMap_VRmType">
+		
+	</resultMap>
+
+	<sql id="Condition_FindByQueryParam">
+		<if test="queryParam.param!=null">
+			<bind name="p" value="queryParam.param"/>
+			<if test="p.id!=null ">
+		    	and vrt.id=#{p.id}
+		    </if>
+			<if test="p.active!=null ">
+		    	and vrt.active=#{p.active}
+		    </if>
+			<if test="p.code!=null and p.code!=''">
+		    	and vrt.code like #{p.code}
+		    </if>
+			<if test="p.name!=null and p.name!=''">
+		    	and vrt.name like #{p.name}
+		    </if>
+			<if test="p.parentId!=null ">
+		    	and vrt.parent_id=#{p.parentId}
+		    </if>
+			<if test="p.prdFlag!=null ">
+		    	and vrt.prd_flag=#{p.prdFlag}
+		    </if>
+			<if test="p.remark!=null and p.remark!=''">
+		    	and vrt.remark like #{p.remark}
+		    </if>
+		</if>
+		<!--
+		<bind name="rp" value="queryParam.ruleParam" />
+		<include refid="org.mybatis.hbatis.orm.mapper.HbatisMapper.RuleParam"/>
+		-->
+	</sql>
+	<select id="findByQueryParam" resultMap="ResultMap_FindByQueryParam">
+		select
+		<include refid="Base_Column_List_VRmType"></include>
+		from v_rm_type vrt where 1=1
+		<include refid="Condition_FindByQueryParam"></include>
+		<if test="queryParam.sortOrders!=null and queryParam.sortOrders.size() gt 0">
+			order by 
+			<foreach collection="queryParam.sortOrders" item="item" separator=",">
+				${item.sortField.sqlColumn} ${item.sortType}
+			</foreach>
+		</if>
+		<if test="queryParam.limit gt 0">
+	  		limit ${queryParam.start},${queryParam.limit}
+	  	</if>
+	</select>
+	<select id="countByQueryParam" resultType="long">
+		select count(1) from v_rm_type vrt where 1=1
+		<include refid="Condition_FindByQueryParam"></include>
+	</select>
+	
+	<!-- 实体参数查询结果[END] -->
+	<!-- 用户自定义 -->
+	
+</mapper>
