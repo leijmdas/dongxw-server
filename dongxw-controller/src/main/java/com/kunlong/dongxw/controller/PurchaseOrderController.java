@@ -82,6 +82,7 @@ public  class PurchaseOrderController extends BaseController {
         purchaseOrder.setCreateBy(this.getCurrentUserId());
 
         if (purchaseOrder.getId() == null) {
+            purchaseOrder.setPurchaseOrderCode("EP-"+System.currentTimeMillis());
             purchaseOrderService.save(purchaseOrder);
         } else {
             purchaseOrderService.update(purchaseOrder);

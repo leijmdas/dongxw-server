@@ -9,9 +9,9 @@ import io.swagger.annotations.ApiModelProperty;
 /**
  * PurchaseOrder
  * @author generator
- * @date 2020年03月07日
+ * @date 2020年04月05日
  */
-@ApiModel(value="PurchaseOrderDTO",description="采购单")
+@ApiModel(value="PurchaseOrderDTO",description="采购单主表")
 public class PurchaseOrderDTO implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
@@ -21,6 +21,12 @@ public class PurchaseOrderDTO implements Serializable {
 	  */
 	@ApiModelProperty(value = "标识 ",required = false,notes = "标识  [自增]")
 	private Integer id;
+	/**
+	  * 物料采购单号 r
+	  * nullable:false,length:32
+	  */
+	@ApiModelProperty(value = "物料采购单号 r",required = true,notes = "物料采购单号 r ")
+	private String purchaseOrderCode;
 	/**
 	  * 客户订单 客户订单
 	  * nullable:false,length:11
@@ -92,6 +98,12 @@ public class PurchaseOrderDTO implements Serializable {
     }
     public void setId(Integer id){
     	this.id = id;
+    }
+    public String getPurchaseOrderCode(){
+    	return this.purchaseOrderCode;
+    }
+    public void setPurchaseOrderCode(String purchaseOrderCode){
+    	this.purchaseOrderCode = purchaseOrderCode;
     }
     public Integer getOrderId(){
     	return this.orderId;

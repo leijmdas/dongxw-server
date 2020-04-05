@@ -11,12 +11,12 @@ import java.util.Date;
 import org.mybatis.hbatis.orm.criteria.support.query.AbstractQueryParam;
 import org.mybatis.hbatis.orm.criteria.support.query.SortOrders;
 /**
- * PurchaseOrder 采购单
+ * PurchaseOrder 采购单主表
  * @author generator
- * @date 2020年03月07日
+ * @date 2020年04月05日
  */
 @Table(PurchaseOrder.EntityNode.class)
-public class PurchaseOrder extends  PurchaseOrderBase implements Serializable {
+public class PurchaseOrder extends PurchaseOrderBase implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	/**
@@ -25,6 +25,13 @@ public class PurchaseOrder extends  PurchaseOrderBase implements Serializable {
 	  */
 	@Column(primaryKey = true,autoIncrement = true,comment = "标识 ")	
 	private Integer id;
+	/**
+	  * 物料采购单号 r
+	  * nullable:false,length:32
+	  */
+	@Column(comment = "物料采购单号 r")	
+	@NotNull
+	private String purchaseOrderCode;
 	/**
 	  * 客户订单 客户订单
 	  * nullable:false,length:11
@@ -106,6 +113,12 @@ public class PurchaseOrder extends  PurchaseOrderBase implements Serializable {
     public void setId(Integer id){
     	this.id = id;
     }
+    public String getPurchaseOrderCode(){
+    	return this.purchaseOrderCode;
+    }
+    public void setPurchaseOrderCode(String purchaseOrderCode){
+    	this.purchaseOrderCode = purchaseOrderCode;
+    }
     public Integer getOrderId(){
     	return this.orderId;
     }
@@ -177,6 +190,8 @@ public class PurchaseOrder extends  PurchaseOrderBase implements Serializable {
         public static final EntityNode INSTANCE = new EntityNode("po");;
     	/** 标识  */
         public FieldNode<PurchaseOrder, Integer> id =  createFieldNode("id","id",Integer.class,JdbcType.INTEGER);
+    	/** 物料采购单号 r */
+        public FieldNode<PurchaseOrder, String> purchaseOrderCode =  createFieldNode("purchaseOrderCode","purchase_order_code",String.class,JdbcType.VARCHAR);
     	/** 客户订单 客户订单 */
         public FieldNode<PurchaseOrder, Integer> orderId =  createFieldNode("orderId","order_id",Integer.class,JdbcType.INTEGER);
     	/** 供应商 r */
