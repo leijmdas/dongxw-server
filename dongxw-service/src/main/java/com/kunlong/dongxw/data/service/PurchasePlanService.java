@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * PurchasePlanService
  * @author generator
- * @date 2020年02月05日
+ * @date 2020年04月05日
  */
 public interface PurchasePlanService {
 	

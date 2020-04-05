@@ -8,6 +8,7 @@ import com.kunlong.dongxw.consts.ApiConstants;
 import com.kunlong.dongxw.data.domain.MakePlan;
 import com.kunlong.dongxw.data.domain.OrderLine;
 import com.kunlong.dongxw.data.domain.PurchaseOrderItem;
+import com.kunlong.dongxw.data.domain.PurchasePlan;
 import com.kunlong.dongxw.data.service.*;
 import com.kunlong.dubbo.sys.model.SysUserDTO;
 import com.kunlong.platform.utils.JsonResult;
@@ -37,6 +38,9 @@ public  class PurchaseOrderItemController extends BaseController {
 
     @Autowired
     MakePlanService makePlanService;
+    @Autowired
+    PurchasePlanService purchasePlanService;
+
     @Autowired
     OrderLineService orderLineService;
 
@@ -70,7 +74,51 @@ public  class PurchaseOrderItemController extends BaseController {
 
     @RequestMapping("/saveMulti")
     @DongxwTransactional
-    public JsonResult<List<Integer>> saveMulti(@RequestBody PurchaseOrderItem purchaseOrderItem) {
+    public JsonResult<List<Integer>> saveMulti(@RequestBody PurchaseOrderItem poItem) {
+
+        List<Integer> list =
+                poItem.getMakePlanIds() != null ? savePOItemsMakePlan(poItem) : savePOItemsPOPlan(poItem);
+        return JsonResult.success(list);
+    }
+
+    List<Integer> savePOItemsPOPlan(PurchaseOrderItem purchaseOrderItem) {
+        List<Integer> list = new ArrayList<>();
+        if (purchaseOrderItem.getPurchasePlanIds() == null) {
+            return list;
+        }
+        PurchaseOrderItem orderItem = new PurchaseOrderItem();
+        orderItem.setCreateBy(this.getCurrentUserId());
+        orderItem.setCreateDate(new Date());
+        orderItem.setRemark(" ");
+        orderItem.setPurchaseOrderId(purchaseOrderItem.getPurchaseOrderId());
+
+        String[] purchasePlanIds = purchaseOrderItem.getPurchasePlanIds().trim().split(",");
+        for (String sPpId : purchasePlanIds) {
+            Integer ppId = Integer.valueOf(sPpId.trim());
+            orderItem.setMakePlanId(ppId);
+            orderItem.setId(null);
+            PurchasePlan purchasePlan = purchasePlanService.findById(ppId);
+            if (purchasePlan != null) {
+                orderItem.setOrderLineId(purchasePlan.getOrderLineId());
+
+                orderItem.setQty(purchasePlan.getTotalQty());
+                orderItem.setPrice(purchasePlan.getPrice());
+                orderItem.setMoney(orderItem.getQty().multiply(orderItem.getPrice()));
+                orderItem.setProductId(purchasePlan.getChildId());
+                purchaseOrderItemService.save(orderItem);
+                list.add(orderItem.getId());
+
+            }
+
+        }
+        return list;
+
+    }
+    List<Integer> savePOItemsMakePlan(PurchaseOrderItem purchaseOrderItem){
+        List<Integer> list = new ArrayList<>();
+        if (purchaseOrderItem.getMakePlanIds() == null) {
+            return list;
+        }
         PurchaseOrderItem orderItem = new PurchaseOrderItem();
         orderItem.setCreateBy(this.getCurrentUserId());
         orderItem.setCreateDate(new Date());
@@ -78,16 +126,16 @@ public  class PurchaseOrderItemController extends BaseController {
         orderItem.setPurchaseOrderId(purchaseOrderItem.getPurchaseOrderId());
 
         String[] makePlanIds = purchaseOrderItem.getMakePlanIds().trim().split(",");
-        List<Integer> list = new ArrayList<>();
+
         for (String smakePlanId : makePlanIds) {
-            Integer  makePlanId=Integer.valueOf(smakePlanId.trim());
+            Integer makePlanId = Integer.valueOf(smakePlanId.trim());
             orderItem.setMakePlanId(makePlanId);
             orderItem.setId(null);
             MakePlan makePlan = makePlanService.findById(makePlanId);
             if (makePlan != null) {
                 orderItem.setOrderLineId(makePlan.getOrderLineId());
                 OrderLine orderLine = orderLineService.findById(orderItem.getOrderLineId());
-                if(orderLine!=null) {
+                if (orderLine != null) {
                     orderItem.setQty(BigDecimal.valueOf(orderLine.getQty()));
                     orderItem.setPrice(orderLine.getPrice());
                     orderItem.setMoney(orderLine.getMoney());
@@ -98,9 +146,8 @@ public  class PurchaseOrderItemController extends BaseController {
             }
 
         }
+        return list;
 
-
-        return JsonResult.success(list);
     }
 
     @RequestMapping("/save")

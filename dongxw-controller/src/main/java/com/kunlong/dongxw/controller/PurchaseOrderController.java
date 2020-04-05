@@ -83,6 +83,8 @@ public  class PurchaseOrderController extends BaseController {
         purchaseOrder.setSupplierName(supplier == null ? "-" : supplier.getName());
         purchaseOrder.setSupplier(supplier);
         //fillMakePlan(makeSheet);
+        SysUserDTO sysUserDTO = sysUserApiService.findById(purchaseOrder.getCreateBy());
+        purchaseOrder.setCreateByName(sysUserDTO == null ? "-" : sysUserDTO.getUsername());
         return JsonResult.success(purchaseOrder);
 
     }
@@ -171,6 +173,7 @@ public  class PurchaseOrderController extends BaseController {
             order.setSupplierName(supplier == null ? "-" : supplier.getName());
             order.setSupplier(supplier);
             order.setOrderMaster(orderMasterService.findById(order.getOrderId()));
+
         }
         return pageResult;
     }

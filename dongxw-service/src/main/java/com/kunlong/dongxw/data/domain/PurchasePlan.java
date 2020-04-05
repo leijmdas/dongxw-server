@@ -9,14 +9,14 @@ import java.lang.Integer;
 import java.lang.String;
 import java.math.BigDecimal;
 import java.lang.Short;
-import java.lang.Byte;
+import java.lang.Boolean;
 import java.util.Date;
 import org.mybatis.hbatis.orm.criteria.support.query.AbstractQueryParam;
 import org.mybatis.hbatis.orm.criteria.support.query.SortOrders;
 /**
  * PurchasePlan 采购计划单
  * @author generator
- * @date 2020年02月05日
+ * @date 2020年04月05日
  */
 @Table(PurchasePlan.EntityNode.class)
 public class PurchasePlan extends PurchasePlanBase implements Serializable {
@@ -196,7 +196,7 @@ public class PurchasePlan extends PurchasePlanBase implements Serializable {
 	private Short depth;
 	/**
 	  * 来源 0--采购1--生产
-	  * nullable:false,length:4
+	  * nullable:false,length:1
 	  */
 	@Column(comment = "来源 0--采购1--生产")	
 	@NotNull
@@ -447,7 +447,7 @@ public class PurchasePlan extends PurchasePlanBase implements Serializable {
     	/** 层次  */
         public FieldNode<PurchasePlan, Short> depth =  createFieldNode("depth","depth",Short.class,JdbcType.SMALLINT);
     	/** 来源 0--采购1--生产 */
-        public FieldNode<PurchasePlan, Byte> source =  createFieldNode("source","source",Byte.class,JdbcType.TINYINT);
+        public FieldNode<PurchasePlan, Boolean> source =  createFieldNode("source","source",Boolean.class,JdbcType.BIT);
     	/** 物料到位日期  */
         public FieldNode<PurchasePlan, Date> rmDate =  createFieldNode("rmDate","rm_date",Date.class,JdbcType.DATE);
     	/** 建档时间  */

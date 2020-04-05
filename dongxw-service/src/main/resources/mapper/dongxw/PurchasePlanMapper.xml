@@ -27,7 +27,7 @@
 	  	<result column="width" property="width" jdbcType="INTEGER" />
 	  	<result column="knife_qty" property="knifeQty" jdbcType="SMALLINT" />
 	  	<result column="depth" property="depth" jdbcType="SMALLINT" />
-	  	<result column="source" property="source" jdbcType="TINYINT" />
+	  	<result column="source" property="source" jdbcType="BIT" />
 	  	<result column="rm_date" property="rmDate" jdbcType="DATE" />
 	  	<result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
 	  	<result column="create_by" property="createBy" jdbcType="INTEGER" />
@@ -58,7 +58,7 @@
 	  	<result column="pp_width" property="width" jdbcType="INTEGER" />
 	  	<result column="pp_knife_qty" property="knifeQty" jdbcType="SMALLINT" />
 	  	<result column="pp_depth" property="depth" jdbcType="SMALLINT" />
-	  	<result column="pp_source" property="source" jdbcType="TINYINT" />
+	  	<result column="pp_source" property="source" jdbcType="BIT" />
 	  	<result column="pp_rm_date" property="rmDate" jdbcType="DATE" />
 	  	<result column="pp_create_date" property="createDate" jdbcType="TIMESTAMP" />
 	  	<result column="pp_create_by" property="createBy" jdbcType="INTEGER" />

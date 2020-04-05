@@ -5,14 +5,14 @@ import java.lang.Integer;
 import java.lang.String;
 import java.math.BigDecimal;
 import java.lang.Short;
-import java.lang.Byte;
+import java.lang.Boolean;
 import java.util.Date;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 /**
  * PurchasePlan
  * @author generator
- * @date 2020年02月05日
+ * @date 2020年04月05日
  */
 @ApiModel(value="PurchasePlanDTO",description="采购计划单")
 public class PurchasePlanDTO implements Serializable {
@@ -170,10 +170,10 @@ public class PurchasePlanDTO implements Serializable {
 	private Short depth;
 	/**
 	  * 来源 0--采购1--生产
-	  * nullable:false,length:4
+	  * nullable:false,length:1
 	  */
 	@ApiModelProperty(value = "来源 0--采购1--生产",required = true,notes = "来源 0--采购1--生产 ")
-	private Byte source;
+	private Boolean source;
 	/**
 	  * 物料到位日期 
 	  * nullable:true,length:10
@@ -342,10 +342,10 @@ public class PurchasePlanDTO implements Serializable {
     public void setDepth(Short depth){
     	this.depth = depth;
     }
-    public Byte getSource(){
+    public Boolean getSource(){
     	return this.source;
     }
-    public void setSource(Byte source){
+    public void setSource(Boolean source){
     	this.source = source;
     }
     public Date getRmDate(){

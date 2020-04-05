@@ -7,7 +7,7 @@ import com.kunlong.dongxw.data.domain.PurchasePlan;
 /**
  * PurchasePlanMapper
  * @author generator
- * @date 2020年02月05日
+ * @date 2020年04月05日
  */
 public interface PurchasePlanMapper extends HbatisMapper<PurchasePlan, Integer> {
 	

@@ -24,6 +24,7 @@ import java.util.Map;
 
 public class BaseController {
 	public static String group_NAME1="group1";
+
 	byte[] download(String path){
 		String[] paths = getFastDfsFileNames( path );
 		String group = paths[0];
