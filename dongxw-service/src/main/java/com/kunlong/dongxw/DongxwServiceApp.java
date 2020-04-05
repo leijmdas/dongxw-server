@@ -1,6 +1,7 @@
 package com.kunlong.dongxw;
 
-import com.kunlong.dongxw.config.DongxwTransactional;
+import com.alibaba.dubbo.config.spring.context.annotation.EnableDubbo;
+import com.alibaba.dubbo.config.spring.context.annotation.EnableDubboConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -8,7 +9,6 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.spring.annotation.MapperScan;
 
 
@@ -19,7 +19,8 @@ import tk.mybatis.spring.annotation.MapperScan;
 })
 @Configuration
 @SpringBootApplication(scanBasePackages = {"com.kunlong.data","com.kunlong.dongxw"})
-//@EnableDubbo//@EnableDubboConfig
+@EnableDubbo
+@EnableDubboConfig
 //@ImportResource({"classpath:appcontext.xml"})
 @MapperScan(basePackages={"com.kunlong.dongxw.data.dao"})
 public class DongxwServiceApp {

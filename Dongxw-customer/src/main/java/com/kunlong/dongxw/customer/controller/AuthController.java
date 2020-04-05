@@ -69,6 +69,7 @@ public class AuthController extends BaseController {
 
             return JsonResult.success(authToken);
         } catch (RuntimeException e) {
+            e.printStackTrace();
             return JsonResult.failure(null, e.getMessage());
         }
     }
@@ -79,14 +80,14 @@ public class AuthController extends BaseController {
     Map<String, Object> authorization(String token, HttpServletResponse response) {
         Object map = authApiService.getAttribute(token, SessionKeyEnum.WEB_CUSTOMER.getKey());
 
+        Map<String, Object> resultMap = new HashMap<String, Object>();
 
         MiniCustomer customer = JSON.parseObject(KunlongUtils.toJSONStringPretty(map), MiniCustomer.class);
         if (customer == null) {
             response.setStatus(401);
-            return null;
+            return resultMap;
             //writeError(401, "authorization_fail", "TOKEN不存在或已失效", rsp);
         }
-        Map<String, Object> resultMap = new HashMap<String, Object>();
         resultMap.put("customer", customer);
         return resultMap;
     }

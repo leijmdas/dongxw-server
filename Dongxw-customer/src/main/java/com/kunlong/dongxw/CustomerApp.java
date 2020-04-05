@@ -1,5 +1,7 @@
 package com.kunlong.dongxw;
 
+import com.alibaba.dubbo.config.spring.context.annotation.EnableDubbo;
+import com.alibaba.dubbo.config.spring.context.annotation.EnableDubboConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,7 +13,9 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 //https://github.com/macrozheng/mall
 @EnableAutoConfiguration
 @Configuration
-@SpringBootApplication(scanBasePackages = {"com.kunlong" })
+@SpringBootApplication(scanBasePackages = {"com.kunlong"})
+@EnableDubbo
+@EnableDubboConfig
 @EnableSwagger2
 public class CustomerApp {
 
