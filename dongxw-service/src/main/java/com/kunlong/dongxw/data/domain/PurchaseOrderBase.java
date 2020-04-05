@@ -10,6 +10,7 @@ public class PurchaseOrderBase  {
     OrderMaster orderMaster;
     String createByName;
     String supplierName;
+    Supplier supplier;
 
     List<PurchaseOrderItem> orderItems;
 }

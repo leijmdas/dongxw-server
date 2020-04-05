@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kunlong.dongxw.data.dao.PoDaySeqMapper" >
+	<resultMap id="BaseResultMap" type="com.kunlong.dongxw.data.domain.PoDaySeq" >
+	    <id column="id" property="id" jdbcType="INTEGER" />	
+	  	<result column="ymd" property="ymd" jdbcType="INTEGER" />
+	  	<result column="po_seq" property="poSeq" jdbcType="INTEGER" />
+	  	<result column="out_seq" property="outSeq" jdbcType="INTEGER" />
+    </resultMap>
+    <resultMap id="BaseResultMap_PoDaySeq" type="com.kunlong.dongxw.data.domain.PoDaySeq" >
+	    <id column="pds_id" property="id" jdbcType="INTEGER" />	
+	  	<result column="pds_ymd" property="ymd" jdbcType="INTEGER" />
+	  	<result column="pds_po_seq" property="poSeq" jdbcType="INTEGER" />
+	  	<result column="pds_out_seq" property="outSeq" jdbcType="INTEGER" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+  		id,ymd,po_seq,out_seq
+	</sql>
+  	<sql id="Base_Column_List_PoDaySeq" >
+  		pds.id pds_id,pds.ymd pds_ymd,pds.po_seq pds_po_seq,pds.out_seq pds_out_seq
+	</sql>
+	
+	<!-- 系统自定义 -->
+	<!-- 实体参数查询结果[START] -->
+	<resultMap id="ResultMap_FindByQueryParam" type="com.kunlong.dongxw.data.domain.PoDaySeq" extends="BaseResultMap_PoDaySeq">
+		
+	</resultMap>
+
+	<sql id="Condition_FindByQueryParam">
+		<if test="queryParam.param!=null">
+			<bind name="p" value="queryParam.param"/>
+			<if test="p.id!=null ">
+		    	and pds.id=#{p.id}
+		    </if>
+			<if test="p.ymd!=null ">
+		    	and pds.ymd=#{p.ymd}
+		    </if>
+			<if test="p.poSeq!=null ">
+		    	and pds.po_seq=#{p.poSeq}
+		    </if>
+			<if test="p.outSeq!=null ">
+		    	and pds.out_seq=#{p.outSeq}
+		    </if>
+		</if>
+		<!--
+		<bind name="rp" value="queryParam.ruleParam" />
+		<include refid="org.mybatis.hbatis.orm.mapper.HbatisMapper.RuleParam"/>
+		-->
+	</sql>
+	<select id="findByQueryParam" resultMap="ResultMap_FindByQueryParam">
+		select
+		<include refid="Base_Column_List_PoDaySeq"></include>
+		from po_day_seq pds where 1=1
+		<include refid="Condition_FindByQueryParam"></include>
+		<if test="queryParam.sortOrders!=null and queryParam.sortOrders.size() gt 0">
+			order by 
+			<foreach collection="queryParam.sortOrders" item="item" separator=",">
+				${item.sortField.sqlColumn} ${item.sortType}
+			</foreach>
+		</if>
+		<if test="queryParam.limit gt 0">
+	  		limit ${queryParam.start},${queryParam.limit}
+	  	</if>
+	</select>
+	<select id="countByQueryParam" resultType="long">
+		select count(1) from po_day_seq pds where 1=1
+		<include refid="Condition_FindByQueryParam"></include>
+	</select>
+	
+	<!-- 实体参数查询结果[END] -->
+	<!-- 用户自定义 -->
+	
+</mapper>

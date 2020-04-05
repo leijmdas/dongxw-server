@@ -4,12 +4,14 @@ package com.kunlong.dongxw.controller;
 import app.support.query.PageResult;
 import cn.afterturn.easypoi.entity.ImageEntity;
 import com.kunlong.dongxw.annotation.DateRewritable;
+import com.kunlong.dongxw.config.DongxwTransactional;
 import com.kunlong.dongxw.consts.ApiConstants;
 import com.kunlong.dongxw.consts.MoneyTypeConsts;
 import com.kunlong.dongxw.data.domain.*;
 import com.kunlong.dongxw.data.service.*;
 import com.kunlong.dongxw.util.EasyExcelUtil;
 import com.kunlong.dongxw.util.EasyPOIUtil;
+import com.kunlong.dongxw.util.StringUtil;
 import com.kunlong.dubbo.sys.model.SysUserDTO;
 import com.kunlong.platform.utils.JsonResult;
 import com.kunlong.platform.utils.KunlongUtils;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -32,7 +35,8 @@ import java.util.*;
 @RestController
 @RequestMapping("/dongxw/purchaseorder")
 public  class PurchaseOrderController extends BaseController {
-
+    @Autowired
+    PoDaySeqService poDaySeqService;
 
     @Autowired
     SupplierService supplierService;
@@ -72,17 +76,74 @@ public  class PurchaseOrderController extends BaseController {
     @RequestMapping("/findById/{id}")
     public JsonResult<PurchaseOrder> findById(@PathVariable("id") Integer id, HttpServletResponse response) throws IOException {
         PurchaseOrder purchaseOrder = purchaseOrderService.findById(id);
+        Supplier supplier = supplierService.findById(purchaseOrder.getSupplyId());
+        if(supplier==null){
+            supplier=new Supplier();
+        }
+        purchaseOrder.setSupplierName(supplier == null ? "-" : supplier.getName());
+        purchaseOrder.setSupplier(supplier);
         //fillMakePlan(makeSheet);
         return JsonResult.success(purchaseOrder);
 
     }
 
+    Integer buildSeq(PurchaseOrder purchaseOrder) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        String ymd = sdf.format(new Date());
+        PoDaySeq poDaySeq = poDaySeqService.findById(Integer.valueOf(ymd));
+        if (poDaySeq == null) {
+            poDaySeq = new PoDaySeq();
+            poDaySeq.setId(Integer.valueOf(ymd));
+            poDaySeq.setYmd(Integer.valueOf(ymd));
+            poDaySeq.setOutSeq(0);
+            poDaySeq.setPoSeq(0);
+            if (purchaseOrder.getPrdFlg() == 0) {
+                poDaySeq.setOutSeq(1);
+            } else {
+                poDaySeq.setPoSeq(1);
+            }
+            poDaySeqService.save(poDaySeq);
+            return 10001;
+        }else{
+            if (purchaseOrder.getPrdFlg() == 0) {
+                poDaySeq.setOutSeq(poDaySeq.getOutSeq()+1);
+            } else {
+                poDaySeq.setPoSeq(poDaySeq.getPoSeq()+1);
+            }
+            poDaySeqService.update(poDaySeq);
+
+        }
+
+        if (purchaseOrder.getPrdFlg() == 0) {
+            return poDaySeq.getOutSeq()+10000;
+        }
+        return poDaySeq.getPoSeq()+10000;
+
+    }
+
+    String buildPCode(PurchaseOrder purchaseOrder) {
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        String ymd = sdf.format(new Date());
+        String code = "EP-";
+        if (purchaseOrder.getPrdFlg() == 0) {
+            code = "EP-OUT-";
+
+        }
+        String seq = buildSeq(purchaseOrder) + "";
+
+        return code + ymd + "-" + seq.substring(1, 5);
+
+
+    }
+
     @RequestMapping("/save")
+    @DongxwTransactional
     public JsonResult<Integer> save(@RequestBody PurchaseOrder purchaseOrder) {
         purchaseOrder.setCreateBy(this.getCurrentUserId());
 
         if (purchaseOrder.getId() == null) {
-            purchaseOrder.setPurchaseOrderCode("EP-"+System.currentTimeMillis());
+            purchaseOrder.setPurchaseOrderCode(buildPCode(purchaseOrder));
             purchaseOrderService.save(purchaseOrder);
         } else {
             purchaseOrderService.update(purchaseOrder);
@@ -103,9 +164,12 @@ public  class PurchaseOrderController extends BaseController {
             SysUserDTO sysUserDTO = sysUserApiService.findById(order.getCreateBy());
             order.setCreateByName(sysUserDTO == null ? "-" : sysUserDTO.getUsername());
 
-            Supplier supplier=supplierService.findById(order.getSupplyId());
+            Supplier supplier = supplierService.findById(order.getSupplyId());
+            if(supplier==null){
+                supplier=new Supplier();
+            }
             order.setSupplierName(supplier == null ? "-" : supplier.getName());
-
+            order.setSupplier(supplier);
             order.setOrderMaster(orderMasterService.findById(order.getOrderId()));
         }
         return pageResult;

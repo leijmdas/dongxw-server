@@ -7,7 +7,7 @@ import com.kunlong.dongxw.CustomerApp;
 import com.kunlong.platform.model.KunlongModel;
 import com.kunlong.platform.support.service.AuthService;
 import com.kunlong.platform.utils.KunlongUtils;
-import org.apache.dubbo.config.annotation.Reference;
+import com.alibaba.dubbo.config.annotation.Reference;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;

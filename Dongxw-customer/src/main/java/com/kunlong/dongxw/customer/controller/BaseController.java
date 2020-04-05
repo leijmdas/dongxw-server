@@ -7,7 +7,7 @@ import com.kunlong.dongxw.customer.context.CurrentRequestContext;
 import com.kunlong.dongxw.data.domain.Customer;
 import com.kunlong.platform.consts.RequestContextConst;
 import com.kunlong.platform.utils.KunlongUtils;
-import org.apache.dubbo.config.annotation.Reference;
+import com.alibaba.dubbo.config.annotation.Reference;
 
 public class BaseController {
 	@Reference(lazy = true, version = "${dubbo.service.version}")

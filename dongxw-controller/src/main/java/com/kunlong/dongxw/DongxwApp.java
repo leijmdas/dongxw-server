@@ -1,5 +1,8 @@
 package com.kunlong.dongxw;
 
+import com.alibaba.dubbo.config.spring.context.annotation.EnableDubbo;
+import com.alibaba.dubbo.config.spring.context.annotation.EnableDubboConfig;
+import io.netty.channel.EventLoopGroup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -14,9 +17,9 @@ import tk.mybatis.spring.annotation.MapperScan;
 //https://github.com/macrozheng/mall
 @EnableAutoConfiguration
 @Configuration
-@SpringBootApplication(scanBasePackages = {"com.kunlong.data","com.kunlong.dongxw","com.kunlong.dubbo"})
-//@EnableDubbo
-//@EnableDubboConfig
+@SpringBootApplication(scanBasePackages = {"com.kunlong"})
+@EnableDubbo
+@EnableDubboConfig
 //@ImportResource({"classpath:appcontext.xml"})
 @EnableSwagger2
 @MapperScan(basePackages={"com.kunlong.dongxw.data.dao"})
@@ -25,7 +28,7 @@ public class DongxwApp {
 
 
     public static void main(String[] args) {
-
+        //EventLoopGroup l;
         SpringApplication.run(new Class[]{DongxwApp.class}, args);
 
     }

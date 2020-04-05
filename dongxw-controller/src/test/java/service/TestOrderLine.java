@@ -1,13 +1,16 @@
 package service;
 
+import com.kunlong.dubbo.api.service.AuthApiService;
 import com.kunlong.dubbo.api.service.FileApiService;
-import com.kunlong.dubbo.api.service.MailApiService; 
+import com.kunlong.dubbo.api.service.MailApiService;
 import com.kunlong.dongxw.DongxwApp;
 import com.kunlong.dongxw.data.dao.OrderLineMapper;
 import com.kunlong.dongxw.data.dao.TkCustomerMapper;
 import com.kunlong.dongxw.data.domain.Customer;
 import com.kunlong.dongxw.data.domain.OrderLine;
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.kunlong.dubbo.sys.model.SysUserDTO;
+import com.kunlong.dubbo.sys.service.SysUserApiService;
 import org.apache.ibatis.session.RowBounds;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,6 +34,11 @@ import java.util.List;
 @SpringBootTest(classes = DongxwApp.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 
 public class TestOrderLine {
+    @Reference(lazy = true, version = "${dubbo.service.version}")
+    public AuthApiService authApiService;
+
+    @Reference(lazy = true, version = "${dubbo.service.version}")
+    SysUserApiService sysUserApiService;
     @Autowired
     OrderLineMapper orderLineMapper;
 
@@ -70,9 +78,9 @@ public class TestOrderLine {
 
 //    @Autowired
 //    BomModelMapper bomModelMapper;
-//
-//    @Test
-//    public void test0004_bomModelMapper() throws IOException {
+
+   @Test
+   public void test0004_bomModelMapper() throws IOException {
 //        BomModelExample example = new BomModelExample();
 //        example.createCriteria().andBigTypeIsNotNull();
 //
@@ -85,7 +93,7 @@ public class TestOrderLine {
 //        for (BomModel bomModel : bomModels) {
 //            System.out.println(bomModel);
 //        }
-//    }
+    }
 
     @Autowired
     TkCustomerMapper tkCustomerMapper;
@@ -106,6 +114,15 @@ public class TestOrderLine {
 //        System.out.println(list);
 
 
+    }
+
+    @Test
+    public void test0006_authCheck() {
+        System.out.println(sysUserApiService);
+        SysUserDTO sysUserDTO = sysUserApiService.findById(60);
+        System.out.println(sysUserDTO);
+        Boolean b = authApiService.checkExists("2c20e26e1a17439686f770b4706c4b68");
+        System.out.println(b);
     }
 }
 

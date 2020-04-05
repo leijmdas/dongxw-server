@@ -3,9 +3,10 @@ package com.kunlong.dongxw.config.interceptor;
 
 import app.support.context.DefaultRequestContextFactory;
 import app.support.context.RequestContext;
+import com.alibaba.dubbo.config.annotation.Reference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kunlong.dongxw.consts.ApiConstants;
-import com.kunlong.dongxw.context.DongxwContext;
+import com.kunlong.dubbo.api.service.AuthApiService;
 import com.kunlong.platform.consts.RequestContextConst;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +23,8 @@ import java.util.Map;
 
 @Component
 public class WebRequestHandler implements HandlerInterceptor {
+	@Reference(lazy = false, version = "${dubbo.service.version}")
+	public AuthApiService authApiService;
 
 	protected final Logger logger = LoggerFactory.getLogger(getClass());
 	
@@ -50,7 +53,9 @@ public class WebRequestHandler implements HandlerInterceptor {
 			return false;
 		}
 		//SessionHolder session = SessionHolder.getInstance(token);
-		Boolean exists = DongxwContext.getAppCtxt().getBean(DongxwContext.class).authApiService.checkExists(token);
+		//Boolean exists = DongxwContext.getAppCtxt().getBean(DongxwContext.class).authApiService.checkExists(token);
+		Boolean exists = authApiService.checkExists(token);
+
 		if (!exists) {
 			writeError(401, "authorization_fail", "TOKEN不存在或已失效", rsp);
 			return false;
