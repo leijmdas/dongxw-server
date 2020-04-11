@@ -13,4 +13,5 @@ FROM anapsix/alpine-java
 
  
 
- ENTRYPOINT ["java", "-server", "-Duser.timezone=GMT+08","-jar", "/root/kl-dongxw-ctrl.jar"]
+ #ENTRYPOINT ["java", "-server", "-Duser.timezone=GMT+08","-jar", "/root/kl-dongxw-ctrl.jar"]
+ ENTRYPOINT ["/bin/bash", "-c", "java -jar /root/kl-dongxw-ctrl.jar -Duser.timexone=GMT+08 $APP_OPTS"]

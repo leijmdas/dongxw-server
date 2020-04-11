@@ -29,7 +29,7 @@ public class PurchaseOrder extends PurchaseOrderBase implements Serializable {
 	  * 物料采购单号 r
 	  * nullable:false,length:32
 	  */
-	@Column(comment = "物料采购单号 r")	
+	@Column(comment = "物料采购单号")
 	@NotNull
 	private String purchaseOrderCode;
 	/**

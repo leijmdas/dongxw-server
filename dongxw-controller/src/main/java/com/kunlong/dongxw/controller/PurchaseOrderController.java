@@ -9,10 +9,12 @@ import com.kunlong.dongxw.consts.ApiConstants;
 import com.kunlong.dongxw.consts.MoneyTypeConsts;
 import com.kunlong.dongxw.data.domain.*;
 import com.kunlong.dongxw.data.service.*;
+import com.kunlong.dongxw.util.ConvertUpMoney;
 import com.kunlong.dongxw.util.EasyExcelUtil;
 import com.kunlong.dongxw.util.EasyPOIUtil;
 import com.kunlong.dongxw.util.StringUtil;
 import com.kunlong.dubbo.sys.model.SysUserDTO;
+import com.kunlong.platform.model.KunlongModel;
 import com.kunlong.platform.utils.JsonResult;
 import com.kunlong.platform.utils.KunlongUtils;
 import io.swagger.annotations.ApiOperation;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -192,12 +195,12 @@ public  class PurchaseOrderController extends BaseController {
             sheetName = sheetName + orderMaster.getCustomerOrderCode();
             map.put("orderCode",orderMaster.getEpOrderCode()+"("+orderMaster.getCustomerOrderCode()+")");
         }
-        Supplier supplier=supplierService.findById(purchaseOrder.getSupplyId());
-        if(supplier!=null){
-            map.put("supplyName",supplier.getName());
-            map.put("supplyAddress",supplier.getAddr());
-            map.put("supplyContact",supplier.getContact());
-            map.put("supplyTel",supplier.getTel());
+        Supplier supplier = supplierService.findById(purchaseOrder.getSupplyId());
+        if (supplier != null) {
+            map.put("supplyName", supplier.getName());
+            map.put("supplyAddress", supplier.getAddr());
+            map.put("supplyContact", supplier.getContact());
+            map.put("supplyTel", supplier.getTel());
 
         }
 
@@ -235,6 +238,7 @@ public  class PurchaseOrderController extends BaseController {
         return EasyPOIUtil.makeExcelSheet("pp_order_template.xlsx",fileName,sheetName,map);
     }
 
+    //外发采购单
     @RequestMapping(value="export",method = RequestMethod.POST)
     @ApiOperation(value = "export", notes = "export", authorizations = {@Authorization(value = ApiConstants.AUTH_API_WEB)})
     public JsonResult<Integer> export(@RequestBody @DateRewritable PurchaseOrder.QueryParam queryParam, HttpServletRequest req, HttpServletResponse rsp) throws Exception {
@@ -242,7 +246,7 @@ public  class PurchaseOrderController extends BaseController {
 
         PurchaseOrder purchaseOrder = purchaseOrderService.findById(queryParam.getParam().getId());
         if(purchaseOrder==null){
-            return JsonResult.failure(-1,"无采购订单！");
+            return JsonResult.failure(-1,"无外发采购订单！");
         }
         PurchaseOrderItem.QueryParam param = new PurchaseOrderItem.QueryParam();
         param.setParam(new PurchaseOrderItem());
@@ -251,14 +255,87 @@ public  class PurchaseOrderController extends BaseController {
         List<PurchaseOrderItem> orderItems = purchaseOrderItemService.findByQueryParam(param);
         purchaseOrder.setOrderItems(orderItems);
 
-        String fnNew = writePlan2File("采购订单", purchaseOrder, "采购订单.xlsx");
+        String fnNew = writePlan2File("外发采购订单", purchaseOrder, "外发采购订单.xlsx");
         OrderMaster orderMaster=orderMasterService.findById(purchaseOrder.getOrderId());
 
-        EasyExcelUtil.writeExcel2Response("采购订单"+orderMaster.getEpOrderCode()+".xlsx", rsp, fnNew);
+        EasyExcelUtil.writeExcel2Response("外发采购订单"+orderMaster.getEpOrderCode()+".xlsx", rsp, fnNew);
         return JsonResult.success();
     }
 
 
+    //物料采购单
+    @RequestMapping(value="exportRm",method = RequestMethod.POST)
+    @ApiOperation(value = "exportRm", notes = "exportRm", authorizations = {@Authorization(value = ApiConstants.AUTH_API_WEB)})
+    public JsonResult<Integer> exportRm(@RequestBody @DateRewritable PurchaseOrder.QueryParam queryParam, HttpServletRequest req, HttpServletResponse rsp) throws Exception {
 
+
+        PurchaseOrder purchaseOrder = purchaseOrderService.findById(queryParam.getParam().getId());
+        if(purchaseOrder==null){
+            return JsonResult.failure(-1,"无物料采购订单！");
+        }
+        PurchaseOrderItem.QueryParam param = new PurchaseOrderItem.QueryParam();
+        param.setParam(new PurchaseOrderItem());
+        param.getParam().setPurchaseOrderId(queryParam.getParam().getId());
+        param.setLimit(-1);
+        List<PurchaseOrderItem> orderItems = purchaseOrderItemService.findByQueryParam(param);
+        purchaseOrder.setOrderItems(orderItems);
+
+        String fnNew = writePo2File("物料采购订单", purchaseOrder, "物料采购订单.xlsx");
+        OrderMaster orderMaster=orderMasterService.findById(purchaseOrder.getOrderId());
+
+        EasyExcelUtil.writeExcel2Response("物料采购订单"+orderMaster.getEpOrderCode()+".xlsx", rsp, fnNew);
+        return JsonResult.success();
+    }
+
+    String writePo2File(String sheetName, PurchaseOrder purchaseOrder, String fileName) throws IOException {
+        Map<String, Object> map = new HashMap<String, Object>();
+
+        map.put("poCode",purchaseOrder.getPurchaseOrderCode());
+        map.put("orderDate", KunlongUtils.transDate(purchaseOrder.getOpenDate()));
+        map.put("issueDate",KunlongUtils.transDate(purchaseOrder.getIssueDate()));
+
+
+        Supplier supplier = supplierService.findById(purchaseOrder.getSupplyId());
+        if (supplier != null) {
+            map.put("supplyName", supplier.getName());
+            map.put("addr", supplier.getAddr());
+            map.put("contract", supplier.getContact()!=null?supplier.getContact():"");
+            map.put("tel", supplier.getTel()!=null?supplier.getTel():"");
+            map.put("fax", supplier.getFax()!=null?supplier.getFax():"");
+
+        }
+
+        BigDecimal sumQty = KunlongModel.newBigDecimal(2, 0);
+        BigDecimal sumMoney = KunlongModel.newBigDecimal(2, 0);
+
+        List<Map<String, Object>> mapList = new ArrayList<>();
+
+        for (PurchaseOrderItem orderItem : purchaseOrder.getOrderItems()) {
+            Map<String, Object> row = new LinkedHashMap<>();
+            Product product = productService.findById(orderItem.getProductId());
+            if (product != null) {
+                row.put("code", product.getCode());
+                row.put("name", product.getName());
+                row.put("remark", product.getRemark());
+                row.put("unit", product.getUnit());
+
+            }
+            row.put("qty", orderItem.getQty());
+            row.put("price", orderItem.getPrice());
+            row.put("money", orderItem.getMoney());
+            row.put("memo", orderItem.getRemark());
+            sumQty = sumQty.add(orderItem.getQty());
+            sumMoney = sumMoney.add(orderItem.getMoney());
+
+            mapList.add(row);
+        }
+        map.put("sumQty", sumQty.toString());
+        map.put("sumMoney", sumMoney.toString());
+        // 大写
+        map.put("sumMoneyChinese", ConvertUpMoney.toChinese(sumMoney.toString()));
+        map.put("list", mapList);
+
+        return EasyPOIUtil.makeExcelSheet("po_template.xlsx",fileName,sheetName,map);
+    }
 }
 
