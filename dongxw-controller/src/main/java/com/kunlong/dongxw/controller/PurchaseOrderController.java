@@ -281,9 +281,9 @@ public  class PurchaseOrderController extends BaseController {
         purchaseOrder.setOrderItems(orderItems);
 
         String fnNew = writePo2File("物料采购订单", purchaseOrder, "物料采购订单.xlsx");
-        OrderMaster orderMaster=orderMasterService.findById(purchaseOrder.getOrderId());
+        OrderMaster orderMaster = orderMasterService.findById(purchaseOrder.getOrderId());
 
-        EasyExcelUtil.writeExcel2Response("物料采购订单"+orderMaster.getEpOrderCode()+".xlsx", rsp, fnNew);
+        EasyExcelUtil.writeExcel2Response("物料采购订单" + purchaseOrder.getPurchaseOrderCode()  + ".xlsx", rsp, fnNew);
         return JsonResult.success();
     }
 
