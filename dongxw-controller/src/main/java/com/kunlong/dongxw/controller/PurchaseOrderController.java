@@ -320,9 +320,9 @@ public  class PurchaseOrderController extends BaseController {
                 row.put("unit", product.getUnit());
 
             }
-            row.put("qty", orderItem.getQty());
-            row.put("price", orderItem.getPrice());
-            row.put("money", orderItem.getMoney());
+            row.put("qty", orderItem.getQty().toString());
+            row.put("price", orderItem.getPrice().toString());
+            row.put("money", orderItem.getMoney().toString());
             row.put("memo", orderItem.getRemark());
             sumQty = sumQty.add(orderItem.getQty());
             sumMoney = sumMoney.add(orderItem.getMoney());
