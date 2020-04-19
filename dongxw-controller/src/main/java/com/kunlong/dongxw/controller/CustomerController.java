@@ -90,6 +90,7 @@ public final class CustomerController extends BaseController {
     public PageResult<Customer> query(@RequestBody Customer.QueryParam queryParam) throws IOException {
         PageResult<Customer> pageResult = new PageResult<Customer>();
         // Customer.QueryParam qp = BeanMapper.getInstance().map(pageResult, Customer.QueryParam.class);
+        queryParam.setSortBys(queryParam.getOrderBys());
 
         pageResult.setTotal(customerService.countByQueryParam(queryParam));
         pageResult.setData(customerService.findByQueryParam(queryParam));
