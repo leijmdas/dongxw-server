@@ -130,14 +130,12 @@ public  class PurchaseOrderController extends BaseController {
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
         String ymd = sdf.format(new Date());
-        String code = "EP-";
-        if (purchaseOrder.getPrdFlg() == 0) {
-            code = "EP-OUT-";
+        String code = purchaseOrder.getPrdFlg() == 0 ? "EPP-" : "EP-";
 
-        }
+
         String seq = buildSeq(purchaseOrder) + "";
 
-        return code + ymd + "-" + seq.substring(1, 5);
+        return code + ymd + "-" + seq.substring(2, 5);
 
 
     }
@@ -189,11 +187,11 @@ public  class PurchaseOrderController extends BaseController {
         map.put("openDate",KunlongUtils.transDate(purchaseOrder.getOpenDate()));
         map.put("issueDate",KunlongUtils.transDate(purchaseOrder.getIssueDate()));
         map.put("pkgRemark",purchaseOrder.getRemark());
-
+        map.put("poCode",purchaseOrder.getPurchaseOrderCode());
         OrderMaster orderMaster=orderMasterService.findById(purchaseOrder.getOrderId());
-        if(orderMaster!=null){
+        if (orderMaster != null) {
             sheetName = sheetName + orderMaster.getCustomerOrderCode();
-            map.put("orderCode",orderMaster.getEpOrderCode()+"("+orderMaster.getCustomerOrderCode()+")");
+            map.put("orderCode", orderMaster.getEpOrderCode() + "(" + orderMaster.getCustomerOrderCode() + ")");
         }
         Supplier supplier = supplierService.findById(purchaseOrder.getSupplyId());
         if (supplier != null) {
