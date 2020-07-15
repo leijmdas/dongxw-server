@@ -9,7 +9,7 @@ import io.swagger.annotations.ApiModelProperty;
 /**
  * VRmType
  * @author generator
- * @date 2020年03月21日
+ * @date 2020年05月31日
  */
 @ApiModel(value="VRmTypeDTO",description="VIEW")
 public class VRmTypeDTO implements Serializable {

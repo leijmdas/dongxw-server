@@ -13,7 +13,7 @@ import org.mybatis.hbatis.orm.criteria.support.query.SortOrders;
 /**
  * VRmType VIEW
  * @author generator
- * @date 2020年03月21日
+ * @date 2020年05月31日
  */
 @Table(VRmType.EntityNode.class)
 public class VRmType implements Serializable {

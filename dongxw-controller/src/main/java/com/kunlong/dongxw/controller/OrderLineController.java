@@ -121,6 +121,11 @@ public final class OrderLineController extends BaseController {
                 return c1.compareTo(c2) ;
             }
         });
+//        pageResult.getData().sort((orderLine1,orderLine2)->{
+//            String c1 = orderLine1.getProduct()==null?"-":orderLine1.getProduct().getCode();
+//            String c2 = orderLine2.getProduct()==null?"-":orderLine2.getProduct().getCode();
+//            return c1.compareTo(c2) ;
+//        });
 
         return pageResult;
     }

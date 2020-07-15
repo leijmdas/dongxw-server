@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * VRmTypeService
  * @author generator
- * @date 2020年03月21日
+ * @date 2020年05月31日
  */
 public interface VRmTypeService {
 	

@@ -7,7 +7,7 @@ import com.kunlong.dongxw.data.domain.VRmType;
 /**
  * VRmTypeMapper
  * @author generator
- * @date 2020年03月21日
+ * @date 2020年05月31日
  */
 public interface VRmTypeMapper extends HbatisMapper<VRmType, Integer> {
 	

@@ -12,7 +12,7 @@ import org.mybatis.hbatis.orm.criteria.support.StatementBuilder;
 /**
  * VRmTypeServiceImpl
  * @author generator
- * @date 2020年03月21日
+ * @date 2020年05月31日
  */
 @Service
 public class VRmTypeServiceImpl implements VRmTypeService {
