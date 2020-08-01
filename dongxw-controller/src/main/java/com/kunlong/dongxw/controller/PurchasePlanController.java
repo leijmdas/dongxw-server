@@ -25,9 +25,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * cust类
@@ -132,11 +130,12 @@ public  class PurchasePlanController extends BaseController {
         }
     }
 
+    //queryParam.setSortBys("id|desc");
     @PostMapping("/query")
     public PageResult<PurchasePlan> query(@RequestBody PurchasePlan.QueryParam queryParam) throws IOException {
         PageResult<PurchasePlan> pageResult = new PageResult<PurchasePlan>();
 
-        queryParam.setSortBys("id|desc");
+
         pageResult.setTotal(purchasePlanService.countByQueryParam(queryParam));
         pageResult.setData(purchasePlanService.findByQueryParam(queryParam));
         for (PurchasePlan sheet : pageResult.getData()) {
@@ -149,6 +148,31 @@ public  class PurchasePlanController extends BaseController {
             }
             SysUserDTO sysUserDTO = sysUserApiService.findById(sheet.getCreateBy());
             sheet.setCreateByName(sysUserDTO == null ? "-" : sysUserDTO.getUsername());
+        }
+        if(queryParam.getOrderBys()!=null&&queryParam.getOrderBys().contains("code")) {
+            Collections.sort(pageResult.getData(), new Comparator<PurchasePlan>() {
+                @Override
+                public int compare(PurchasePlan a, PurchasePlan b) {
+                    if (a.getChildRm() != null && b.getChildRm() != null) {
+                        return a.getChildRm().getCode().compareTo(b.getChildRm().getCode());
+                    }
+
+                    return a.getId().compareTo(b.getId());
+                }
+            });
+        }
+        else
+        if(queryParam.getOrderBys()!=null&&queryParam.getOrderBys().contains("productId")) {
+            Collections.sort(pageResult.getData(), new Comparator<PurchasePlan>() {
+                @Override
+                public int compare(PurchasePlan a, PurchasePlan b) {
+                    if (a.getProduct() != null && b.getProduct() != null) {
+                        return a.getProduct().getCode().compareTo(b.getProduct().getCode());
+                    }
+
+                    return a.getId().compareTo(b.getId());
+                }
+            });
         }
         return pageResult;
     }

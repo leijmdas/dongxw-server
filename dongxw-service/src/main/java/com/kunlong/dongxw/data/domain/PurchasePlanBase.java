@@ -20,6 +20,11 @@ public class PurchasePlanBase extends KunlongModel implements Serializable {
 
 	ProductType productType;
 	ProductType productSubType;
+	Product product;
+
+	Customer customer;
+
+	String createByName;
 	//子件
 	Product childRm;
 	public BigDecimal getLossMoney() {
@@ -45,11 +50,7 @@ public class PurchasePlanBase extends KunlongModel implements Serializable {
 		this.product = product;
 	}
 
-	Product product;
 
-	Customer customer;
-
-	String createByName;
 
 	public Product getChildRm() {
 		return childRm;
