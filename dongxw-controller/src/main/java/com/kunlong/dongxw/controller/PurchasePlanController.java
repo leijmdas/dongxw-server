@@ -3,6 +3,7 @@ package com.kunlong.dongxw.controller;
 
 import app.support.query.PageResult;
 import com.kunlong.dongxw.config.DongxwTransactional;
+import com.kunlong.dongxw.report.service.PurchaseUseSumService;
 import com.kunlong.dubbo.sys.model.SysUserDTO;
 import com.kunlong.dongxw.annotation.DateRewritable;
 import com.kunlong.dongxw.consts.ApiConstants;
@@ -21,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -36,6 +38,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/dongxw/purchaseplan")
 public  class PurchasePlanController extends BaseController {
+    @Autowired
+    PurchaseUseSumService purchaseUseSumService;
+
     @Autowired
     MakePlanJoinService makePlanJoinService;
     @Autowired
@@ -71,11 +76,13 @@ public  class PurchasePlanController extends BaseController {
     @RequestMapping("/makePurchasePlanByOrder/{orderId}")
     public JsonResult<String> makePurchasePlanByOrder(@PathVariable("orderId") Integer orderId) throws IOException {
 
-        makePlanJoinService.makePurchasePlanByOrder(orderId,getCurrentUserId());
+        makePlanJoinService.makePurchasePlanByOrder(orderId, getCurrentUserId());
         return JsonResult.success("成功！");
     }
 
-    /**检查有计划*/
+    /**
+     * 检查有计划
+     */
     @PostMapping("/deleteById/{id}")
     public JsonResult<Integer> deleteById(@PathVariable("id") Integer id) throws IOException {
 
@@ -118,12 +125,13 @@ public  class PurchasePlanController extends BaseController {
         makePlan.setCreateByName(sysUserDTO == null ? "-" : sysUserDTO.getUsername());
     }
 
-    void fillMakePlans(List<MakePlan> makePlans){
+    void fillMakePlans(List<MakePlan> makePlans) {
 
         for (MakePlan makePlan : makePlans) {
             fillMakePlan(makePlan);
         }
     }
+
     @PostMapping("/query")
     public PageResult<PurchasePlan> query(@RequestBody PurchasePlan.QueryParam queryParam) throws IOException {
         PageResult<PurchasePlan> pageResult = new PageResult<PurchasePlan>();
@@ -131,10 +139,10 @@ public  class PurchasePlanController extends BaseController {
         queryParam.setSortBys("id|desc");
         pageResult.setTotal(purchasePlanService.countByQueryParam(queryParam));
         pageResult.setData(purchasePlanService.findByQueryParam(queryParam));
-        for(PurchasePlan sheet:pageResult.getData()){
+        for (PurchasePlan sheet : pageResult.getData()) {
             sheet.setChildRm(productService.findById(sheet.getChildId()));
             sheet.setProduct(productService.findById(sheet.getProductId()));
-            if(sheet.getChildRm()!=null){
+            if (sheet.getChildRm() != null) {
                 sheet.getChildRm().setProductSubType(productTypeService.findById(sheet.getChildRm().getProductTypeId()));
                 sheet.getChildRm().setProductType(productTypeService.findById(sheet.getChildRm().getParentId()));
 
@@ -146,28 +154,28 @@ public  class PurchasePlanController extends BaseController {
     }
 
 
-    @RequestMapping(value="export",method = RequestMethod.POST)
+    @RequestMapping(value = "export", method = RequestMethod.POST)
     @ApiOperation(value = "export", notes = "export", authorizations = {@Authorization(value = ApiConstants.AUTH_API_WEB)})
     public void export(@RequestBody @DateRewritable MakePlan.QueryParam queryParam, HttpServletRequest req, HttpServletResponse rsp) throws FileNotFoundException, IOException {
 
-        if(queryParam.getParam() == null) {
+        if (queryParam.getParam() == null) {
             queryParam.setParam(new MakePlan());
         }
         queryParam.setLimit(3000);
         queryParam.setStart(0);
         queryParam.setSortBys("customerId|asc,orderId|asc");
 
-        WebFileUtil web = new WebFileUtil(req,rsp);
+        WebFileUtil web = new WebFileUtil(req, rsp);
         List<MakePlan> makePlans = this.makePlanService.findByQueryParam(queryParam);
         fillMakePlans(makePlans);
-        rsp.setHeader("file",URLEncoder.encode(  "生产计划表.xlsx","UTF-8"));
+        rsp.setHeader("file", URLEncoder.encode("生产计划表.xlsx", "UTF-8"));
 
-        web.export2EasyExcelObject("生产计划表.xlsx", buildTitles(),buildRecords(makePlans));
+        web.export2EasyExcelObject("生产计划表.xlsx", buildTitles(), buildRecords(makePlans));
 
     }
 
-    List<String> buildTitles(){
-        List<String> strings=new ArrayList<>();
+    List<String> buildTitles() {
+        List<String> strings = new ArrayList<>();
 
         strings.add("发外标志");
         strings.add("客户名称");
@@ -188,24 +196,25 @@ public  class PurchasePlanController extends BaseController {
         strings.add("备注");
         return strings;
     }
+
     List<List<Object>> buildRecords(List<MakePlan> makePlans) {
         List<List<Object>> records = new ArrayList<>();
         for (MakePlan makePlan : makePlans) {
             List<Object> r = new ArrayList<>();
-             //strings.add("发外标志");
+            //strings.add("发外标志");
             r.add(MakePlanConst.getOutFlag(makePlan.getOutFlag()));
             // strings.add("客户名称");
-            r.add(makePlan.getCustomer()==null?"-":makePlan.getCustomer().getCustName());
+            r.add(makePlan.getCustomer() == null ? "-" : makePlan.getCustomer().getCustName());
             //strings.add("客户订单号");
-            r.add(makePlan.getOrderMaster()==null?"-":makePlan.getOrderMaster().getCustomerOrderCode());
+            r.add(makePlan.getOrderMaster() == null ? "-" : makePlan.getOrderMaster().getCustomerOrderCode());
             //strings.add("客款号");
-            r.add(makePlan.getProduct()==null?"-":makePlan.getProduct().getCode());
+            r.add(makePlan.getProduct() == null ? "-" : makePlan.getProduct().getCode());
             //strings.add("产品描述");
-            r.add(makePlan.getProduct()==null?"-":makePlan.getProduct().getRemark());
+            r.add(makePlan.getProduct() == null ? "-" : makePlan.getProduct().getRemark());
             //strings.add("颜色");
-            r.add(makePlan.getProduct()==null?"-":makePlan.getProduct().getColor());
+            r.add(makePlan.getProduct() == null ? "-" : makePlan.getProduct().getColor());
             //strings.add("数量");
-            r.add(makePlan.getOrderLine()==null?"-":makePlan.getOrderLine().getQty());
+            r.add(makePlan.getOrderLine() == null ? "-" : makePlan.getOrderLine().getQty());
 
             //strings.add("接单日期");
             r.add(transDate(makePlan.getOrderDate()));
@@ -233,7 +242,7 @@ public  class PurchasePlanController extends BaseController {
     }
 
     String transDatetime(Date d) {
-        if(d==null){
+        if (d == null) {
             return "";
         }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -241,14 +250,20 @@ public  class PurchasePlanController extends BaseController {
     }
 
     String transDate(Date d) {
-        if(d==null){
+        if (d == null) {
             return "";
         }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         return sdf.format(d);
     }
 
+    @RequestMapping(value = "/exportUseSum/{orderId}", method = RequestMethod.POST)
+    @ApiOperation(value = "/exportUseSum/{orderId}", notes = "用量汇总", authorizations = {@Authorization(value = ApiConstants.AUTH_API_WEB)})
+    public void exportUseSum(@PathVariable("orderId") Integer orderId, HttpServletResponse rsp) throws FileNotFoundException, IOException, InvocationTargetException, IllegalAccessException {
 
+        String fileName = purchaseUseSumService.export(rsp  , orderId);
+
+    }
 
 }
 

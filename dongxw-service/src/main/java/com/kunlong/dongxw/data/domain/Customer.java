@@ -19,7 +19,7 @@ import org.mybatis.hbatis.orm.criteria.support.query.SortOrders;
 @Table(Customer.EntityNode.class)
 public class Customer extends  CustomerBase implements Serializable {
 	
-	private static final long serialVersionUID = 1L;
+	private transient static final long serialVersionUID = 1L;
 	/**
 	  * 客户主键
 	  * nullable:true,length:11
