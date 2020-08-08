@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kunlong.dongxw.data.dao.SelfMonthCloseMapper" >
+	<resultMap id="BaseResultMap" type="com.kunlong.dongxw.data.domain.SelfMonthClose" >
+	    <id column="id" property="id" jdbcType="INTEGER" />	
+	  	<result column="ym" property="ym" jdbcType="INTEGER" />
+	  	<result column="close_flag" property="closeFlag" jdbcType="BIT" />
+    </resultMap>
+    <resultMap id="BaseResultMap_SelfMonthClose" type="com.kunlong.dongxw.data.domain.SelfMonthClose" >
+	    <id column="smc_id" property="id" jdbcType="INTEGER" />	
+	  	<result column="smc_ym" property="ym" jdbcType="INTEGER" />
+	  	<result column="smc_close_flag" property="closeFlag" jdbcType="BIT" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+  		id,ym,close_flag
+	</sql>
+  	<sql id="Base_Column_List_SelfMonthClose" >
+  		smc.id smc_id,smc.ym smc_ym,smc.close_flag smc_close_flag
+	</sql>
+	
+	<!-- 系统自定义 -->
+	<!-- 实体参数查询结果[START] -->
+	<resultMap id="ResultMap_FindByQueryParam" type="com.kunlong.dongxw.data.domain.SelfMonthClose" extends="BaseResultMap_SelfMonthClose">
+		
+	</resultMap>
+
+	<sql id="Condition_FindByQueryParam">
+		<if test="queryParam.param!=null">
+			<bind name="p" value="queryParam.param"/>
+			<if test="p.id!=null ">
+		    	and smc.id=#{p.id}
+		    </if>
+			<if test="p.ym!=null ">
+		    	and smc.ym=#{p.ym}
+		    </if>
+			<if test="p.closeFlag!=null ">
+		    	and smc.close_flag=#{p.closeFlag}
+		    </if>
+		</if>
+		<!--
+		<bind name="rp" value="queryParam.ruleParam" />
+		<include refid="org.mybatis.hbatis.orm.mapper.HbatisMapper.RuleParam"/>
+		-->
+	</sql>
+	<select id="findByQueryParam" resultMap="ResultMap_FindByQueryParam">
+		select
+		<include refid="Base_Column_List_SelfMonthClose"></include>
+		from self_month_close smc where 1=1
+		<include refid="Condition_FindByQueryParam"></include>
+		<if test="queryParam.sortOrders!=null and queryParam.sortOrders.size() gt 0">
+			order by 
+			<foreach collection="queryParam.sortOrders" item="item" separator=",">
+				${item.sortField.sqlColumn} ${item.sortType}
+			</foreach>
+		</if>
+		<if test="queryParam.limit gt 0">
+	  		limit ${queryParam.start},${queryParam.limit}
+	  	</if>
+	</select>
+	<select id="countByQueryParam" resultType="long">
+		select count(1) from self_month_close smc where 1=1
+		<include refid="Condition_FindByQueryParam"></include>
+	</select>
+	
+	<!-- 实体参数查询结果[END] -->
+	<!-- 用户自定义 -->
+	
+</mapper>
