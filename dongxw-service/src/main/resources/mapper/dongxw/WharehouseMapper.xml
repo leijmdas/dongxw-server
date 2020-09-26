@@ -1,28 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.kunlong.dongxw.data.dao.MonthCloseMapper" >
-	<resultMap id="BaseResultMap" type="com.kunlong.dongxw.data.domain.MonthClose" >
+<mapper namespace="com.kunlong.dongxw.data.dao.WharehouseMapper" >
+	<resultMap id="BaseResultMap" type="com.kunlong.dongxw.data.domain.Wharehouse" >
 	    <id column="id" property="id" jdbcType="INTEGER" />	
-	  	<result column="ym" property="ym" jdbcType="INTEGER" />
-	  	<result column="wh" property="wh" jdbcType="INTEGER" />
-	  	<result column="close_flag" property="closeFlag" jdbcType="BIT" />
+	  	<result column="code" property="code" jdbcType="VARCHAR" />
+	  	<result column="name" property="name" jdbcType="VARCHAR" />
     </resultMap>
-    <resultMap id="BaseResultMap_MonthClose" type="com.kunlong.dongxw.data.domain.MonthClose" >
-	    <id column="mc_id" property="id" jdbcType="INTEGER" />	
-	  	<result column="mc_ym" property="ym" jdbcType="INTEGER" />
-	  	<result column="mc_wh" property="wh" jdbcType="INTEGER" />
-	  	<result column="mc_close_flag" property="closeFlag" jdbcType="BIT" />
+    <resultMap id="BaseResultMap_Wharehouse" type="com.kunlong.dongxw.data.domain.Wharehouse" >
+	    <id column="w_id" property="id" jdbcType="INTEGER" />	
+	  	<result column="w_code" property="code" jdbcType="VARCHAR" />
+	  	<result column="w_name" property="name" jdbcType="VARCHAR" />
     </resultMap>
     <sql id="Base_Column_List" >
-  		id,ym,wh,close_flag
+  		id,code,name
 	</sql>
-  	<sql id="Base_Column_List_MonthClose" >
-  		mc.id mc_id,mc.ym mc_ym,mc.wh mc_wh,mc.close_flag mc_close_flag
+  	<sql id="Base_Column_List_Wharehouse" >
+  		w.id w_id,w.code w_code,w.name w_name
 	</sql>
 	
 	<!-- 系统自定义 -->
 	<!-- 实体参数查询结果[START] -->
-	<resultMap id="ResultMap_FindByQueryParam" type="com.kunlong.dongxw.data.domain.MonthClose" extends="BaseResultMap_MonthClose">
+	<resultMap id="ResultMap_FindByQueryParam" type="com.kunlong.dongxw.data.domain.Wharehouse" extends="BaseResultMap_Wharehouse">
 		
 	</resultMap>
 
@@ -30,16 +28,13 @@
 		<if test="queryParam.param!=null">
 			<bind name="p" value="queryParam.param"/>
 			<if test="p.id!=null ">
-		    	and mc.id=#{p.id}
+		    	and w.id=#{p.id}
 		    </if>
-			<if test="p.ym!=null ">
-		    	and mc.ym=#{p.ym}
+			<if test="p.code!=null and p.code!=''">
+		    	and w.code like #{p.code}
 		    </if>
-			<if test="p.wh!=null ">
-		    	and mc.wh=#{p.wh}
-		    </if>
-			<if test="p.closeFlag!=null ">
-		    	and mc.close_flag=#{p.closeFlag}
+			<if test="p.name!=null and p.name!=''">
+		    	and w.name like #{p.name}
 		    </if>
 		</if>
 		<!--
@@ -49,8 +44,8 @@
 	</sql>
 	<select id="findByQueryParam" resultMap="ResultMap_FindByQueryParam">
 		select
-		<include refid="Base_Column_List_MonthClose"></include>
-		from month_close mc where 1=1
+		<include refid="Base_Column_List_Wharehouse"></include>
+		from wharehouse w where 1=1
 		<include refid="Condition_FindByQueryParam"></include>
 		<if test="queryParam.sortOrders!=null and queryParam.sortOrders.size() gt 0">
 			order by 
@@ -63,7 +58,7 @@
 	  	</if>
 	</select>
 	<select id="countByQueryParam" resultType="long">
-		select count(1) from month_close mc where 1=1
+		select count(1) from wharehouse w where 1=1
 		<include refid="Condition_FindByQueryParam"></include>
 	</select>
 	

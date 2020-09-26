@@ -27,7 +27,6 @@ public class ProductBase extends KunlongModel implements Serializable {
 	ProductType productSubType;
 
 	Customer customer;
-
 	String createByName;
 
 	private static final long serialVersionUID = 1L;

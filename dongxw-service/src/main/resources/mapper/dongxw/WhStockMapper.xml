@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kunlong.dongxw.data.dao.WhStockMapper" >
+	<resultMap id="BaseResultMap" type="com.kunlong.dongxw.data.domain.WhStock" >
+	    <id column="id" property="id" jdbcType="INTEGER" />	
+	  	<result column="mc_id" property="mcId" jdbcType="INTEGER" />
+	  	<result column="ym" property="ym" jdbcType="INTEGER" />
+	  	<result column="wh" property="wh" jdbcType="INTEGER" />
+	  	<result column="order_id" property="orderId" jdbcType="INTEGER" />
+	  	<result column="po_id" property="poId" jdbcType="INTEGER" />
+	  	<result column="customer_id" property="customerId" jdbcType="INTEGER" />
+	  	<result column="supply_id" property="supplyId" jdbcType="INTEGER" />
+	  	<result column="stock_type" property="stockType" jdbcType="INTEGER" />
+	  	<result column="product_id" property="productId" jdbcType="INTEGER" />
+	  	<result column="price" property="price" jdbcType="DECIMAL" />
+	  	<result column="money" property="money" jdbcType="DECIMAL" />
+	  	<result column="qty" property="qty" jdbcType="DECIMAL" />
+	  	<result column="qty_in" property="qtyIn" jdbcType="DECIMAL" />
+	  	<result column="qty_out" property="qtyOut" jdbcType="DECIMAL" />
+	  	<result column="create_by" property="createBy" jdbcType="INTEGER" />
+	  	<result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+	  	<result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+    <resultMap id="BaseResultMap_WhStock" type="com.kunlong.dongxw.data.domain.WhStock" >
+	    <id column="ws_id" property="id" jdbcType="INTEGER" />	
+	  	<result column="ws_mc_id" property="mcId" jdbcType="INTEGER" />
+	  	<result column="ws_ym" property="ym" jdbcType="INTEGER" />
+	  	<result column="ws_wh" property="wh" jdbcType="INTEGER" />
+	  	<result column="ws_order_id" property="orderId" jdbcType="INTEGER" />
+	  	<result column="ws_po_id" property="poId" jdbcType="INTEGER" />
+	  	<result column="ws_customer_id" property="customerId" jdbcType="INTEGER" />
+	  	<result column="ws_supply_id" property="supplyId" jdbcType="INTEGER" />
+	  	<result column="ws_stock_type" property="stockType" jdbcType="INTEGER" />
+	  	<result column="ws_product_id" property="productId" jdbcType="INTEGER" />
+	  	<result column="ws_price" property="price" jdbcType="DECIMAL" />
+	  	<result column="ws_money" property="money" jdbcType="DECIMAL" />
+	  	<result column="ws_qty" property="qty" jdbcType="DECIMAL" />
+	  	<result column="ws_qty_in" property="qtyIn" jdbcType="DECIMAL" />
+	  	<result column="ws_qty_out" property="qtyOut" jdbcType="DECIMAL" />
+	  	<result column="ws_create_by" property="createBy" jdbcType="INTEGER" />
+	  	<result column="ws_create_date" property="createDate" jdbcType="TIMESTAMP" />
+	  	<result column="ws_remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+  		id,mc_id,ym,wh,order_id,po_id,customer_id,supply_id,stock_type,product_id,price,money,qty,qty_in,qty_out,create_by,create_date,remark
+	</sql>
+  	<sql id="Base_Column_List_WhStock" >
+  		ws.id ws_id,ws.mc_id ws_mc_id,ws.ym ws_ym,ws.wh ws_wh,ws.order_id ws_order_id,ws.po_id ws_po_id,ws.customer_id ws_customer_id,ws.supply_id ws_supply_id,ws.stock_type ws_stock_type,ws.product_id ws_product_id,ws.price ws_price,ws.money ws_money,ws.qty ws_qty,ws.qty_in ws_qty_in,ws.qty_out ws_qty_out,ws.create_by ws_create_by,ws.create_date ws_create_date,ws.remark ws_remark
+	</sql>
+	
+	<!-- 系统自定义 -->
+	<!-- 实体参数查询结果[START] -->
+	<resultMap id="ResultMap_FindByQueryParam" type="com.kunlong.dongxw.data.domain.WhStock" extends="BaseResultMap_WhStock">
+		
+	</resultMap>
+
+	<sql id="Condition_FindByQueryParam">
+		<if test="queryParam.param!=null">
+			<bind name="p" value="queryParam.param"/>
+			<if test="p.id!=null ">
+		    	and ws.id=#{p.id}
+		    </if>
+			<if test="p.mcId!=null ">
+		    	and ws.mc_id=#{p.mcId}
+		    </if>
+			<if test="p.ym!=null ">
+		    	and ws.ym=#{p.ym}
+		    </if>
+			<if test="p.wh!=null ">
+		    	and ws.wh=#{p.wh}
+		    </if>
+			<if test="p.orderId!=null ">
+		    	and ws.order_id=#{p.orderId}
+		    </if>
+			<if test="p.poId!=null ">
+		    	and ws.po_id=#{p.poId}
+		    </if>
+			<if test="p.customerId!=null ">
+		    	and ws.customer_id=#{p.customerId}
+		    </if>
+			<if test="p.supplyId!=null ">
+		    	and ws.supply_id=#{p.supplyId}
+		    </if>
+			<if test="p.stockType!=null ">
+		    	and ws.stock_type=#{p.stockType}
+		    </if>
+			<if test="p.productId!=null ">
+		    	and ws.product_id=#{p.productId}
+		    </if>
+			<if test="p.price!=null ">
+		    	and ws.price=#{p.price}
+		    </if>
+			<if test="p.money!=null ">
+		    	and ws.money=#{p.money}
+		    </if>
+			<if test="p.qty!=null ">
+		    	and ws.qty=#{p.qty}
+		    </if>
+			<if test="p.qtyIn!=null ">
+		    	and ws.qty_in=#{p.qtyIn}
+		    </if>
+			<if test="p.qtyOut!=null ">
+		    	and ws.qty_out=#{p.qtyOut}
+		    </if>
+			<if test="p.createBy!=null ">
+		    	and ws.create_by=#{p.createBy}
+		    </if>
+			<if test="p.createDate!=null ">
+		    	and ws.create_date=#{p.createDate}
+		    </if>
+			<if test="p.remark!=null and p.remark!=''">
+		    	and ws.remark like #{p.remark}
+		    </if>
+		</if>
+		<!--
+		<bind name="rp" value="queryParam.ruleParam" />
+		<include refid="org.mybatis.hbatis.orm.mapper.HbatisMapper.RuleParam"/>
+		-->
+	</sql>
+	<select id="findByQueryParam" resultMap="ResultMap_FindByQueryParam">
+		select
+		<include refid="Base_Column_List_WhStock"></include>
+		from wh_stock ws where 1=1
+		<include refid="Condition_FindByQueryParam"></include>
+		<if test="queryParam.sortOrders!=null and queryParam.sortOrders.size() gt 0">
+			order by 
+			<foreach collection="queryParam.sortOrders" item="item" separator=",">
+				${item.sortField.sqlColumn} ${item.sortType}
+			</foreach>
+		</if>
+		<if test="queryParam.limit gt 0">
+	  		limit ${queryParam.start},${queryParam.limit}
+	  	</if>
+	</select>
+	<select id="countByQueryParam" resultType="long">
+		select count(1) from wh_stock ws where 1=1
+		<include refid="Condition_FindByQueryParam"></include>
+	</select>
+	
+	<!-- 实体参数查询结果[END] -->
+	<!-- 用户自定义 -->
+	
+</mapper>

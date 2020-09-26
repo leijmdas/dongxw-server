@@ -8,7 +8,7 @@ import io.swagger.annotations.ApiModelProperty;
 /**
  * MonthClose
  * @author generator
- * @date 2020年08月08日
+ * @date 2020年08月09日
  */
 @ApiModel(value="MonthCloseDTO",description="月结周期表")
 public class MonthCloseDTO implements Serializable {
@@ -27,6 +27,12 @@ public class MonthCloseDTO implements Serializable {
 	@ApiModelProperty(value = "年月 varchar(32)",required = true,notes = "年月 varchar(32) ")
 	private Integer ym;
 	/**
+	  * 
+	  * nullable:false,length:11
+	  */
+	@ApiModelProperty(value = "",required = true,notes = " ")
+	private Integer wh;
+	/**
 	  * 月结标志 r
 	  * nullable:false,length:1
 	  */
@@ -43,6 +49,12 @@ public class MonthCloseDTO implements Serializable {
     }
     public void setYm(Integer ym){
     	this.ym = ym;
+    }
+    public Integer getWh(){
+    	return this.wh;
+    }
+    public void setWh(Integer wh){
+    	this.wh = wh;
     }
     public Boolean getCloseFlag(){
     	return this.closeFlag;

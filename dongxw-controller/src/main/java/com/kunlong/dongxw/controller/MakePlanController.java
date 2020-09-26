@@ -170,10 +170,12 @@ public  class MakePlanController extends BaseController {
 
         List<MakePlan> makePlans = makePlanJoinService.findByOrder(queryParam.getParam().getOrderId());
         makePlanJoinService.fillMakePlans(makePlans);
-        String fnNew = makePlanJoinService.writePlan2File("工作计划表", makePlans, "工作计划表.xlsx");
+        String fnNew = makePlanJoinService.writePlan2File("生产计划表", makePlans, "生产计划表.xlsx");
 
-        EasyExcelUtil.writeExcel2Response( "工作计划表.xlsx", rsp, fnNew);
-        return JsonResult.success();
+        EasyExcelUtil.writeExcel2Response( "生产计划表.xlsx", rsp, fnNew);
+        return JsonResult.success(makePlans.size());
+
+
     }
 
 

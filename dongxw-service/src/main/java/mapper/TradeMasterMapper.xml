@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kunlong.dongxw.data.dao.TradeMasterMapper" >
+	<resultMap id="BaseResultMap" type="com.kunlong.dongxw.data.domain.TradeMaster" >
+	    <id column="id" property="id" jdbcType="INTEGER" />	
+	  	<result column="mc_id" property="mcId" jdbcType="INTEGER" />
+	  	<result column="wh" property="wh" jdbcType="INTEGER" />
+	  	<result column="code" property="code" jdbcType="VARCHAR" />
+	  	<result column="trade_type" property="tradeType" jdbcType="INTEGER" />
+	  	<result column="status" property="status" jdbcType="INTEGER" />
+	  	<result column="trade_time" property="tradeTime" jdbcType="TIMESTAMP" />
+	  	<result column="cal_flag" property="calFlag" jdbcType="BIT" />
+	  	<result column="prd_name" property="prdName" jdbcType="VARCHAR" />
+	  	<result column="use_exp" property="useExp" jdbcType="VARCHAR" />
+	  	<result column="customer_id" property="customerId" jdbcType="INTEGER" />
+	  	<result column="cust_name" property="custName" jdbcType="VARCHAR" />
+	  	<result column="pay_mode" property="payMode" jdbcType="VARCHAR" />
+	  	<result column="supply_Id" property="supplyId" jdbcType="INTEGER" />
+	  	<result column="use_dpt" property="useDpt" jdbcType="VARCHAR" />
+	  	<result column="order_id" property="orderId" jdbcType="INTEGER" />
+	  	<result column="trade_by" property="tradeBy" jdbcType="VARCHAR" />
+	  	<result column="po_id" property="poId" jdbcType="INTEGER" />
+	  	<result column="sheet_by" property="sheetBy" jdbcType="VARCHAR" />
+	  	<result column="issue_wh" property="issueWh" jdbcType="VARCHAR" />
+	  	<result column="contact" property="contact" jdbcType="VARCHAR" />
+	  	<result column="issue_addr" property="issueAddr" jdbcType="VARCHAR" />
+	  	<result column="tel" property="tel" jdbcType="VARCHAR" />
+	  	<result column="trade_count" property="tradeCount" jdbcType="SMALLINT" />
+    </resultMap>
+    <resultMap id="BaseResultMap_TradeMaster" type="com.kunlong.dongxw.data.domain.TradeMaster" >
+	    <id column="tm_id" property="id" jdbcType="INTEGER" />	
+	  	<result column="tm_mc_id" property="mcId" jdbcType="INTEGER" />
+	  	<result column="tm_wh" property="wh" jdbcType="INTEGER" />
+	  	<result column="tm_code" property="code" jdbcType="VARCHAR" />
+	  	<result column="tm_trade_type" property="tradeType" jdbcType="INTEGER" />
+	  	<result column="tm_status" property="status" jdbcType="INTEGER" />
+	  	<result column="tm_trade_time" property="tradeTime" jdbcType="TIMESTAMP" />
+	  	<result column="tm_cal_flag" property="calFlag" jdbcType="BIT" />
+	  	<result column="tm_prd_name" property="prdName" jdbcType="VARCHAR" />
+	  	<result column="tm_use_exp" property="useExp" jdbcType="VARCHAR" />
+	  	<result column="tm_customer_id" property="customerId" jdbcType="INTEGER" />
+	  	<result column="tm_cust_name" property="custName" jdbcType="VARCHAR" />
+	  	<result column="tm_pay_mode" property="payMode" jdbcType="VARCHAR" />
+	  	<result column="tm_supply_Id" property="supplyId" jdbcType="INTEGER" />
+	  	<result column="tm_use_dpt" property="useDpt" jdbcType="VARCHAR" />
+	  	<result column="tm_order_id" property="orderId" jdbcType="INTEGER" />
+	  	<result column="tm_trade_by" property="tradeBy" jdbcType="VARCHAR" />
+	  	<result column="tm_po_id" property="poId" jdbcType="INTEGER" />
+	  	<result column="tm_sheet_by" property="sheetBy" jdbcType="VARCHAR" />
+	  	<result column="tm_issue_wh" property="issueWh" jdbcType="VARCHAR" />
+	  	<result column="tm_contact" property="contact" jdbcType="VARCHAR" />
+	  	<result column="tm_issue_addr" property="issueAddr" jdbcType="VARCHAR" />
+	  	<result column="tm_tel" property="tel" jdbcType="VARCHAR" />
+	  	<result column="tm_trade_count" property="tradeCount" jdbcType="SMALLINT" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+  		id,mc_id,wh,code,trade_type,status,trade_time,cal_flag,prd_name,use_exp,customer_id,cust_name,pay_mode,supply_Id,use_dpt,order_id,trade_by,po_id,sheet_by,issue_wh,contact,issue_addr,tel,trade_count
+	</sql>
+  	<sql id="Base_Column_List_TradeMaster" >
+  		tm.id tm_id,tm.mc_id tm_mc_id,tm.wh tm_wh,tm.code tm_code,tm.trade_type tm_trade_type,tm.status tm_status,tm.trade_time tm_trade_time,tm.cal_flag tm_cal_flag,tm.prd_name tm_prd_name,tm.use_exp tm_use_exp,tm.customer_id tm_customer_id,tm.cust_name tm_cust_name,tm.pay_mode tm_pay_mode,tm.supply_Id tm_supply_Id,tm.use_dpt tm_use_dpt,tm.order_id tm_order_id,tm.trade_by tm_trade_by,tm.po_id tm_po_id,tm.sheet_by tm_sheet_by,tm.issue_wh tm_issue_wh,tm.contact tm_contact,tm.issue_addr tm_issue_addr,tm.tel tm_tel,tm.trade_count tm_trade_count
+	</sql>
+	
+	<!-- 系统自定义 -->
+	<!-- 实体参数查询结果[START] -->
+	<resultMap id="ResultMap_FindByQueryParam" type="com.kunlong.dongxw.data.domain.TradeMaster" extends="BaseResultMap_TradeMaster">
+		
+	</resultMap>
+
+	<sql id="Condition_FindByQueryParam">
+		<if test="queryParam.param!=null">
+			<bind name="p" value="queryParam.param"/>
+			<if test="p.id!=null ">
+		    	and tm.id=#{p.id}
+		    </if>
+			<if test="p.mcId!=null ">
+		    	and tm.mc_id=#{p.mcId}
+		    </if>
+			<if test="p.wh!=null ">
+		    	and tm.wh=#{p.wh}
+		    </if>
+			<if test="p.code!=null and p.code!=''">
+		    	and tm.code like #{p.code}
+		    </if>
+			<if test="p.tradeType!=null ">
+		    	and tm.trade_type=#{p.tradeType}
+		    </if>
+			<if test="p.status!=null ">
+		    	and tm.status=#{p.status}
+		    </if>
+			<if test="p.tradeTime!=null ">
+		    	and tm.trade_time=#{p.tradeTime}
+		    </if>
+			<if test="p.calFlag!=null ">
+		    	and tm.cal_flag=#{p.calFlag}
+		    </if>
+			<if test="p.prdName!=null and p.prdName!=''">
+		    	and tm.prd_name like #{p.prdName}
+		    </if>
+			<if test="p.useExp!=null and p.useExp!=''">
+		    	and tm.use_exp like #{p.useExp}
+		    </if>
+			<if test="p.customerId!=null ">
+		    	and tm.customer_id=#{p.customerId}
+		    </if>
+			<if test="p.custName!=null and p.custName!=''">
+		    	and tm.cust_name like #{p.custName}
+		    </if>
+			<if test="p.payMode!=null and p.payMode!=''">
+		    	and tm.pay_mode like #{p.payMode}
+		    </if>
+			<if test="p.supplyId!=null ">
+		    	and tm.supply_Id=#{p.supplyId}
+		    </if>
+			<if test="p.useDpt!=null and p.useDpt!=''">
+		    	and tm.use_dpt like #{p.useDpt}
+		    </if>
+			<if test="p.orderId!=null ">
+		    	and tm.order_id=#{p.orderId}
+		    </if>
+			<if test="p.tradeBy!=null and p.tradeBy!=''">
+		    	and tm.trade_by like #{p.tradeBy}
+		    </if>
+			<if test="p.poId!=null ">
+		    	and tm.po_id=#{p.poId}
+		    </if>
+			<if test="p.sheetBy!=null and p.sheetBy!=''">
+		    	and tm.sheet_by like #{p.sheetBy}
+		    </if>
+			<if test="p.issueWh!=null and p.issueWh!=''">
+		    	and tm.issue_wh like #{p.issueWh}
+		    </if>
+			<if test="p.contact!=null and p.contact!=''">
+		    	and tm.contact like #{p.contact}
+		    </if>
+			<if test="p.issueAddr!=null and p.issueAddr!=''">
+		    	and tm.issue_addr like #{p.issueAddr}
+		    </if>
+			<if test="p.tel!=null and p.tel!=''">
+		    	and tm.tel like #{p.tel}
+		    </if>
+			<if test="p.tradeCount!=null ">
+		    	and tm.trade_count=#{p.tradeCount}
+		    </if>
+		</if>
+		<!--
+		<bind name="rp" value="queryParam.ruleParam" />
+		<include refid="org.mybatis.hbatis.orm.mapper.HbatisMapper.RuleParam"/>
+		-->
+	</sql>
+	<select id="findByQueryParam" resultMap="ResultMap_FindByQueryParam">
+		select
+		<include refid="Base_Column_List_TradeMaster"></include>
+		from trade_master tm where 1=1
+		<include refid="Condition_FindByQueryParam"></include>
+		<if test="queryParam.sortOrders!=null and queryParam.sortOrders.size() gt 0">
+			order by 
+			<foreach collection="queryParam.sortOrders" item="item" separator=",">
+				${item.sortField.sqlColumn} ${item.sortType}
+			</foreach>
+		</if>
+		<if test="queryParam.limit gt 0">
+	  		limit ${queryParam.start},${queryParam.limit}
+	  	</if>
+	</select>
+	<select id="countByQueryParam" resultType="long">
+		select count(1) from trade_master tm where 1=1
+		<include refid="Condition_FindByQueryParam"></include>
+	</select>
+	
+	<!-- 实体参数查询结果[END] -->
+	<!-- 用户自定义 -->
+	
+</mapper>

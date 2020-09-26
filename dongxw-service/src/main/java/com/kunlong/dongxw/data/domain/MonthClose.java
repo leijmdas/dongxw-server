@@ -12,7 +12,7 @@ import org.mybatis.hbatis.orm.criteria.support.query.SortOrders;
 /**
  * MonthClose 月结周期表
  * @author generator
- * @date 2020年08月08日
+ * @date 2020年08月09日
  */
 @Table(MonthClose.EntityNode.class)
 public class MonthClose implements Serializable {
@@ -32,6 +32,13 @@ public class MonthClose implements Serializable {
 	@NotNull
 	private Integer ym;
 	/**
+	  * 
+	  * nullable:false,length:11
+	  */
+	@Column(comment = "")	
+	@NotNull
+	private Integer wh;
+	/**
 	  * 月结标志 r
 	  * nullable:false,length:1
 	  */
@@ -50,6 +57,12 @@ public class MonthClose implements Serializable {
     public void setYm(Integer ym){
     	this.ym = ym;
     }
+    public Integer getWh(){
+    	return this.wh;
+    }
+    public void setWh(Integer wh){
+    	this.wh = wh;
+    }
     public Boolean getCloseFlag(){
     	return this.closeFlag;
     }
@@ -63,6 +76,8 @@ public class MonthClose implements Serializable {
         public FieldNode<MonthClose, Integer> id =  createFieldNode("id","id",Integer.class,JdbcType.INTEGER);
     	/** 年月 varchar(32) */
         public FieldNode<MonthClose, Integer> ym =  createFieldNode("ym","ym",Integer.class,JdbcType.INTEGER);
+    	/**  */
+        public FieldNode<MonthClose, Integer> wh =  createFieldNode("wh","wh",Integer.class,JdbcType.INTEGER);
     	/** 月结标志 r */
         public FieldNode<MonthClose, Boolean> closeFlag =  createFieldNode("closeFlag","close_flag",Boolean.class,JdbcType.BIT);
 	

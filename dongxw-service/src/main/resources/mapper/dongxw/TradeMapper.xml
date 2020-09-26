@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kunlong.dongxw.data.dao.TradeMapper" >
+	<resultMap id="BaseResultMap" type="com.kunlong.dongxw.data.domain.Trade" >
+	    <id column="id" property="id" jdbcType="INTEGER" />	
+	  	<result column="master_id" property="masterId" jdbcType="INTEGER" />
+	  	<result column="mc_id" property="mcId" jdbcType="INTEGER" />
+	  	<result column="ym" property="ym" jdbcType="INTEGER" />
+	  	<result column="wh" property="wh" jdbcType="INTEGER" />
+	  	<result column="order_id" property="orderId" jdbcType="INTEGER" />
+	  	<result column="order_code" property="orderCode" jdbcType="VARCHAR" />
+	  	<result column="po_id" property="poId" jdbcType="INTEGER" />
+	  	<result column="customer_id" property="customerId" jdbcType="INTEGER" />
+	  	<result column="supply_id" property="supplyId" jdbcType="INTEGER" />
+	  	<result column="stock_type" property="stockType" jdbcType="INTEGER" />
+	  	<result column="product_id" property="productId" jdbcType="INTEGER" />
+	  	<result column="qty_order" property="qtyOrder" jdbcType="DECIMAL" />
+	  	<result column="qty_finish" property="qtyFinish" jdbcType="DECIMAL" />
+	  	<result column="qty" property="qty" jdbcType="DECIMAL" />
+	  	<result column="qty_backup" property="qtyBackup" jdbcType="DECIMAL" />
+	  	<result column="price" property="price" jdbcType="DECIMAL" />
+	  	<result column="money" property="money" jdbcType="DECIMAL" />
+	  	<result column="remark" property="remark" jdbcType="VARCHAR" />
+	  	<result column="create_by" property="createBy" jdbcType="INTEGER" />
+	  	<result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    </resultMap>
+    <resultMap id="BaseResultMap_Trade" type="com.kunlong.dongxw.data.domain.Trade" >
+	    <id column="t_id" property="id" jdbcType="INTEGER" />	
+	  	<result column="t_master_id" property="masterId" jdbcType="INTEGER" />
+	  	<result column="t_mc_id" property="mcId" jdbcType="INTEGER" />
+	  	<result column="t_ym" property="ym" jdbcType="INTEGER" />
+	  	<result column="t_wh" property="wh" jdbcType="INTEGER" />
+	  	<result column="t_order_id" property="orderId" jdbcType="INTEGER" />
+	  	<result column="t_order_code" property="orderCode" jdbcType="VARCHAR" />
+	  	<result column="t_po_id" property="poId" jdbcType="INTEGER" />
+	  	<result column="t_customer_id" property="customerId" jdbcType="INTEGER" />
+	  	<result column="t_supply_id" property="supplyId" jdbcType="INTEGER" />
+	  	<result column="t_stock_type" property="stockType" jdbcType="INTEGER" />
+	  	<result column="t_product_id" property="productId" jdbcType="INTEGER" />
+	  	<result column="t_qty_order" property="qtyOrder" jdbcType="DECIMAL" />
+	  	<result column="t_qty_finish" property="qtyFinish" jdbcType="DECIMAL" />
+	  	<result column="t_qty" property="qty" jdbcType="DECIMAL" />
+	  	<result column="t_qty_backup" property="qtyBackup" jdbcType="DECIMAL" />
+	  	<result column="t_price" property="price" jdbcType="DECIMAL" />
+	  	<result column="t_money" property="money" jdbcType="DECIMAL" />
+	  	<result column="t_remark" property="remark" jdbcType="VARCHAR" />
+	  	<result column="t_create_by" property="createBy" jdbcType="INTEGER" />
+	  	<result column="t_create_date" property="createDate" jdbcType="TIMESTAMP" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+  		id,master_id,mc_id,ym,wh,order_id,order_code,po_id,customer_id,supply_id,stock_type,product_id,qty_order,qty_finish,qty,qty_backup,price,money,remark,create_by,create_date
+	</sql>
+  	<sql id="Base_Column_List_Trade" >
+  		t.id t_id,t.master_id t_master_id,t.mc_id t_mc_id,t.ym t_ym,t.wh t_wh,t.order_id t_order_id,t.order_code t_order_code,t.po_id t_po_id,t.customer_id t_customer_id,t.supply_id t_supply_id,t.stock_type t_stock_type,t.product_id t_product_id,t.qty_order t_qty_order,t.qty_finish t_qty_finish,t.qty t_qty,t.qty_backup t_qty_backup,t.price t_price,t.money t_money,t.remark t_remark,t.create_by t_create_by,t.create_date t_create_date
+	</sql>
+	
+	<!-- 系统自定义 -->
+	<!-- 实体参数查询结果[START] -->
+	<resultMap id="ResultMap_FindByQueryParam" type="com.kunlong.dongxw.data.domain.Trade" extends="BaseResultMap_Trade">
+		
+	</resultMap>
+
+	<sql id="Condition_FindByQueryParam">
+		<if test="queryParam.param!=null">
+			<bind name="p" value="queryParam.param"/>
+			<if test="p.id!=null ">
+		    	and t.id=#{p.id}
+		    </if>
+			<if test="p.masterId!=null ">
+		    	and t.master_id=#{p.masterId}
+		    </if>
+			<if test="p.mcId!=null ">
+		    	and t.mc_id=#{p.mcId}
+		    </if>
+			<if test="p.ym!=null ">
+		    	and t.ym=#{p.ym}
+		    </if>
+			<if test="p.wh!=null ">
+		    	and t.wh=#{p.wh}
+		    </if>
+			<if test="p.orderId!=null ">
+		    	and t.order_id=#{p.orderId}
+		    </if>
+			<if test="p.orderCode!=null and p.orderCode!=''">
+		    	and t.order_code like #{p.orderCode}
+		    </if>
+			<if test="p.poId!=null ">
+		    	and t.po_id=#{p.poId}
+		    </if>
+			<if test="p.customerId!=null ">
+		    	and t.customer_id=#{p.customerId}
+		    </if>
+			<if test="p.supplyId!=null ">
+		    	and t.supply_id=#{p.supplyId}
+		    </if>
+			<if test="p.stockType!=null ">
+		    	and t.stock_type=#{p.stockType}
+		    </if>
+			<if test="p.productId!=null ">
+		    	and t.product_id=#{p.productId}
+		    </if>
+			<if test="p.qtyOrder!=null ">
+		    	and t.qty_order=#{p.qtyOrder}
+		    </if>
+			<if test="p.qtyFinish!=null ">
+		    	and t.qty_finish=#{p.qtyFinish}
+		    </if>
+			<if test="p.qty!=null ">
+		    	and t.qty=#{p.qty}
+		    </if>
+			<if test="p.qtyBackup!=null ">
+		    	and t.qty_backup=#{p.qtyBackup}
+		    </if>
+			<if test="p.price!=null ">
+		    	and t.price=#{p.price}
+		    </if>
+			<if test="p.money!=null ">
+		    	and t.money=#{p.money}
+		    </if>
+			<if test="p.remark!=null and p.remark!=''">
+		    	and t.remark like #{p.remark}
+		    </if>
+			<if test="p.createBy!=null ">
+		    	and t.create_by=#{p.createBy}
+		    </if>
+			<if test="p.createDate!=null ">
+		    	and t.create_date=#{p.createDate}
+		    </if>
+		</if>
+		<!--
+		<bind name="rp" value="queryParam.ruleParam" />
+		<include refid="org.mybatis.hbatis.orm.mapper.HbatisMapper.RuleParam"/>
+		-->
+	</sql>
+	<select id="findByQueryParam" resultMap="ResultMap_FindByQueryParam">
+		select
+		<include refid="Base_Column_List_Trade"></include>
+		from trade t where 1=1
+		<include refid="Condition_FindByQueryParam"></include>
+		<if test="queryParam.sortOrders!=null and queryParam.sortOrders.size() gt 0">
+			order by 
+			<foreach collection="queryParam.sortOrders" item="item" separator=",">
+				${item.sortField.sqlColumn} ${item.sortType}
+			</foreach>
+		</if>
+		<if test="queryParam.limit gt 0">
+	  		limit ${queryParam.start},${queryParam.limit}
+	  	</if>
+	</select>
+	<select id="countByQueryParam" resultType="long">
+		select count(1) from trade t where 1=1
+		<include refid="Condition_FindByQueryParam"></include>
+	</select>
+	
+	<!-- 实体参数查询结果[END] -->
+	<!-- 用户自定义 -->
+	
+</mapper>

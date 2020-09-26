@@ -34,7 +34,7 @@ public  class MonthCloseController extends BaseController {
     @PostMapping("/query")
     public PageResult<MonthClose> query(@RequestBody MonthClose.QueryParam queryParam) throws IOException {
         PageResult<MonthClose> pageResult = new PageResult<>();
-          queryParam.setSortBys("ym|desc");
+        queryParam.setSortBys("ym|desc");
         //queryParam.setParam(new MonthClose());
 
         pageResult.setTotal(monthCloseService.countByQueryParam(queryParam));

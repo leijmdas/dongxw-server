@@ -38,5 +38,9 @@ public class SimpleSequenceGenerator {
 
         return crc32.getValue();
     }
+    public static String generateIssueCode(String prefix) {
+        SimpleDateFormat df = new SimpleDateFormat("MMdd");
+        return prefix +  getRandomSeq().substring(0,3);
+    }
 
 }

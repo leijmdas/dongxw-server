@@ -4,18 +4,20 @@
 	<resultMap id="BaseResultMap" type="com.kunlong.dongxw.data.domain.MonthClose" >
 	    <id column="id" property="id" jdbcType="INTEGER" />	
 	  	<result column="ym" property="ym" jdbcType="INTEGER" />
+	  	<result column="wh" property="wh" jdbcType="INTEGER" />
 	  	<result column="close_flag" property="closeFlag" jdbcType="BIT" />
     </resultMap>
     <resultMap id="BaseResultMap_MonthClose" type="com.kunlong.dongxw.data.domain.MonthClose" >
 	    <id column="mc_id" property="id" jdbcType="INTEGER" />	
 	  	<result column="mc_ym" property="ym" jdbcType="INTEGER" />
+	  	<result column="mc_wh" property="wh" jdbcType="INTEGER" />
 	  	<result column="mc_close_flag" property="closeFlag" jdbcType="BIT" />
     </resultMap>
     <sql id="Base_Column_List" >
-  		id,ym,close_flag
+  		id,ym,wh,close_flag
 	</sql>
   	<sql id="Base_Column_List_MonthClose" >
-  		mc.id mc_id,mc.ym mc_ym,mc.close_flag mc_close_flag
+  		mc.id mc_id,mc.ym mc_ym,mc.wh mc_wh,mc.close_flag mc_close_flag
 	</sql>
 	
 	<!-- 系统自定义 -->
@@ -32,6 +34,9 @@
 		    </if>
 			<if test="p.ym!=null ">
 		    	and mc.ym=#{p.ym}
+		    </if>
+			<if test="p.wh!=null ">
+		    	and mc.wh=#{p.wh}
 		    </if>
 			<if test="p.closeFlag!=null ">
 		    	and mc.close_flag=#{p.closeFlag}

@@ -7,7 +7,7 @@ import com.kunlong.dongxw.data.domain.MonthClose;
 /**
  * MonthCloseMapper
  * @author generator
- * @date 2020年08月08日
+ * @date 2020年08月09日
  */
 public interface MonthCloseMapper extends HbatisMapper<MonthClose, Integer> {
 	
