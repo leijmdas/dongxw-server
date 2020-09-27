@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * TradeMasterService
  * @author generator
- * @date 2020年09月26日
+ * @date 2020年09月27日
  */
 public interface TradeMasterService {
 	

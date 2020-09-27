@@ -121,10 +121,10 @@ public  class TradeMasterController extends BaseController {
             row.put("remark", trade.getProduct().getRemark());
             //row.put("color", trade.getProduct().getColor());
             row.put("memo", trade.getRemark());
-            row.put("qty", trade.getQty());
-            row.put("qtyOrder", trade.getQtyOrder());
-            row.put("qtyFinish", trade.getQtyFinish());
-            row.put("qtyBackup", trade.getQtyBackup());
+            row.put("qty", trade.getQty().longValue());
+            row.put("qtyOrder", trade.getQtyOrder().longValue());
+            row.put("qtyFinish", trade.getQtyFinish().longValue());
+            row.put("qtyBackup", trade.getQtyBackup().longValue());
 
             mapList.add(row);
         }

@@ -11,7 +11,7 @@ import io.swagger.annotations.ApiModelProperty;
 /**
  * TradeMaster
  * @author generator
- * @date 2020年09月26日
+ * @date 2020年09月27日
  */
 @ApiModel(value="TradeMasterDTO",description="交易主表")
 public class TradeMasterDTO implements Serializable {
@@ -161,6 +161,18 @@ public class TradeMasterDTO implements Serializable {
 	  */
 	@ApiModelProperty(value = "",required = true,notes = " ")
 	private Short tradeCount;
+	/**
+	  * 
+	  * nullable:false,length:11
+	  */
+	@ApiModelProperty(value = "",required = true,notes = " ")
+	private Integer ym;
+	/**
+	  * 
+	  * nullable:false,length:11
+	  */
+	@ApiModelProperty(value = "",required = true,notes = " ")
+	private Integer moneyType;
     public Integer getId(){
     	return this.id;
     }
@@ -304,6 +316,18 @@ public class TradeMasterDTO implements Serializable {
     }
     public void setTradeCount(Short tradeCount){
     	this.tradeCount = tradeCount;
+    }
+    public Integer getYm(){
+    	return this.ym;
+    }
+    public void setYm(Integer ym){
+    	this.ym = ym;
+    }
+    public Integer getMoneyType(){
+    	return this.moneyType;
+    }
+    public void setMoneyType(Integer moneyType){
+    	this.moneyType = moneyType;
     }
     // ==== 自定义属性 ====
 }

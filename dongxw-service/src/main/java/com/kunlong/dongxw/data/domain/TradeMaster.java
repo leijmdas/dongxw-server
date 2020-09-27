@@ -15,7 +15,7 @@ import org.mybatis.hbatis.orm.criteria.support.query.SortOrders;
 /**
  * TradeMaster 交易主表
  * @author generator
- * @date 2020年09月26日
+ * @date 2020年09月27日
  */
 @Table(TradeMaster.EntityNode.class)
 public class TradeMaster implements Serializable {
@@ -187,6 +187,20 @@ public class TradeMaster implements Serializable {
 	@Column(comment = "")	
 	@NotNull
 	private Short tradeCount;
+	/**
+	  * 
+	  * nullable:false,length:11
+	  */
+	@Column(comment = "")	
+	@NotNull
+	private Integer ym;
+	/**
+	  * 
+	  * nullable:false,length:11
+	  */
+	@Column(comment = "")	
+	@NotNull
+	private Integer moneyType;
     public Integer getId(){
     	return this.id;
     }
@@ -331,6 +345,18 @@ public class TradeMaster implements Serializable {
     public void setTradeCount(Short tradeCount){
     	this.tradeCount = tradeCount;
     }
+    public Integer getYm(){
+    	return this.ym;
+    }
+    public void setYm(Integer ym){
+    	this.ym = ym;
+    }
+    public Integer getMoneyType(){
+    	return this.moneyType;
+    }
+    public void setMoneyType(Integer moneyType){
+    	this.moneyType = moneyType;
+    }
 
     public static class EntityNode extends AbstractEntityNode<TradeMaster> {
         public static final EntityNode INSTANCE = new EntityNode("tm");;
@@ -382,6 +408,10 @@ public class TradeMaster implements Serializable {
         public FieldNode<TradeMaster, String> tel =  createFieldNode("tel","tel",String.class,JdbcType.VARCHAR);
     	/**  */
         public FieldNode<TradeMaster, Short> tradeCount =  createFieldNode("tradeCount","trade_count",Short.class,JdbcType.SMALLINT);
+    	/**  */
+        public FieldNode<TradeMaster, Integer> ym =  createFieldNode("ym","ym",Integer.class,JdbcType.INTEGER);
+    	/**  */
+        public FieldNode<TradeMaster, Integer> moneyType =  createFieldNode("moneyType","money_type",Integer.class,JdbcType.INTEGER);
 	
         /**
          * @param alias 别名

@@ -26,6 +26,8 @@
 	  	<result column="issue_addr" property="issueAddr" jdbcType="VARCHAR" />
 	  	<result column="tel" property="tel" jdbcType="VARCHAR" />
 	  	<result column="trade_count" property="tradeCount" jdbcType="SMALLINT" />
+	  	<result column="ym" property="ym" jdbcType="INTEGER" />
+	  	<result column="money_type" property="moneyType" jdbcType="INTEGER" />
     </resultMap>
     <resultMap id="BaseResultMap_TradeMaster" type="com.kunlong.dongxw.data.domain.TradeMaster" >
 	    <id column="tm_id" property="id" jdbcType="INTEGER" />	
@@ -52,12 +54,14 @@
 	  	<result column="tm_issue_addr" property="issueAddr" jdbcType="VARCHAR" />
 	  	<result column="tm_tel" property="tel" jdbcType="VARCHAR" />
 	  	<result column="tm_trade_count" property="tradeCount" jdbcType="SMALLINT" />
+	  	<result column="tm_ym" property="ym" jdbcType="INTEGER" />
+	  	<result column="tm_money_type" property="moneyType" jdbcType="INTEGER" />
     </resultMap>
     <sql id="Base_Column_List" >
-  		id,mc_id,wh,code,trade_type,status,trade_time,cal_flag,prd_name,use_exp,customer_id,cust_name,pay_mode,supply_Id,use_dpt,order_id,trade_by,po_id,sheet_by,issue_wh,contact,issue_addr,tel,trade_count
+  		id,mc_id,wh,code,trade_type,status,trade_time,cal_flag,prd_name,use_exp,customer_id,cust_name,pay_mode,supply_Id,use_dpt,order_id,trade_by,po_id,sheet_by,issue_wh,contact,issue_addr,tel,trade_count,ym,money_type
 	</sql>
   	<sql id="Base_Column_List_TradeMaster" >
-  		tm.id tm_id,tm.mc_id tm_mc_id,tm.wh tm_wh,tm.code tm_code,tm.trade_type tm_trade_type,tm.status tm_status,tm.trade_time tm_trade_time,tm.cal_flag tm_cal_flag,tm.prd_name tm_prd_name,tm.use_exp tm_use_exp,tm.customer_id tm_customer_id,tm.cust_name tm_cust_name,tm.pay_mode tm_pay_mode,tm.supply_Id tm_supply_Id,tm.use_dpt tm_use_dpt,tm.order_id tm_order_id,tm.trade_by tm_trade_by,tm.po_id tm_po_id,tm.sheet_by tm_sheet_by,tm.issue_wh tm_issue_wh,tm.contact tm_contact,tm.issue_addr tm_issue_addr,tm.tel tm_tel,tm.trade_count tm_trade_count
+  		tm.id tm_id,tm.mc_id tm_mc_id,tm.wh tm_wh,tm.code tm_code,tm.trade_type tm_trade_type,tm.status tm_status,tm.trade_time tm_trade_time,tm.cal_flag tm_cal_flag,tm.prd_name tm_prd_name,tm.use_exp tm_use_exp,tm.customer_id tm_customer_id,tm.cust_name tm_cust_name,tm.pay_mode tm_pay_mode,tm.supply_Id tm_supply_Id,tm.use_dpt tm_use_dpt,tm.order_id tm_order_id,tm.trade_by tm_trade_by,tm.po_id tm_po_id,tm.sheet_by tm_sheet_by,tm.issue_wh tm_issue_wh,tm.contact tm_contact,tm.issue_addr tm_issue_addr,tm.tel tm_tel,tm.trade_count tm_trade_count,tm.ym tm_ym,tm.money_type tm_money_type
 	</sql>
 	
 	<!-- 系统自定义 -->
@@ -140,6 +144,12 @@
 		    </if>
 			<if test="p.tradeCount!=null ">
 		    	and tm.trade_count=#{p.tradeCount}
+		    </if>
+			<if test="p.ym!=null ">
+		    	and tm.ym=#{p.ym}
+		    </if>
+			<if test="p.moneyType!=null ">
+		    	and tm.money_type=#{p.moneyType}
 		    </if>
 		</if>
 		<!--

@@ -12,7 +12,7 @@ import org.mybatis.hbatis.orm.criteria.support.StatementBuilder;
 /**
  * TradeMasterServiceImpl
  * @author generator
- * @date 2020年09月26日
+ * @date 2020年09月27日
  */
 @Service
 public class TradeMasterServiceImpl implements TradeMasterService {
