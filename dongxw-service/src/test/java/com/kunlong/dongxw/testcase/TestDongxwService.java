@@ -292,5 +292,17 @@ public class TestDongxwService extends TestBaseApp {
         }
 
     }
+    @Autowired
+    MonthCloseService monthCloseService;
+    @Test
+    public void queryMC(){
+        MonthClose.QueryParam queryParam=new MonthClose.QueryParam();
+
+        queryParam.setSortBys("ym|desc");
+        queryParam.setLimit(-1);
+        List<MonthClose>  monthCloses = monthCloseService.findByQueryParam(queryParam);
+        Map<Integer,Long> result= monthCloses.stream().collect( Collectors.groupingBy(MonthClose::getYm, Collectors.counting()));
+        System.out.println(result.keySet());
+    }
 
 }

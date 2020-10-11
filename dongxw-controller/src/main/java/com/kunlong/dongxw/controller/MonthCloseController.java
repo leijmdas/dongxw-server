@@ -10,6 +10,7 @@ import com.kunlong.dongxw.data.service.*;
 import com.kunlong.platform.utils.JsonResult;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * cust类
@@ -30,6 +32,26 @@ public  class MonthCloseController extends BaseController {
     @Autowired
 
     MonthCloseService monthCloseService;
+    @PostMapping("/queryMc")
+    public PageResult<MonthClose> queryMc(@RequestBody MonthClose.QueryParam queryParam) throws IOException {
+        PageResult<MonthClose> pageResult = new PageResult<>();
+        queryParam.setSortBys("ym|desc");
+        queryParam.setLimit(-1);
+        List<MonthClose>  monthCloses = monthCloseService.findByQueryParam(queryParam);
+        Map<Integer,Long> result= monthCloses.stream().collect( Collectors.groupingBy(MonthClose::getYm, Collectors.counting()));
+        //Map <Integer,List < MonthClose >> result = monthCloses.stream().collect(Collectors.groupingBy(MonthClose::getYm));
+
+        pageResult.setTotal(result.keySet().size());
+        List<MonthClose> list=new ArrayList<>();
+        for(Integer i:result.keySet()){
+            MonthClose mc=new MonthClose();
+            mc.setYm(i);
+            list.add(mc);
+        }
+        pageResult.setData(list);
+
+        return pageResult;
+    }
 
     @PostMapping("/query")
     public PageResult<MonthClose> query(@RequestBody MonthClose.QueryParam queryParam) throws IOException {
@@ -101,7 +123,7 @@ public  class MonthCloseController extends BaseController {
 
 
 
-    @RequestMapping("/findById/{id}")
+    @PostMapping("/findById/{id}")
     public JsonResult<Bom> findById(@PathVariable("id") Integer id, HttpServletResponse response) throws IOException {
 
         return JsonResult.success( );

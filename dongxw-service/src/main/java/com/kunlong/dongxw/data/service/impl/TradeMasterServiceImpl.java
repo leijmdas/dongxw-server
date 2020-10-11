@@ -1,6 +1,11 @@
 package com.kunlong.dongxw.data.service.impl;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import com.kunlong.dongxw.data.domain.Trade;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.kunlong.dongxw.data.domain.TradeMaster;
@@ -111,5 +116,30 @@ public class TradeMasterServiceImpl implements TradeMasterService {
 		if (items == null || items.isEmpty() || field.length < 1) {
 			return;
 		}
+	}
+
+
+	public List<TradeMaster> selectCustomerByYm(int ym) {
+
+		//SelectStatement<Trade> st = StatementBuilder.buildSelectSelective(entity);
+
+		SelectStatement<TradeMaster> selectStatement = SelectStatement.newInstance(TradeMaster.EntityNode.INSTANCE);
+		selectStatement.setPageRange(0, -1);
+		selectStatement.getRestrictions().add(TradeMaster.EntityNode.INSTANCE.ym.eq(ym));
+
+		List<TradeMaster> tradeMasters = repo.selectByStatement(selectStatement);
+		Map<Integer, List<TradeMaster>> collect = tradeMasters.stream()
+				.collect(
+						Collectors.groupingBy(
+								TradeMaster::getCustomerId/*, Collectors.counting()*/
+						)
+				);
+
+		tradeMasters.clear();
+		for(Integer i:collect.keySet()){
+			tradeMasters.add(collect.get(i).get(0));
+
+		}
+		return tradeMasters;
 	}
 }

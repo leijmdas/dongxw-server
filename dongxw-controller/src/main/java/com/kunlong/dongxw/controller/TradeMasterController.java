@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -36,6 +37,9 @@ import java.util.stream.Collectors;
 @RequestMapping("/dongxw/master")
 public  class TradeMasterController extends BaseController {
     @Autowired
+    CustomerService customerService;
+
+    @Autowired
     TradeMasterService tradeMasterService;
     @Autowired
     ProductService productService;
@@ -43,6 +47,19 @@ public  class TradeMasterController extends BaseController {
     @Autowired
     TradeService tradeService;
 
+    @PostMapping("/selectCustomerByYm")
+    public PageResult<TradeMaster> selectCustomerByYm(@RequestBody TradeMaster.QueryParam queryParam) throws IOException {
+        PageResult<TradeMaster> pageResult = new PageResult<>();
+        if(queryParam.getParam().getYm()==null){
+            queryParam.getParam().setYm(-1);
+        }
+        List<TradeMaster> tradeMasters=tradeMasterService.selectCustomerByYm(queryParam.getParam().getYm());
+
+        pageResult.setTotal(tradeMasters.size());
+        pageResult.setData(tradeMasters);
+
+        return pageResult;
+    }
     @PostMapping("/query")
     public PageResult<TradeMaster> query(@RequestBody TradeMaster.QueryParam queryParam) throws IOException {
         PageResult<TradeMaster> pageResult = new PageResult<>();
@@ -134,6 +151,70 @@ public  class TradeMasterController extends BaseController {
         return EasyPOIUtil.makeExcelSheet("issue_template.xlsx",fileName,sheetName,map);
     }
 
+    public String writeCheckSheet2File(TradeMaster tradeMaster, String sheetName, List<Trade> trades, String fileName) throws IOException {
+        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> info = new LinkedHashMap();
+        map.put("info", info);
+        info.put("custName", tradeMaster.getCustName());
+        info.put("ym", tradeMaster.getYm());
+        info.put("sum", "0.0");
+        info.put("ymStart", KunlongUtils.transDate(getFirstDayOfMonth(tradeMaster.getTradeTime())));
+        info.put("ymEnd", KunlongUtils.transDate(getLastDayOfMonth(tradeMaster.getTradeTime())));
+        info.put("toDay", KunlongUtils.transDate(new Date()));
+
+        // 送货日期	单号	 产品名称	规格	 单位	数量	单价	金额	备注
+
+        List<Map<String, Object>> mapList = new ArrayList<>();
+        BigDecimal sum=KunlongUtils.newBigDecimal(0);
+        for (Trade trade : trades) {
+            sheetName = tradeMaster.getCustName()+tradeMaster.getYm()+"对帐单" ;
+            Map<String, Object> row = new LinkedHashMap<>();
+
+            row.put("tradeTime", KunlongUtils.transDate(trade.getTradeMaster().getTradeTime()));
+            row.put("tradeCode", trade.getTradeMaster().getCode());
+
+            row.put("code", trade.getProduct().getCode());
+            row.put("remark", trade.getProduct().getRemark());
+            row.put("size", trade.getProduct().getSize());
+            row.put("unit", trade.getProduct().getUnit());
+            row.put("qty", trade.getQty().longValue());
+            row.put("price", trade.getPrice().toString());
+            row.put("money", trade.getMoney().toString());
+
+            row.put("memo", trade.getRemark());
+            mapList.add(row);
+            sum= sum.add(trade.getMoney());
+        }
+        info.put("sum", sum.toString());
+        info.put("list", mapList);
+        //System.out.println(KunlongUtils.toJSONStringPretty(info));
+
+        return EasyPOIUtil.makeExcelSheet("checksheet_template.xlsx",fileName,sheetName,map);
+    }
+    @RequestMapping(value = "exportCheckSheet", method = RequestMethod.POST)
+    @ApiOperation(value = "exportCheckSheet", notes = "exportCheckSheet", authorizations = {@Authorization(value = ApiConstants.AUTH_API_WEB)})
+    public void exportCheckSheet(@RequestBody @DateRewritable TradeMaster.QueryParam queryParam, HttpServletRequest req, HttpServletResponse rsp) throws Exception {
+
+        List<TradeMaster> tradeMasters=tradeMasterService.findByQueryParam(queryParam);
+
+        TradeMaster master = tradeMasters.get(0);//radeMasterService.findById(tradeMasters.get(0).getId());
+        List<Trade> result = tradeService.findByMaster(-1);
+
+        for(TradeMaster tradeMaster:tradeMasters) {
+            List<Trade>  trades = tradeService.findByMaster(tradeMaster.getId());
+            for (Trade trade : trades) {
+                Product product = productService.findById(trade.getProductId());
+                trade.setProduct(product == null ? new Product() : product);
+                trade.setTradeMaster(tradeMaster);
+            }
+            result.addAll(trades);
+        }
+        String fn = master.getCustName() +"-"+ master.getYm() + "对帐单" + ".xlsx";
+        String fnNew = writeCheckSheet2File(master, "对帐单", result, fn);
+
+        EasyExcelUtil.writeExcel2Response(fn, rsp, fnNew);
+
+    }
     @RequestMapping(value = "export", method = RequestMethod.POST)
     @ApiOperation(value = "export", notes = "export", authorizations = {@Authorization(value = ApiConstants.AUTH_API_WEB)})
     public void export(@RequestBody @DateRewritable TradeMaster.QueryParam queryParam, HttpServletRequest req, HttpServletResponse rsp) throws Exception {
@@ -154,6 +235,5 @@ public  class TradeMasterController extends BaseController {
         EasyExcelUtil.writeExcel2Response(fn, rsp, fnNew);
 
     }
-
 }
 

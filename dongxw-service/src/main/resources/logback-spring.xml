@@ -70,7 +70,7 @@
 	<logger name="org.quartz.core.QuartzSchedulerThread" level="ERROR" />
 
 	<logger name="org.activiti" level="ERROR"></logger>
-	<logger name="com.kunlong.dongxw.DemoLoggerA" level="ERROR"></logger>
+	<logger name="com.kunlong.dongxw" level="ERROR"></logger>
 	<!-- async log -->
 	<logger name="AsyncLog" level="ERROR" additivity="false">
 		<appender-ref ref="ASYNCOUT" />

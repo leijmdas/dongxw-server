@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 
@@ -123,4 +124,20 @@ public class BaseController {
 //		return fileNameNew;
 	}
 
+	public static Date getFirstDayOfMonth (Date date) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		calendar.set( Calendar.DAY_OF_MONTH,1);
+		return calendar.getTime();
+
+	}
+
+	public static Date getLastDayOfMonth (Date date) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		calendar.set( Calendar.DAY_OF_MONTH,1);
+		calendar.add( Calendar.MONTH,1);
+		calendar.add( Calendar.DAY_OF_MONTH,-1);
+		return calendar.getTime();
+	}
 }

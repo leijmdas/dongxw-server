@@ -22,6 +22,15 @@ public class TradeBase extends KunlongModel implements Serializable {
 
 	Product  product ;
 
+	public TradeMaster getTradeMaster() {
+		return tradeMaster;
+	}
+
+	public void setTradeMaster(TradeMaster tradeMaster) {
+		this.tradeMaster = tradeMaster;
+	}
+
+	TradeMaster tradeMaster;
 
 	private static final long serialVersionUID = 1L;
 

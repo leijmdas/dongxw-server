@@ -71,4 +71,6 @@ public interface TradeMasterService {
 	 * @param field
 	 */
 	public void fillValues(List<TradeMaster> items,TradeMaster.ValueField ...field);
-}
+
+	public List<TradeMaster> selectCustomerByYm(int ym) ;
+	}
