@@ -5,12 +5,13 @@ import java.lang.Integer;
 import java.lang.String;
 import java.util.Date;
 import java.lang.Long;
+import java.lang.Boolean;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 /**
  * OrderMaster
  * @author generator
- * @date 2020年01月06日
+ * @date 2020年10月29日
  */
 @ApiModel(value="OrderMasterDTO",description="客户订单")
 public class OrderMasterDTO implements Serializable {
@@ -142,6 +143,12 @@ public class OrderMasterDTO implements Serializable {
 	  */
 	@ApiModelProperty(value = "",required = true,notes = " ")
 	private Integer orderType;
+	/**
+	  * 是否含税
+	  * nullable:false,length:1
+	  */
+	@ApiModelProperty(value = "是否含税",required = true,notes = "是否含税 ")
+	private Boolean includeTax;
     public Integer getId(){
     	return this.id;
     }
@@ -267,6 +274,12 @@ public class OrderMasterDTO implements Serializable {
     }
     public void setOrderType(Integer orderType){
     	this.orderType = orderType;
+    }
+    public Boolean getIncludeTax(){
+    	return this.includeTax;
+    }
+    public void setIncludeTax(Boolean includeTax){
+    	this.includeTax = includeTax;
     }
     // ==== 自定义属性 ====
 }

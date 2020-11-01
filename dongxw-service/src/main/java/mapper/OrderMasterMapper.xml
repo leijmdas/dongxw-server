@@ -23,6 +23,7 @@
 	  	<result column="invoice_id" property="invoiceId" jdbcType="BIGINT" />
 	  	<result column="parent_id" property="parentId" jdbcType="INTEGER" />
 	  	<result column="order_type" property="orderType" jdbcType="INTEGER" />
+	  	<result column="include_tax" property="includeTax" jdbcType="BIT" />
     </resultMap>
     <resultMap id="BaseResultMap_OrderMaster" type="com.kunlong.dongxw.data.domain.OrderMaster" >
 	    <id column="om_id" property="id" jdbcType="INTEGER" />	
@@ -46,12 +47,13 @@
 	  	<result column="om_invoice_id" property="invoiceId" jdbcType="BIGINT" />
 	  	<result column="om_parent_id" property="parentId" jdbcType="INTEGER" />
 	  	<result column="om_order_type" property="orderType" jdbcType="INTEGER" />
+	  	<result column="om_include_tax" property="includeTax" jdbcType="BIT" />
     </resultMap>
     <sql id="Base_Column_List" >
-  		id,customer_id,business_by,status,customer_order_code,ep_order_code,money_type,invoice_no_ini,invoice_no,order_date,customer_issue_date,check_date,factroy_issue_date,customer_order_img,create_by,create_date,remark,invoice_id_ini,invoice_id,parent_id,order_type
+  		id,customer_id,business_by,status,customer_order_code,ep_order_code,money_type,invoice_no_ini,invoice_no,order_date,customer_issue_date,check_date,factroy_issue_date,customer_order_img,create_by,create_date,remark,invoice_id_ini,invoice_id,parent_id,order_type,include_tax
 	</sql>
   	<sql id="Base_Column_List_OrderMaster" >
-  		om.id om_id,om.customer_id om_customer_id,om.business_by om_business_by,om.status om_status,om.customer_order_code om_customer_order_code,om.ep_order_code om_ep_order_code,om.money_type om_money_type,om.invoice_no_ini om_invoice_no_ini,om.invoice_no om_invoice_no,om.order_date om_order_date,om.customer_issue_date om_customer_issue_date,om.check_date om_check_date,om.factroy_issue_date om_factroy_issue_date,om.customer_order_img om_customer_order_img,om.create_by om_create_by,om.create_date om_create_date,om.remark om_remark,om.invoice_id_ini om_invoice_id_ini,om.invoice_id om_invoice_id,om.parent_id om_parent_id,om.order_type om_order_type
+  		om.id om_id,om.customer_id om_customer_id,om.business_by om_business_by,om.status om_status,om.customer_order_code om_customer_order_code,om.ep_order_code om_ep_order_code,om.money_type om_money_type,om.invoice_no_ini om_invoice_no_ini,om.invoice_no om_invoice_no,om.order_date om_order_date,om.customer_issue_date om_customer_issue_date,om.check_date om_check_date,om.factroy_issue_date om_factroy_issue_date,om.customer_order_img om_customer_order_img,om.create_by om_create_by,om.create_date om_create_date,om.remark om_remark,om.invoice_id_ini om_invoice_id_ini,om.invoice_id om_invoice_id,om.parent_id om_parent_id,om.order_type om_order_type,om.include_tax om_include_tax
 	</sql>
 	
 	<!-- 系统自定义 -->
@@ -125,6 +127,9 @@
 		    </if>
 			<if test="p.orderType!=null ">
 		    	and om.order_type=#{p.orderType}
+		    </if>
+			<if test="p.includeTax!=null ">
+		    	and om.include_tax=#{p.includeTax}
 		    </if>
 		</if>
 		<!--

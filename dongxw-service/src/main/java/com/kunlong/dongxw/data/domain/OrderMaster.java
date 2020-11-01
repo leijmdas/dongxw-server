@@ -9,16 +9,13 @@ import java.lang.Integer;
 import java.lang.String;
 import java.util.Date;
 import java.lang.Long;
-import java.util.HashMap;
-import java.util.Map;
-
+import java.lang.Boolean;
 import org.mybatis.hbatis.orm.criteria.support.query.AbstractQueryParam;
-import org.mybatis.hbatis.orm.criteria.support.query.DateRange;
 import org.mybatis.hbatis.orm.criteria.support.query.SortOrders;
 /**
  * OrderMaster 客户订单
  * @author generator
- * @date 2020年01月06日
+ * @date 2020年10月29日
  */
 @Table(OrderMaster.EntityNode.class)
 public class OrderMaster extends OrderMasterBase implements Serializable {
@@ -164,6 +161,13 @@ public class OrderMaster extends OrderMasterBase implements Serializable {
 	@Column(comment = "")	
 	@NotNull
 	private Integer orderType;
+	/**
+	  * 是否含税
+	  * nullable:false,length:1
+	  */
+	@Column(comment = "是否含税")	
+	@NotNull
+	private Boolean includeTax;
     public Integer getId(){
     	return this.id;
     }
@@ -290,6 +294,12 @@ public class OrderMaster extends OrderMasterBase implements Serializable {
     public void setOrderType(Integer orderType){
     	this.orderType = orderType;
     }
+    public Boolean getIncludeTax(){
+    	return this.includeTax;
+    }
+    public void setIncludeTax(Boolean includeTax){
+    	this.includeTax = includeTax;
+    }
 
     public static class EntityNode extends AbstractEntityNode<OrderMaster> {
         public static final EntityNode INSTANCE = new EntityNode("om");;
@@ -335,6 +345,8 @@ public class OrderMaster extends OrderMasterBase implements Serializable {
         public FieldNode<OrderMaster, Integer> parentId =  createFieldNode("parentId","parent_id",Integer.class,JdbcType.INTEGER);
     	/**  */
         public FieldNode<OrderMaster, Integer> orderType =  createFieldNode("orderType","order_type",Integer.class,JdbcType.INTEGER);
+    	/** 是否含税 */
+        public FieldNode<OrderMaster, Boolean> includeTax =  createFieldNode("includeTax","include_tax",Boolean.class,JdbcType.BIT);
 	
         /**
          * @param alias 别名
@@ -349,16 +361,6 @@ public class OrderMaster extends OrderMasterBase implements Serializable {
 		public QueryParam() {
 			this.setSortOrders(new SortOrders<OrderMaster>(EntityNode.INSTANCE));
 		}
-
-//		private Map<String, DateRange> dateRanges = new HashMap<String, DateRange>();
-//
-//		public Map<String, DateRange> getDateRanges() {
-//			return dateRanges;
-//		}
-//
-//		public void setDateRanges(Map<String, DateRange> dateRanges) {
-//			this.dateRanges = dateRanges;
-//		}
 	}
 	
 	public static enum ValueField {

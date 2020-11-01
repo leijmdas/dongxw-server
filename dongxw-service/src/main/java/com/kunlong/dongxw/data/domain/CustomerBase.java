@@ -16,4 +16,15 @@ public class CustomerBase extends KunlongModel {
     // ==== 自定义属性 ====
     @Transient
     String createByName;
+
+    public String getSaleType() {
+        return saleType;
+    }
+
+    public void setSaleType(String saleType) {
+        this.saleType = saleType;
+    }
+
+    @Transient
+    String saleType;
 }

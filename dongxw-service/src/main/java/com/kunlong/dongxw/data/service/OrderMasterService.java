@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * OrderMasterService
  * @author generator
- * @date 2020年01月06日
+ * @date 2020年10月29日
  */
 public interface OrderMasterService {
 	
@@ -35,13 +35,13 @@ public interface OrderMasterService {
 	public OrderMaster findById(Integer pk);
 	/**
 	 * 通过非空属性查询
-	 * @param entity
+	 * @param OrderMaster
 	 * @return
 	 */
 	public List<OrderMaster> findByNotNullProps(OrderMaster entity);
 	/**
 	 * 通过主键更新非空属性
-	 * @param entity
+	 * @param OrderMaster
 	 * @return
 	 */
 	public void updateNotNullPropsById(OrderMaster entity);
@@ -49,13 +49,13 @@ public interface OrderMasterService {
 	
 	/**
 	 * 通过实体参数分页查询
-	 * @param queryParam
+	 * @param OrderMaster.QueryParam
 	 * @return
 	 */
 	public List<OrderMaster> findByQueryParam(OrderMaster.QueryParam queryParam);
 	/**
 	 * 通过实体参数统计
-	 * @param  queryParam
+	 * @param OrderMaster.QueryParam
 	 * @return
 	 */
 	public long countByQueryParam(OrderMaster.QueryParam queryParam);

@@ -155,6 +155,7 @@ public  class TradeMasterController extends BaseController {
         Map<String, Object> map = new HashMap<String, Object>();
         Map<String, Object> info = new LinkedHashMap();
         map.put("info", info);
+        info.put("includeTax","含税");
         info.put("custName", tradeMaster.getCustName());
         info.put("ym", tradeMaster.getYm());
         info.put("sum", "0.0");
@@ -172,6 +173,7 @@ public  class TradeMasterController extends BaseController {
 
             row.put("tradeTime", KunlongUtils.transDate(trade.getTradeMaster().getTradeTime()));
             row.put("tradeCode", trade.getTradeMaster().getCode());
+            row.put("orderCode", trade.getOrderCode());
 
             row.put("code", trade.getProduct().getCode());
             row.put("remark", trade.getProduct().getRemark());

@@ -94,9 +94,11 @@ public final class CustomerController extends BaseController {
 
         pageResult.setTotal(customerService.countByQueryParam(queryParam));
         pageResult.setData(customerService.findByQueryParam(queryParam));
-        for(Customer customer:pageResult.getData()){
-            SysUserDTO sysUserDTO=findUserById(customer.getCreateBy());
-            customer.setCreateByName(sysUserDTO==null?null:sysUserDTO.getUsername());
+        for (Customer customer : pageResult.getData()) {
+            SysUserDTO sysUserDTO = findUserById(customer.getCreateBy());
+            customer.setCreateByName(sysUserDTO == null ? null : sysUserDTO.getUsername());
+            customer.setSaleType(customer.getCustNo().toUpperCase().trim().startsWith("CN")
+            ?"内销":"外销");
         }
         //System.err.println(authApiService.checkExists("1111"));
         return pageResult;
