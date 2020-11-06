@@ -6,6 +6,7 @@ import com.kunlong.dongxw.annotation.DateRewritable;
 import com.kunlong.dongxw.config.DongxwTransactional;
 import com.kunlong.dongxw.consts.ApiConstants;
 import com.kunlong.dongxw.consts.MakePlanConst;
+import com.kunlong.dongxw.consts.MoneyTypeConsts;
 import com.kunlong.dongxw.data.domain.*;
 import com.kunlong.dongxw.data.service.*;
 import com.kunlong.dongxw.util.EasyExcelUtil;
@@ -38,6 +39,8 @@ import java.util.stream.Collectors;
 public  class TradeMasterController extends BaseController {
     @Autowired
     CustomerService customerService;
+    @Autowired
+    OrderMasterService orderMasterService;
 
     @Autowired
     TradeMasterService tradeMasterService;
@@ -164,10 +167,15 @@ public  class TradeMasterController extends BaseController {
         info.put("toDay", KunlongUtils.transDate(new Date()));
 
         // 送货日期	单号	 产品名称	规格	 单位	数量	单价	金额	备注
+        Map<Integer,OrderMaster> masterMap=new LinkedHashMap<>();
 
         List<Map<String, Object>> mapList = new ArrayList<>();
         BigDecimal sum=KunlongUtils.newBigDecimal(0);
         for (Trade trade : trades) {
+            if(!masterMap.containsKey(trade.getOrderId())){
+                OrderMaster orderMaster = orderMasterService.findById(trade.getOrderId());
+                masterMap.put(trade.getOrderId(),orderMaster);
+            }
             sheetName = tradeMaster.getCustName()+tradeMaster.getYm()+"对帐单" ;
             Map<String, Object> row = new LinkedHashMap<>();
 
@@ -184,6 +192,8 @@ public  class TradeMasterController extends BaseController {
             row.put("money", trade.getMoney().toString());
 
             row.put("memo", trade.getRemark());
+            String tax=masterMap.get(trade.getOrderId()).getIncludeTax()?"含税":"不含税";
+            row.put("moneyType", MoneyTypeConsts.getMoneyType(tradeMaster.getMoneyType())+tax);
             mapList.add(row);
             sum= sum.add(trade.getMoney());
         }

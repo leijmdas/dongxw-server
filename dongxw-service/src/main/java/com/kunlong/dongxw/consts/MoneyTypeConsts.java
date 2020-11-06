@@ -1,7 +1,7 @@
 package com.kunlong.dongxw.consts;
 
 public class MoneyTypeConsts {
-    public static final String MONEYTYPE_CHINA = "人民币";
+    public static final String MONEYTYPE_CHINA = "CNY";
     public static final String MONEYTYPE_HONGKONG = "港元";
     public static final String MONEYTYPE_AMERICAN = "美元";
 
