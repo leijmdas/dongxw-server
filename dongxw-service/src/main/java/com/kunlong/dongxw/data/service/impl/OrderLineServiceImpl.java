@@ -1,6 +1,9 @@
 package com.kunlong.dongxw.data.service.impl;
 
+import java.math.BigDecimal;
 import java.util.List;
+
+import com.kunlong.platform.model.KunlongModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.kunlong.dongxw.data.domain.OrderLine;
@@ -79,7 +82,21 @@ public class OrderLineServiceImpl implements OrderLineService {
 		UpdateStatement<OrderLine> st = StatementBuilder.buildUpdateSelective(entity);
 		repo.updateByStatement(st);
 	}
-	
+
+	public BigDecimal computeTotal(Integer orderMasterId)
+	{
+		OrderLine.QueryParam  queryParam=new   OrderLine.QueryParam();
+		queryParam.setParam(new OrderLine());
+		queryParam.getParam().setOrderId(orderMasterId);
+		queryParam.setLimit(-1);
+		List<OrderLine> orderLines = findByQueryParam(queryParam);
+		BigDecimal sum = KunlongModel.newBigDecimal(0);
+		for (OrderLine orderLine : orderLines) {
+			sum=sum.add(orderLine.getPrice().multiply(KunlongModel.newBigDecimal(orderLine.getQty())));
+
+		}
+		return sum;
+	}
 	/**
 	 * 通过实体参数分页查询
 	 * @param OrderLine.QueryParam

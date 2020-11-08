@@ -1,11 +1,14 @@
 package com.kunlong.dongxw.data.service;
 
 import com.kunlong.dongxw.data.domain.OrderMaster;
+import io.swagger.models.auth.In;
+
+import java.math.BigDecimal;
 import java.util.List;
 /**
  * OrderMasterService
  * @author generator
- * @date 2020年10月29日
+ * @date 2020年11月07日
  */
 public interface OrderMasterService {
 	
@@ -26,7 +29,8 @@ public interface OrderMasterService {
 	 * @param id
 	 */
 	public void deleteById(Integer pk);
-	
+	public BigDecimal computeTotal(Integer pk);
+
 	/**
 	 * 通过id获取
 	 * @param id
@@ -38,6 +42,7 @@ public interface OrderMasterService {
 	 * @param OrderMaster
 	 * @return
 	 */
+
 	public List<OrderMaster> findByNotNullProps(OrderMaster entity);
 	/**
 	 * 通过主键更新非空属性

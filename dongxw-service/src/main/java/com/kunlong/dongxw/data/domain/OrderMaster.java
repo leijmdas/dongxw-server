@@ -10,15 +10,16 @@ import java.lang.String;
 import java.util.Date;
 import java.lang.Long;
 import java.lang.Boolean;
+import java.math.BigDecimal;
 import org.mybatis.hbatis.orm.criteria.support.query.AbstractQueryParam;
 import org.mybatis.hbatis.orm.criteria.support.query.SortOrders;
 /**
  * OrderMaster 客户订单
  * @author generator
- * @date 2020年10月29日
+ * @date 2020年11月07日
  */
 @Table(OrderMaster.EntityNode.class)
-public class OrderMaster extends OrderMasterBase implements Serializable {
+public class OrderMaster extends  OrderMasterBase implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	/**
@@ -168,6 +169,34 @@ public class OrderMaster extends OrderMasterBase implements Serializable {
 	@Column(comment = "是否含税")	
 	@NotNull
 	private Boolean includeTax;
+	/**
+	  * 订单总金额
+	  * nullable:false,length:16
+	  */
+	@Column(comment = "订单总金额")	
+	@NotNull
+	private BigDecimal totalMoney;
+	/**
+	  * 定金
+	  * nullable:false,length:14
+	  */
+	@Column(comment = "定金")	
+	@NotNull
+	private BigDecimal orderMoney;
+	/**
+	  * 支付方式
+	  * nullable:false,length:32
+	  */
+	@Column(comment = "支付方式")	
+	@NotNull
+	private String payMode;
+	/**
+	  * 支付备注
+	  * nullable:false,length:256
+	  */
+	@Column(comment = "支付备注")	
+	@NotNull
+	private String payMemo;
     public Integer getId(){
     	return this.id;
     }
@@ -300,6 +329,30 @@ public class OrderMaster extends OrderMasterBase implements Serializable {
     public void setIncludeTax(Boolean includeTax){
     	this.includeTax = includeTax;
     }
+    public BigDecimal getTotalMoney(){
+    	return this.totalMoney;
+    }
+    public void setTotalMoney(BigDecimal totalMoney){
+    	this.totalMoney = totalMoney;
+    }
+    public BigDecimal getOrderMoney(){
+    	return this.orderMoney;
+    }
+    public void setOrderMoney(BigDecimal orderMoney){
+    	this.orderMoney = orderMoney;
+    }
+    public String getPayMode(){
+    	return this.payMode;
+    }
+    public void setPayMode(String payMode){
+    	this.payMode = payMode;
+    }
+    public String getPayMemo(){
+    	return this.payMemo;
+    }
+    public void setPayMemo(String payMemo){
+    	this.payMemo = payMemo;
+    }
 
     public static class EntityNode extends AbstractEntityNode<OrderMaster> {
         public static final EntityNode INSTANCE = new EntityNode("om");;
@@ -347,6 +400,14 @@ public class OrderMaster extends OrderMasterBase implements Serializable {
         public FieldNode<OrderMaster, Integer> orderType =  createFieldNode("orderType","order_type",Integer.class,JdbcType.INTEGER);
     	/** 是否含税 */
         public FieldNode<OrderMaster, Boolean> includeTax =  createFieldNode("includeTax","include_tax",Boolean.class,JdbcType.BIT);
+    	/** 订单总金额 */
+        public FieldNode<OrderMaster, BigDecimal> totalMoney =  createFieldNode("totalMoney","total_money",BigDecimal.class,JdbcType.DECIMAL);
+    	/** 定金 */
+        public FieldNode<OrderMaster, BigDecimal> orderMoney =  createFieldNode("orderMoney","order_money",BigDecimal.class,JdbcType.DECIMAL);
+    	/** 支付方式 */
+        public FieldNode<OrderMaster, String> payMode =  createFieldNode("payMode","pay_mode",String.class,JdbcType.VARCHAR);
+    	/** 支付备注 */
+        public FieldNode<OrderMaster, String> payMemo =  createFieldNode("payMemo","pay_memo",String.class,JdbcType.VARCHAR);
 	
         /**
          * @param alias 别名

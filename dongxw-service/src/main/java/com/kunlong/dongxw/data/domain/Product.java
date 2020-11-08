@@ -15,7 +15,7 @@ import org.mybatis.hbatis.orm.criteria.support.query.SortOrders;
 /**
  * Product 产品
  * @author generator
- * @date 2020年01月24日
+ * @date 2020年11月07日
  */
 @Table(Product.EntityNode.class)
 public class Product extends ProductBase implements Serializable {
@@ -118,23 +118,23 @@ public class Product extends ProductBase implements Serializable {
 	@NotNull
 	private String memo;
 	/**
-	  * 建档时间 
+	  * 创建时间 r
 	  * nullable:true,length:19
 	  */
-	@Column(comment = "建档时间 ")	
+	@Column(comment = "创建时间 r")	
 	private Date createDate;
 	/**
-	  * 建档人 
+	  * 创建人 r
 	  * nullable:false,length:11
 	  */
-	@Column(comment = "建档人 ")	
+	@Column(comment = "创建人 r")	
 	@NotNull
 	private Integer createBy;
 	/**
-	  * 
+	  * 客户 r
 	  * nullable:true,length:4
 	  */
-	@Column(comment = "")	
+	@Column(comment = "客户 r")	
 	private Integer customerId;
 	/**
 	  * 图片集
@@ -259,6 +259,13 @@ public class Product extends ProductBase implements Serializable {
 	@Column(comment = "0-成品100-半成品-200-原料")	
 	@NotNull
 	private Short prdFlag;
+	/**
+	  * 单价 r
+	  * nullable:false,length:14
+	  */
+	@Column(comment = "单价 r")	
+	@NotNull
+	private BigDecimal price;
     public Integer getId(){
     	return this.id;
     }
@@ -475,6 +482,12 @@ public class Product extends ProductBase implements Serializable {
     public void setPrdFlag(Short prdFlag){
     	this.prdFlag = prdFlag;
     }
+    public BigDecimal getPrice(){
+    	return this.price;
+    }
+    public void setPrice(BigDecimal price){
+    	this.price = price;
+    }
 
     public static class EntityNode extends AbstractEntityNode<Product> {
         public static final EntityNode INSTANCE = new EntityNode("p");;
@@ -506,11 +519,11 @@ public class Product extends ProductBase implements Serializable {
         public FieldNode<Product, Integer> status =  createFieldNode("status","status",Integer.class,JdbcType.INTEGER);
     	/** 备注  */
         public FieldNode<Product, String> memo =  createFieldNode("memo","memo",String.class,JdbcType.VARCHAR);
-    	/** 建档时间  */
+    	/** 创建时间 r */
         public FieldNode<Product, Date> createDate =  createFieldNode("createDate","create_date",Date.class,JdbcType.TIMESTAMP);
-    	/** 建档人  */
+    	/** 创建人 r */
         public FieldNode<Product, Integer> createBy =  createFieldNode("createBy","create_by",Integer.class,JdbcType.INTEGER);
-    	/**  */
+    	/** 客户 r */
         public FieldNode<Product, Integer> customerId =  createFieldNode("customerId","customer_id",Integer.class,JdbcType.INTEGER);
     	/** 图片集 */
         public FieldNode<Product, String> imgUrls =  createFieldNode("imgUrls","img_urls",String.class,JdbcType.VARCHAR);
@@ -550,6 +563,8 @@ public class Product extends ProductBase implements Serializable {
         public FieldNode<Product, String> pkgFrontImgRemark =  createFieldNode("pkgFrontImgRemark","pkg_front_img_remark",String.class,JdbcType.VARCHAR);
     	/** 0-成品100-半成品-200-原料 */
         public FieldNode<Product, Short> prdFlag =  createFieldNode("prdFlag","prd_flag",Short.class,JdbcType.SMALLINT);
+    	/** 单价 r */
+        public FieldNode<Product, BigDecimal> price =  createFieldNode("price","price",BigDecimal.class,JdbcType.DECIMAL);
 	
         /**
          * @param alias 别名

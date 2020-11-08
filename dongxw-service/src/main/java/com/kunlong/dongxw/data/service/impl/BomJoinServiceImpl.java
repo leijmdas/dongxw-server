@@ -98,6 +98,9 @@ public class BomJoinServiceImpl implements BomJoinService {
 			if (product != null) {
 				bom.setBigType(product.getParentId());
 				bom.setSmallType(product.getProductTypeId());
+				if(bom.getPrice().equals(BigDecimal.ZERO)) {
+					bom.setPrice(product.getPrice());
+				}
 			}
 		}
 		if (bom.getId() == null) {
@@ -262,6 +265,7 @@ public class BomJoinServiceImpl implements BomJoinService {
 				if (product != null) {
 					saveBom.setBigType(product.getParentId());
 					saveBom.setSmallType(product.getProductTypeId());
+					saveBom.setPrice(product.getPrice());
 				}
 				checkSource(saveBom);
 				bomService.save(saveBom);

@@ -11,7 +11,7 @@ import io.swagger.annotations.ApiModelProperty;
 /**
  * Product
  * @author generator
- * @date 2020年01月24日
+ * @date 2020年11月07日
  */
 @ApiModel(value="ProductDTO",description="产品")
 public class ProductDTO implements Serializable {
@@ -102,22 +102,22 @@ public class ProductDTO implements Serializable {
 	@ApiModelProperty(value = "备注 ",required = true,notes = "备注  ")
 	private String memo;
 	/**
-	  * 建档时间 
+	  * 创建时间 r
 	  * nullable:true,length:19
 	  */
-	@ApiModelProperty(value = "建档时间 ",required = false,notes = "建档时间  ")
+	@ApiModelProperty(value = "创建时间 r",required = false,notes = "创建时间 r ")
 	private Date createDate;
 	/**
-	  * 建档人 
+	  * 创建人 r
 	  * nullable:false,length:11
 	  */
-	@ApiModelProperty(value = "建档人 ",required = true,notes = "建档人  ")
+	@ApiModelProperty(value = "创建人 r",required = true,notes = "创建人 r ")
 	private Integer createBy;
 	/**
-	  * 
+	  * 客户 r
 	  * nullable:true,length:4
 	  */
-	@ApiModelProperty(value = "",required = false,notes = " ")
+	@ApiModelProperty(value = "客户 r",required = false,notes = "客户 r ")
 	private Integer customerId;
 	/**
 	  * 图片集
@@ -233,6 +233,12 @@ public class ProductDTO implements Serializable {
 	  */
 	@ApiModelProperty(value = "0-成品100-半成品-200-原料",required = true,notes = "0-成品100-半成品-200-原料 ")
 	private Short prdFlag;
+	/**
+	  * 单价 r
+	  * nullable:false,length:14
+	  */
+	@ApiModelProperty(value = "单价 r",required = true,notes = "单价 r ")
+	private BigDecimal price;
     public Integer getId(){
     	return this.id;
     }
@@ -448,6 +454,12 @@ public class ProductDTO implements Serializable {
     }
     public void setPrdFlag(Short prdFlag){
     	this.prdFlag = prdFlag;
+    }
+    public BigDecimal getPrice(){
+    	return this.price;
+    }
+    public void setPrice(BigDecimal price){
+    	this.price = price;
     }
     // ==== 自定义属性 ====
 }

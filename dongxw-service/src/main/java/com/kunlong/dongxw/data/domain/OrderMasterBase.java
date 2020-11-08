@@ -6,6 +6,7 @@ import org.mybatis.hbatis.orm.criteria.support.query.DateRange;
 import org.mybatis.hbatis.orm.criteria.support.query.SortOrders;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,6 +18,16 @@ import java.util.Map;
 public class OrderMasterBase implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+
+	public BigDecimal getTotalMoney() {
+		return totalMoney;
+	}
+
+	public void setTotalMoney(BigDecimal totalMoney) {
+		this.totalMoney = totalMoney;
+	}
+
+	BigDecimal totalMoney = BigDecimal.ZERO;
 
 	public Customer getCustomer() {
 		return customer;

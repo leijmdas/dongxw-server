@@ -7,7 +7,7 @@ import com.kunlong.dongxw.data.domain.Product;
 /**
  * ProductMapper
  * @author generator
- * @date 2020年01月24日
+ * @date 2020年11月07日
  */
 public interface ProductMapper extends HbatisMapper<Product, Integer> {
 	

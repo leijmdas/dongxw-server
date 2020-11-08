@@ -6,12 +6,13 @@ import java.lang.String;
 import java.util.Date;
 import java.lang.Long;
 import java.lang.Boolean;
+import java.math.BigDecimal;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 /**
  * OrderMaster
  * @author generator
- * @date 2020年10月29日
+ * @date 2020年11月07日
  */
 @ApiModel(value="OrderMasterDTO",description="客户订单")
 public class OrderMasterDTO implements Serializable {
@@ -149,6 +150,30 @@ public class OrderMasterDTO implements Serializable {
 	  */
 	@ApiModelProperty(value = "是否含税",required = true,notes = "是否含税 ")
 	private Boolean includeTax;
+	/**
+	  * 订单总金额
+	  * nullable:false,length:16
+	  */
+	@ApiModelProperty(value = "订单总金额",required = true,notes = "订单总金额 ")
+	private BigDecimal totalMoney;
+	/**
+	  * 定金
+	  * nullable:false,length:14
+	  */
+	@ApiModelProperty(value = "定金",required = true,notes = "定金 ")
+	private BigDecimal orderMoney;
+	/**
+	  * 支付方式
+	  * nullable:false,length:32
+	  */
+	@ApiModelProperty(value = "支付方式",required = true,notes = "支付方式 ")
+	private String payMode;
+	/**
+	  * 支付备注
+	  * nullable:false,length:256
+	  */
+	@ApiModelProperty(value = "支付备注",required = true,notes = "支付备注 ")
+	private String payMemo;
     public Integer getId(){
     	return this.id;
     }
@@ -280,6 +305,30 @@ public class OrderMasterDTO implements Serializable {
     }
     public void setIncludeTax(Boolean includeTax){
     	this.includeTax = includeTax;
+    }
+    public BigDecimal getTotalMoney(){
+    	return this.totalMoney;
+    }
+    public void setTotalMoney(BigDecimal totalMoney){
+    	this.totalMoney = totalMoney;
+    }
+    public BigDecimal getOrderMoney(){
+    	return this.orderMoney;
+    }
+    public void setOrderMoney(BigDecimal orderMoney){
+    	this.orderMoney = orderMoney;
+    }
+    public String getPayMode(){
+    	return this.payMode;
+    }
+    public void setPayMode(String payMode){
+    	this.payMode = payMode;
+    }
+    public String getPayMemo(){
+    	return this.payMemo;
+    }
+    public void setPayMemo(String payMemo){
+    	this.payMemo = payMemo;
     }
     // ==== 自定义属性 ====
 }

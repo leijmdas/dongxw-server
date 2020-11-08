@@ -159,6 +159,8 @@ public  class PurchaseOrderController extends BaseController {
     @PostMapping("/query")
     public PageResult<PurchaseOrder> query(@RequestBody PurchaseOrder.QueryParam queryParam) throws IOException {
         PageResult<PurchaseOrder> pageResult = new PageResult<>();
+        PurchaseOrder p =  buildQueryLikeValue(queryParam.getParam(), PurchaseOrder.class);
+        queryParam.setParam(p);
 
         queryParam.setSortBys("id|desc");
         pageResult.setTotal(purchaseOrderService.countByQueryParam(queryParam));
@@ -278,10 +280,10 @@ public  class PurchaseOrderController extends BaseController {
         List<PurchaseOrderItem> orderItems = purchaseOrderItemService.findByQueryParam(param);
         purchaseOrder.setOrderItems(orderItems);
 
-        String fnNew = writePo2File("物料采购订单", purchaseOrder, "物料采购订单.xlsx");
+        String fnNew = writePo2File("采购订单", purchaseOrder, "采购订单.xlsx");
         OrderMaster orderMaster = orderMasterService.findById(purchaseOrder.getOrderId());
 
-        EasyExcelUtil.writeExcel2Response("物料采购订单" + purchaseOrder.getPurchaseOrderCode()  + ".xlsx", rsp, fnNew);
+        EasyExcelUtil.writeExcel2Response("采购订单" + purchaseOrder.getPurchaseOrderCode()  + ".xlsx", rsp, fnNew);
         return JsonResult.success();
     }
 

@@ -1,6 +1,8 @@
 package com.kunlong.dongxw.data.service;
 
 import com.kunlong.dongxw.data.domain.OrderLine;
+
+import java.math.BigDecimal;
 import java.util.List;
 /**
  * OrderLineService
@@ -52,6 +54,8 @@ public interface OrderLineService {
 	 * @param OrderLine.QueryParam
 	 * @return
 	 */
+	public BigDecimal computeTotal(Integer orderId);
+
 	public List<OrderLine> findByQueryParam(OrderLine.QueryParam queryParam);
 	/**
 	 * 通过实体参数统计

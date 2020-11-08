@@ -1,6 +1,10 @@
 package com.kunlong.dongxw.data.service.impl;
 
+import java.math.BigDecimal;
 import java.util.List;
+
+import com.kunlong.dongxw.data.dao.OrderLineMapper;
+import com.kunlong.dongxw.data.service.OrderLineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.kunlong.dongxw.data.domain.OrderMaster;
@@ -12,11 +16,13 @@ import org.mybatis.hbatis.orm.criteria.support.StatementBuilder;
 /**
  * OrderMasterServiceImpl
  * @author generator
- * @date 2020年10月29日
+ * @date 2020年11月07日
  */
 @Service
 public class OrderMasterServiceImpl implements OrderMasterService {
-	
+	@Autowired
+	private OrderLineService orderLineService;
+
 	@Autowired
 	private OrderMasterMapper repo;
 	/**
@@ -50,7 +56,16 @@ public class OrderMasterServiceImpl implements OrderMasterService {
 	public void deleteById(Integer pk){
 		repo.deleteByPK(pk);
 	}
-	
+
+	public BigDecimal computeTotal(Integer pk) {
+		BigDecimal sum = orderLineService.computeTotal(pk);
+		OrderMaster orderMaster = new OrderMaster();
+		orderMaster.setId(pk);
+		orderMaster.setTotalMoney(sum);
+		updateNotNullPropsById(orderMaster);
+		return  sum;
+	}
+
 	/**
 	 * 通过id获取
 	 * @param id

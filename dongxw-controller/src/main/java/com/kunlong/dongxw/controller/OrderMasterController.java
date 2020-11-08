@@ -16,6 +16,7 @@ import com.kunlong.dongxw.util.WebFileUtil;
 import com.kunlong.platform.utils.JsonResult;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -121,8 +123,17 @@ public final class OrderMasterController extends BaseController {
         return pageResult;
     }
 
+    @PostMapping("/compute")
+    public BigDecimal compute(@RequestBody OrderMaster.QueryParam queryParam) throws IOException {
+        PageResult<OrderMaster>  pageResult = query(queryParam);
+        BigDecimal sum=BigDecimal.ZERO;
+        for (OrderMaster orderMaster : pageResult.getData()) {
+            sum = orderMasterService.computeTotal(orderMaster.getId());
+        }
+        return  sum;
+    }
 
-    @RequestMapping(value="export",method = RequestMethod.POST)
+        @RequestMapping(value="export",method = RequestMethod.POST)
     @ApiOperation(value = "export", notes = "export", authorizations = {@Authorization(value = ApiConstants.AUTH_API_WEB)})
     public void export(@RequestBody @DateRewritable OrderMaster.QueryParam queryParam, HttpServletRequest req, HttpServletResponse rsp) throws FileNotFoundException, IOException {
 
