@@ -61,6 +61,7 @@ public final class SupplierController extends BaseController{
     @RequestMapping("/query")
     public PageResult<Supplier> query(@RequestBody Supplier.QueryParam queryParam) throws IOException {
         PageResult<Supplier> pageResult = new PageResult<Supplier>();
+        queryParam.setSortBys(queryParam.getOrderBys());
         if (queryParam.getParam() != null) {
             Supplier s = buildQueryLikeValue(queryParam.getParam(), Supplier.class);
             queryParam.setParam(s);
