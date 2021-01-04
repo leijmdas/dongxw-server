@@ -14,10 +14,10 @@ import org.mybatis.hbatis.orm.criteria.support.query.SortOrders;
 /**
  * Trade 交易明细表
  * @author generator
- * @date 2020年09月26日
+ * @date 2020年11月28日
  */
 @Table(Trade.EntityNode.class)
-public class Trade extends TradeBase implements Serializable {
+public class Trade  extends TradeBase implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	/**
@@ -41,10 +41,10 @@ public class Trade extends TradeBase implements Serializable {
 	@NotNull
 	private Integer mcId;
 	/**
-	  * 年月 r
+	  * 
 	  * nullable:false,length:11
 	  */
-	@Column(comment = "年月 r")	
+	@Column(comment = "")	
 	@NotNull
 	private Integer ym;
 	/**
@@ -118,10 +118,10 @@ public class Trade extends TradeBase implements Serializable {
 	@NotNull
 	private BigDecimal qtyFinish;
 	/**
-	  * 数量 r
+	  * 数量 
 	  * nullable:false,length:14
 	  */
-	@Column(comment = "发货数量")
+	@Column(comment = "数量 ")	
 	@NotNull
 	private BigDecimal qty;
 	/**
@@ -166,6 +166,13 @@ public class Trade extends TradeBase implements Serializable {
 	@Column(comment = "创建时间 r")	
 	@NotNull
 	private Date createDate;
+	/**
+	  * 交易类型 10 20 30 40
+	  * nullable:false,length:255
+	  */
+	@Column(comment = "交易类型 10 20 30 40")	
+	@NotNull
+	private Integer tradeType;
     public Integer getId(){
     	return this.id;
     }
@@ -292,6 +299,12 @@ public class Trade extends TradeBase implements Serializable {
     public void setCreateDate(Date createDate){
     	this.createDate = createDate;
     }
+    public Integer getTradeType(){
+    	return this.tradeType;
+    }
+    public void setTradeType(Integer tradeType){
+    	this.tradeType = tradeType;
+    }
 
     public static class EntityNode extends AbstractEntityNode<Trade> {
         public static final EntityNode INSTANCE = new EntityNode("t");;
@@ -301,7 +314,7 @@ public class Trade extends TradeBase implements Serializable {
         public FieldNode<Trade, Integer> masterId =  createFieldNode("masterId","master_id",Integer.class,JdbcType.INTEGER);
     	/** 月结标识 r */
         public FieldNode<Trade, Integer> mcId =  createFieldNode("mcId","mc_id",Integer.class,JdbcType.INTEGER);
-    	/** 年月 r */
+    	/**  */
         public FieldNode<Trade, Integer> ym =  createFieldNode("ym","ym",Integer.class,JdbcType.INTEGER);
     	/** 仓库  r */
         public FieldNode<Trade, Integer> wh =  createFieldNode("wh","wh",Integer.class,JdbcType.INTEGER);
@@ -323,7 +336,7 @@ public class Trade extends TradeBase implements Serializable {
         public FieldNode<Trade, BigDecimal> qtyOrder =  createFieldNode("qtyOrder","qty_order",BigDecimal.class,JdbcType.DECIMAL);
     	/** 完成数量 r */
         public FieldNode<Trade, BigDecimal> qtyFinish =  createFieldNode("qtyFinish","qty_finish",BigDecimal.class,JdbcType.DECIMAL);
-    	/** 数量 r */
+    	/** 数量  */
         public FieldNode<Trade, BigDecimal> qty =  createFieldNode("qty","qty",BigDecimal.class,JdbcType.DECIMAL);
     	/** 备品数量 r */
         public FieldNode<Trade, BigDecimal> qtyBackup =  createFieldNode("qtyBackup","qty_backup",BigDecimal.class,JdbcType.DECIMAL);
@@ -337,6 +350,8 @@ public class Trade extends TradeBase implements Serializable {
         public FieldNode<Trade, Integer> createBy =  createFieldNode("createBy","create_by",Integer.class,JdbcType.INTEGER);
     	/** 创建时间 r */
         public FieldNode<Trade, Date> createDate =  createFieldNode("createDate","create_date",Date.class,JdbcType.TIMESTAMP);
+    	/** 交易类型 10 20 30 40 */
+        public FieldNode<Trade, Integer> tradeType =  createFieldNode("tradeType","trade_type",Integer.class,JdbcType.INTEGER);
 	
         /**
          * @param alias 别名

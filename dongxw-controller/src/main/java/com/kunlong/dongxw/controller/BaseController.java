@@ -89,7 +89,13 @@ public class BaseController {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		 return sdf.format(d);
 	 }
-
+	String transDateShort(Date d) {
+		if(d==null){
+			return "";
+		}
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		return sdf.format(d);
+	}
 	public <T> T buildQueryLikeValue(T obj, Class<T> cls) {
 		JSONObject jsonObject = JSONObject.parseObject(KunlongUtils.toJSONString(obj));
 		for (String key : jsonObject.keySet()) {

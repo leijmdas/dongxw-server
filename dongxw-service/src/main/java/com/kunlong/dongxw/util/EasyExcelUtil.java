@@ -10,9 +10,12 @@ import com.alibaba.excel.write.metadata.WriteTable;
 import com.alibaba.excel.write.metadata.style.WriteCellStyle;
 import com.alibaba.excel.write.metadata.style.WriteFont;
 import com.alibaba.excel.write.style.HorizontalCellStyleStrategy; ;
-import org.apache.poi.ss.usermodel.BorderStyle;
-import org.apache.poi.ss.usermodel.HorizontalAlignment;
-import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.xmlbeans.impl.common.IOUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,6 +47,58 @@ public class EasyExcelUtil {
         bufferedOutPut.close();
         response.getOutputStream().flush();
         response.getOutputStream().close();
+    }
+
+    public static void writeExcel2ResponseAutoWidth(String fileName, HttpServletResponse response, String outFile) throws Exception {
+        setExcelHeader(response, fileName);
+        BufferedOutputStream bufferedOutPut = new BufferedOutputStream(response.getOutputStream());
+
+        String  returnFileName=rewriteAutoWidth(outFile);
+        IOUtil.copyCompletely(new FileInputStream(returnFileName), bufferedOutPut);
+
+        bufferedOutPut.flush();
+        bufferedOutPut.close();
+        response.getOutputStream().flush();
+        response.getOutputStream().close();
+    }
+
+    public static String  rewriteAutoWidth(String filename) throws IOException {
+        //String s = "C:\\Users\\17947\\Desktop\\弘宇智能科技（广东）有限公司-HY201028020订单物料采购进度表2020-11-11.xlsx";
+        XSSFWorkbook workbook = new XSSFWorkbook(filename);
+        XSSFSheet sheet = workbook.getSheetAt(0);
+
+        sheet.setDefaultColumnWidth(25);//列宽
+        sheet.setColumnWidth(1, 256);//设置第一个列的宽 需要256 这里不做过多的解释
+
+        XSSFCellStyle style = workbook.createCellStyle();
+
+        for (int i = 0; i < sheet.getPhysicalNumberOfRows(); i++) {
+            XSSFRow row = sheet.getRow(i);
+
+            for (int j = 0; j < row.getPhysicalNumberOfCells(); j++) {
+                sheet.autoSizeColumn((short)j); //调整每一列的宽度
+                row.getCell(j).getCellStyle().setWrapText(true);//自动换行
+                row.getCell(j).getCellStyle().setAlignment(HorizontalAlignment.CENTER);//水平居中
+                row.getCell(j).getCellStyle().setVerticalAlignment(VerticalAlignment.CENTER);//垂直居中
+                row.setHeightInPoints(500);//行高
+
+                row.setHeight((short)500);//高度
+                style.setFillForegroundColor((short)43);
+                style.setFillForegroundColor(HSSFColor.AQUA.index);
+                style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+            }
+        }
+
+        String returnFileName = filename+System.currentTimeMillis();
+        try {
+            FileOutputStream fileOut = new FileOutputStream(returnFileName);
+            workbook.write(fileOut);
+            fileOut.close();
+            workbook.close();
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+        return returnFileName;
     }
 
     public static String writeBomExcels2File(String fileName, String sheetName,

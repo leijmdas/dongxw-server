@@ -27,9 +27,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * cust类
@@ -49,7 +47,7 @@ public final class OrderMasterController extends BaseController {
     CustomerService customerService;
 
 
-    @RequestMapping("/findById/{id}")
+    @PostMapping("/findById/{id}")
     public JsonResult<OrderMaster> findById(@PathVariable("id") Integer id, HttpServletResponse response) throws IOException {
         OrderMaster orderMaster = orderMasterService.findById(id);
         SysUserDTO sysUserDTO = sysUserApiService.findById(orderMaster.getCreateBy());
@@ -59,7 +57,7 @@ public final class OrderMasterController extends BaseController {
 
     }
 
-    @RequestMapping("/save")
+    @PostMapping("/save")
     public JsonResult<Integer> save(@RequestBody OrderMaster orderMaster) {
 
         if (orderMaster.getId() == null) {
@@ -104,7 +102,7 @@ public final class OrderMasterController extends BaseController {
         PageResult<OrderMaster> pageResult = new PageResult<>();
         // Customer.QueryParam qp = BeanMapper.getInstance().map(pageResult, Customer.QueryParam.class);
         queryParam.setSortBys(queryParam.getOrderBys());
-        OrderMaster p =  buildQueryLikeValue(queryParam.getParam(), OrderMaster.class);
+        OrderMaster p = buildQueryLikeValue(queryParam.getParam(), OrderMaster.class);
         queryParam.setParam(p);
 
         pageResult.setTotal(orderMasterService.countByQueryParam(queryParam));
@@ -123,6 +121,58 @@ public final class OrderMasterController extends BaseController {
         return pageResult;
     }
 
+    void delOrderLineByOrderId(int orderId){
+        OrderLine.QueryParam q = new OrderLine.QueryParam();
+        q.setParam(new OrderLine());
+        q.getParam().setOrderId(orderId);
+        q.setLimit(-1);
+        List<OrderLine> l = orderLineService.findByQueryParam(q);
+        for (OrderLine orderLine : l) {
+            orderLineService.deleteById(orderLine.getId());
+        }
+    }
+    //按订单ID
+    @PostMapping("/sumBySub/{porderId}")
+    public JsonResult<Integer> sumBySub(@PathVariable("porderId") Integer porderId) throws IOException {
+        OrderMaster.QueryParam queryParam = new OrderMaster.QueryParam();
+        queryParam.setParam(new OrderMaster());
+        queryParam.getParam().setParentId(porderId);
+        queryParam.setLimit(-1);
+        List<OrderMaster> orderMasters = orderMasterService.findByQueryParam(queryParam);
+        List<OrderLine> orderLines = new ArrayList<>();
+        for (OrderMaster orderMaster : orderMasters) {
+            OrderLine.QueryParam q = new OrderLine.QueryParam();
+            q.setParam(new OrderLine());
+            q.getParam().setOrderId(orderMaster.getId());
+            q.setLimit(-1);
+            List<OrderLine> l = orderLineService.findByQueryParam(q);
+            orderLines.addAll(l);
+        }
+        if (orderLines.size() > 0) {
+            delOrderLineByOrderId(porderId);
+        }
+        Map<Integer, OrderLine> map = new TreeMap<>();
+        for (OrderLine orderLine : orderLines) {
+            if (map.containsKey(orderLine.getProductId())) {
+                OrderLine sumPrd = map.get(orderLine.getProductId());
+                Integer qty = sumPrd.getQty() + orderLine.getQty();
+                sumPrd.setQty(qty);
+                sumPrd.setMoney(sumPrd.getPrice().add(new BigDecimal(qty)));
+            } else {
+                map.put(orderLine.getProductId(), orderLine);
+            }
+
+        }
+
+        for (OrderLine orderLine : map.values()) {
+            orderLine.setId(null);
+            orderLine.setOrderId(porderId);
+            orderLineService.save(orderLine);
+
+        }
+        return JsonResult.success(orderLines.size());
+    }
+
     @PostMapping("/compute")
     public BigDecimal compute(@RequestBody OrderMaster.QueryParam queryParam) throws IOException {
         PageResult<OrderMaster>  pageResult = query(queryParam);
@@ -130,10 +180,10 @@ public final class OrderMasterController extends BaseController {
         for (OrderMaster orderMaster : pageResult.getData()) {
             sum = orderMasterService.computeTotal(orderMaster.getId());
         }
-        return  sum;
+        return sum;
     }
 
-        @RequestMapping(value="export",method = RequestMethod.POST)
+    @PostMapping(value = "export" )
     @ApiOperation(value = "export", notes = "export", authorizations = {@Authorization(value = ApiConstants.AUTH_API_WEB)})
     public void export(@RequestBody @DateRewritable OrderMaster.QueryParam queryParam, HttpServletRequest req, HttpServletResponse rsp) throws FileNotFoundException, IOException {
 

@@ -12,7 +12,7 @@ import org.mybatis.hbatis.orm.criteria.support.StatementBuilder;
 /**
  * TradeServiceImpl
  * @author generator
- * @date 2020年09月26日
+ * @date 2020年11月28日
  */
 @Service
 public class TradeServiceImpl implements TradeService {
@@ -26,12 +26,6 @@ public class TradeServiceImpl implements TradeService {
 	public void save(Trade entity){
 		this.checkEntity(entity);
 		repo.insert(entity);
-	}
-
-	@Override
-	public void batchInsert(List<Trade> trades) {
-		repo.batchInsert(trades);
-
 	}
 
 	/**
@@ -56,10 +50,7 @@ public class TradeServiceImpl implements TradeService {
 	public void deleteById(Integer pk){
 		repo.deleteByPK(pk);
 	}
-	public  int deleteByPKS(List<Integer> pks){
-		return repo.deleteByPKS(pks);
-	}
-
+	
 	/**
 	 * 通过id获取
 	 * @param id
@@ -97,13 +88,6 @@ public class TradeServiceImpl implements TradeService {
 	public List<Trade> findByQueryParam(Trade.QueryParam queryParam){
 		return repo.findByQueryParam(queryParam);
 	}
-
-	public List<Trade> findByMaster(Integer masterId){
-		Trade.QueryParam queryParam=new Trade.QueryParam();
-		queryParam.setParam(new Trade());
-		queryParam.getParam().setMasterId(masterId);
-		return repo.findByQueryParam(queryParam);
-	}
 	/**
 	 * 通过实体参数统计
 	 * @param Trade.QueryParam
@@ -112,20 +96,6 @@ public class TradeServiceImpl implements TradeService {
 	public long countByQueryParam(Trade.QueryParam queryParam) {
 		return repo.countByQueryParam(queryParam);
 	}
-
-	public long countByMaster(Integer masterId) {
-
-		//Trade entity=new Trade();
-		//SelectStatement<Trade> st = StatementBuilder.buildSelectSelective(entity);
-
-		SelectStatement<Trade> selectStatement = SelectStatement.newInstance(Trade.EntityNode.INSTANCE);
-		selectStatement.setPageRange(0, 1);
-		selectStatement.getRestrictions().add(Trade.EntityNode.INSTANCE.masterId.eq(masterId));
-
-		return repo.countByRestrictions(selectStatement.getRestrictions());
-
-	}
-
 	/**
 	 * 通过ID集合查询
 	 * @param List<Integer> pks

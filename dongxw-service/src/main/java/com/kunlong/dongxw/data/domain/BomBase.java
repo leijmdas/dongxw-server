@@ -1,6 +1,5 @@
 package com.kunlong.dongxw.data.domain;
 
-import com.kunlong.platform.model.BaseRowKlModel;
 import com.kunlong.platform.model.KunlongModel;
 
 import javax.persistence.Transient;

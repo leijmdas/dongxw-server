@@ -5,10 +5,12 @@ import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.*;
+import org.apache.xmlbeans.impl.common.IOUtil;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -1175,6 +1177,75 @@ public class ExportExcelTool<T extends IRptDTO> {
 		return  erpBuildRowStyle(workbook,HorizontalAlignment.CENTER);
 	}
 	String[] noHeader = {"no record!"};
+//	public static void writeExcel2ResponseAutoWidth(String fileName, HttpServletResponse response, String outFile) throws Exception {
+//		setExcelHeader(response, fileName);
+//		BufferedOutputStream bufferedOutPut = new BufferedOutputStream(response.getOutputStream());
+//
+//		String  returnFileName=rewriteAutoWidth(outFile);
+//		IOUtil.copyCompletely(new FileInputStream(returnFileName), bufferedOutPut);
+//
+//		bufferedOutPut.flush();
+//		bufferedOutPut.close();
+//		response.getOutputStream().flush();
+//		response.getOutputStream().close();
+//	}
+
+	public static String  rewriteAutoWidthUse(String filename) throws IOException {
+
+		XSSFWorkbook workbook = new XSSFWorkbook(filename);
+		XSSFSheet sheet = workbook.getSheetAt(0);
+
+		sheet.setDefaultColumnWidth(20);//列宽
+		sheet.setColumnWidth(1, 10256);//设置第一个列的宽 需要256 这里不做过多的解释
+
+		XSSFCellStyle style = workbook.createCellStyle();
+		//style.setFillForegroundColor((short)43);
+		//style.setFillForegroundColor(HSSFColor.AQUA.index);
+		//style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+		Font font=workbook.createFont();
+		font.setFontHeightInPoints((short) 9);
+		font.setFontName("Courier New");
+		style.setFont(font);
+		style.setAlignment(HorizontalAlignment.LEFT);
+		style.setShrinkToFit(true);//自动换行
+		style.setBorderBottom(BorderStyle.THIN);
+		for (int i = 0; i < sheet.getPhysicalNumberOfRows(); i++) {
+			XSSFRow row = sheet.getRow(i);
+			for (int j = 0; j < row.getPhysicalNumberOfCells(); j++) {
+
+				row.getCell(j).getCellStyle().getFont().setFontHeight(9);
+				row.getCell(j).getCellStyle().getFont().setFontHeightInPoints((short) 9);
+				row.getCell(j).getCellStyle().setShrinkToFit(true);//自动换行
+				row.getCell(j).getCellStyle().setVerticalAlignment(VerticalAlignment.CENTER);
+				row.getCell(j).getCellStyle().setAlignment(HorizontalAlignment.CENTER);//垂直居中
+
+				if (j == 1) {
+					sheet.setColumnWidth(j, 11680);
+					if(i==0) row.getCell(j).getCellStyle().setAlignment(HorizontalAlignment.LEFT);
+					else row.getCell(j).setCellStyle(style);
+				} else if (j > 2 && j < row.getPhysicalNumberOfCells() - 8) {
+						sheet.setColumnWidth(j, 1980);
+					} else {
+				    	sheet.autoSizeColumn(j);
+					}
+				}
+				row.setHeightInPoints(300);//行高
+				row.setHeight((short)300);//高度
+
+
+		}
+
+		String returnFileName = filename+System.currentTimeMillis();
+		try {
+			FileOutputStream fileOut = new FileOutputStream(returnFileName);
+			workbook.write(fileOut);
+			fileOut.close();
+			workbook.close();
+		} catch (Exception e) {
+			System.out.println(e.toString());
+		}
+		return returnFileName;
+	}
 
 	XSSFCellStyle erpBuildRowStyle ( XSSFWorkbook workbook, HorizontalAlignment ha ) {
 		// 生成并设置另一个样式

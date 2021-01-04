@@ -47,11 +47,11 @@
             <artifactId>commons-lang3</artifactId>
             <version>3.9</version>
         </dependency>
+
         <dependency>
             <groupId>cn.afterturn</groupId>
             <artifactId>easypoi-web</artifactId>
             <version>3.3.0</version>
-            <!--<version>4.0.0</version>-->
         </dependency>
 
         <dependency>
@@ -87,15 +87,45 @@
         </dependency>
 
         <!--<dependency>-->
-            <!--<groupId>org.jxls</groupId>-->
-            <!--<artifactId>jxls</artifactId>-->
-            <!--<version>2.4.2</version>-->
+            <!--<groupId>org.apache.poi</groupId>-->
+            <!--<artifactId>poi</artifactId>-->
+            <!--<version>4.1.0</version>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.apache.poi</groupId>-->
+            <!--<artifactId>poi-ooxml</artifactId>-->
+            <!--<version>4.1.0</version>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.apache.poi</groupId>-->
+            <!--<artifactId>poi-scratchpad</artifactId>-->
+            <!--<version>4.1.0</version>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.apache.poi</groupId>-->
+            <!--<artifactId>poi-ooxml-schemas</artifactId>-->
+            <!--<version>4.1.0</version>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.apache.poi</groupId>-->
+            <!--<artifactId>ooxml-schemas</artifactId>-->
+            <!--<version>1.4</version>-->
         <!--</dependency>-->
 
         <!--<dependency>-->
-            <!--<groupId>org.jxls</groupId>-->
-            <!--<artifactId>jxls-poi</artifactId>-->
-            <!--<version>1.3.2</version>-->
+            <!--<groupId>cn.afterturn</groupId>-->
+            <!--<artifactId>easypoi-base</artifactId>-->
+            <!--<version>4.1.0</version>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>cn.afterturn</groupId>-->
+            <!--<artifactId>easypoi-web</artifactId>-->
+            <!--<version>4.1.0</version>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>cn.afterturn</groupId>-->
+            <!--<artifactId>easypoi-annotation</artifactId>-->
+            <!--<version>4.1.0</version>-->
         <!--</dependency>-->
         <dependency>
             <groupId>org.jxls</groupId>

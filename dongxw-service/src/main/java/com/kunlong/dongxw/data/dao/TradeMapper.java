@@ -7,7 +7,7 @@ import com.kunlong.dongxw.data.domain.Trade;
 /**
  * TradeMapper
  * @author generator
- * @date 2020年09月26日
+ * @date 2020年11月28日
  */
 public interface TradeMapper extends HbatisMapper<Trade, Integer> {
 	

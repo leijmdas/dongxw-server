@@ -163,6 +163,37 @@ public  class MakePlanController extends BaseController {
     }
     //https://opensource.afterturn.cn/doc/easypoi.html
 
+    @RequestMapping(value="exportMulti",method = RequestMethod.POST)
+    @ApiOperation(value = "exportMulti", notes = "exportMulti", authorizations = {@Authorization(value = ApiConstants.AUTH_API_WEB)})
+    public JsonResult<Integer> exportMulti(@RequestBody @DateRewritable MakePlan.QueryParam queryParam, HttpServletRequest req, HttpServletResponse rsp) throws Exception {
+        List<MakePlan> makePlans = new ArrayList<>();
+        for(Integer orderId : queryParam.getParam().getOrderIds()) {
+
+            OrderMaster orderMaster = orderMasterService.findById(orderId);
+            if(orderMaster.getOrderType()==100){
+                continue;
+            }
+            List<MakePlan> plans = makePlanJoinService.findByOrder(orderId);
+            makePlanJoinService.fillMakePlans(plans);
+
+            MakePlan makePlan=new MakePlan();
+            makePlan.setId(0);
+            makePlan.setSumQty(0);
+            int sumQty= plans.stream().mapToInt(m->m.getOrderLine().getQty()).sum();
+            makePlan.setSumQty(sumQty);
+            plans.add(makePlan);
+
+            makePlans.addAll(plans);
+        }
+        String fnNew = makePlanJoinService.writePlan2File("生产计划表", makePlans, "生产计划表.xlsx");
+
+        EasyExcelUtil.writeExcel2Response( "生产计划表.xlsx", rsp, fnNew);
+        return JsonResult.success(makePlans.size());
+
+
+    }
+
+
     @RequestMapping(value="export",method = RequestMethod.POST)
     @ApiOperation(value = "export", notes = "export", authorizations = {@Authorization(value = ApiConstants.AUTH_API_WEB)})
     public JsonResult<Integer> export(@RequestBody @DateRewritable MakePlan.QueryParam queryParam, HttpServletRequest req, HttpServletResponse rsp) throws Exception {
@@ -177,8 +208,6 @@ public  class MakePlanController extends BaseController {
 
 
     }
-
-
 
 
 }

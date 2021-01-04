@@ -3,19 +3,15 @@ package com.kunlong.dongxw.controller;
 
 import app.support.query.PageQueryParam;
 import app.support.query.PageResult;
-import com.kunlong.dongxw.annotation.DateRewritable;
-import com.kunlong.dongxw.consts.ApiConstants;
 import com.kunlong.dongxw.data.dao.TradeMapper;
 import com.kunlong.dongxw.data.domain.*;
 import com.kunlong.dongxw.data.service.*;
-import com.kunlong.dongxw.util.EasyExcelUtil;
+import com.kunlong.dongxw.data.service.selfdef.TradeServiceSelf;
+import com.kunlong.dongxw.data.service.selfdef.TradeServiceSelfImpl;
 import com.kunlong.platform.utils.JsonResult;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.Authorization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -36,7 +32,7 @@ public  class TradeController extends BaseController {
     TradeMasterService tradeMasterService;
 
     @Autowired
-    TradeService tradeService;
+    TradeServiceSelf tradeService;
     @Autowired
     ProductService productService;
     @Autowired
@@ -164,11 +160,12 @@ public  class TradeController extends BaseController {
             trade.setQtyBackup(BigDecimal.ZERO);
             trade.setQtyFinish(BigDecimal.ZERO);
             trade.setQty (BigDecimal.ZERO);
-
+            trade.setTradeType(batchTrade.getTradeMaster().getTradeType());
             trade.setPrice(orderLine.getPrice());
             trade.setMoney(BigDecimal.ZERO);
             trade.setCreateBy(getCurrentUserId());
             trade.setCreateDate(new Date());
+
             trades.add(trade);
            //tradeService.save( trade );
         }
@@ -190,6 +187,9 @@ public  class TradeController extends BaseController {
         } else {
             tradeService.update(trade);
         }
+        trade.setQtyFinish(tradeService.sumFinish(trade));
+        tradeService.update(trade);
+
         return JsonResult.success( trade.getId());
 
     }

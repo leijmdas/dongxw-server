@@ -10,7 +10,7 @@ import io.swagger.annotations.ApiModelProperty;
 /**
  * Trade
  * @author generator
- * @date 2020年09月26日
+ * @date 2020年11月28日
  */
 @ApiModel(value="TradeDTO",description="交易明细表")
 public class TradeDTO implements Serializable {
@@ -35,10 +35,10 @@ public class TradeDTO implements Serializable {
 	@ApiModelProperty(value = "月结标识 r",required = true,notes = "月结标识 r ")
 	private Integer mcId;
 	/**
-	  * 年月 r
+	  * 
 	  * nullable:false,length:11
 	  */
-	@ApiModelProperty(value = "年月 r",required = true,notes = "年月 r ")
+	@ApiModelProperty(value = "",required = true,notes = " ")
 	private Integer ym;
 	/**
 	  * 仓库  r
@@ -101,10 +101,10 @@ public class TradeDTO implements Serializable {
 	@ApiModelProperty(value = "完成数量 r",required = true,notes = "完成数量 r ")
 	private BigDecimal qtyFinish;
 	/**
-	  * 数量 r
+	  * 数量 
 	  * nullable:false,length:14
 	  */
-	@ApiModelProperty(value = "数量 r",required = true,notes = "数量 r ")
+	@ApiModelProperty(value = "数量 ",required = true,notes = "数量  ")
 	private BigDecimal qty;
 	/**
 	  * 备品数量 r
@@ -142,6 +142,12 @@ public class TradeDTO implements Serializable {
 	  */
 	@ApiModelProperty(value = "创建时间 r",required = true,notes = "创建时间 r ")
 	private Date createDate;
+	/**
+	  * 交易类型 10 20 30 40
+	  * nullable:false,length:255
+	  */
+	@ApiModelProperty(value = "交易类型 10 20 30 40",required = true,notes = "交易类型 10 20 30 40 ")
+	private Integer tradeType;
     public Integer getId(){
     	return this.id;
     }
@@ -267,6 +273,12 @@ public class TradeDTO implements Serializable {
     }
     public void setCreateDate(Date createDate){
     	this.createDate = createDate;
+    }
+    public Integer getTradeType(){
+    	return this.tradeType;
+    }
+    public void setTradeType(Integer tradeType){
+    	this.tradeType = tradeType;
     }
     // ==== 自定义属性 ====
 }

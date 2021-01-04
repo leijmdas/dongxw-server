@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * TradeService
  * @author generator
- * @date 2020年09月26日
+ * @date 2020年11月28日
  */
 public interface TradeService {
 	
@@ -14,7 +14,6 @@ public interface TradeService {
 	 * @param entity
 	 */
 	public void save(Trade entity);
-	public void batchInsert(List <Trade> trades);
 
 	/**
 	 * 修改
@@ -27,8 +26,7 @@ public interface TradeService {
 	 * @param id
 	 */
 	public void deleteById(Integer pk);
-	public  int deleteByPKS(List<Integer> pks);
-
+	
 	/**
 	 * 通过id获取
 	 * @param id
@@ -54,22 +52,18 @@ public interface TradeService {
 	 * @param Trade.QueryParam
 	 * @return
 	 */
-	public List<Trade> findByQueryParam(  Trade.QueryParam queryParam);
-	public List<Trade> findByMaster( Integer masterId );
+	public List<Trade> findByQueryParam(Trade.QueryParam queryParam);
 	/**
 	 * 通过实体参数统计
 	 * @param Trade.QueryParam
 	 * @return
 	 */
 	public long countByQueryParam(Trade.QueryParam queryParam);
-	public long countByMaster(Integer masterId) ;
-
-
-		/**
-         * 通过ID集合查询
-         * @param List<Integer> pks
-         * @return
-         */
+	/**
+	 * 通过ID集合查询
+	 * @param List<Integer> pks
+	 * @return
+	 */
 	public List<Trade> findByIds(List<Integer> pks);
 	/**
 	 * 值填充

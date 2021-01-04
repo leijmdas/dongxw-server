@@ -23,6 +23,7 @@
 	  	<result column="remark" property="remark" jdbcType="VARCHAR" />
 	  	<result column="create_by" property="createBy" jdbcType="INTEGER" />
 	  	<result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+	  	<result column="trade_type" property="tradeType" jdbcType="INTEGER" />
     </resultMap>
     <resultMap id="BaseResultMap_Trade" type="com.kunlong.dongxw.data.domain.Trade" >
 	    <id column="t_id" property="id" jdbcType="INTEGER" />	
@@ -46,12 +47,13 @@
 	  	<result column="t_remark" property="remark" jdbcType="VARCHAR" />
 	  	<result column="t_create_by" property="createBy" jdbcType="INTEGER" />
 	  	<result column="t_create_date" property="createDate" jdbcType="TIMESTAMP" />
+	  	<result column="t_trade_type" property="tradeType" jdbcType="INTEGER" />
     </resultMap>
     <sql id="Base_Column_List" >
-  		id,master_id,mc_id,ym,wh,order_id,order_code,po_id,customer_id,supply_id,stock_type,product_id,qty_order,qty_finish,qty,qty_backup,price,money,remark,create_by,create_date
+  		id,master_id,mc_id,ym,wh,order_id,order_code,po_id,customer_id,supply_id,stock_type,product_id,qty_order,qty_finish,qty,qty_backup,price,money,remark,create_by,create_date,trade_type
 	</sql>
   	<sql id="Base_Column_List_Trade" >
-  		t.id t_id,t.master_id t_master_id,t.mc_id t_mc_id,t.ym t_ym,t.wh t_wh,t.order_id t_order_id,t.order_code t_order_code,t.po_id t_po_id,t.customer_id t_customer_id,t.supply_id t_supply_id,t.stock_type t_stock_type,t.product_id t_product_id,t.qty_order t_qty_order,t.qty_finish t_qty_finish,t.qty t_qty,t.qty_backup t_qty_backup,t.price t_price,t.money t_money,t.remark t_remark,t.create_by t_create_by,t.create_date t_create_date
+  		t.id t_id,t.master_id t_master_id,t.mc_id t_mc_id,t.ym t_ym,t.wh t_wh,t.order_id t_order_id,t.order_code t_order_code,t.po_id t_po_id,t.customer_id t_customer_id,t.supply_id t_supply_id,t.stock_type t_stock_type,t.product_id t_product_id,t.qty_order t_qty_order,t.qty_finish t_qty_finish,t.qty t_qty,t.qty_backup t_qty_backup,t.price t_price,t.money t_money,t.remark t_remark,t.create_by t_create_by,t.create_date t_create_date,t.trade_type t_trade_type
 	</sql>
 	
 	<!-- 系统自定义 -->
@@ -125,6 +127,9 @@
 		    </if>
 			<if test="p.createDate!=null ">
 		    	and t.create_date=#{p.createDate}
+		    </if>
+			<if test="p.tradeType!=null ">
+		    	and t.trade_type=#{p.tradeType}
 		    </if>
 		</if>
 		<!--

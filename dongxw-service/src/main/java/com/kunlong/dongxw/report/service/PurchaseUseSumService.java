@@ -7,13 +7,12 @@ import com.kunlong.dongxw.report.dto.PurchaseUseSumRptDTO;
 import com.kunlong.dongxw.util.ExportExcelTool;
 import com.kunlong.dubbo.api.service.MetadataDictApiService;
 import com.kunlong.dubbo.api.service.MetadataFieldApiService;
+import org.apache.xmlbeans.impl.common.IOUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -71,7 +70,7 @@ public class PurchaseUseSumService extends ExportBaseService {
         String fileName = customer.getCustName() + "-"
                 + orderMaster.getCustomerOrderCode()
                 + "订单物料采购进度表" + sdf.format(new Date()) + ".xlsx";
-        setExcelHeader(rsp,fileName);
+        setExcelHeader(rsp, fileName);
 
         Map<Integer, Product> mapProduct = queryOrderLines(orderId);
 
@@ -95,8 +94,8 @@ public class PurchaseUseSumService extends ExportBaseService {
             pum.setUnit(rm.getUnit());
 
             pum.setMap(new TreeMap<>());
-            for(Integer k:mapProduct.keySet()){
-                Product p=mapProduct.get(k);
+            for (Integer k : mapProduct.keySet()) {
+                Product p = mapProduct.get(k);
                 pum.getMap().put(p.getCode() + " (" + p.getEpCode() + ")", null);
 
             }
@@ -113,7 +112,24 @@ public class PurchaseUseSumService extends ExportBaseService {
         List<PurchaseUseSumRptDTO> sortRptLst = dtoList.stream().sorted(Comparator.comparing(PurchaseUseSumRptDTO::getCode)).collect(Collectors.toList());
 
         String sheetTitle = orderMaster.getCustomerOrderCode() + "用料汇总" + sdf.format(new Date());
-        excelUtil.erpExportExcel(rsp.getOutputStream(), sheetTitle, sortRptLst);
+        OutputStream outputStream = new FileOutputStream(new File(sheetTitle));
+        try {
+            excelUtil.erpExportExcel(outputStream, sheetTitle, sortRptLst);
+        } finally {
+            outputStream.close();
+        }
+         //excelUtil.erpExportExcel(rsp.getOutputStream(), sheetTitle, sortRptLst);
+        BufferedOutputStream bufferedOutPut = new BufferedOutputStream(rsp.getOutputStream());
+        try {
+            String returnFileName = excelUtil.rewriteAutoWidthUse(sheetTitle);
+            IOUtil.copyCompletely(new FileInputStream(returnFileName), bufferedOutPut);
+        } finally {
+            bufferedOutPut.flush();
+            bufferedOutPut.close();
+            rsp.getOutputStream().flush();
+            rsp.getOutputStream().close();
+
+        }
         return fileName;
 
     }

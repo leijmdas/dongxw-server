@@ -38,7 +38,7 @@ public  class MonthCloseController extends BaseController {
         queryParam.setSortBys("ym|desc");
         queryParam.setLimit(-1);
         List<MonthClose>  monthCloses = monthCloseService.findByQueryParam(queryParam);
-        Map<Integer,Long> result= monthCloses.stream().collect( Collectors.groupingBy(MonthClose::getYm, Collectors.counting()));
+        Map<Integer,Long> result= monthCloses.stream().sorted(Comparator.comparing(MonthClose::getYm)).collect( Collectors.groupingBy(MonthClose::getYm, Collectors.counting()));
         //Map <Integer,List < MonthClose >> result = monthCloses.stream().collect(Collectors.groupingBy(MonthClose::getYm));
 
         pageResult.setTotal(result.keySet().size());
@@ -49,7 +49,7 @@ public  class MonthCloseController extends BaseController {
             list.add(mc);
         }
         pageResult.setData(list);
-
+        Collections.reverse(list);
         return pageResult;
     }
 

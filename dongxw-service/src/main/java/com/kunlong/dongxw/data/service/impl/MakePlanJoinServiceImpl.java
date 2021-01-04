@@ -294,24 +294,42 @@ public class MakePlanJoinServiceImpl    implements MakePlanJoinService {
         info.put("makeBy","石头");
         List<Map<String, Object>> mapList = new ArrayList<>();
         for (MakePlan makePlan : makePlans) {
-            sheetName = makePlan.getOrderMaster().getCustomerOrderCode();
             Map<String, Object> row = new LinkedHashMap<>();
-            row.put("customerName", makePlan.getCustomer().getCustName());
-            row.put("orderCode", makePlan.getOrderMaster().getCustomerOrderCode());
-            row.put("epCode", makePlan.getOrderMaster().getEpOrderCode());
-            row.put("qty", makePlan.getOrderLine().getQty());
-            row.put("color", makePlan.getProduct().getColor());
-            row.put("orderDate", KunlongUtils.transDate(makePlan.getOrderDate()));
-            row.put("issueDate", KunlongUtils.transDate(makePlan.getIssueDate()));
-            row.put("rmDate", KunlongUtils.transDate(makePlan.getRmDate()));
-            row.put("pkgDate", KunlongUtils.transDate(makePlan.getPkgDate()));
-            row.put("planStart", KunlongUtils.transDate(makePlan.getPlanStart()));
-            row.put("planFinish", KunlongUtils.transDate(makePlan.getPlanEnd()));
-            row.put("realFinish", KunlongUtils.transDate(makePlan.getRealEnd()));
-            row.put("outFlag",MakePlanConst.getOutFlag(makePlan.getOutFlag()));
+            if(makePlan.getId()==0){
+                row.put("customerName", "");
+                row.put("orderCode", "");
+                row.put("epCode", "");
+                row.put("qty", makePlan.getSumQty());
+                row.put("color", "");
+                row.put("orderDate", "");
+                row.put("issueDate", "");
 
-            row.put("memo", makePlan.getRemark());
+                row.put("rmDate", "");
+                row.put("pkgDate", "");
+                row.put("planStart", "");
+                row.put("planFinish", "");
+                row.put("realFinish", "");
+                row.put("outFlag", "");
+                row.put("memo", "");
 
+            }else {
+                sheetName = makePlan.getOrderMaster().getCustomerOrderCode();
+
+                row.put("customerName", makePlan.getCustomer().getCustName());
+                row.put("orderCode", makePlan.getOrderMaster().getCustomerOrderCode());
+                row.put("epCode", makePlan.getProduct().getEpCode());
+                row.put("qty", makePlan.getOrderLine().getQty());
+                row.put("color", makePlan.getProduct().getColor());
+                row.put("orderDate", KunlongUtils.transDate(makePlan.getOrderDate()));
+                row.put("issueDate", KunlongUtils.transDate(makePlan.getIssueDate()));
+                row.put("rmDate", KunlongUtils.transDate(makePlan.getRmDate()));
+                row.put("pkgDate", KunlongUtils.transDate(makePlan.getPkgDate()));
+                row.put("planStart", KunlongUtils.transDate(makePlan.getPlanStart()));
+                row.put("planFinish", KunlongUtils.transDate(makePlan.getPlanEnd()));
+                row.put("realFinish", KunlongUtils.transDate(makePlan.getRealEnd()));
+                row.put("outFlag", MakePlanConst.getOutFlag(makePlan.getOutFlag()));
+                row.put("memo", makePlan.getRemark());
+            }
             mapList.add(row);
         }
         info.put("list", mapList);

@@ -3,6 +3,8 @@ package com.kunlong.dongxw.controller;
 
 import app.support.query.PageResult;
 import cn.afterturn.easypoi.entity.ImageEntity;
+import com.alibaba.dubbo.config.annotation.Reference;
+import com.alibaba.fastjson.JSON;
 import com.kunlong.dongxw.annotation.DateRewritable;
 import com.kunlong.dongxw.config.DongxwTransactional;
 import com.kunlong.dongxw.consts.ApiConstants;
@@ -12,7 +14,7 @@ import com.kunlong.dongxw.data.service.*;
 import com.kunlong.dongxw.util.ConvertUpMoney;
 import com.kunlong.dongxw.util.EasyExcelUtil;
 import com.kunlong.dongxw.util.EasyPOIUtil;
-import com.kunlong.dongxw.util.StringUtil;
+import com.kunlong.dubbo.rpt.EasyPOIUtilApiService;
 import com.kunlong.dubbo.sys.model.SysUserDTO;
 import com.kunlong.platform.model.KunlongModel;
 import com.kunlong.platform.utils.JsonResult;
@@ -38,6 +40,9 @@ import java.util.*;
 @RestController
 @RequestMapping("/dongxw/purchaseorder")
 public  class PurchaseOrderController extends BaseController {
+    @Reference(lazy = true, version = "${dubbo.service.version}")
+    EasyPOIUtilApiService easyPOIUtilApiService;
+
     @Autowired
     PoDaySeqService poDaySeqService;
 
@@ -309,9 +314,10 @@ public  class PurchaseOrderController extends BaseController {
         BigDecimal sumMoney = KunlongModel.newBigDecimal(2, 0);
 
         List<Map<String, Object>> mapList = new ArrayList<>();
-
+        Integer i=0;
         for (PurchaseOrderItem orderItem : purchaseOrder.getOrderItems()) {
             Map<String, Object> row = new LinkedHashMap<>();
+            row.put("seq", ++i);
             Product product = productService.findById(orderItem.getProductId());
             if (product != null) {
                 row.put("code", product.getCode());
@@ -334,8 +340,8 @@ public  class PurchaseOrderController extends BaseController {
         // 大写
         map.put("sumMoneyChinese", ConvertUpMoney.toChinese(sumMoney.toString()));
         map.put("list", mapList);
-
-        return EasyPOIUtil.makeExcelSheet("po_template.xlsx",fileName,sheetName,map);
+        ;
+        return easyPOIUtilApiService.makeExcelSheet("po_template.xlsx",fileName,sheetName, map);
+     //   return EasyPOIUtil.makeExcelSheet("po_template.xlsx",fileName,sheetName,map);
     }
 }
-

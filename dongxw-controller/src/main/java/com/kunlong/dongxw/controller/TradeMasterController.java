@@ -2,21 +2,24 @@ package com.kunlong.dongxw.controller;
 
 
 import app.support.query.PageResult;
+import com.alibaba.dubbo.config.annotation.Reference;
 import com.kunlong.dongxw.annotation.DateRewritable;
 import com.kunlong.dongxw.config.DongxwTransactional;
 import com.kunlong.dongxw.consts.ApiConstants;
-import com.kunlong.dongxw.consts.MakePlanConst;
 import com.kunlong.dongxw.consts.MoneyTypeConsts;
 import com.kunlong.dongxw.data.domain.*;
 import com.kunlong.dongxw.data.service.*;
+import com.kunlong.dongxw.data.service.selfdef.TradeServiceSelf;
 import com.kunlong.dongxw.util.EasyExcelUtil;
 import com.kunlong.dongxw.util.EasyPOIUtil;
 import com.kunlong.dongxw.util.SimpleSequenceGenerator;
+import com.kunlong.dubbo.rpt.EasyPOIUtilApiService;
 import com.kunlong.platform.utils.JsonResult;
 import com.kunlong.platform.utils.KunlongUtils;
+//import com.kunlong.report.EasyPOI41Util;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
-import net.bytebuddy.asm.Advice;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +27,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -37,6 +39,10 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/dongxw/master")
 public  class TradeMasterController extends BaseController {
+
+    @Reference(lazy = true, version = "${dubbo.service.version}")
+    EasyPOIUtilApiService easyPOIUtilApiService;
+
     @Autowired
     CustomerService customerService;
     @Autowired
@@ -48,7 +54,7 @@ public  class TradeMasterController extends BaseController {
     ProductService productService;
 
     @Autowired
-    TradeService tradeService;
+    TradeServiceSelf tradeService;
 
     @PostMapping("/selectCustomerByYm")
     public PageResult<TradeMaster> selectCustomerByYm(@RequestBody TradeMaster.QueryParam queryParam) throws IOException {
@@ -56,7 +62,7 @@ public  class TradeMasterController extends BaseController {
         if(queryParam.getParam().getYm()==null){
             queryParam.getParam().setYm(-1);
         }
-        List<TradeMaster> tradeMasters=tradeMasterService.selectCustomerByYm(queryParam.getParam().getYm());
+        List<TradeMaster> tradeMasters = tradeMasterService.selectCustomerByYm(queryParam.getParam().getYm());
 
         pageResult.setTotal(tradeMasters.size());
         pageResult.setData(tradeMasters);
@@ -104,6 +110,11 @@ public  class TradeMasterController extends BaseController {
             tradeMaster.setCode(code);
             tradeMaster.setTradeCount(Short.valueOf("0"));
             tradeMasterService.save(tradeMaster);
+            Integer  i=tradeMaster.getId()+10000;
+            String s=StringUtils.reverse(i.toString()).substring(0,4);
+            tradeMaster.setCode( "EP" + transDateShort(new Date())+StringUtils.reverse(s));
+            tradeMasterService.update(tradeMaster);
+
         } else {
             tradeMasterService.update(tradeMaster);
         }
@@ -151,6 +162,7 @@ public  class TradeMasterController extends BaseController {
         info.put("list", mapList);
         //System.out.println(KunlongUtils.toJSONStringPretty(info));
 
+        //return easyPOIUtilApiService.makeExcelSheet("issue_template.xlsx",fileName,sheetName,JSON.toJSONString(map));
         return EasyPOIUtil.makeExcelSheet("issue_template.xlsx",fileName,sheetName,map);
     }
 
@@ -234,6 +246,11 @@ public  class TradeMasterController extends BaseController {
         EasyExcelUtil.writeExcel2Response(fn, rsp, fnNew);
 
     }
+
+
+
+
+
     @RequestMapping(value = "export", method = RequestMethod.POST)
     @ApiOperation(value = "export", notes = "export", authorizations = {@Authorization(value = ApiConstants.AUTH_API_WEB)})
     public void export(@RequestBody @DateRewritable TradeMaster.QueryParam queryParam, HttpServletRequest req, HttpServletResponse rsp) throws Exception {
@@ -246,6 +263,8 @@ public  class TradeMasterController extends BaseController {
         for (Trade trade : trades) {
             Product product = productService.findById(trade.getProductId());
             trade.setProduct(product == null ? new Product() : product);
+            trade.setQtyFinish(tradeService.sumFinish(trade));
+
         }
 
         String fn= tradeMaster.getCustName()+"送货单"+tradeMaster.getCode()+".xlsx";

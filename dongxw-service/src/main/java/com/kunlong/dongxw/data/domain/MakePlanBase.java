@@ -1,15 +1,38 @@
 package com.kunlong.dongxw.data.domain;
 
 import com.kunlong.dongxw.data.dto.DataRangeDTO;
+import io.swagger.models.auth.In;
 import org.mybatis.hbatis.orm.criteria.support.query.AbstractQueryParam;
 import org.mybatis.hbatis.orm.criteria.support.query.DateRange;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MakePlanBase extends OrderLineBase {
     OrderLine orderLine;
     DataRangeDTO dtoOrderDate;
+
+    List<Integer> orderIds;
+
+    Integer sumQty;
+    public Integer getSumQty() {
+        return sumQty;
+    }
+
+    public void setSumQty(Integer sumQty) {
+        this.sumQty = sumQty;
+    }
+
+
+    public List<Integer> getOrderIds() {
+        return orderIds;
+    }
+
+    public void setOrderIds(List<Integer> orderIds) {
+        this.orderIds = orderIds;
+    }
+
 
     public DataRangeDTO getDtoOrderDate() {
         return dtoOrderDate;
